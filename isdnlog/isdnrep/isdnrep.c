@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.11 1997/04/17 23:29:45 luethje Exp $
+/* $Id: isdnrep.c,v 1.12 1997/04/20 22:52:25 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.12  1997/04/20 22:52:25  luethje
+ * isdnrep has new features:
+ *   -variable format string
+ *   -can create html output (option -w1 or ln -s isdnrep isdnrep.cgi)
+ *    idea and design from Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
+ * bugfix of processor.c from akool
+ *
  * Revision 1.11  1997/04/17 23:29:45  luethje
  * new structure of isdnrep completed.
  *
@@ -139,12 +146,13 @@
 
 /*****************************************************************************/
 
-#define END_TIME		1
+#define END_TIME    1
 
-#define SET_TIME		1
-#define GET_TIME		2
-#define GET_DATE		4
-#define GET_YEAR		8
+#define SET_TIME    1
+#define GET_TIME    2
+#define GET_DATE    4
+#define GET_DATE2   8
+#define GET_YEAR   16
 
 /*****************************************************************************/
 
@@ -155,13 +163,40 @@
 
 /*****************************************************************************/
 
-#define DEF_FMT "  %t %D %14H %T %-14F %u  %I %O"
+#define DEF_FMT "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
+#define WWW_FMT "%X %D%17.17H %T %-17.17F%-20.20l%9u%U%-14I%-14O"
 
 /*****************************************************************************/
 
-#define F_TOP    1
-#define F_BODY   2
-#define F_BOTTOM 3
+#define F_1ST_LINE      1
+#define F_BODY_HEADER   2
+#define F_BODY_HEADERL  4
+#define F_BODY_LINE     8
+#define F_BODY_BOTTOM1 16
+#define F_BODY_BOTTOM2 32
+#define F_COUNT_ONLY   64
+
+/*****************************************************************************/
+
+#define H_HEADER_COLOR "#FFFFFF"
+#define H_TABLE_COLOR1 "#CCCCFF"
+#define H_TABLE_COLOR2 "#FFCCCC"
+#define H_TABLE_COLOR3 "#CCFFCC"
+
+#define H_1ST_LINE     "<CENTER><FONT size=+1><B>%s</B></FONT><P>\n"
+#define H_BODY_LINE    "<TR>%s</TR>\n"
+#define H_BODY_HEADER1 "<TABLE width=%g%% bgcolor=%s border=0 cellspacing=0 cellpadding=0>\n"
+#define H_BODY_HEADER2 "<COL width=%d*>\n"
+//#define H_BODY_HEADER2 "<COLGROUP span=1 width=%d*>\n"
+#define H_BODY_HEADER3 "<TH colspan=%d>%s</TH>\n"
+#define H_BODY_BOTTOM1 "<TD align=left colspan=%d>%s</TD>%s\n"
+#define H_BODY_BOTTOM2 "</TABLE><P>\n"
+
+#define H_LEFT         "<TD align=left>%s</TD>"
+#define H_CENTER       "<TD align=center>%s</TD>"
+#define H_RIGHT        "<TD align=right>%s</TD>"
+
+#define H_EMPTY        "&nbsp"
 
 /*****************************************************************************/
 
@@ -181,7 +216,7 @@ static int add_sum_calls(sum_calls *s1, sum_calls *s2);
 static int print_sum_calls(sum_calls *s, int computed);
 static int add_one_call(sum_calls *s1, one_call *s2, double units);
 static int clear_sum(sum_calls *s1);
-static char *print_currency(int units, double money, int Format, int computed);
+static char *print_currency(double money, int computed);
 static void strich(int type);
 static int n_match(char *Pattern, char* Number, char* version);
 static int set_caller_infos(one_call *cur_call, char *string, time_t from);
@@ -191,10 +226,20 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 static int print_bottom(double unit, char *start, char *stop);
 static char *get_time_value(time_t t, int *day, int flag);
 static char **string_to_array(char *string);
-static prt_fmt** get_format(char *format);
+static prt_fmt** get_format(const char *format);
 static char *set_byte_string(char Direction, double Bytes);
-static int print_line(int flags, one_call *cur_call, int computed);
-static char *append_string(char **string, prt_fmt *fmt_ptr, char* value);
+static int print_line(int status, one_call *cur_call, int computed, char *overlap);
+static int print_line2(int status, const char *, ...);
+static int print_line3(const char *fmt, ...);
+static int append_string(char **string, prt_fmt *fmt_ptr, char* value);
+static char *html_conv(char *string);
+static int get_format_size(void);
+static int set_col_size(void);
+static char *overlap_string(char *s1, char *s2);
+static char* fill_spaces(char *string);
+static void free_format(prt_fmt** ptr);
+static int html_bottom(char *progname, char *start, char *stop);
+static int html_header(void);
 
 /*****************************************************************************/
 
@@ -206,6 +251,9 @@ static int      zones_usage[MAXZONES];
 static double  	zones_dm[MAXZONES];
 static double  	zones_dur[MAXZONES];
 static char**   ShowMSN = NULL;
+static int*     colsize = NULL;
+static double   h_percent = 100.0;
+static char*    h_table_color = H_TABLE_COLOR1;
 
 /*****************************************************************************/
 
@@ -213,14 +261,13 @@ static char msg1[]    = "%s: Can't open %s (%s)\n";
 static char wrongdate2[]   = "wrong date for delete: %s\n";
 static char nomemory[]   = "Out of memory!\n";
 
-/*****************************************************************************/
+static char htmlconv[][2][10] = {
+	{">", "&gt;"},
+	{"<", "&lt;"},
+	{"" , ""},
+};
 
-static double restdur    = 0.0;
-static double restidur   = 0.0;
-static double restdm     = 0.0;
-static int	  restiusage = 0;
-static int	  restusage  = 0;
-static int 	  resteh     = 0;
+/*****************************************************************************/
 
 static int Tarif96 = 0;
 static int Tarif962 = 0;
@@ -253,9 +300,17 @@ int read_logfile(char *myname)
   one_call            cur_call;
 
 
-	if (lineformat == NULL)
-		lineformat = DEF_FMT;
+	if (html & H_PRINT_HEADER)
+		html_header();
 
+	if (lineformat == NULL)
+	{
+		if (html)
+			lineformat = WWW_FMT;
+		else
+			lineformat = DEF_FMT;
+	}
+			
 	if (get_format(lineformat) == NULL)
 		return -1;
 
@@ -263,6 +318,24 @@ int read_logfile(char *myname)
   clear_sum(&day_com_sum);
   clear_sum(&all_sum);
   clear_sum(&all_com_sum);
+
+	if (strcmp(known[knowns-1]->who,S_UNKNOWN))
+	{
+		if ((known = (KNOWN**) realloc(known, sizeof(KNOWN *) * (knowns+1))) == NULL)
+    {
+      print_msg(PRT_ERR, nomemory);
+      return -1;
+    }
+
+		if ((known[knowns] = (KNOWN*) calloc(1,sizeof(KNOWN))) == NULL)
+    {
+      print_msg(PRT_ERR, nomemory);
+      return -1;
+    }
+
+    known[knowns]->who = S_UNKNOWN;
+    known[knowns++]->num = "0000";
+	}
 
   if (delentries)
   {
@@ -410,6 +483,9 @@ int read_logfile(char *myname)
 		unlink(tmpfile);
 	}
 
+	if (html & H_PRINT_HEADER)
+		html_bottom(myname,start,stop);
+
 	return 0;
 } /* read_logfile */
 
@@ -418,9 +494,10 @@ int read_logfile(char *myname)
 static int print_bottom(double unit, char *start, char *stop)
 {
   auto     char       string[BUFSIZ];
-  register int	      i, k;
+  register int	      i, j, k;
   register char      *p = NULL;
   sum_calls           tmp_sum;
+
 
 	if (timearea) {
 		strich(1);
@@ -459,59 +536,44 @@ static int print_bottom(double unit, char *start, char *stop)
 	else
 		print_msg(PRT_NORMAL,"\n");
 
-	if (!incomingonly)
+	print_line2(F_BODY_BOTTOM2,"");
+
+	get_format("%-14.14s %4d call(s) %10.10s  %12s %-12s %-12s");
+
+	for (j = 0; j < 2; j++)
 	{
-		if (timearea)
-			print_msg(PRT_NORMAL,"\nDIALOUT Summary for %s .. %s\n", start, stop);
-		else
-			print_msg(PRT_NORMAL,"\nDIALOUT Summary for %s\n", start);
+		if ((j == DIALOUT && !incomingonly) || (!outgoingonly && j == DIALIN))
+		{
+			sprintf(string,"\n%s Summary for %s%s%s\n",j==DIALOUT?"DIALOUT":"DIALIN",
+			              start,timearea?" .. ":"",timearea?stop:"");
 
-		strich(3);
+			h_percent = 80.0;
+			h_table_color = H_TABLE_COLOR2;
+			print_line2(F_BODY_HEADER,"");
+			print_line2(F_BODY_HEADERL,"%s",string);
+			strich(3);
 
-		for (i = mymsns; i < knowns; i++) {
-			if (known[i]->usage[DIALOUT]) {
-				print_msg(PRT_NORMAL,"%-14s %4d call(s) %s  %s\n",
-				          !numbers?known[i]->who:known[i]->num,
-				          known[i]->usage[DIALOUT],
-				          double2clock(known[i]->dur[DIALOUT]),
-				          print_currency(known[i]->eh,known[i]->dm,7,0));
-			} /* if */
-		} /* for */
+			for (i = mymsns; i < knowns; i++) {
+				if (known[i]->usage[j]) {
+					print_line3(NULL,
+					          !numbers?known[i]->who:known[i]->num,
+					          known[i]->usage[j],
+					          double2clock(known[i]->dur[j]),
+					          j==DIALOUT?print_currency(known[i]->dm,0):
+					                     fill_spaces(print_currency(known[i]->dm,0)),
+					          set_byte_string('I',known[i]->ibytes[j]),
+					          set_byte_string('O',known[i]->obytes[j]));
+				} /* if */
+			} /* for */
 
-		if (restusage) {
-			print_msg(PRT_NORMAL,"%-14s %4d call(s) %s  %s\n",
-			          S_UNKNOWN, restusage, double2clock(restdur),
-			          print_currency(resteh,restdm,7,0));
-		} /* if */
-
-		print_msg(PRT_NORMAL,"\n");
+			print_line2(F_BODY_BOTTOM2,"");
+		}
 	}
 
-	if (!outgoingonly)
-	{
-		if (timearea)
-			print_msg(PRT_NORMAL,"\nDIALIN Summary for %s .. %s\n", start, stop);
-		else
-			print_msg(PRT_NORMAL,"\nDIALIN Summary for %s\n", start);
-
-		strich(3);
-
-		for (i = mymsns; i < knowns; i++) {
-			if (known[i]->usage[DIALIN]) {
-				print_msg(PRT_NORMAL,"%-14s %4d call(s) %s\n",
-				          !numbers?known[i]->who:known[i]->num,
-				          known[i]->usage[DIALIN],
-				          double2clock(known[i]->dur[CALLED]));
-			} /* if */
-		} /* for */
-
-		if (restiusage) {
-			print_msg(PRT_NORMAL,"%-14s %4d call(s) %s\n",
-			          S_UNKNOWN, restiusage, double2clock(restidur));
-		} /* if */
-
-		print_msg(PRT_NORMAL,"\n\n");
-	}
+	h_percent = 60.0;
+	h_table_color = H_TABLE_COLOR3;
+	get_format("Zone %c : %-10.10s %4d call(s) %10.10s  %s");
+	print_line2(F_BODY_HEADER,"");
 
 	for (i = 1; i < MAXZONES; i++)
 		if (zones[i]) {
@@ -525,40 +587,43 @@ static int print_bottom(double unit, char *start, char *stop)
 				case 4 : p = "Fernzone";   break;
 			} /* switch */
 
-			print_msg(PRT_NORMAL,"Zone %d : %-15s %4d call(s) %s  %s\n", i, p,
-			          zones_usage[i], double2clock(zones_dur[i]),
-			          print_currency(zones[i],zones_dm[i],7,0));
+			print_line3(NULL,
+			          (char) i+48, p, zones_usage[i], double2clock(zones_dur[i]),
+			          print_currency(zones_dm[i],0));
 		} /* if */
 
-		if (resteh)
-		{
-			print_msg(PRT_NORMAL,"Zone x : %-15s %4d call(s) %s  %s\n", S_UNKNOWN,
-			          restusage, double2clock(restdur),
+	if (known[knowns-1]->eh)
+	{
+		print_line3(NULL,
+		          'x', S_UNKNOWN,
+		          known[knowns-1]->usage[DIALOUT], double2clock(known[knowns-1]->dur[DIALOUT]),
 #ifdef ISDN_NL
-			          print_currency(resteh, resteh * unit + restusage * 0.0825,7,0));
+		          print_currency(known[knowns-1]->eh * unit + known[knowns-1]->usage * 0.0825,0));
 #else
-			          print_currency(resteh, resteh * unit, 7,0));
+		          print_currency(known[knowns-1]->eh * unit, 0));
 #endif
-		}
+	}
 
-		if (unknowns) {
-			print_msg(PRT_NORMAL,"\n\nUnknown caller(s)\n");
-			strich(3);
+	print_line2(F_BODY_BOTTOM2,"");
 
-			for (i = 0; i < unknowns; i++) {
+	if (seeunknowns && unknowns) {
+		print_msg(PRT_NORMAL,"\n\nUnknown caller(s)\n");
+		strich(3);
 
-				print_msg(PRT_NORMAL,"%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
+		for (i = 0; i < unknowns; i++) {
 
-				for (k = 0; k < unknown[i].connects; k++) {
-					strcpy(string, ctime(&unknown[i].connect[k]));
+			print_msg(PRT_NORMAL,"%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
 
-					if ((p = strchr(string, '\n')))
-						*p = 0;
+			for (k = 0; k < unknown[i].connects; k++) {
+				strcpy(string, ctime(&unknown[i].connect[k]));
 
-					*(string + 19) = 0;
+				if ((p = strchr(string, '\n')))
+					*p = 0;
 
-					if (k && (k + 1) % 2) {
-						print_msg(PRT_NORMAL,"\n\t\t\t ");
+				*(string + 19) = 0;
+
+				if (k && (k + 1) % 2) {
+					print_msg(PRT_NORMAL,"\n\t\t\t ");
 				} /* if */
 
 				print_msg(PRT_NORMAL,"%s%s", k & 1 ? ", " : "", string + 4);
@@ -573,76 +638,43 @@ static int print_bottom(double unit, char *start, char *stop)
 
 /*****************************************************************************/
 
-static int print_line(int flags, one_call *cur_call, int computed)
+static int print_line3(const char *fmt, ...)
 {
 	char *string = NULL;
-	prt_fmt **fmtstring = get_format(NULL);
-	int dir;
+	char  tmpstr[BUFSIZ];
+	auto  va_list ap;
+	prt_fmt** fmtstring;
 
-	while (*fmtstring != NULL)
+
+	if (fmt == NULL)
+		fmtstring = get_format(NULL);
+	else
+		fmtstring = get_format(fmt);
+
+	if (fmtstring == NULL)
+		return -1;
+
+	va_start(ap, fmt);
+
+	while(*fmtstring != NULL)
 	{
 		if ((*fmtstring)->type == FMT_FMT)
 		{
 			switch((*fmtstring)->s_type)
 			{
-				/* time: */
-				case 't': append_string(&string,*fmtstring,
-				                        get_time_value(0,NULL,GET_TIME));
-				          break;
-				/* duration: */
-				case 'D': append_string(&string,*fmtstring,
-				                        double2clock(cur_call->duration));
-				          break;
-				/* Home (number): */
-				case 'h': if (!numbers)
-				          {
-				          	append_string(&string,*fmtstring,
-				                        cur_call->num[cur_call->dir?CALLED:CALLING]);
-				          	break;
-				          }
-				/* Home (if possible the name): */
-				case 'H': dir = cur_call->dir?CALLED:CALLING;
-				          append_string(&string,*fmtstring,
-				                        cur_call->who[dir][0]?cur_call->who[dir]:cur_call->num[dir]);
-				          break;
-				/* The other (number): */
-				case 'f': if (!numbers)
-				          {
-				          	append_string(&string,*fmtstring,
-				                        cur_call->num[cur_call->dir?CALLED:CALLING]);
-				          	break;
-				          }
-				/* The other (if possible the name): */
-				case 'F': dir = cur_call->dir?CALLING:CALLED;
-				          append_string(&string,*fmtstring,
-				                        cur_call->who[dir][0]?cur_call->who[dir]:cur_call->num[dir]);
-				          break;
-				/* The "To"-sign (-> or <-): */
-				case 'T': append_string(&string,*fmtstring,
-				                        cur_call->dir?"<-":"->");
-				          break;
-				/* The units or/and a message: */
-				case 'u': if (cur_call->duration || cur_call->eh > 0)
-				          {
-				          	if (cur_call->dir)
-				          		append_string(&string,NULL,"                     ");
-				          	else
-				          		append_string(&string,*fmtstring,print_currency(cur_call->eh,cur_call->dm,4,computed));
-				          }
-				          else
-				          if (cur_call->cause != -1)
-				          	append_string(&string,*fmtstring,qmsg(TYPE_CAUSE, VERSION_EDSS1, cur_call->cause));
-				          break;
-				/* In-Bytes: */
-				case 'I': if (cur_call->ibytes)
-				          	append_string(&string,*fmtstring,set_byte_string('I',(double)cur_call->ibytes));
-				          break;
-				/* Out-Bytes: */
-				case 'O': if (cur_call->obytes)
-				          	append_string(&string,*fmtstring,set_byte_string('O',(double)cur_call->obytes));
-				          break;
-				default : print_msg(PRT_ERR, "Internal Error: unknown format `%c'!\n",(*fmtstring)->type);
-				          break;
+				case 's' : append_string(&string,*fmtstring,va_arg(ap,char*));
+				           break;
+				case 'c' : sprintf(tmpstr,"%c",va_arg(ap,char));
+				           append_string(&string,*fmtstring,tmpstr);
+				           break;
+				case 'd' : sprintf(tmpstr,"%d",va_arg(ap,int));
+				           append_string(&string,*fmtstring,tmpstr);
+				           break;
+				case 'f' : sprintf(tmpstr,"%f",va_arg(ap,double));
+				           append_string(&string,*fmtstring,tmpstr);
+				           break;
+				default  : print_msg(PRT_ERR, "Internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
+				           break;
 			}
 		}
 		else
@@ -656,8 +688,330 @@ static int print_line(int flags, one_call *cur_call, int computed)
 		fmtstring++;
 	}
 
-	append_string(&string,NULL,"\n");
-	print_msg(PRT_NORMAL,"%s",string);
+	va_end(ap);
+
+	print_line2(F_BODY_LINE,"%s",string);
+	free(string);
+	return 0;
+}
+
+/*****************************************************************************/
+
+static int print_line2(int status, const char *fmt, ...)
+{
+	char string[BUFSIZ];
+	auto va_list ap;
+
+
+	va_start(ap, fmt);
+	vsnprintf(string, LONG_STRING_SIZE, fmt, ap);
+	va_end(ap);
+
+	if (!html)
+		status = 0;
+
+	switch (status)
+	{
+		case F_COUNT_ONLY  : break;
+		case F_1ST_LINE    : print_msg(PRT_NORMAL,H_1ST_LINE,string);
+		                     break;
+		case F_BODY_BOTTOM1:
+		case F_BODY_LINE   : print_msg(PRT_NORMAL,H_BODY_LINE,string);
+		                     break;
+		case F_BODY_HEADER : print_msg(PRT_NORMAL,H_BODY_HEADER1,h_percent,h_table_color,get_format_size());
+		                     set_col_size();
+		                     break;
+		case F_BODY_HEADERL: print_msg(PRT_NORMAL,H_BODY_HEADER3,get_format_size(),string);
+		                     break;
+		case F_BODY_BOTTOM2: print_msg(PRT_NORMAL,H_BODY_BOTTOM2,string);
+		                     break;
+		default            : print_msg(PRT_NORMAL,"%s\n",string);
+		                     break;
+	}
+
+	return 0;
+}
+
+/*****************************************************************************/
+
+static int print_line(int status, one_call *cur_call, int computed, char *overlap)
+{
+	char *string = NULL;
+	char *Ptr;
+	char  help[32];
+	prt_fmt **fmtstring = get_format(NULL);
+	int dir;
+	int i = 0;
+	int free_col;
+	int last_free_col = -1;
+
+	if (colsize == NULL || status == F_COUNT_ONLY)
+	{
+		free(colsize);
+
+		if ((colsize = (int*) calloc(get_format_size()+1,sizeof(int))) == NULL)
+		{
+			print_msg(PRT_ERR, nomemory);
+			return -1;
+		}
+	}
+
+	while (*fmtstring != NULL)
+	{
+		free_col = 0;
+
+		if ((*fmtstring)->type == FMT_FMT)
+		{
+			switch((*fmtstring)->s_type)
+			{
+				/* time: */
+				case 'X': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring, get_time_value(0,NULL,GET_TIME));
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				            	colsize[i] = append_string(&string,*fmtstring, fill_spaces(get_time_value(0,NULL,GET_TIME)));
+				          }
+				          break;
+				/* date (normal format with year): */
+				case 'x': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring, get_time_value(0,NULL,GET_DATE2));
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				            	colsize[i] = append_string(&string,*fmtstring, fill_spaces(get_time_value(0,NULL,GET_DATE2)));
+				          }
+				          break;
+				/* date (without year): */
+				case 'd': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring, get_time_value(0,NULL,GET_DATE));
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				            	colsize[i] = append_string(&string,*fmtstring, fill_spaces(get_time_value(0,NULL,GET_DATE)));
+				          }
+				          break;
+				/* year: */
+				case 'Y': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring, get_time_value(0,NULL,GET_YEAR));
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				            	colsize[i] = append_string(&string,*fmtstring, fill_spaces(get_time_value(0,NULL,GET_YEAR)));
+				          }
+				          break;
+				/* duration: */
+				case 'D': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring, double2clock(cur_call->duration));
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				            	colsize[i] = append_string(&string,*fmtstring, fill_spaces(double2clock(cur_call->duration)));
+				          }
+				          break;
+				/* Home (if possible the name): */
+				/* Benoetigt Range! */
+				case 'H': if (status == F_BODY_LINE)
+				          {
+				          	dir = cur_call->dir?CALLED:CALLING;
+				            if (!numbers)
+				          	{
+				          		colsize[i] = append_string(&string,*fmtstring,
+				           	             cur_call->who[dir][0]?cur_call->who[dir]:cur_call->num[dir]);
+				          		break;
+				          	}
+				          }
+				/* Home (number): */
+				/* Benoetigt Range! */
+				case 'h': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring,
+				                        cur_call->num[cur_call->dir?CALLED:CALLING]);
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring, "");
+				          }
+				          break;
+				/* The other (if possible the name): */
+				/* Benoetigt Range! */
+				case 'F': if (status == F_BODY_LINE)
+				          {
+				            dir = cur_call->dir?CALLING:CALLED;
+				          	if (!numbers)
+				          	{
+				          		colsize[i] = append_string(&string,*fmtstring,
+				           	             cur_call->who[dir][0]?cur_call->who[dir]:cur_call->num[dir]);
+				          		break;
+				          	}
+				          }
+				/* The other (number): */
+				/* Benoetigt Range! */
+				case 'f': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring,
+				                        cur_call->num[cur_call->dir?CALLING:CALLED]);
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring, "");
+				          }
+				          break;
+				/* The home location: */
+				/* Benoetigt Range! */
+				case 'L': if (status == F_BODY_LINE)
+				          {
+				            dir = cur_call->dir?CALLED:CALLING;
+				          	if (cur_call->num[dir][0] != C_UNKNOWN &&
+				          	    cur_call->num[dir][0] != '\0'      &&
+				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_ERROR)) != NULL)
+				          		colsize[i] = append_string(&string,*fmtstring, Ptr);
+				          	else
+				          		colsize[i] = append_string(&string,*fmtstring, "");
+				          }
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring, "");
+				          }
+				          break;
+				/* The home location: */
+				/* Benoetigt Range! */
+				case 'l': if (status == F_BODY_LINE)
+				          {
+				            dir = cur_call->dir?CALLING:CALLED;
+				          	if (cur_call->num[dir][0] != C_UNKNOWN &&
+				          	    cur_call->num[dir][0] != '\0'      &&
+				          	    (Ptr = get_areacode(cur_call->num[dir],NULL,C_NO_ERROR)) != NULL)
+				          		colsize[i] = append_string(&string,*fmtstring, Ptr);
+				          	else
+				          		colsize[i] = append_string(&string,*fmtstring, "");
+				          }
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring, "");
+				          }
+				          break;
+				/* The "To"-sign (from home to other) (-> or <-): */
+				case 'T': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring, cur_call->dir?"<-":"->");
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring, "  ");
+				          }
+				          break;
+				/* The "To"-sign (from other to home) (-> or <-): */
+				case 't': if (status == F_BODY_LINE)
+				            colsize[i] = append_string(&string,*fmtstring, cur_call->dir?"->":"<-");
+				          else
+				          {
+				          	free_col = 1;
+				          	if (!html || status == F_COUNT_ONLY)
+				          		colsize[i] = append_string(&string,*fmtstring, "  ");
+				          }
+				          break;
+				/* The units (if exists): */
+				/* Benoetigt Range! */
+				case 'u': if (cur_call->eh > 0)
+				          {
+				          	sprintf(help,"%d EH",cur_call->eh);
+				          	colsize[i] = append_string(&string,*fmtstring, help);
+				          }
+				          else
+				          	colsize[i] = append_string(&string,*fmtstring, "");
+				          break;
+				/* The money or/and a message: */
+				case 'U': if (cur_call->duration || cur_call->eh > 0)
+				          {
+				          	if (cur_call->dir)
+				          		colsize[i] = append_string(&string,NULL,"            ");
+				          	else
+				          		colsize[i] = append_string(&string,*fmtstring,print_currency(cur_call->dm,computed));
+				          }
+				          else
+				          if (status == F_BODY_LINE && cur_call->cause != -1)
+				          	colsize[i] = append_string(&string,*fmtstring,qmsg(TYPE_CAUSE, VERSION_EDSS1, cur_call->cause));
+				          else
+				          	colsize[i] = append_string(&string,NULL,"            ");
+				          break;
+				/* In-Bytes: */
+				/* Benoetigt Range! */
+				case 'I': if (cur_call->ibytes)
+				          	colsize[i] = append_string(&string,*fmtstring,set_byte_string('I',(double)cur_call->ibytes));
+				          else
+				          	colsize[i] = append_string(&string,*fmtstring, "");
+				          break;
+				/* Out-Bytes: */
+				/* Benoetigt Range! */
+				case 'O': if (cur_call->obytes)
+				          	colsize[i] = append_string(&string,*fmtstring,set_byte_string('O',(double)cur_call->obytes));
+				          else
+				          	colsize[i] = append_string(&string,*fmtstring, "");
+				          break;
+				/* there are dummy entries */
+				case 'c': 
+				case 's': if (status != F_BODY_LINE)
+				          	free_col = 1;
+				          	
+				          colsize[i] = append_string(&string,*fmtstring, " ");
+				          break;
+				default : print_msg(PRT_ERR, "Internal Error: unknown format `%c'!\n",(*fmtstring)->s_type);
+				          break;
+			}
+		}
+		else
+		if ((*fmtstring)->type == FMT_STR)
+		{
+			if (!html || status == F_COUNT_ONLY || status == F_BODY_LINE || last_free_col != i-1)
+				colsize[i] = append_string(&string,NULL,(*fmtstring)->string);
+			else
+				free_col = 1;
+		}
+		else
+			print_msg(PRT_ERR, "Internal Error: unknown format type `%d'!\n",(*fmtstring)->type);
+
+		if (html && status == F_BODY_BOTTOM1 && free_col && last_free_col == i-1)
+			last_free_col = i;
+
+		fmtstring++;
+		i++;
+	}
+
+	if (last_free_col != -1)
+	{
+		char *help2 = NULL;
+
+
+		if ((help2 = (char*) calloc(strlen(H_BODY_BOTTOM1)+strlen(string)+strlen(overlap)+1,sizeof(char))) == NULL)
+		{
+			print_msg(PRT_ERR, nomemory);
+			return -1;
+		}
+
+		sprintf(help2,H_BODY_BOTTOM1,last_free_col+1,overlap,string);
+
+		free(string);
+		string = help2;
+		overlap = NULL;
+	}
+
+	colsize[i] = -1;
+
+	if (status == F_COUNT_ONLY)
+		return strlen(string);
+	else
+		print_line2(status,"%s",overlap_string(string,overlap));
+
 	free(string);
 
 	return 0;
@@ -665,17 +1019,43 @@ static int print_line(int flags, one_call *cur_call, int computed)
 
 /*****************************************************************************/
 
-static char *append_string(char **string, prt_fmt *fmt_ptr, char* value)
+static int append_string(char **string, prt_fmt *fmt_ptr, char* value)
 {
-	char tmpstr[256];
-	char tmpfmt[20];
+	char  tmpstr[BUFSIZ*2];
+	char  tmpfmt2[20];
+	char *tmpfmt;
+	char *htmlfmt;
+
 
 	if (fmt_ptr != NULL)
-		sprintf(tmpfmt,"%%%ss",fmt_ptr->range);
+		sprintf(tmpfmt2,"%%%ss",fmt_ptr->range);
 	else
-		strcpy(tmpfmt,"%s");
+		strcpy(tmpfmt2,"%s");
 
-	sprintf(tmpstr,tmpfmt,value);
+	if (html)
+	{
+		switch (fmt_ptr==NULL?'\0':fmt_ptr->range[0])
+		{
+			case '-' : htmlfmt = H_LEFT;
+			           break;
+			case '\0': htmlfmt = H_CENTER;
+			           break;
+			default  : htmlfmt = H_RIGHT;
+			           break;
+		}
+			
+		if ((tmpfmt = (char*) alloca(sizeof(char)*(strlen(htmlfmt)+strlen(tmpfmt2)+1))) == NULL)
+		{
+			print_msg(PRT_ERR, nomemory);
+			return -1;
+		}
+
+		sprintf(tmpfmt,htmlfmt,tmpfmt2);
+	}
+	else
+		tmpfmt = tmpfmt2;
+
+	sprintf(tmpstr,tmpfmt,html?html_conv(value):value);
 	
 	if (*string == NULL)
 		*string = (char*) calloc(strlen(tmpstr)+1,sizeof(char));
@@ -685,41 +1065,181 @@ static char *append_string(char **string, prt_fmt *fmt_ptr, char* value)
 	if (*string == NULL)
 	{
 		print_msg(PRT_ERR, nomemory);
-		return NULL;
+		return -1;
 	}
 
 	strcat(*string,tmpstr);
-	return *string;
+
+	return strlen(tmpstr);
+}
+
+/*****************************************************************************/
+
+static char *html_conv(char *string)
+{
+	static char  RetCode[BUFSIZ];
+	char *ptr = RetCode;
+	int   i;
+	int empty = 1;
+
+	if (string == NULL)
+		return NULL;
+
+	do
+	{
+		for(i = 0; htmlconv[i][0][0] != '\0'; i++)
+		{
+			if (htmlconv[i][0][0] == *string)
+			{
+				strcpy(ptr,htmlconv[i][1]);
+				while (*ptr != '\0') ptr++;
+				break;
+			}
+		}
+
+		if (htmlconv[i][0][0] == '\0')
+			*ptr++ = *string;
+
+		if (*string != '\0' && !isspace(*string))
+			empty = 0;
+	}
+	while(*string++ != '\0');
+
+	if (empty)
+		return H_EMPTY;
+
+	return RetCode;
 }
 
 /*****************************************************************************/
 
 static char *set_byte_string(char Direction, double Bytes)
 {
-	static char string[20];
+	static char string[4][20];
+	static int num = 0;
 
+
+	num = (num+1)%4;
 
 	if (!Bytes)
-		strcpy(string,"            ");
+		strcpy(string[num],"            ");
 	else
 	if (Bytes >= 9999999999.0)
- 		sprintf(string,"%c=%s GB",Direction,double2str(Bytes/1073741824,7,2,0));
+ 		sprintf(string[num],"%c=%s GB",Direction,double2str(Bytes/1073741824,7,2,0));
 	else
 	if (Bytes >= 9999999)
-		sprintf(string,"%c=%s MB",Direction,double2str(Bytes/1048576,7,2,0));
+		sprintf(string[num],"%c=%s MB",Direction,double2str(Bytes/1048576,7,2,0));
 	else
 	if (Bytes >= 9999)
-		sprintf(string,"%c=%s kB",Direction,double2str(Bytes/1024,7,2,0));
+		sprintf(string[num],"%c=%s kB",Direction,double2str(Bytes/1024,7,2,0));
 	else
 	if (Bytes < 9999)
-		sprintf(string,"%c=%7ld B ",Direction,(long int) Bytes);
+		sprintf(string[num],"%c=%7ld  B",Direction,(long int) Bytes);
 
-	return string;
+	return string[num];
 }
 
 /*****************************************************************************/
 
-static prt_fmt** get_format(char *format)
+static int set_col_size(void)
+{
+	one_call *tmp_call;
+	int size;
+	int i = 0;
+
+	if ((tmp_call = (one_call*) calloc(1,sizeof(one_call))) == NULL)
+	{
+		print_msg(PRT_ERR, nomemory);
+		return -1;
+	}
+
+	size = print_line(F_COUNT_ONLY,tmp_call,0,NULL);
+
+	while(colsize[i] != -1)
+		print_msg(PRT_NORMAL,H_BODY_HEADER2,colsize[i++]);
+
+	free(tmp_call);
+	return 0;
+}
+
+/*****************************************************************************/
+
+static int get_format_size(void)
+{
+	int i = 0;
+	prt_fmt** fmt = get_format(NULL);
+
+	if (fmt == NULL)
+		return 0;
+
+	while(*fmt++ != NULL) i++;
+
+	return i;
+}
+
+/*****************************************************************************/
+
+static char *overlap_string(char *s1, char *s2)
+{
+	int i = 0;
+
+	if (s1 == NULL || s2 == NULL)
+		return s1;
+
+	while(s1[i] != '\0' && s2[i] != '\0')
+	{
+		if (isspace(s1[i]))
+			s1[i] = s2[i];
+
+		i++;
+	}
+
+	return s1;
+}
+
+/*****************************************************************************/
+
+static char* fill_spaces(char *string)
+{
+	static char RetCode[256];
+	char *Ptr = RetCode;
+
+	while (*string != '\0')
+	{
+		*Ptr++ = ' ';
+		string++;
+	}
+
+	*Ptr = '\0';
+
+	return RetCode;
+}
+
+/*****************************************************************************/
+
+static void free_format(prt_fmt** ptr)
+{
+	prt_fmt** ptr2 = ptr;
+
+
+	if (ptr == NULL)
+		return;
+
+	while(*ptr != NULL)
+	{
+		free((*ptr)->string);
+		free((*ptr)->range);
+		free((*ptr++));
+	}
+
+	free(ptr2);
+	free(colsize);
+	colsize = NULL;
+}
+
+/*****************************************************************************/
+
+static prt_fmt** get_format(const char *format)
 {
 	static prt_fmt **RetCode = NULL;
 	prt_fmt *fmt = NULL;
@@ -734,6 +1254,9 @@ static prt_fmt** get_format(char *format)
 
 	if (format == NULL)
 		return RetCode;
+
+	free_format(RetCode);
+	RetCode = NULL;
 
 	if ((End    = (char*) alloca(sizeof(char)*(strlen(format)+1))) == NULL ||
 	    (string = (char*) alloca(sizeof(char)*(strlen(format)+1))) == NULL   )
@@ -896,25 +1419,40 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 
 		if (cur_call->dir) {
 			if (nx[CALLING] == -1) {
-				restiusage++;
+				known[knowns-1]->usage[DIALIN]++;
+				known[knowns-1]->ibytes[DIALIN] += cur_call->ibytes;
+				known[knowns-1]->obytes[DIALIN] += cur_call->obytes;
 
 				if (cur_call->duration > 0)
-					restidur += cur_call->duration;
+					known[knowns-1]->dur[DIALIN] += cur_call->duration;
 			} /* if */
+			else
+			{
+				known[nx[CALLING]]->usage[cur_call->dir]++;
+				known[nx[CALLING]]->dur[cur_call->dir] += cur_call->duration;
+				known[nx[CALLING]]->ibytes[DIALIN] += cur_call->ibytes;
+				known[nx[CALLING]]->obytes[DIALIN] += cur_call->obytes;
+			}
 		}
 		else {
 
 			if (nx[CALLED] == -1) {
-				resteh += cur_call->eh;
-				restdm += cur_call->dm;
-				restusage++;
+				known[knowns-1]->eh += cur_call->eh;
+				known[knowns-1]->dm += cur_call->dm;
+				known[knowns-1]->ibytes[DIALOUT] += cur_call->ibytes;
+				known[knowns-1]->obytes[DIALOUT] += cur_call->obytes;
+				known[knowns-1]->usage[DIALOUT]++;
 
 				if (cur_call->duration > 0)
-					restdur += cur_call->duration;
+					known[knowns-1]->dur[DIALOUT] += cur_call->duration;
 			}
 			else {
 				known[nx[CALLED]]->eh += cur_call->eh;
 				known[nx[CALLED]]->dm += cur_call->dm;
+				known[nx[CALLED]]->usage[cur_call->dir]++;
+				known[nx[CALLED]]->dur[cur_call->dir] += cur_call->duration;
+				known[nx[CALLED]]->ibytes[DIALOUT] += cur_call->ibytes;
+				known[nx[CALLED]]->obytes[DIALOUT] += cur_call->obytes;
 
 				zones[known[nx[CALLED]]->zone] += cur_call->eh;
 				zones_dm[known[nx[CALLED]]->zone] += cur_call->dm;
@@ -931,7 +1469,7 @@ static int print_entries(one_call *cur_call, double unit, int *nx, char *myname)
 			day_sum.err++;
 	} /* else */
 
-	print_line(F_BODY,cur_call,computed);
+	print_line(F_BODY_LINE,cur_call,computed,NULL);
 	return 0;
 }
 
@@ -945,7 +1483,7 @@ static int print_header(int lday)
 
 	if (lday == -1) {
 		time(&now);
-		print_msg(PRT_NORMAL,"I S D N  Connection Report  -  %s", ctime(&now));
+		print_line2(F_1ST_LINE,"I S D N  Connection Report  -  %s", ctime(&now));
 	}
 	else
 	{
@@ -963,17 +1501,22 @@ static int print_header(int lday)
 			print_sum_calls(&tmp_sum,0);
 		}
 		else
-			print_msg(PRT_NORMAL,"\n");
+			print_msg(PRT_NORMAL,"\n\n");
 
 		add_sum_calls(&all_sum,&day_sum);
 		clear_sum(&day_sum);
 
 		add_sum_calls(&all_com_sum,&day_com_sum);
 		clear_sum(&day_com_sum);
+
+		print_line2(F_BODY_BOTTOM2,"");
 	} /* if */
 
-	print_msg(PRT_NORMAL,"\n\n%s %s\n", get_time_value(0,NULL,GET_DATE),
-	                                    get_time_value(0,NULL,GET_YEAR));
+	h_percent = 100.0;
+	h_table_color = H_TABLE_COLOR1;
+	print_line2(F_BODY_HEADER,"");
+	print_line2(F_BODY_HEADERL,"\n%s %s\n", get_time_value(0,NULL,GET_DATE),
+	                                       get_time_value(0,NULL,GET_YEAR));
 
 	return 0;
 }
@@ -982,7 +1525,7 @@ static int print_header(int lday)
 
 static char *get_time_value(time_t t, int *day, int flag)
 {
-	static char time_string[3][18] = {"","",""};
+	static char time_string[4][18] = {"","",""};
 	static int  oldday = -1;
 	static int  oldyear = -1;
 	struct tm *tm;
@@ -1007,12 +1550,12 @@ static char *get_time_value(time_t t, int *day, int flag)
 			Tarif962 = (Tarif96 && (tm->tm_mon > 5)) || (tm->tm_year > 96);
 
 			strftime(time_string[1],17,"%a %b %d",tm);
-			/*strftime(time_string[1],17,"%x",tm);*/
+			strftime(time_string[2],17,"%x",tm);
 			oldday  = tm->tm_yday;
 
 			if (oldyear != tm->tm_year)
 			{
-				sprintf(time_string[2],"%d",1900+tm->tm_year);
+				sprintf(time_string[3],"%d",1900+tm->tm_year);
 				oldyear = tm->tm_year;
 			}
 		}
@@ -1024,8 +1567,11 @@ static char *get_time_value(time_t t, int *day, int flag)
 	if (flag & GET_DATE)
 		return time_string[1];
 	else
-	if (flag & GET_YEAR)
+	if (flag & GET_DATE2)
 		return time_string[2];
+	else
+	if (flag & GET_YEAR)
+		return time_string[3];
 
 	return NULL;
 
@@ -1087,12 +1633,6 @@ static int set_alias(one_call *cur_call, int *nx, char *myname)
 						strcpy(cur_call->who[n], known[i]->who);
 
  						nx[n] = i;
-
-						known[i]->usage[cur_call->dir]++;
-						/* Gesamte Anrufe auf gleiche Nummern werden gezeahlt */
-						known[i]->dur[cur_call->dir] += cur_call->duration;
-						/* Gesamte Gespraechsdauer auf gleiche Nummern wird gezeahlt */
-
 						hit++;
 						break;
 					} /* if */
@@ -1488,20 +2028,12 @@ static int show_msn(one_call *cur_call)
 
 /*****************************************************************************/
 
-static char *print_currency(int units, double money, int Format, int computed)
+static char *print_currency(double money, int computed)
 {
   static char RetCode[256];
 
 
-  if (!currency_factor)
-    sprintf(RetCode,"%*d EH  %s DM",Format,units,double2str(money,8,2,0));
-  else
-    sprintf(RetCode,"%.*s     %s %s",Format,"          ",
-      double2str(money,8,2,0),currency);
-
-	if (computed)
-		strcat(RetCode," *");
-
+	sprintf(RetCode,"%s %s%c", double2str(money,8,2,0),currency,computed?'*':' ');
   return RetCode;
 }
 
@@ -1510,24 +2042,30 @@ static char *print_currency(int units, double money, int Format, int computed)
 static int print_sum_calls(sum_calls *s, int computed)
 {
   static char String[256];
+  one_call *tmp_call;
+  int RetCode;
 
-  if (!computed)
-    sprintf(String,"%3d IN=%s, %3d OUT=%s, %3d failed     %s  I=%s kB O=%s kB\n",
-      s->in,
-      double2clock(s->din),
-      s->out,
-      double2clock(s->dout),
-      s->err,
-      print_currency(s->eh,s->dm,7,computed),
-      double2str((double)s->ibytes / 1024.0, 10, 2, 0),
-      double2str((double)s->obytes / 1024.0, 10, 2, 0));
-  else
-    sprintf(String,"                 %3d OUT=%s,                %s\n",
-      s->out,
-      double2clock(s->dout),
-      print_currency(s->eh,s->dm,7,computed));
+	if ((tmp_call = (one_call*) calloc(1,sizeof(one_call))) == NULL)
+	{
+		print_msg(PRT_ERR, nomemory);
+		return -1;
+	}
 
-  return print_msg(PRT_NORMAL,String);
+	tmp_call->eh = s->eh;
+	tmp_call->dm = s->dm;
+	tmp_call->obytes = s->obytes;
+	tmp_call->ibytes = s->ibytes;
+
+  sprintf(String,"%3d IN=%s, %3d OUT=%s, %3d failed",
+    s->in,
+    double2clock(s->din),
+    s->out,
+    double2clock(s->dout),
+    s->err);
+
+  RetCode = print_line(F_BODY_BOTTOM1,tmp_call,computed,String);
+	free(tmp_call);
+  return RetCode;
 }
 
 /*****************************************************************************/
@@ -1595,16 +2133,27 @@ static int add_sum_calls(sum_calls *s1, sum_calls *s2)
 
 static void strich(int type)
 {
-  switch (type) {
-    case 1 : print_msg(PRT_NORMAL,"----------------------------------------------------------------------------------------\n");
-    	     break;
-
-    case 2 : print_msg(PRT_NORMAL,"========================================================================================\n");
-    	     break;
-
-    case 3 : print_msg(PRT_NORMAL,"------------------------------------------------------------\n");
-    	     break;
-  } /* switch */
+	if (html)
+	{
+		switch (type) {
+			case 3 : 
+			case 1 : print_msg(PRT_NORMAL,"<TR><TD colspan=%d><HR size=1 noshade width=100%></TD></TR>\n",get_format_size());
+			         break;
+			case 2 : print_msg(PRT_NORMAL,"<TR><TD colspan=%d><HR size=3 noshade width=100%></TD></TR>\n",get_format_size());
+			         break;
+		} /* switch */
+  }
+  else
+	{
+		switch (type) {
+			case 1 : print_msg(PRT_NORMAL,"----------------------------------------------------------------------------------------\n");
+			         break;
+			case 2 : print_msg(PRT_NORMAL,"========================================================================================\n");
+			         break;
+			case 3 : print_msg(PRT_NORMAL,"------------------------------------------------------------\n");
+			         break;
+		} /* switch */
+  }
 } /* strich */
 
 /*****************************************************************************/
@@ -1638,6 +2187,37 @@ static int n_match(char *Pattern, char* Number, char* version)
 		print_msg(PRT_ERR,"Unknown Version of logfile entries!\n");
 
 	return RetCode;
+}
+
+/*****************************************************************************/
+
+static int html_header(void)
+{
+	print_msg(PRT_NORMAL,"Content-Type: text/html\n\n");
+	print_msg(PRT_NORMAL,"<HTML>\n");
+	print_msg(PRT_NORMAL,"<BODY bgcolor=%s>\n",H_HEADER_COLOR);
+
+	return 0;
+}
+
+/*****************************************************************************/
+
+static int html_bottom(char *_progname, char *start, char *stop)
+{
+	char *progname = strdup(_progname);
+	char *ptr      = strrchr(progname,'.');
+
+
+	if (ptr)
+		*ptr = '\0';
+
+	print_msg(PRT_NORMAL,"</BODY>\n");
+	print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s .. %s\n",progname,start,stop);
+	print_msg(PRT_NORMAL,"</TITLE>\n");
+	print_msg(PRT_NORMAL,"</HTML>\n");
+
+	free(progname);
+	return 0;
 }
 
 /*****************************************************************************/

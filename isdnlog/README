@@ -2359,6 +2359,12 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      Mit dieser Option werden nur rausgehende Gespraeche
                      angezeigt.
 
+-u          "unknown caller"
+                     Zeigt am Ende alle Nummern an, die nicht in der
+                     callerid.conf oder ~/.isdn eingetragen sind.
+                     Diese Option laeuft nicht bei der Ausgabe im HTML-Format.
+                     
+
 Es wird nun auf stdout eine Abrechnung mit folgender Optik generiert:
 
 $ isdnrep -v -t 6/1/96

@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.6 1997/04/17 20:09:57 luethje Exp $
+/* $Id: isdnconf.c,v 1.7 1997/04/20 22:52:32 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.7  1997/04/20 22:52:32  luethje
+ * isdnrep has new features:
+ *   -variable format string
+ *   -can create html output (option -w1 or ln -s isdnrep isdnrep.cgi)
+ *    idea and design from Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
+ * bugfix of processor.c from akool
+ *
  * Revision 1.6  1997/04/17 20:09:57  luethje
  * patch of Ingo Schneider
  *
@@ -764,9 +771,9 @@ void setDefaults()
 #if defined(ISDN_NL)
     currency = "NLG";
 #elif defined(ISDN_CH)
-    currency = "FR.";
+    currency = "SFR";
 #else
-    currency = " DM";
+    currency = "DM";
 #endif
 
   } /* if */

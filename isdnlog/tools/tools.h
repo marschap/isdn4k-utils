@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.10 1997/04/15 22:37:13 luethje Exp $
+/* $Id: tools.h,v 1.11 1997/04/20 22:52:36 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.11  1997/04/20 22:52:36  luethje
+ * isdnrep has new features:
+ *   -variable format string
+ *   -can create html output (option -w1 or ln -s isdnrep isdnrep.cgi)
+ *    idea and design from Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
+ * bugfix of processor.c from akool
+ *
  * Revision 1.10  1997/04/15 22:37:13  luethje
  * allows the character `"' in the program argument like the shell.
  * some bugfixes.
@@ -509,6 +516,8 @@ typedef struct {
   double  sonline;
   double  bytes;
   double  sbytes;
+  double  ibytes[2];
+  double  obytes[2];
 } KNOWN;
 
 /****************************************************************************/

@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.5 1997/04/16 22:23:00 luethje Exp $
+/* $Id: isdnrep.h,v 1.6 1997/04/20 22:52:28 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.6  1997/04/20 22:52:28  luethje
+ * isdnrep has new features:
+ *   -variable format string
+ *   -can create html output (option -w1 or ln -s isdnrep isdnrep.cgi)
+ *    idea and design from Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
+ * bugfix of processor.c from akool
+ *
  * Revision 1.5  1997/04/16 22:23:00  luethje
  * some bugfixes, README completed
  *
@@ -48,6 +55,11 @@
 #undef  MAXCONNECTS
 #endif
 #define MAXCONNECTS  500
+
+/*****************************************************************************/
+
+#define H_PRINT_HTML   1
+#define H_PRINT_HEADER 2
 
 /*****************************************************************************/
 
@@ -93,6 +105,8 @@ _EXTERN int     phonenumberonly _SET_0;
 _EXTERN int     compute         _SET_0;
 _EXTERN int     delentries      _SET_0;
 _EXTERN int     numbers         _SET_0;
+_EXTERN int     html         		_SET_0;
+_EXTERN int     seeunknowns  		_SET_0;
 _EXTERN int     header          _SET_1;
 _EXTERN char	  timestring[256] _SET_EMPTY;
 _EXTERN char	  *lineformat     _SET_NULL;

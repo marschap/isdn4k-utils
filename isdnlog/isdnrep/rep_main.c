@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.1 1997/04/06 21:03:38 luethje Exp $
+/* $Id: rep_main.c,v 1.2 1997/04/20 22:52:29 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.2  1997/04/20 22:52:29  luethje
+ * isdnrep has new features:
+ *   -variable format string
+ *   -can create html output (option -w1 or ln -s isdnrep isdnrep.cgi)
+ *    idea and design from Dirk Staneker (dirk.staneker@student.uni-tuebingen.de)
+ * bugfix of processor.c from akool
+ *
  * Revision 1.1  1997/04/06 21:03:38  luethje
  * switch -f is working again
  * currency_factor is float again ;-)
@@ -138,8 +145,9 @@ int main(int argc, char *argv[], char *envp[])
 	auto char  fnbuff[512] = "";
 	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
 	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ac:nviot:f:d:p:NVh";
+	auto char  options[]   = "ac:nviot:f:d:p:NVhw:u";
 	auto char *myname      = basename(argv[0]);
+	auto char *ptr;
 
 
 	set_print_fct_for_tools(printf);
@@ -178,6 +186,9 @@ int main(int argc, char *argv[], char *envp[])
                  timearea++;
                  break;
 
+      case 'u' : seeunknowns++;
+      	       	 break;
+
       case 'v' : verbose++;
       	       	 break;
 
@@ -188,6 +199,9 @@ int main(int argc, char *argv[], char *envp[])
       	       	 phonenumberonly++;
       	       	 break;
 
+      case 'w' : html = strtol(optarg, NIL, 0)?H_PRINT_HEADER:H_PRINT_HTML;
+                 break;
+
       case 'N' : use_new_config = 0;
                  break;
 
@@ -197,6 +211,12 @@ int main(int argc, char *argv[], char *envp[])
       case '?' : printf(usage, argv[0], argv[0], options);
                  return(1);
     } /* switch */
+
+	if (!html && (ptr = strrchr(myname,'.')) != NULL && !strcasecmp(ptr+1,"cgi"))
+		html = H_PRINT_HEADER;
+
+	if (html)
+		seeunknowns = 0;
 
   if (readconfig(myname) != 0)
   	return 1;
