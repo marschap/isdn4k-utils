@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS=foreign
-pkgdocdir=${prefix}/doc/@PACKAGE@
+pkgdocdir=@VBOX_DOCDIR@
 pkgdoc_DATA=vbox.sgml vbox.txt
 DISTCLEANFILES=${pkgdoc_DATA}
 MAINTAINERCLEANFILES=Makefile.in

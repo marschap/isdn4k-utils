@@ -2354,6 +2354,7 @@ fi
 
 
 
+
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -2521,6 +2522,7 @@ s%@CONFIG_BINDIR@%$CONFIG_BINDIR%g
 s%@CONFIG_SBINDIR@%$CONFIG_SBINDIR%g
 s%@CONFIG_I4LCONFDIR@%$CONFIG_I4LCONFDIR%g
 s%@VBOX_LOCKDIR@%$VBOX_LOCKDIR%g
+s%@VBOX_DOCDIR@%$VBOX_DOCDIR%g
 
 CEOF
 EOF
