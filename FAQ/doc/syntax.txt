@@ -1,0 +1,48 @@
+Anmerkungen zur Syntax der FAQ
+==============================
+
+Die FAQ wird mit einem Perlscript weiterverarbeitet, daher ist eine gewisse Syntax einzuhalten.
+
+* Formate:
+  Entwicklungsdatei: ISO-8859-1 (Latin-1) mit allen Umlauten.
+  Ausgabedateien: HTML und ASCII 7 bit (werden von Perlscripten generiert). 
+
+* Trennungen: Aehnlich wie bei TeX sind Trennungen nicht erlaubt. Zwar kann 
+  HTML nicht selber trennen, aber ein erscheinendes "Trenn- zeichen" im 
+  Text sieht nicht gut aus.
+
+* Ueberschriften: mit abnehmender Hierarchie !1, !2 oder !3 voranstellen.
+  !1 darf nur *einmal* vorkommen und muss vor der FAQ-Hauptueberschrift
+  stehen.
+
+* Fragen: Fragen muessen mit einem "Q: " am *Anfang* der Zeile beginnen.
+  (Auch die deutsche Version!)
+
+* Antworten: Antworten muessen mit einem "A: " am *Anfang* der Zeile beginnen.
+
+* Es duerfen keine Leerzeilen innerhalb einer Frage oder innerhalb einer 
+  Antwort stehen, aber es muss eine Leerzeile zwischen zwei Fragen/Antworten
+  stehen. Ist insbesondere wichtig fuer die korrekte Erzeugung der Aenderungs-
+  striche.
+
+* Hervorhebungen: man kann !b1fett!b0, !i1kursiv!i0 und !u1unterstrichen!u0
+  schreiben.
+
+* Links auf ftp- oder www-Server werden in der folgenden Form angegeben:
+    !link http://www.lrz-muenchen.de/~ui161ab/www/isdn/;
+  bzw.
+    !link ftp://ftp.franken.de/pub/isdn4linux/FAQ;
+  Das Semikolon am Ende darf nicht vergessen werden! Ein Link kann uebrigens
+  wie !br, !b1, !b0, !i1, !i0, !u1, !u0 ueberall im Text stehen - auch in
+  Kommentaren.
+
+* Scripten: Wenn bestimmte Abschnitte in den Ausgabedateien *genauso* 
+  erscheinen sollen wie in der Entwicklungsdatei, dann setzt man in die Zeile
+  davor in der ersten Spalte "!verbon", in die Zeile danach in der ersten 
+  Spalte "!verboff". Diese beiden Zeilen duerfen sonst nichts enthalten.
+
+* Kommentare: Kommentare zwischen einer Frage/Antwort-Kombination werden mit
+  !commenton eingeleitet und !commentoff beendet.
+
+Bernhard Hailer <dl4mhk@lrz.uni-muenchen.de>,
+Matthias Hessler <hessler@wi-inf.uni-essen.de>
