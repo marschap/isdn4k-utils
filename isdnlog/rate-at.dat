@@ -2,16 +2,18 @@
 
 # The information herein was machine-generated,
 # so do not contribute patches to this file.
-
+# If possible send patches against the source file rate-at.c
 # Please contact Michael Reinelt <reinelt@eunet.at>
 # or Leo Tötsch <lt@toetsch.at> if you have any
 # corrections or additions.
 
+# New versions of rate-at.c are available on
+#	http://rates4linux.sourceforge.net
 # Many thanks to Daniela Bruder <dbruder@sime.com>
 # for collecting and preparing most of the call charges.
 
 
-V:1.91-Austria [21-Dec-1999]
+V:1.92-Austria [28-Feb-2000]
 
 U:%.3f öS
 
@@ -72,7 +74,6 @@ N:02290*	# Wildcard after special
 ###########################
 P: [-01.09.1999] 01,1              Telekom Austria Alt
 B:1001
-# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -82,7 +83,7 @@ C:Address:                         Postgasse 8, A-1010 Wien
 C:Homepage:                        http://www.telekom.at
 C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
-# Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
+# Tarif:                           Min.tarif (ATS 1.116 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -310,7 +311,6 @@ A:+43717
 ###########################
 P: [-01.09.1999] 01,2              Telekom Austria Alt
 B:1001
-# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -320,7 +320,7 @@ C:Address:                         Postgasse 8, A-1010 Wien
 C:Homepage:                        http://www.telekom.at
 C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
-# Tarif:                           Standardtarif (ATS 1.056 pro Einheit)
+# Tarif:                           Std.tarif (ATS 1.056 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -548,7 +548,6 @@ A:+43717
 ###########################
 P: [-01.09.1999] 01,3              Telekom Austria Alt
 B:1001
-# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -558,7 +557,7 @@ C:Address:                         Postgasse 8, A-1010 Wien
 C:Homepage:                        http://www.telekom.at
 C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
-# Tarif:                           Geschäftstarif 1 (ATS 0.996 pro Einheit)
+# Tarif:                           Ges.tarif 1 (ATS 0.996 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -786,7 +785,6 @@ A:+43717
 ###########################
 P: [-01.09.1999] 01,4              Telekom Austria Alt
 B:1001
-# G:-01.09.1999                    #Valid til 00:00
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km,
 C:Zone:                            Fernzone 1 bis 200 Km, Fernzone 2 darüber.
@@ -796,7 +794,7 @@ C:Address:                         Postgasse 8, A-1010 Wien
 C:Homepage:                        http://www.telekom.at
 C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
-# Tarif:                           Geschäftstarif 2 (ATS 0.936 pro Einheit)
+# Tarif:                           Ges.tarif 2 (ATS 0.936 pro Einheit)
 D:pta                              # Verzonung
 
 Z:0                                FreePhone
@@ -1022,9 +1020,8 @@ T:E,H/*=0.936/15                   Sparzeit
 A:+43717
 
 ###########################
-P: [01.09.1999] 01,1               Telekom Austria Minimumtarif
+P: [01.09.1999] 01,1               Telekom Austria Min.tarif
 B:1001
-# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1036,7 +1033,7 @@ C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 198
 C:GF:
-# Tarif:                           Minimumtarif (ATS 1.116 pro Einheit)
+# Tarif:                           Min.tarif (ATS 1.116 pro Einheit)
 D:1001                             # Verzonung
 
 Z:0                                FreePhone
@@ -1233,9 +1230,8 @@ T:*/*=1.116/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P: [01.09.1999] 01,2               Telekom Austria Standardtarif
+P: [01.09.1999] 01,2               Telekom Austria Std.tarif
 B:1001
-# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1247,7 +1243,7 @@ C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 240
 C:GF:                              Cost=240-198
-# Tarif:                           Standardtarif (ATS 1.056 pro Einheit)
+# Tarif:                           Std.tarif (ATS 1.056 pro Einheit)
 D:1001                             # Verzonung
 
 Z:0                                FreePhone
@@ -1444,9 +1440,8 @@ T:*/*=1.056/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P: [01.09.1999] 01,3               Telekom Austria Geschäftstarif 1
+P: [01.09.1999] 01,3               Telekom Austria Ges.tarif 1
 B:1001
-# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1458,7 +1453,7 @@ C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 288
 C:GF:                              Cost=288-198
-# Tarif:                           Geschäftstarif 1 (ATS 0.996 pro Einheit)
+# Tarif:                           Ges.tarif 1 (ATS 0.996 pro Einheit)
 D:1001                             # Verzonung
 
 Z:0                                FreePhone
@@ -1655,9 +1650,8 @@ T:*/*=0.996/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P: [01.09.1999] 01,4               Telekom Austria Geschäftstarif 2
+P: [01.09.1999] 01,4               Telekom Austria Ges.tarif 2
 B:1001
-# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1669,7 +1663,7 @@ C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 468
 C:GF:                              Cost=468-198
-# Tarif:                           Geschäftstarif 2 (ATS 0.936 pro Einheit)
+# Tarif:                           Ges.tarif 2 (ATS 0.936 pro Einheit)
 D:1001                             # Verzonung
 
 Z:0                                FreePhone
@@ -1866,9 +1860,8 @@ T:*/*=0.936/15                     0-24h
 A:+437118,+437119,+437110
 
 ###########################
-P: [01.09.1999] 01,5               Telekom Austria Geschäftstarif 3
+P: [01.09.1999] 01,5               Telekom Austria Ges.tarif 3
 B:1001
-# G:01.09.1999                     #Valid from
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    01.09.1999
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -1880,7 +1873,7 @@ C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
 C:GT:                              Grundgebühr ATS 1788, Businesskunden
 C:GF:                              Cost=1788-198
-# Tarif:                           Geschäftstarif 3 (ATS 0.816 pro Einheit)
+# Tarif:                           Ges.tarif 3 (ATS 0.816 pro Einheit)
 D:1001                             # Verzonung
 
 Z:0                                FreePhone
@@ -3077,10 +3070,11 @@ C:EMail:                           customercare@netnet.co.at
 ###########################
 P:14                               MCN
 B:1014
-D:pta                              # Verzonung
+D:1001                             # Verzonung
 C:Name:                            Millenium Communication Network GmbH
 C:Address:                         Handelskai 94 - 96, A-1200 Wien
 C:Homepage:                        http://www.mcn-tower.com
+C:TarifURL:                        http://www.mcn-tower.com/Tarife/T_Privat.htm
 C:Telefon:                         0800 1014 1014
 C:Telefax:                         01 207 1099
 C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone.
@@ -3089,7 +3083,7 @@ C:Special:                         Kostenlose MCN-Wählbox
 C:Special:                         Ausland nicht implemtiert
 
 Z:1                                Nah
-T:W/8-18=1.50(60)/1                Tag
+T:W/8-18=0.90(60)/1                Tag
 T:W/18-8=0.60(60)/1                Nacht
 T:E,H/*=0.60(60)/1                 Weekend
 
@@ -3098,6 +3092,63 @@ T:W/8-18=1.50(60)/1                Tag
 T:W/18-8=0.60(60)/1                Nacht
 T:E,H/*=0.60(60)/1                 Weekend
 A:AT
+
+Z:3                                Mobilfunk
+T:W/8-18=3.20(60)/1                Tag
+T:W/18-8=2.90(60)/1                Nacht
+T:E,H/*=2.90(60)/1                 Weekend
+A:+43663,+43664,+43676,+43699
+
+Z:4                                 Deutschland ...
+T:*/*=2.40(60)/1                   0-24h
+A:DE,IT,CH
+
+Z:5                                 Belgien ...
+T:*/*=3.50(60)/1                   0-24h
+A:BE,_DEMF,DK,FI,FR,GR
+A:IE,CA,LI,LU,MC,NL,NO
+A:PT,PR,SE,SK,SI,ES,CZ
+A:UK,US,_ALAS,_HAWA,HU,VI
+
+Z:6                                 Algerien ...
+T:*/*=5.50(60)/1                   0-24h
+A:DZ,AD,_AZOR,BY,BA,BG,EE
+A:FO,GI,IS,IL,PLP,HR
+A:LV,LT,_MADE,MT,MK,PL,RO,SU
+A:SM,YU,TN,TR,UA,VA,CY
+A:AL
+
+Z:7                                 Armenien ...
+T:*/*=9.00(60)/1                   0-24h
+A:AM,AZ,AU,BS,BM,BR,CL
+A:CN,DO,GF,GE,GP
+A:HK,JP,CC,KR,LY,MY,EH
+A:MQ,MX,NZ,PH,RE,SG,ZA
+A:TJ,TM,UZ,CX
+
+Z:8                                 Angola ...
+T:*/*=18.00(60)/1                  0-24h
+A:AO,AI,AQ,AG,AR,AW
+A:ASI,BH,BD,BB,BZ,BJ,BT,GW
+A:BO,BW,BN,BF,MM,BI,KY
+A:CK,CR,NKW,DM,DJ,EC
+A:SV,CI,ER,FK,FJ
+A:PF,GA,GM,GH,GD,GL,GU,GT
+A:GN,GW,GY,HT,HN,IN,ID,IQ
+A:IR,JM,YE,JO,KH,CM,CV,KZ
+A:QA,KE,KG,KI,CO,KM,CG,KP
+A:CU,KW,LA,LS,LB,LR,MO,MG,MW
+A:MV,ML,MR,MU,YT,PM,MD
+A:MN,MS,MZ,NA,NR,NP,NC
+A:NI,AN,NGR,NG,NU,NF,OM
+A:PK,PA,PG,PY,PE,RW,MP
+A:SB,ZM,ST,SA,SN,SC
+A:SL,ZW,SO,LK,SH,KN
+A:LC,PM,VC,SD,SR,SZ,SY
+A:TW,TZ,TH,TG,TK,TO,TT,TD
+A:TC,UG,UY,VU,VE
+A:AE,VN,_WAKE,WF,WS
+A:ZR,CF,EG,GQ,ET
 
 ###########################
 P:24                               Telepassport

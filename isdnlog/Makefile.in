@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.151 2000/02/22 20:04:09 akool Exp $
+## $Id: Makefile.in,v 1.152 2000/02/28 19:53:54 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,24 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.152  2000/02/28 19:53:54  akool
+## isdnlog-4.14
+##   - Patch from Roland Rosenfeld <roland@spinnaker.de> fix for isdnrep
+##   - isdnlog/tools/rate.c ... epnum
+##   - isdnlog/tools/rate-at.c ... new rates
+##   - isdnlog/rate-at.dat
+##   - isdnlog/tools/rate-files.man ... %.3f
+##   - doc/Configure.help ... unknown cc
+##   - isdnlog/configure.in ... unknown cc
+##   - isdnlog/.Config.in ... unknown cc
+##   - isdnlog/Makefile.in ... unknown cc
+##   - isdnlog/tools/dest/Makefile.in ... LANG => DEST_LANG
+##   - isdnlog/samples/rate.conf.pl ... NEW
+##   - isdnlog/samples/isdn.conf.pl ... NEW
+##   - isdnlog/rate-pl.dat ... NEW
+##   - isdnlog/tools/isdnrate.c ... fixed -P pid_dir, restarts on HUP now
+##   - isdnlog/tools/isdnrate.man ... SIGHUP documented
+##
 ## Revision 1.151  2000/02/22 20:04:09  akool
 ## isdnlog-4.13
 ##  - isdnlog/tools/rate-at.c ... chg. 1003
@@ -1109,7 +1127,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.13
+VERSION     = 4.14
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
@@ -1329,7 +1347,14 @@ install-old-conf:
 
 install-conf:
 		@for f in rate isdn ; do \
-			if [ ! -f "$(DESTDIR)$(I4LCONFDIR)/$$f.conf" ]; then \
+		        if [ ! -f "samples/$$f.conf.$(NATION)" ] ; then \
+				echo ; \
+				echo It looks like isdnlog doesn\'t know your countries config ; \
+				echo Please read README.Internationalization. ; \
+				echo ; \
+				echo ; \
+				sleep 3 ; \
+			elif [ ! -f "$(DESTDIR)$(I4LCONFDIR)/$$f.conf" ]; then \
 				$(INSTALL_DATA) samples/$$f.conf.$(NATION) $(DESTDIR)$(I4LCONFDIR)/$$f.conf ; \
 				echo Please edit $(DESTDIR)$(I4LCONFDIR)/$$f.conf ; \
 				sleep 2 ; \

@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.33 2000/02/12 16:40:24 akool Exp $
+/* $Id: isdnrate.c,v 1.34 2000/02/28 19:53:56 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,24 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.34  2000/02/28 19:53:56  akool
+ * isdnlog-4.14
+ *   - Patch from Roland Rosenfeld <roland@spinnaker.de> fix for isdnrep
+ *   - isdnlog/tools/rate.c ... epnum
+ *   - isdnlog/tools/rate-at.c ... new rates
+ *   - isdnlog/rate-at.dat
+ *   - isdnlog/tools/rate-files.man ... %.3f
+ *   - doc/Configure.help ... unknown cc
+ *   - isdnlog/configure.in ... unknown cc
+ *   - isdnlog/.Config.in ... unknown cc
+ *   - isdnlog/Makefile.in ... unknown cc
+ *   - isdnlog/tools/dest/Makefile.in ... LANG => DEST_LANG
+ *   - isdnlog/samples/rate.conf.pl ... NEW
+ *   - isdnlog/samples/isdn.conf.pl ... NEW
+ *   - isdnlog/rate-pl.dat ... NEW
+ *   - isdnlog/tools/isdnrate.c ... fixed -P pid_dir, restarts on HUP now
+ *   - isdnlog/tools/isdnrate.man ... SIGHUP documented
+ *
  * Revision 1.33  2000/02/12 16:40:24  akool
  * isdnlog-4.11
  *  - isdnlog/Makefile.in ... sep install-targets, installs samples, no isdnconf
@@ -275,6 +293,7 @@ static TELNUM srcnum, destnum;
 static char *pid_dir = 0;
 static char *pid_file = 0;
 static char *socket_file = 0;
+static char	**hup_argv;	/* args to restart with */
 
 typedef struct {
   int     prefix;
@@ -1309,9 +1328,16 @@ static void clean_up()
 static char * sub_sp(char *p)
 {
   char *o = p;
+  int allupper=1;
   for (; *p; p++)
-    if(*p == '_')
-      *p = ' ';
+    if(!isupper(*p) && *p != '_') {
+      allupper = 0;
+      break;
+  }
+  if (!allupper)
+    for (p = o; *p; p++)
+      if(*p == '_')
+        *p = ' ';
   return o;
 }
 static void doit(int i, int argc, char *argv[])
@@ -1442,7 +1468,9 @@ static void del_sock(void)
       unlink(pid_file);
   }
 }
-static volatile sig_atomic_t stopped = 0, reinit = 0;
+
+static volatile sig_atomic_t stopped = 0;
+static volatile sig_atomic_t reinit = 0;
 
 static void catch_term(int sig)
 {
@@ -1451,14 +1479,16 @@ static void catch_term(int sig)
 
 static void catch_hup(int sig)
 {
-  reinit = 1;
+  print_msg(PRT_A, "Signal %d restarting %s\n", sig, myname);
+  del_sock();
+  execvp(myname, hup_argv);
+  print_msg(PRT_A, "- failed\n");
 }
 
 static void do_reinit(void)
 {
-  deinit();
-  init();
-  reinit = 0;
+  /* deinit(), init() doesn't */
+  reinit=0;
 }
 
 /* thank's to Jochen Erwied for this: */
@@ -1524,7 +1554,7 @@ static void setup_daemon()
     if (pid_file[strlen(pid_file) - 1] != '/')
       strcat(pid_file, "/");
     strcat(pid_file, pidname);
-    if ((fp = fopen(pidname, "w")) == 0)
+    if ((fp = fopen(pid_file, "w")) == 0)
       fprintf(stderr, "Can't write %s\n", pid_file);
     else {
       fprintf(fp, "%d\n", getpid());
@@ -1639,6 +1669,7 @@ static int connect_2_daemon(int argc, char *argv[])
 int     main(int argc, char *argv[], char *envp[])
 {
   register int i;
+  sigset_t        unblock_set;
 
   myname = argv[0];
   myshortname = basename(myname);
@@ -1646,6 +1677,11 @@ int     main(int argc, char *argv[], char *envp[])
   time(&start);
   splittime();
   socket_file = strdup(SOCKNAME);
+  /* borrowed from isdnlog.c, thanks */
+  hup_argv = argv;
+  sigemptyset(&unblock_set);
+  sigaddset(&unblock_set, SIGHUP);
+  sigprocmask(SIG_UNBLOCK, &unblock_set, NULL);
 
   if ((i = opts(argc, argv)) || need_dest == 0) {
     if (is_client)

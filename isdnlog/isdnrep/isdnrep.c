@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.88 2000/02/07 20:32:41 akool Exp $
+/* $Id: isdnrep.c,v 1.89 2000/02/28 19:53:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,24 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.89  2000/02/28 19:53:55  akool
+ * isdnlog-4.14
+ *   - Patch from Roland Rosenfeld <roland@spinnaker.de> fix for isdnrep
+ *   - isdnlog/tools/rate.c ... epnum
+ *   - isdnlog/tools/rate-at.c ... new rates
+ *   - isdnlog/rate-at.dat
+ *   - isdnlog/tools/rate-files.man ... %.3f
+ *   - doc/Configure.help ... unknown cc
+ *   - isdnlog/configure.in ... unknown cc
+ *   - isdnlog/.Config.in ... unknown cc
+ *   - isdnlog/Makefile.in ... unknown cc
+ *   - isdnlog/tools/dest/Makefile.in ... LANG => DEST_LANG
+ *   - isdnlog/samples/rate.conf.pl ... NEW
+ *   - isdnlog/samples/isdn.conf.pl ... NEW
+ *   - isdnlog/rate-pl.dat ... NEW
+ *   - isdnlog/tools/isdnrate.c ... fixed -P pid_dir, restarts on HUP now
+ *   - isdnlog/tools/isdnrate.man ... SIGHUP documented
+ *
  * Revision 1.88  2000/02/07 20:32:41  akool
  * isdnlog-4.09
  *   - NEW: 01078:3U and 010050:Drillisch foreign countries
@@ -1158,7 +1176,7 @@ static int print_line(int status, one_call *cur_call, int computed, char *overla
 				          	colsize[i] = append_string(&string,*fmtstring, "");
 				          break;
 				/* The money or/and a message: */
-				case 'U': if (cur_call->duration || cur_call->eh > 0)
+				case 'U': if (cur_call->duration || cur_call->eh > 0 || cur_call->pay > 0)
 				          {
 				          	if (cur_call->dir)
 				          		colsize[i] = append_string(&string,NULL,"            ");

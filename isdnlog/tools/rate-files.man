@@ -1,6 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2000/02/22 20:04:11 $
+.\" CHECKIN $Date: 2000/02/28 19:53:56 $
 .TH rate-files 5 "@MANDATE@" -lt-
 .SH NAME
 rate-files \- Format of rate-files
@@ -75,7 +75,7 @@ N:19440
 .B U:currencyfmt currency
 .IP
 e.g.
-U:%.3 DEM
+U:%.3f DEM
 .SS Provider entries
 A new provider starts always with a
 .B P:

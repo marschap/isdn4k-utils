@@ -23,7 +23,8 @@ choice 'Country specific chargeinfo support' \
 	 AT CONFIG_ISDN_LOG_AT \
 	 NL CONFIG_ISDN_LOG_NL \
 	 LU CONFIG_ISDN_LOG_LU \
-	 CH CONFIG_ISDN_LOG_CH" DE
+	 CH CONFIG_ISDN_LOG_CH \
+	 XX CONFIG_ISDN_LOG_XX" DE
 if [ "$CONFIG_ISDN_LOG_DE" = "y" ]; then
 	CONFIG_ISDN_LOG_DEST_DE="y"
 fi
@@ -35,6 +36,9 @@ if [ "$CONFIG_ISDN_LOG_NL" = "y" ]; then
 fi
 if [ "$CONFIG_ISDN_LOG_CH" = "y" ]; then
 	CONFIG_ISDN_LOG_DEST_CH="y"
+fi
+if [ "$CONFIG_ISDN_LOG_XX" = "y" ]; then
+	string "Please enter your iso country code here" CONFIG_ISDN_LOG_CC
 fi
 choice 'Primary language for country names' \
 	"DE CONFIG_ISDN_LOG_CC_DE \

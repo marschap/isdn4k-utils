@@ -1,4 +1,4 @@
-.\" CHECKIN $Date: 1999/12/24 14:17:05 $
+.\" CHECKIN $Date: 2000/02/28 19:53:56 $
 .TH ISDNRATE 1 "@MANDATE@" -lt-
 .SH NAME
 isdnrate \- Print telefon rates and various info from rate\-files(5).
@@ -284,6 +284,9 @@ Show rates and the best provider for this (service-)number.
 .I isdnrate -CD3
 .br
 Stop the running isdnrate daemon.
+.SH SIGNALS
+A isdnrate daemon restarts (and therefore rereads its configuration) on
+getting a SIGHUP signal.
 .SH "SEE ALSO"
 .BR rate-files(5) ", " isdnlog(8) ", " isdn.conf(5)
 .SH BUGS

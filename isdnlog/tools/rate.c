@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.74 2000/02/22 20:04:11 akool Exp $
+/* $Id: rate.c,v 1.75 2000/02/28 19:53:56 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,24 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.75  2000/02/28 19:53:56  akool
+ * isdnlog-4.14
+ *   - Patch from Roland Rosenfeld <roland@spinnaker.de> fix for isdnrep
+ *   - isdnlog/tools/rate.c ... epnum
+ *   - isdnlog/tools/rate-at.c ... new rates
+ *   - isdnlog/rate-at.dat
+ *   - isdnlog/tools/rate-files.man ... %.3f
+ *   - doc/Configure.help ... unknown cc
+ *   - isdnlog/configure.in ... unknown cc
+ *   - isdnlog/.Config.in ... unknown cc
+ *   - isdnlog/Makefile.in ... unknown cc
+ *   - isdnlog/tools/dest/Makefile.in ... LANG => DEST_LANG
+ *   - isdnlog/samples/rate.conf.pl ... NEW
+ *   - isdnlog/samples/isdn.conf.pl ... NEW
+ *   - isdnlog/rate-pl.dat ... NEW
+ *   - isdnlog/tools/isdnrate.c ... fixed -P pid_dir, restarts on HUP now
+ *   - isdnlog/tools/isdnrate.man ... SIGHUP documented
+ *
  * Revision 1.74  2000/02/22 20:04:11  akool
  * isdnlog-4.13
  *  - isdnlog/tools/rate-at.c ... chg. 1003
@@ -1049,8 +1067,8 @@ static char * epnum(int prefix) {
   static char s[20];
 
   if ((prefix < 0) || (prefix > nProvider))
-    sprintf(s, "???");
-  else if (Provider[prefix]._provider._variant)
+    sprintf(s, "??? (%d)", prefix);
+  else if (Provider[prefix]._provider._variant == UNKNOWN)
     sprintf(s,"%d (%d)", Provider[prefix]._provider._prefix, prefix);
   else
     sprintf(s,"%d_%d (%d)", Provider[prefix]._provider._prefix,

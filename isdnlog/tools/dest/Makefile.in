@@ -27,6 +27,7 @@ exec_prefix		= @exec_prefix@
 DATADIR			= @datadir@
 #CC			= @CC@ -V2.7.2.3
 CC			= @CC@
+DEST_LANG =
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -76,13 +77,13 @@ distclean: clean
 #
 #
 ifeq ($(CONFIG_ISDN_LOG_CC_EN),y)
-LANG= -en
+DEST_LANG= -en
 endif
 
 data:
 	@if [ ! -e dest$(DBEXT) ] ; then \
-	./makedest -v $(LANG) ; \
-	./makedest -v -gcities.dat -a $(LANG) ; \
+	./makedest -v $(DEST_LANG) ; \
+	./makedest -v -gcities.dat -a $(DEST_LANG) ; \
 	if [ x$(CONFIG_ISDN_LOG_DEST_AT) = xy ] ; then \
 		./makedest -v -a at ; \
 	fi ; \
@@ -98,8 +99,8 @@ data:
 	fi
 
 alldata:
-	./makedest -v $(LANG)
-	./makedest -v -gcities.dat -a $(LANG)
+	./makedest -v $(DEST_LANG)
+	./makedest -v -gcities.dat -a $(DEST_LANG)
 	@cd ../zone ; all=`ls -d ??` ; cd ../dest ; \
 	for cc in $$all ; do \
 	  	if [ -e ../zone/$$cc/code ] ; then \

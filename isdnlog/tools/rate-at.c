@@ -174,11 +174,11 @@ void rate_sample(void)
 void rate_1001_old(void)
 {
 
-  char *Name[] = { "Minimumtarif",
-		   "Standardtarif",
-		   "Geschäftstarif 1",
-		   "Geschäftstarif 2",
-		   "Geschäftstarif 3" };
+  char *Name[] = { "Min.tarif",
+		   "Std.tarif",
+		   "Ges.tarif 1",
+		   "Ges.tarif 2",
+		   "Ges.tarif 3" };
 
   double Tarif[] = { 1.116, 1.056, 0.996, 0.936, 0.816 };
 
@@ -254,7 +254,6 @@ void rate_1001_old(void)
 
   for (t=0; t<4; t++) {
     rprintf ("P: [-01.09.1999] 01,%d", "Telekom Austria Alt" , t+1);
-    rprintf ("# G:-01.09.1999","#Valid til 00:00");
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, " );
     rprintf ("C:Zone:", "Fernzone 1 bis 200 Km, Fernzone 2 darüber." );
@@ -298,11 +297,11 @@ void rate_1001_old(void)
 void rate_1001(void)
 {
 
-  char *Name[] = { "Minimumtarif",
-		   "Standardtarif",
-		   "Geschäftstarif 1",
-		   "Geschäftstarif 2",
-		   "Geschäftstarif 3" };
+  char *Name[] = { "Min.tarif",
+		   "Std.tarif",
+		   "Ges.tarif 1",
+		   "Ges.tarif 2",
+		   "Ges.tarif 3" };
 
   double Tarif[] = { 1.116, 1.056, 0.996, 0.936, 0.816 };
 
@@ -383,7 +382,6 @@ void rate_1001(void)
   for (t=0; t<5; t++) {
     sprintf(s,"Telekom Austria %s",Name[t]);
     rprintf ("P: [01.09.1999] 01,%d", s , t+1);
-    rprintf ("# G:01.09.1999","#Valid from");
     rprintf ("C:Maintainer:", "Michael Reinelt <reinelt@eunet.at>" );
     rprintf ("C:TarifChanged:", "01.09.1999" );
     rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone." );
@@ -1204,18 +1202,31 @@ void rate_1014(void) {
   char *Zone[][2] = {
     { "Nah", "" },
     { "Fern", "Österreich" },
+    { "Mobilfunk", "+43663,+43664,+43676,+43699" },
+/* 2.40 */	{" Deutschland ...", " Deutschland,  Italien,  Schweiz"},
+/* 3.50 */	{" Belgien ...", " Belgien,  Deutschland Mobil,  Dänemark,  Finnland,  Frankreich,  Griechenland,  Irland,  Kanada,  Liechtenstein,  Luxemburg,  Monaco,  Niederlande,  Norwegen,  Portugal,  Puerto Rico,  Schweden,  Slowakei,  Slowenien,  Spanien,  Tschechien,  UK,  USA,  USA Alaska,  USA Hawaii,  Ungarn,  Virgin Inseln (USA)"},
+/* 5.50 */	{" Algerien ...", " Algerien,  Andorra,  Azoren,  Belarus,  Bosnien-Herzegowina,  Bulgarien,  Estland,  Färöer Inseln,  Gibraltar,  Island,  Israel,  Kanarische Inseln,  Kroatien,  Lettland,  Litauen,  Madeira,  Malta,  Mazedonien,  Polen,  Rumänien,  Rußland,  San Marino,  Serbien/Montenegro,  Tunesien,  Türkei,  Ukraine,  Vatikan,  Zypern, Albanien"},
+/* 9.00 */	{" Armenien ...", " Armenien,  Aserbaidschan,  Australien,  Bahamas,  Bermuda,  Brasilien,  Chile,  China,  Dominikanische Republik,  Franz. Guyana,  Georgien,  Guadeloupe,  Hongkong,  Japan,  Kokos Inseln,  Korea Süd,  Libyen,  Malaysia,  Marokko,  Martinique,  Mexiko,  Neuseeland,  Philippinen,  Reunion,  Singapur,  Südafrika,  Tadschikistan,  Turkmenistan,  Usbekistan,  Weihnachtsinseln"},
+/* 18.00 */	{" Angola ...", " Angola,  Anguilla,  Antarktis,  Antigua & Barbuda,  Argentinien,  Aruba,  Ascension,  Bahrein,  Bangladesch,  Barbados,  Belize,  Benin,  Bhutan,  Bissau,  Bolivien,  Botswana,  Brunei,  Burkina Faso,  Burma,  Burundi,  Cayman Inseln,  Cook-Inseln,  Costa Rica,  Diego Garcia,  Dominica,  Dschibuti,  Ecuador,  El Salvador,  Elfenbeinküste,  Eritrea,  Falklandinseln,  Fidschiinseln,  Fr. Polynesien,  Gabun,  Gambia,  Ghana,  Grenada,  Grönland,  Guam,  Guatemala,  Guinea,  Guinea-Bissau,  Guyana,  Haiti,  Honduras,  Indien,  Indonesien,  Irak,  Iran,  Jamaica,  Jemen,  Jordanien,  Kambodscha,  Kamerun,  Kap Verde,  Kasachstan,  Katar,  Kenia,  Kirgisistan,  Kiribati,  Kolumbien,  Komoren,  Kongo,  Korea Nord,  Kuba,  Kuwait,  Laos,  Lesotho,  Libanon,  Liberia,  Macao,  Madagaskar,  Malawi,  Malediven,  Mali,  Mauretanien,  Mauritius,  Mayotte,  Miquelon,  Moldawien,  Mongolei,  Montserrat,  Mosambik,  Namibia,  Nauru,  Nepal,  Neukaledonien,  Nicaragua,  Niederl. Antillen,  Niger,  Nigeria,  Niue,  Norfolk Inseln,  Oman,  Pakistan,  Panama,  Papua Neuguinea,  Paraguay,  Peru,  Ruanda,  Saipan,  Salomonen,  Sambia,  Sao Tom&eacute;,  Saudi Arabien,  Senegal,  Seychellen,  Sierra Leone,  Simbabwe,  Somalia,  Sri Lanka,  St. Helena,  St. Kitts& Nevis,  St. Lucia,  St. Pierre,  St. Vincent,  Sudan,  Surinam,  Swasiland,  Syrien,  Taiwan,  Tansania,  Thailand,  Togo,  Tokelau,  Tonga,  Trinidad/Tobago,  Tschad,  Turks  Caicos Inseln,  Uganda,  Urugay,  Vanuatu,  Venezuela,  Ver. Arab. Emirate,  Vietnam,  Wake-Inseln,  Wallis  Futuna Inseln,  West Samoa,  Zaire,  Zentralafrik. Republik,  Ägypten,  Äquatorial Guinea,  Äthiopien"}
   };
   double Tarif[][2] = {
-    { 1.50, 0.60}, /* Fixme: */
+    { 0.90, 0.60},
     { 1.50, 0.60},
+    { 3.20, 2.90},
+{2.40},  /*  Deutschland ... */
+{3.50},  /*  Belgien ... */
+{5.50},  /*  Algerien ... */
+{9.00},  /*  Armenien ... */
+{18.00},  /*  Angola ... */
   };
   int z;
 
   rprintf ("P:14", "MCN" );
-  rprintf ("D:pta", "# Verzonung" );
+  rprintf ("D:1001", "# Verzonung" );
   rprintf ("C:Name:", "Millenium Communication Network GmbH" );
   rprintf ("C:Address:", "Handelskai 94 - 96, A-1200 Wien" );
   rprintf ("C:Homepage:", "http://www.mcn-tower.com" );
+  rprintf ("C:TarifURL:", "http://www.mcn-tower.com/Tarife/T_Privat.htm" );
   rprintf ("C:Telefon:", "0800 1014 1014" );
   rprintf ("C:Telefax:", "01 207 1099" );
   rprintf ("C:Zone:", "Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist Österreichzone." );
@@ -1224,7 +1235,7 @@ void rate_1014(void) {
   rprintf ("C:Special:", "Ausland nicht implemtiert" );
   for (z=0; z<COUNT(Zone); z++) {
     rprintf ("Z:%d", Zone[z][0] , z+1);
-    if (Tarif[z][0]==Tarif[z][1]) {
+    if (Tarif[z][0]==Tarif[z][1] || Tarif[z][1]==0) {
       rprintf ("T:*/*=%.2f(60)/1", "0-24h" , Tarif[z][0]);
     } else {
       rprintf ("T:W/8-18=%.2f(60)/1", "Tag" , Tarif[z][0], Tarif[z][0]);
@@ -2384,14 +2395,17 @@ int main (int argc, char *argv[])
 {
   printf ("# created by rate-at.c\n\n");
   printf ("# The information herein was machine-generated,\n");
-  printf ("# so do not contribute patches to this file.\n\n");
+  printf ("# so do not contribute patches to this file.\n");
+  printf ("# If possible send patches against the source file rate-at.c\n");
   printf ("# Please contact Michael Reinelt <reinelt@eunet.at>\n");
   printf ("# or Leo Tötsch <lt@toetsch.at> if you have any\n");
   printf ("# corrections or additions.\n\n");
+  printf ("# New versions of rate-at.c are available on\n");
+  printf ("#\thttp://rates4linux.sourceforge.net\n");
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.91-Austria [21-Dec-1999]\n\n");
+  printf ("V:1.92-Austria [28-Feb-2000]\n\n");
   printf ("U:%%.3f öS\n");
   write_services();
 
