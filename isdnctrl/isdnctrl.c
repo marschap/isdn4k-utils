@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.27 1998/10/28 16:12:18 paul Exp $
+/* $Id: isdnctrl.c,v 1.28 1998/11/11 23:53:02 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.28  1998/11/11 23:53:02  fritz
+ * Make isdnctrl compile without TIMRU in kernel (2.0.36-pre20/21)
+ *
  * Revision 1.27  1998/10/28 16:12:18  paul
  * Implemented "dialmode all" mode.
  *
@@ -229,7 +232,7 @@ typedef	char *(*defs_fcn_t)();
 defs_fcn_t defs_fcns [] = {
 	defs_basic,
 
-#ifdef I4L_CTRL_TIMRU
+#if defined(I4L_CTRL_TIMRU) && defined(HAVE_TIMRU)
 	defs_timru,
 	defs_budget,
 #endif

@@ -9,3 +9,6 @@
 
 /* Define this if ISDN_ENCAP_CISCOHDLCK is defined in isdn.h. */
 #undef HAVE_CISCOKEEPALIVE
+
+/* Define this, if TIMRU extension is available */
+#undef HAVE_TIMRU

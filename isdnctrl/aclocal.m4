@@ -43,6 +43,6 @@ AC_DEFUN(AC_CHECK_TIMRU, [
 	CPPFLAGS="$OLD_CPPFLAGS"
 	if test "$have_timru" != "no" ; then
 		AC_DEFINE(HAVE_TIMRU)
-		AC_SUBST(HAVE_TIMRU)
 	fi
+	AC_SUBST(HAVE_TIMRU)
 ])
