@@ -1051,7 +1051,7 @@ Usenet News, answering machine, and more:
 <item>Further FAQs with example scripts:
 <tt><url url="http://www.fzi.de/sim/people/trautw/i4l/index.html"></tt>
 <item>Eurofile client + server software (alpha):
-<tt><url url="ftp://ftp.hamburg.pop.de/pap/LOCAL/linux/i4l-eft/"></tt>
+<tt><url url="ftp://ftp.hamburg.pop.de/pub/LOCAL/linux/i4l-eft/"></tt>
 </itemize>
 
 <sect1> trouble_tcpdump: Why does my tcpdump not work for ip packets going over  
