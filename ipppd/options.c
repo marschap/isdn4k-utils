@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.14 1999/06/21 13:28:50 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.15 1999/08/09 12:54:32 paul Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -293,6 +293,7 @@ static struct cmd {
     {"-detach", 0, setnodetach}, /* don't fork */
 	{"noip", 0, noip},         /* Disable IP and IPCP */
 	{"-ip", 0, noip},          /* Disable IP and IPCP */
+	{"-ip-protocol", 0, noip},          /* Disable IP and IPCP */
 	{"nomagic", 0, nomagicnumber}, /* Disable magic number negotiation */
     {"-mn", 0, nomagicnumber},	/* Disable magic number negotiation */
 	{"default-mru", 0, nomru}, /* Disable MRU negotiation */
