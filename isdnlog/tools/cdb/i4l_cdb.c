@@ -44,7 +44,7 @@ _DB i4l_cdb_open(char *name, int wr) {
     int fd;
     fd = open(name, wr ? O_RDWR|O_CREAT|O_TRUNC : O_RDONLY, 0644);
     if (fd >= 0) {
-	d = calloc(sizeof(_DB), 1);
+	d = calloc(sizeof(struct _db_t), 1);
 	if (d == NULL) {
 	    close(fd);
 	    return NULL;

@@ -1,4 +1,4 @@
-V:2.02 [22-Apr-2002 20:54:42]
+V:2.02 [23-Apr-2002 19:28:07]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.117 2002/04/22 19:07:49 akool Exp $
+# $Id: rate-de.dat,v 1.118 2002/04/23 17:31:35 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -3166,6 +3166,7 @@ C:Address:
 C:Name:Teledump (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:23-Apr-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3175,7 +3176,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.014/60
+T:*/*=0.028/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.19/60
@@ -3235,7 +3236,7 @@ C:Address:
 C:Name:Calladin (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-# G:02-Apr-2002
+# G:23-Apr-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
