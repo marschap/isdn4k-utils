@@ -200,7 +200,7 @@ void rate_1001(void) {
   for (t=0; t<4; t++) {
     printf ("\n");
     rprintf ("Telekom Austria", "P:01,%d", t+1);
-    sprintf (s, "%s (ATS %.3f / Impuls)", Name[t], Tarif[t]);
+    sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Tarif[t]);
     rprintf (s, "C:Tarif:");
     rprintf ("# Verzonung", "D:pta");
     for (z=0; z<COUNT(Zone); z++) {
@@ -657,8 +657,8 @@ void rate_1029(void) {
 
   for (t=0; t<2; t++) {
     printf ("\n");
-    rprintf ("CyberTron", "P:29,%d", t);
-    sprintf (s, "%s (ATS %.3f / Impuls)", Name[t], Einheit[t]);
+    rprintf ("CyberTron", "P:29,%d", t+1);
+    sprintf (s, "%s (ATS %.3f pro Einheit)", Name[t], Einheit[t]);
     rprintf (s, "C:Tarif:");
     rprintf ("Internationale Zonen nicht implementiert!", "C:Fixme:");
 

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.46 1999/06/16 23:38:09 akool Exp $
+/* $Id: tools.h,v 1.47 1999/06/28 19:16:54 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.47  1999/06/28 19:16:54  akool
+ * isdnlog Version 3.38
+ *   - new utility "isdnrate" started
+ *
  * Revision 1.46  1999/06/16 23:38:09  akool
  * fixed zone-processing
  *
@@ -562,7 +566,7 @@
 /* Fixme: this is specific to Germany */
 #define	DTAG	     33
 
-#define	TESTDURATION 153 /* 181 */
+#define	LCR_DURATION 153
 
 /****************************************************************************/
 
@@ -1017,6 +1021,7 @@ _EXTERN int	ignoreCOLP;
 _EXTERN int 	interns0;
 _EXTERN	char    *vbn;
 _EXTERN char	*mynum;
+_EXTERN int	myicountry;
 #undef _EXTERN
 
 /****************************************************************************/

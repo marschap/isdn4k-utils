@@ -1,20 +1,19 @@
-#P:01=1	# PTA Minimumtarif     (ATS 1.116 je Impuls)
-P:01=2	# PTA Standardtarif    (ATS 1.056 je Impuls)
-#P:01=3	# PTA Geschäftstarif 1 (ATS 0.996 je Impuls)
-#P:01=4	# PTA Geschäftstarif 2 (ATS 0.936 je Impuls)
-#P:01=5	# PTA Geschäftstarif 3 (ATS 0.816 je Impuls)
-
-#P:02	# UTA
-#P:03	# Multikom
-#P:05	# Tele 2
-#P:07=1	# European Telecom, 1 Jahr feste Bindung, danach 14-tägig kündbar
-#P:07=2	# European Telecom, keine feste Bindung, 14-tägig kündbar
-#P:11	# RSL COM
-#P:12	# 1012 privat
-#P:24	# Telepassport
-#P:29=1	# CyperTron easy.talk privat
-#P:29=2	# CyperTron easy.talk business
-#P:44	# Citykom
-#P:49	# Pegasus Telecom
-#P:66	# MIT 1066
-#P:69	# Connect Austria (One)
+#P:01=1		# PTA Minimumtarif     (ATS 1.116 je Einheit)
+P:01=2		# PTA Standardtarif    (ATS 1.056 je Einheit)
+#P:01=3		# PTA Geschäftstarif 1 (ATS 0.996 je Einheit)
+#P:01=4		# PTA Geschäftstarif 2 (ATS 0.936 je Einheit)
+#P:01=5		# PTA Geschäftstarif 3 (ATS 0.816 je Einheit)
+#P:02		# UTA
+#P:03		# Multikom
+#P:05		# tele2
+#P:07=1		# European Telecom, 1 Jahr feste Bindung
+#P:07=2		# European Telecom, 14-tägig kündbar
+#P:11		# RSL COM
+#P:12		# 1012
+#P:24		# Telepassport
+#P:29,1		# CyberTron easy.Talk privat   (ATS 1.116 je Einheit)
+#P:29,2		# CyberTron easy.Talk business (ATS 1.029 je Einheit)
+#P:44		# Citykom
+#P:66		# MIT 1066
+#P:67		# max.plus
+#P:69		# Connect Austria (One)

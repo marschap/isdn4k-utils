@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.26 1999/06/26 10:12:12 akool Exp $
+/* $Id: rate.c,v 1.27 1999/06/28 19:16:49 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.27  1999/06/28 19:16:49  akool
+ * isdnlog Version 3.38
+ *   - new utility "isdnrate" started
+ *
  * Revision 1.26  1999/06/26 10:12:12  akool
  * isdnlog Version 3.36
  *  - EGCS 1.1.2 bug correction from Nima <nima_ghasseminejad@public.uni-hamburg.de>
@@ -290,7 +294,7 @@ extern const char *basename (const char *name);
 #define DEFAULT_FORMAT "%.2f"  /* default format for printRate() */
 
 #ifdef STANDALONE
-#define TESTDURATION 153
+#define LCR_DURATION 153
 #define MAXPROVIDER 1000
 #define UNKNOWN -1
 #endif
@@ -429,6 +433,17 @@ static int strmatch (const char *pattern, const char *string)
     length++;
   }
   return length;
+}
+
+static char* strcat3 (char **s)
+{
+  static char buffer[BUFSIZ];
+
+  strcpy (buffer, s[0]);
+  strcat (buffer, s[1]);
+  strcat (buffer, s[2]);
+
+  return buffer;
 }
 
 static int appendArea (int prefix, char *code, char *name, int zone, int *domestic, char *msg)
@@ -1139,16 +1154,17 @@ int getRate(RATE *Rate, char **msg)
 
   if (Rate->_area==UNKNOWN) {
     int a, x=0;
+    char *number=strcat3(Rate->dst);
     for (a=0; a<Provider[prefix].nArea; a++) {
-      int m=strmatch(Provider[prefix].Area[a].Code, Rate->dst);
+      int m=strmatch(Provider[prefix].Area[a].Code, number);
       if (m>x) {
 	x=m;
 	Rate->_area = a;
-	Rate->domestic = strcmp(Provider[prefix].Area[a].Code, mycountry)==0 || *(Rate->dst)!='+';
+	Rate->domestic = strcmp(Provider[prefix].Area[a].Code, mycountry)==0 || *(Rate->dst[0])=='\0';
       }
     }
     if (Rate->_area==UNKNOWN) {
-      if (msg) snprintf (message, LENGTH, "No area info for provider %d, destination %s", prefix, Rate->dst);
+      if (msg) snprintf (message, LENGTH, "No area info for provider %d, destination %s", prefix, number);
       Rate->_zone=UNZONE;
       return UNKNOWN;
     }
@@ -1156,9 +1172,8 @@ int getRate(RATE *Rate, char **msg)
 
   if (Rate->_zone==UNKNOWN) {
     Rate->_zone=Provider[prefix].Area[Rate->_area].Zone;
-    if (Rate->domestic && *(Rate->dst)=='+') {
-      int l=strlen(mycountry);
-      int z=getZone(prefix, Rate->src+l, Rate->dst+l);
+    if (Rate->domestic && *(Rate->dst[0])) {
+      int z=getZone(prefix, Rate->src[1], Rate->dst[1]);
       if (z!=UNKNOWN) {
 	for (i=0; i<Provider[prefix].nZone; i++) {
 	  for (j=0; j<Provider[prefix].Zone[i].nNumber; j++) {
@@ -1253,33 +1268,35 @@ int getRate(RATE *Rate, char **msg)
   return 0;
 }
 
-int getLeastCost (RATE *Rate, int skip)
+int getLeastCost (RATE *Current, RATE *Cheapest, int booked, int skip)
 {
-  int i, min;
-  RATE Curr, Least;
+  int i, cheapest;
+  RATE Skel, Rate;
 
-  Least=*Rate;
-  Least.Charge=1e9;
-  if (Least.start==Least.now)
-    Least.now+=TESTDURATION;
-  Curr=Least;
-  min=UNKNOWN;
+  clearRate (&Skel);
+  memcpy (Skel.src, Current->src, sizeof (Skel.src));
+  memcpy (Skel.dst, Current->dst, sizeof (Skel.dst));
+  Skel.start = Current->start;
+  if (Current->start == Current->now)
+    Skel.now = Current->start + LCR_DURATION;
+  else
+    Skel.now = Current->now;
+
+  *Cheapest=*Current;
+  Cheapest->Charge=1e9;
+  cheapest=UNKNOWN;
 
   for (i=0; i<nProvider; i++) {
-    if (i==skip)
+    if (!Provider[i].used || i==skip || (booked && !Provider[i].booked))
       continue;
-    Curr.prefix=i;
-    if (getRate(&Curr, NULL)!=UNKNOWN && Curr.Charge<Least.Charge) {
-      min=i;
-      Least=Curr;
+    Rate=Skel;
+    Rate.prefix=i;
+    if (getRate(&Rate, NULL)!=UNKNOWN && Rate.Charge<Cheapest->Charge) {
+      *Cheapest=Rate;
+      cheapest=i;
     }
   }
-
-  if (Least.prefix==Rate->prefix)
-    return UNKNOWN;
-
-  *Rate=Least;
-  return min;
+  return (Current->prefix==Cheapest->prefix ? UNKNOWN : cheapest);
 }
 
 int guessZone (RATE *Rate, int aoc_units)
@@ -1342,8 +1359,17 @@ char *printRate (double value)
 }
 
 #ifdef STANDALONE
+
+void getNumber (char *s, char *num[3])
+{
+  num[0]=strsep(&s,"-");
+  num[1]=strsep(&s,"-");
+  num[2]=strsep(&s,"-");
+}
+
 void main (int argc, char *argv[])
 {
+  int i;
   char *msg;
   struct tm now;
 
@@ -1352,7 +1378,7 @@ void main (int argc, char *argv[])
   initHoliday ("../holiday-at.dat", &msg);
   printf ("%s\n", msg);
 
-  initCountry ("../countries-de.dat", &msg);
+  initCountry ("../country-de.dat", &msg);
   printf ("%s\n", msg);
 
   initRate ("/etc/isdn/rate.conf", "../rate-at.dat", "../zone-at-%s.gdbm", &msg);
@@ -1362,29 +1388,58 @@ void main (int argc, char *argv[])
   Rate.prefix = 1;
 
   if (argc==3) {
-    Rate.src=argv[1];
-    Rate.dst=argv[2];
+    getNumber (argv[1], Rate.src);
+    getNumber (argv[2], Rate.dst);
   } else {
-    Rate.src="+43316698260";
+    getNumber (strdup("+43-316-698260"), Rate.src);
     if (argc==2)
-      Rate.dst=argv[1];
+      getNumber (argv[1], Rate.dst);
     else
-      Rate.dst="+4314711";
+      getNumber (strdup("+43-1-4711"), Rate.dst);
   }
      
   time(&Rate.start);
-  time(&Rate.now);
+  Rate.now=Rate.start+153;
+
   if (getRate(&Rate, &msg)==UNKNOWN) {
     printf ("Ooops: %s\n", msg);
     exit (1);
   }
 
-  printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n",
-	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone, Rate.Service, Rate.Flags);
+  printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
+	  "current=%s\n\n",
+	  Rate.domestic, Rate._area, Rate._zone, Rate.zone, Rate.Country, Rate.Zone, 
+	  Rate.Service, Rate.Flags, explainRate(&Rate));
 
-  printf ("%s\n\n", explainRate(&Rate));
+  getLeastCost (&Rate, &LCR, 1, UNKNOWN);
+  printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
+	  "booked cheapest=%s\n\n",
+	  LCR.domestic, LCR._area, LCR._zone, LCR.zone, LCR.Country, LCR.Zone, 
+	  LCR.Service, LCR.Flags, explainRate(&LCR));
 
-  /*  exit (0); */
+  getLeastCost (&Rate, &LCR, 0, UNKNOWN);
+  printf ("domestic=%d _area=%d _zone=%d zone=%d Country=%s Zone=%s Service=%s Flags=%s\n"
+	  "all cheapest=%s\n\n",
+	  LCR.domestic, LCR._area, LCR._zone, LCR.zone, LCR.Country, LCR.Zone, 
+	  LCR.Service, LCR.Flags, explainRate(&LCR));
+
+
+  printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
+  for (i=0; i<nProvider; i++) {
+    Rate.prefix=i;
+    Rate._area=UNKNOWN;
+    Rate._zone=UNKNOWN;
+    if (getRate(&Rate, NULL)!=UNKNOWN) {
+      now=*localtime(&Rate.now);
+      printf ("%02d.%02d.%04d %02d:%02d:%02d  %10s (%6.3f %6.3f)  %4d  %4.1f  %4ld  %4ld  %s\n",
+	      now.tm_mday, now.tm_mon+1, now.tm_year+1900,
+	      now.tm_hour, now.tm_min, now.tm_sec,
+	      printRate (Rate.Charge), Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest,
+	      explainRate(&Rate));
+    }
+  }
+  
+  exit (0);
 
   printf ("---Date--- --Time--  --Charge-- ( Basic  Price)  Unit   Dur  Time  Rest\n");
 
@@ -1400,14 +1455,6 @@ void main (int argc, char *argv[])
 	    now.tm_hour, now.tm_min, now.tm_sec,
 	    printRate (Rate.Charge), Rate.Basic, Rate.Price, Rate.Units, Rate.Duration, Rate.Time, Rate.Rest);
 
-    LCR=Rate;
-#if 0
-    if (getLeastCost(&LCR,-1)!=UNKNOWN) {
-      printf ("least cost would be: %s %6.2f %7.3f %3d %6.2f %3ld %3ld\n",
-	      explainRate(&LCR),
-	      LCR.Duration, LCR.Price, LCR.Units, LCR.Charge, LCR.Time, LCR.Rest);
-    }
-#endif
     sleep(1);
   }
 }

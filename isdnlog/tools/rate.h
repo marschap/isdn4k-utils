@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.9 1999/06/15 20:05:16 akool Exp $
+/* $Id: rate.h,v 1.10 1999/06/28 19:16:51 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.10  1999/06/28 19:16:51  akool
+ * isdnlog Version 3.38
+ *   - new utility "isdnrate" started
+ *
  * Revision 1.9  1999/06/15 20:05:16  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -123,8 +127,8 @@
 typedef struct {
   int        prefix;   /* Providerkennung */
   int        zone;     /* Zonennummer */
-  char      *src;      /* eigene Telefonnummer */
-  char      *dst;      /* gerufene Nummer */
+  char      *src[3];   /* eigene Telefonnummer [Land, Vorwahl, Nummer]*/
+  char      *dst[3];   /* gerufene Nummer */
   time_t     start;    /* Verbindungsaufbau */
   time_t     now;      /* momentane Zeit */
   int        domestic; /* Inlandsverbindung */
@@ -154,7 +158,7 @@ char *getProvider(int prefix);
 int   getArea(int prefix, char *number);
 void  clearRate (RATE *Rate);
 int   getRate(RATE *Rate, char **msg);
-int   getLeastCost(RATE *Rate, int skip);
+int   getLeastCost(RATE *Current, RATE *Cheapest, int booked, int skip);
 int   guessZone (RATE *Rate, int aoc_units);
 char *explainRate (RATE *Rate);
 char *printRate (double value);

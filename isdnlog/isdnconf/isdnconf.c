@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.34 1999/06/22 19:40:37 akool Exp $
+/* $Id: isdnconf.c,v 1.35 1999/06/28 19:15:53 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.35  1999/06/28 19:15:53  akool
+ * isdnlog Version 3.38
+ *   - new utility "isdnrate" started
+ *
  * Revision 1.34  1999/06/22 19:40:37  akool
  * zone-1.1 fixes
  *
@@ -755,7 +759,11 @@ static void showLCR(int duration)
 {
   auto int    tz, hour, provider, lastprovider = UNKNOWN, lasthour = UNKNOWN, *p;
   auto int    useds = 0, maxhour, leastprovider = UNKNOWN;
+#if 0
   auto int    ignoreprovider = UNKNOWN;
+#else
+  auto char   ignoreprovider[1024];
+#endif
   auto int    z, z1, z2, z3;
   auto double price, bestRate, lastRate;
   auto double lastDTAG, DTAGRate;
@@ -946,7 +954,7 @@ retry:
       	else if (hour == 7)
           break;
       } /* for */
- 
+
       if (lastprovider == UNKNOWN)
         px = "";
       else
@@ -1085,10 +1093,11 @@ int main(int argc, char *argv[], char *envp[])
 	char *myname = basename(argv[0]);
 	FILE *fp;
 	COUNTRY *Country;
-  	RATE Rate;
+  	RATE Rate, lcrRate;
 	char *msg;
 	char *country;
-
+  	auto time_t now;
+  	auto char   ignoreprovider[1024];
 
 	static char usage[]   = "%s: usage: %s [ -%s ]\n";
 	static char options[] = "ADdn:a:t:f:c:wslimqgV1M:";
@@ -1243,14 +1252,17 @@ int main(int argc, char *argv[], char *envp[])
 	if (areacode[0] != '\0')
 	{
 		char *ptr;
-		int len, i, zone = UNKNOWN, zone2 = UNKNOWN, duration = TESTDURATION;
+                char sx[10], message[256];
+		int len, i, j, zone = UNKNOWN, zone2 = UNKNOWN, duration = LCR_DURATION;
 
 
  		initHoliday(holifile, NULL);
+	    	initCountry("/usr/lib/isdn/country-de.dat", NULL);
  		initRate("/etc/isdn/rate.conf", "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/zone-de-%s.gdbm", NULL);
  		/* initRate(NULL, "/usr/lib/isdn/rate-de.dat", "/usr/lib/isdn/countries-de.dat", NULL, NULL); */
 		currency = strdup("DM");
 		vbn = strdup("010");
+		mycountry = strdup("+49");
 
 		if (1 /* FIXME: (*areacode == '.') || (ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL */ )
 		{
@@ -1284,6 +1296,33 @@ int main(int argc, char *argv[], char *envp[])
 				      strcpy(areacode, Country->Code[0]);
                                   } /* if */
 
+#if 1
+  				  time(&now);
+				  n = 0;
+
+
+				  for (i = 0; i < MAXPROVIDER; i++) {
+				    clearRate(&Rate);
+				    Rate.src = "+496171";
+				    Rate.dst = areacode;
+                                    Rate.prefix = i;
+				    Rate.start = now;
+				    Rate.now   = now + duration;
+
+                                    if (!getRate(&Rate, NULL)) {
+      				      sort[n].prefix = Rate.prefix;
+      				      sort[n].rate = Rate.Charge;
+				      sort[n].explain = strdup(printrate(Rate));
+      				      n++;
+                                    } /* if */
+				  } /* for */
+
+                                  qsort((void *)sort, n, sizeof(SORT), compare);
+
+                                  for (i = 0; i < n; i++)
+                                    print_msg(PRT_NORMAL, "%s%02d %s %8.3f (%s)\n", vbn, sort[i].prefix, currency, sort[i].rate, sort[i].explain);
+                                  exit(0);
+#endif
     				  zone = area_diff(NULL, areacode);
 
       				  switch (zone) {
