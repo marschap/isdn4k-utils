@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.6 1997/08/21 14:47:02 fritz Exp $
+/* $Id: isdnctrl.h,v 1.7 1997/10/03 21:48:09 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.7  1997/10/03 21:48:09  fritz
+ * Added cisco-hk encapsulation.
+ *
  * Revision 1.6  1997/08/21 14:47:02  fritz
  * Added Version-Checking of NET_DV.
  *
@@ -135,14 +138,29 @@ int l3protoval[] = {
 };
 
 char *pencapstr[] = {
-        "ethernet", "rawip", "ip", "cisco-h", "syncppp",
-        "uihdlc", "\0"
+	"ethernet",
+	"rawip",
+	"ip",
+	"cisco-h",
+	"syncppp",
+	"uihdlc",
+#if HAVE_CISCOKEEPALIVE
+	"cisco-hk",
+#endif
+	"\0"
 };
 
 int pencapval[] = {
-        ISDN_NET_ENCAP_ETHER, ISDN_NET_ENCAP_RAWIP,
-        ISDN_NET_ENCAP_IPTYP, ISDN_NET_ENCAP_CISCOHDLC,
-        ISDN_NET_ENCAP_SYNCPPP, ISDN_NET_ENCAP_UIHDLC, -1
+	ISDN_NET_ENCAP_ETHER,
+	ISDN_NET_ENCAP_RAWIP,
+	ISDN_NET_ENCAP_IPTYP,
+	ISDN_NET_ENCAP_CISCOHDLC,
+	ISDN_NET_ENCAP_SYNCPPP,
+	ISDN_NET_ENCAP_UIHDLC,
+#if HAVE_CISCOKEEPALIVE
+	ISDN_NET_ENCAP_CISCOHDLCK,
+#endif
+	-1
 };
 
 char *num2callb[] = {

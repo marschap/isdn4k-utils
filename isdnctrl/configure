@@ -1196,9 +1196,37 @@ fi
 rm -f conftest*
 	echo "$ac_t"""${have_triggercps}"" 1>&6
 	if test "$have_triggercps" != "no" ; then
-		echo "$ac_t"""yes"" 1>&6
 		cat >> confdefs.h <<\EOF
 #define HAVE_TRIGGERCPS 1
+EOF
+
+		
+	fi
+
+
+	have_ciscokeepalive="no"
+	echo $ac_n "checking for Cisco-Keepalive in linux/isdn.h""... $ac_c" 1>&6
+echo "configure:1210: checking for Cisco-Keepalive in linux/isdn.h" >&5
+	cat > conftest.$ac_ext <<EOF
+#line 1212 "configure"
+#include "confdefs.h"
+#include <linux/isdn.h>
+int main() {
+int x = ISDN_NET_ENCAP_CISCOHDLCK;
+; return 0; }
+EOF
+if { (eval echo configure:1219: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  have_ciscokeepalive="yes"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+	echo "$ac_t"""${have_ciscokeepalive}"" 1>&6
+	if test "$have_ciscokeepalive" != "no" ; then
+		cat >> confdefs.h <<\EOF
+#define HAVE_CISCOKEEPALIVE 1
 EOF
 
 		
@@ -1344,6 +1372,7 @@ s%@INSTALL_DATA@%$INSTALL_DATA%g
 s%@CC@%$CC%g
 s%@CPP@%$CPP%g
 s%@HAVE_TRIGGERCPS@%$HAVE_TRIGGERCPS%g
+s%@HAVE_CISCOKEEPALIVE@%$HAVE_CISCOKEEPALIVE%g
 s%@INSTALL@%$INSTALL%g
 s%@DBMLIB@%$DBMLIB%g
 

@@ -6,3 +6,6 @@
 
 /* Define this if triggercps is defined in struct isdn_net_ioctl_cfg. */
 #undef HAVE_TRIGGERCPS
+
+/* Define this if ISDN_ENCAP_CISCOHDLCK is defined in isdn.h. */
+#undef HAVE_CISCOKEEPALIVE
