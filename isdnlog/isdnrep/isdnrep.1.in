@@ -1,5 +1,5 @@
-.\" $Id: isdnrep.1.in,v 1.4 2000/08/17 21:34:44 akool Exp $
-.\" CHECKIN $Date: 2000/08/17 21:34:44 $
+.\" $Id: isdnrep.1.in,v 1.5 2000/11/06 15:02:17 paul Exp $
+.\" CHECKIN $Date: 2000/11/06 15:02:17 $
 .TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
@@ -23,7 +23,7 @@ not given, show only the connections made today.
 
 .TP
 .B \-S	Summary
-Show a summary (no inidvidual calls) for selected date range. If this
+Show a summary (no individual calls) for selected date range. If this
 option is given twice, the summaries per day are hidden too. Don't use with
 .B \-h
 
