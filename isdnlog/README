@@ -784,13 +784,13 @@ ueberall die Vorwahl angibt.
 Die Syntax ist jetzt ziemlich frei. Es koennen dort angegeben werden,
 wie man sie ueblicherweise kennt:
 
-4711
-0815/4711
-0815/471-0
-+49 815/4711
-+49 815/471*
-+49 815/471?
-+49 815/47[!6]1
+NUMBER = 4711
+NUMBER = 0815/4711
+NUMBER = 0815/471-0
+NUMBER = +49 815/4711
+NUMBER = +49 815/471*
+NUMBER = +49 815/471?
+NUMBER = +49 815/47[!6]1
 
 Es werden alle NICHT-Zahlen dort herausgefiltert, bis auf die Wildcards '?',
 '*' und "[]"
@@ -828,12 +828,11 @@ ist erlaubt. Allerdings unterscheidet sich dieser von
 
 ALIAS = helmut kohl
 
-*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 
 4.2.3 3. Eintrag: Tarifzone
 --------------------------
 
-In der dritten Spalte steht die Tarifzone, in der sich von uns aus gesehen
+Ein weiterer Eintrag ist die Tarifzone, in der sich von uns aus gesehen
 diese Nummer befindet:
 
  1 = City (bis 31.12.1995 "Ortszone/Nahzone", bis 20 km)
@@ -842,16 +841,27 @@ diese Nummer befindet:
  4 = Fernzone (bis 31.12.1995 "Weitzone", dann alles ueber 200 km)
  5 = Vis-'a-vis 1
 
+Dieser Eintrag wird wie folgt dargestellt:
+
+ZONE = 1
+
+oder
+
+ZONE = 5
 
 4.2.4 4. Eintrag: IP-Interface
 -----------------------------
 
-In der vierten Spalte wird das IP-Interface angegeben, das auf dieser
+Dieser Eintrag repraesentiert das IP-Interface, welches auf dieser
 Nummer konfiguriert wurde, oder ein "-", falls dieser Nummer kein
 IP-Interface zugeordnet wurde.
 Diese Information wird fuer die "-hx" huptimeout Option benoetigt.
 
+Beispiel:
 
+INTERFACE=ippp0
+
+*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 4.2.5 5. Eintrag: Info-Args
 --------------------------
 

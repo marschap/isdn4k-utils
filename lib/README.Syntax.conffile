@@ -1,8 +1,18 @@
 Syntax zu den Konfigurationsdateien:
 ====================================
 
-Leere Zeilen werden ignoriert. Wenn in einer Zeile ein "#" enthalten ist,
-wird der Rest der Zeile als Kommentar gewertet.
+Leere Zeilen werden ignoriert. Wenn in einer Zeile ein '#' enthalten ist,
+so wird der Rest der Zeile als Kommentar gewertet.
+Wenn das Zeichen '#' verwendet werden soll, so muss dieses gequotet werden.
+Dieses erfolgt mit dem Zeichen '\'.
+
+Der folgende Zeile ist falsch, und fuehrt zu einem Fehler:
+
+[FR#ED]
+
+Richtig waere
+
+[FR\#ED]
 
 Steht am Ende einer Nicht-Kommentarzeile ein "\", so wird die Zeile mit der
 naechste Zeile zu einer "verschmolzen". Das Zeichen "\" muss als letztes
