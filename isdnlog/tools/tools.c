@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.38 1999/10/28 18:36:49 akool Exp $
+/* $Id: tools.c,v 1.39 1999/10/29 08:17:02 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.39  1999/10/29 08:17:02  akool
+ *  - new rates
+ *
  * Revision 1.38  1999/10/28 18:36:49  akool
  * isdnlog-3.59
  *  - problems with gcc-2.7.2.3 fixed
@@ -669,15 +672,15 @@ char *double2clock(double n)
 char *vnum(int chan, int who)
 {
   register int    l = strlen(call[chan].num[who]);
-#if 0  
+#if 0
   register char  *p1, *p2;
   auto	   int	  lx;
-#endif  
+#endif
   auto	   int	  l1;
-#if 0  
+#if 0
   auto	   int 	  prefix = strlen(countryprefix);
   auto	   int 	  cc_len = 2;   /* country code length defaults to 2 */
-#endif  
+#endif
   auto	   TELNUM number;
   auto	   char	  s[BUFSIZ];
 
@@ -758,7 +761,8 @@ char *vnum(int chan, int who)
     strcpy(call[chan].areacode[who], number.country);
     strcpy(call[chan].vorwahl[who],number.area);
     strcpy(call[chan].rufnummer[who], number.msn);
-#endif      
+    strcpy(s, formatNumber("%F", &number));
+#endif
 #if 0
     normalizeNumber(call[chan].num[who], &number, TN_ALL);
     /* Fixme: use number fields directly, no need to format a string -lt- */
@@ -827,7 +831,7 @@ char *vnum(int chan, int who)
     strcpy(retstr[retnum], call[chan].num[who]);
 
   return(retstr[retnum]);
-#endif  
+#endif
 } /* vnum */
 
 /****************************************************************************/
