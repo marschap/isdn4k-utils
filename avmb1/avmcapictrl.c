@@ -1,11 +1,14 @@
 /*
- * $Id: avmcapictrl.c,v 1.9 1998/02/27 15:42:00 calle Exp $
+ * $Id: avmcapictrl.c,v 1.10 1998/07/15 15:08:20 calle Exp $
  * 
  * AVM-B1-ISDN driver for Linux. (Control-Utility)
  * 
  * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)
  * 
  * $Log: avmcapictrl.c,v $
+ * Revision 1.10  1998/07/15 15:08:20  calle
+ * port and irq check changed.
+ *
  * Revision 1.9  1998/02/27 15:42:00  calle
  * T1 running with slow link.
  *
@@ -261,8 +264,54 @@ int set_configuration(avmb1_t4file *t4config, int protocol, int p2p,
 
 int validports[] =
 {0x150, 0x250, 0x300, 0x340, 0};
-int validirqs[] =
-{ 3, 4, 5, 6, 7, 9, 10, 11, 12, 15, 0};
+int validirqs[] = { 3, 4, 5, 6, 7, 9, 10, 11, 12, 15, 0};
+int validhemairqs[] = { 3, 5, 7, 9, 10, 11, 12, 15, 0};
+
+static int checkportandirq(int cardtype, int port, int irq)
+{
+	int i;
+	if (cardtype == AVM_CARDTYPE_T1) {
+		if ((port & 0xf) != 0) {
+			fprintf(stderr, "%s: illegal port %d\n", cmd, port);
+			fprintf(stderr, "%s: 3 low bits had to be zero\n", cmd);
+			return -1;
+		}
+		if ((port & 0x30) == 0x30) {
+			fprintf(stderr, "%s: illegal port %d\n", cmd, port);
+			fprintf(stderr, "%s: bit 4 and 5 can not be one together\n", cmd);
+			return -1;
+		}
+		for (i = 0; validhemairqs[i] && irq != validhemairqs[i]; i++);
+		if (!validhemairqs[i]) {
+			fprintf(stderr, "%s: illegal irq %d\n", cmd, irq);
+			fprintf(stderr, "%s: try one of %d", cmd, validhemairqs[0]);
+			for (i = 1; validhemairqs[i]; i++)
+				fprintf(stderr, ", %d", validhemairqs[i]);
+			fprintf(stderr, "\n");
+			return -1;
+		}
+	} else {
+		for (i = 0; validports[i] && port != validports[i]; i++);
+		if (!validports[i]) {
+			fprintf(stderr, "%s: illegal io-addr 0x%x\n", cmd, port);
+			fprintf(stderr, "%s: try one of 0x%x", cmd, validports[0]);
+			for (i = 1; validports[i]; i++)
+				fprintf(stderr, ", 0x%x", validports[i]);
+			fprintf(stderr, "\n");
+			return -1;
+		}
+		for (i = 0; validirqs[i] && irq != validirqs[i]; i++);
+		if (!validirqs[i]) {
+			fprintf(stderr, "%s: illegal irq %d\n", cmd, irq);
+			fprintf(stderr, "%s: try one of %d", cmd, validirqs[0]);
+			for (i = 1; validirqs[i]; i++)
+				fprintf(stderr, ", %d", validirqs[i]);
+			fprintf(stderr, "\n");
+			return -1;
+		}
+	}
+	return 0;
+}
 
 int main(int argc, char **argv)
 {
@@ -317,7 +366,6 @@ int main(int argc, char **argv)
 	if (!strcasecmp(argv[arg_ofs], "add")) {
 	        int port, irq, cardtype, cardnr = 0;
 		if (ac >= 4) {
-			int i;
 			sscanf(argv[arg_ofs + 1], "%i", &port);
 			sscanf(argv[arg_ofs + 2], "%i", &irq);
 			if (argv[arg_ofs + 3]) {
@@ -335,24 +383,8 @@ int main(int argc, char **argv)
 			} else {
 	                   cardtype = AVM_CARDTYPE_B1;
 			}
-			for (i = 0; validports[i] && port != validports[i]; i++);
-			if (!validports[i]) {
-				fprintf(stderr, "%s: illegal io-addr 0x%x\n", cmd, port);
-				fprintf(stderr, "%s: try one of 0x%x", cmd, validports[0]);
-				for (i = 1; validports[i]; i++)
-					fprintf(stderr, ", 0x%x", validports[i]);
-				fprintf(stderr, "\n");
-				exit(-1);
-			}
-			for (i = 0; validirqs[i] && irq != validirqs[i]; i++);
-			if (!validirqs[i]) {
-				fprintf(stderr, "%s: illegal irq %d\n", cmd, irq);
-				fprintf(stderr, "%s: try one of %d", cmd, validirqs[0]);
-				for (i = 1; validirqs[i]; i++)
-					fprintf(stderr, ", %d", validirqs[i]);
-				fprintf(stderr, "\n");
-				exit(-1);
-			}
+			if (checkportandirq(cardtype, port, irq) != 0)
+				exit(1);
 			newcard.port = port;
 			newcard.irq = irq;
 			newcard.cardtype = cardtype;
