@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.14 $";
+static char *revision = "$Revision: 1.15 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -50,10 +50,11 @@ char pppd_version[] = VERSION;
 
 /* -------------------------------------------------------------------- */
 
+static void handlemessages(void) ;
+
+/* -------------------------------------------------------------------- */
+
 static capiconn_context *ctx;
-static capi_connection *conn = 0;
-static int isconnected = 0;
-static int connectinprogress = 0;
 static unsigned applid;
 #define CM(x)	(1<<(x))
 #define	CIPMASK_ALL	0x1FFF03FF
@@ -241,6 +242,179 @@ static STRINGLIST *stringlist_split(char *tosplit, char *seps)
 }
 
 /* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+
+typedef struct conn {
+    struct conn     *next;
+    capi_connection *conn;
+    int              type;
+#define CONNTYPE_OUTGOING	0
+#define CONNTYPE_INCOMING	1
+#define CONNTYPE_IGNORE		2
+#define CONNTYPE_REJECT		3
+#define CONNTYPE_FOR_CALLBACK	4
+    int              inprogress;    
+    int              isconnected;    
+} CONN;
+
+static CONN *connections;
+
+/* -------------------------------------------------------------------- */
+
+static CONN *conn_remember(capi_connection *conn, int type)
+{
+	CONN *p, **pp;
+	for (pp = &connections; *pp; pp = &(*pp)->next) ;
+	if ((p = (CONN *)malloc(sizeof(CONN))) == 0) {
+       		int serrno = errno;
+       		fatal("capiplugin: malloc failed - %s (%d)",
+			      			strerror(serrno), serrno);
+		return 0;
+	}
+	memset(p, 0, sizeof(CONN));
+	p->conn = conn;
+	p->type = type;
+	p->next = 0;
+	switch (type) {
+           case CONNTYPE_OUTGOING:
+           case CONNTYPE_INCOMING:
+           case CONNTYPE_FOR_CALLBACK:
+	      p->inprogress = 1;
+	      p->isconnected = 0;
+	      break;
+	   default:
+	      break;
+	}
+	*pp = p;
+	return p;
+}
+
+static int conn_forget(capi_connection *conn)
+{
+	CONN **pp, *p;
+	for (pp = &connections; *pp && (*pp)->conn != conn; pp = &(*pp)->next) ;
+	if (*pp) {
+	   p = *pp;
+	   *pp = (*pp)->next;
+	   free(p);
+	   return 0;
+        }
+	return -1;
+}
+
+static CONN *conn_find(capi_connection *cp)
+{
+	CONN *p;
+	for (p = connections; p; p = p->next) {
+	   if (p->conn == cp)
+	      return p;
+	}
+	return 0;
+}
+
+/* -------------------------------------------------------------------- */
+
+static int conn_connected(capi_connection *conn)
+{
+	CONN *p;
+	for (p = connections; p; p = p->next) {
+	   if (p->conn == conn) {
+	      p->isconnected = 1;
+	      p->inprogress = 0;
+	      return 0;
+	   }
+	}
+	fatal("capiplugin: connected connection not found ??");
+	return -1;
+}
+
+/* -------------------------------------------------------------------- */
+
+static int conn_incoming_inprogress(void)
+{
+    CONN *p;
+    for (p = connections; p; p = p->next) {
+       if (p->type == CONNTYPE_INCOMING)
+	  return p->inprogress;    
+    }
+    return 0;
+}
+
+static int conn_incoming_connected(void)
+{
+    CONN *p;
+    for (p = connections; p; p = p->next) {
+       if (p->type == CONNTYPE_INCOMING)
+	  return p->isconnected;    
+    }
+    return 0;
+}
+
+static int conn_incoming_exists(void)
+{
+    CONN *p;
+    for (p = connections; p; p = p->next) {
+       if (p->type == CONNTYPE_INCOMING)
+	  return p->isconnected || p->inprogress;    
+    }
+    return 0;
+}
+
+/* -------------------------------------------------------------------- */
+
+static int conn_inprogress(capi_connection *cp)
+{
+    CONN *p;
+    for (p = connections; p; p = p->next) {
+       if (p->conn == cp)
+	  return p->inprogress;    
+    }
+    return 0;
+}
+
+static int conn_isconnected(capi_connection *cp)
+{
+    CONN *p;
+    if (cp) {
+       for (p = connections; p; p = p->next) {
+          if (p->conn == cp)
+	     return p->isconnected;    
+       }
+    } else {
+       for (p = connections; p; p = p->next) {
+	  if (p->isconnected)
+	     return 1;
+       }
+    }
+    return 0;
+}
+/* -------------------------------------------------------------------- */
+
+static void disconnectall(void)
+{
+	time_t t;
+	CONN *p;
+
+        (void) capiconn_listen(ctx, controller, 0, 0);
+	for (p = connections; p; p = p->next) {
+	      if (p->inprogress || p->isconnected) {
+		 p->isconnected = p->inprogress = 0;
+        	 capiconn_disconnect(p->conn, 0);
+	      }
+	}
+	t = time(0)+10;
+	do {
+	    handlemessages();
+        } while (connections && time(0) < t);
+
+	if (connections)
+        	fatal("capiplugin: disconnectall failed");
+}
+
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- */
 
 static int timeoutrunning = 0;
 static int timeoutshouldrun = 0;
@@ -381,19 +555,24 @@ static void handlemessages(void)
 
 /* -------------------------------------------------------------------- */
 
-static void dodisconnect(void)
+static void dodisconnect(capi_connection *cp)
 {
+	CONN *conn;
 	time_t t;
-	if (!conn)
+
+	if ((conn = conn_find(cp)) == 0)
 		return;
-	(void)capiconn_disconnect(conn, 0);
+	(void)capiconn_disconnect(cp, 0);
+	conn->isconnected = conn->inprogress = 0;
+
 	t = time(0)+10;
-        while (conn && time(0) < t)
+	do {
 	    handlemessages();
-	if (conn)
+        } while (conn_find(cp) && time(0) < t);
+
+        if (conn_find(cp))
 		fatal("capiplugin: timeout while waiting for disconnect");
 }
-
 
 static void init_capiconn(void)
 {
@@ -716,14 +895,23 @@ static void disconnected(capi_connection *cp,
 				unsigned reason,
 				unsigned reason_b3)
 {
-	if (conn != cp) {
-	   dbglog("capiplugin: ignored/rejected call disconnected");
+	CONN *p;
+
+	if ((p = conn_find(cp)) == 0)
 	   return;
+        conn_forget(cp);
+	switch (p->type) {
+           case CONNTYPE_OUTGOING:
+           case CONNTYPE_INCOMING:
+	      break;
+           case CONNTYPE_IGNORE:
+           case CONNTYPE_REJECT:
+	      return;
+           case CONNTYPE_FOR_CALLBACK:
+	      dreason = reason;
+              break;
+
 	}
-	conn = 0;
-	connectinprogress = 0;
-	isconnected = 0;
-        dreason = reason;
 	if (reason != 0x3304 || debug) /* Another Applikation got the call */
 		info("capiplugin: disconnect(%s): %s 0x%04x (0x%04x) - %s", 
 			localdisconnect ? "local" : "remote",
@@ -744,8 +932,9 @@ static void incoming(capi_connection *cp,
 
 	info("capiplugin: incoming call: %s (0x%x)", conninfo(cp), cipvalue);
 
-	if (conn) {
-	   info("capiplugin: ignoring call, conn != NULL");
+        if (conn_incoming_exists()) {
+	   info("capiplugin: ignoring call, incoming connection exists");
+           conn_remember(cp, CONNTYPE_IGNORE);
 	   (void) capiconn_ignore(cp);
            return;
 	}
@@ -759,6 +948,7 @@ static void incoming(capi_connection *cp,
 	   if (!p) {
 	           info("capiplugin: ignoring call, msn %s not in \"%s\"",
 				callednumber, opt_inmsn);
+                   conn_remember(cp, CONNTYPE_IGNORE);
 		   (void) capiconn_ignore(cp);
 		   return;
            }
@@ -767,6 +957,7 @@ static void incoming(capi_connection *cp,
                || strcmp(s, opt_msn) != 0) {
 	           info("capiplugin: ignoring call, msn mismatch (%s != %s)",
 				opt_msn, callednumber);
+                   conn_remember(cp, CONNTYPE_IGNORE);
 		   (void) capiconn_ignore(cp);
 		   return;
            }
@@ -781,6 +972,7 @@ static void incoming(capi_connection *cp,
 	   if (!p) {
 	           info("capiplugin: ignoring call, cli mismatch (%s != %s)",
 				opt_cli, callingnumber);
+                   conn_remember(cp, CONNTYPE_IGNORE);
 		   (void) capiconn_ignore(cp);
 		   return;
 	   }
@@ -793,6 +985,7 @@ static void incoming(capi_connection *cp,
 	   if (!p) {
 	           info("capiplugin: ignoring call, number mismatch (%s != %s)",
 				opt_number, callingnumber);
+                   conn_remember(cp, CONNTYPE_IGNORE);
 		   (void) capiconn_ignore(cp);
 		   return;
 	   }
@@ -820,6 +1013,7 @@ static void incoming(capi_connection *cp,
                         } else {
 	                   info("capiplugin: ignoring speech call from %s",
 			   		callingnumber);
+                           conn_remember(cp,CONNTYPE_IGNORE);
 			   (void) capiconn_ignore(cp);
 			}
 			break;
@@ -840,17 +1034,20 @@ static void incoming(capi_connection *cp,
 			} else {
 	                   info("capiplugin: ignoring digital call from %s",
 			   		callingnumber);
+                           conn_remember(cp,CONNTYPE_IGNORE);
 			   (void) capiconn_ignore(cp);
 			}
 			break;
 		case 17: /* Group 2/3 facsimile */
 		        info("capiplugin: ignoring fax call from %s",
 			   		callingnumber);
+                        conn_remember(cp,CONNTYPE_IGNORE);
 			(void) capiconn_ignore(cp);
 			break;
 		default:
 		        info("capiplugin: ignoring type %d call from %s",
 			   		cipvalue, callingnumber);
+                        conn_remember(cp,CONNTYPE_IGNORE);
 			(void) capiconn_ignore(cp);
 			break;
 	}
@@ -859,12 +1056,14 @@ static void incoming(capi_connection *cp,
 callback:
 	(void) capiconn_listen(ctx, controller, 0, 0);
 	dbglog("capiplugin: rejecting call: %s (0x%x)", conninfo(cp), cipvalue);
+	conn_remember(cp, CONNTYPE_REJECT);
 	capiconn_reject(cp);
         makecallback();
 	return;
 
 wakeupdemand:
 	dbglog("capiplugin: rejecting call: %s (0x%x)", conninfo(cp), cipvalue);
+	conn_remember(cp, CONNTYPE_REJECT);
 	capiconn_reject(cp);
         wakeupdemand();
 	return;
@@ -887,8 +1086,7 @@ accept:
 	} else { /* hdlc */
 	   (void) capiconn_accept(cp, 0, 1, 0, 0, 0, 0, 0);
 	}
-	conn = cp;
-	connectinprogress = 1;
+	conn_remember(cp, CONNTYPE_INCOMING);
 	(void) capiconn_listen(ctx, controller, 0, 0);
 	return;
 }
@@ -939,8 +1137,7 @@ static void connected(capi_connection *cp, _cstruct NCPI)
 	sprintf(buf, "%d", p->b2proto); _script_setenv("B2PROTOCOL", buf);
 	sprintf(buf, "%d", p->b3proto); _script_setenv("B3PROTOCOL", buf);
 
-	isconnected = 1;
-	connectinprogress = 0;
+	conn_connected(cp);
 	if (wakeupneeded)
            wakeupdemand();
 }
@@ -984,15 +1181,16 @@ capiconn_callbacks callbacks = {
 
 /* -------------------------------------------------------------------- */
 
-static void setupconnection(char *num, int awaitingreject)
+static capi_connection *setupconnection(char *num, int awaitingreject)
 {
+	struct capi_connection *cp;
 	char number[256];
 
 	snprintf(number, sizeof(number), "%s%s", 
 			opt_numberprefix ? opt_numberprefix : "", num);
 
 	if (proto == PROTO_HDLC) {
-		conn = capiconn_connect(ctx,
+		cp = capiconn_connect(ctx,
 				controller, /* contr */
 				2, /* cipvalue */
 				opt_channels ? 0 : number, 
@@ -1002,7 +1200,7 @@ static void setupconnection(char *num, int awaitingreject)
 				opt_channels ? AdditionalInfo : 0,
 				0);
 	} else if (proto == PROTO_X75) {
-		conn = capiconn_connect(ctx,
+		cp = capiconn_connect(ctx,
 				controller, /* contr */
 				2, /* cipvalue */
 				opt_channels ? 0 : number, 
@@ -1012,7 +1210,7 @@ static void setupconnection(char *num, int awaitingreject)
 				opt_channels ? AdditionalInfo : 0,
 				0);
 	} else if (proto == PROTO_V42BIS) {
-		conn = capiconn_connect(ctx,
+		cp = capiconn_connect(ctx,
 				controller, /* contr */
 				2, /* cipvalue */
 				opt_channels ? 0 : number, 
@@ -1022,7 +1220,7 @@ static void setupconnection(char *num, int awaitingreject)
 				opt_channels ? AdditionalInfo : 0,
 				0);
 	} else if (proto == PROTO_MODEM) {
-		conn = capiconn_connect(ctx,
+		cp = capiconn_connect(ctx,
 				controller, /* contr */
 				1, /* cipvalue */
 				opt_channels ? 0 : number, 
@@ -1033,7 +1231,7 @@ static void setupconnection(char *num, int awaitingreject)
 				0);
 	} else {
 		fatal("capiplugin: unknown protocol \"%s\"", opt_proto);
-		return;
+		return 0;
 	}
 	if (opt_channels) {
 		info("capiplugin: leased line (%s)",
@@ -1044,26 +1242,31 @@ static void setupconnection(char *num, int awaitingreject)
 		info("capiplugin: dialing %s (%s)",
 				number, opt_proto ? opt_proto : "hdlc");
 	}
-	connectinprogress = 1;
+        if (awaitingreject)
+           conn_remember(cp, CONNTYPE_FOR_CALLBACK);
+	else
+           conn_remember(cp, CONNTYPE_OUTGOING);
+        return cp;
 }
 
 static void makeleasedline(void)
 {
+	capi_connection *cp;
 	time_t t;
 
-	setupconnection("", 0);
+	cp = setupconnection("", 0);
 
 	t = time(0)+opt_dialtimeout;
 	do {
 		handlemessages();
-		if (status != EXIT_OK && conn)
- 			dodisconnect();
-	} while (time(0) < t && conn && !isconnected);
+		if (status != EXIT_OK && conn_find(cp))
+ 			dodisconnect(cp);
+	} while (time(0) < t && conn_inprogress(cp));
 
 	if (status != EXIT_OK)
 		die(status);
 
-        if (conn && isconnected) {
+        if (conn_isconnected(cp)) {
 		t = time(0)+opt_connectdelay;
 		do {
 			handlemessages();
@@ -1073,12 +1276,13 @@ static void makeleasedline(void)
 	if (status != EXIT_OK)
 		die(status);
 
-	if (!conn) 
+        if (!conn_isconnected(cp))
 	   fatal("capiplugin: couldn't make connection");
 }
 
 static void makeconnection(STRINGLIST *numbers)
 {
+	capi_connection *cp = 0;
 	time_t t;
 	STRINGLIST *p;
 	int retry = 0;
@@ -1094,37 +1298,39 @@ static void makeconnection(STRINGLIST *numbers)
 		      } while (time(0) < t);
 		   }
 
-		   setupconnection(p->s, 0);
+		   cp = setupconnection(p->s, 0);
 
 		   t = time(0)+opt_dialtimeout;
 		   do {
 		      handlemessages();
-		      if (status != EXIT_OK && conn)
-			 dodisconnect();
-		   } while (time(0) < t && conn && !isconnected);
+		      if (status != EXIT_OK && conn_find(cp))
+			 dodisconnect(cp);
+		   } while (time(0) < t && conn_inprogress(cp));
 
-		   if (conn && isconnected)
+		   if (conn_isconnected(cp))
 		      goto connected;
 
 		   if (status != EXIT_OK)
 		      die(status);
 	   }
 	} while (++retry < opt_dialmax);
+
 connected:
-        if (conn && isconnected) {
+        if (conn_isconnected(cp)) {
 		t = time(0)+opt_connectdelay;
 		do {
 			handlemessages();
 		} while (time(0) < t);
 	}
 
-        if (!conn)
+        if (!conn_isconnected(cp))
 	   fatal("capiplugin: couldn't make connection after %d retries",
 			retry);
 }
 
 static void makeconnection_with_callback(void)
 {
+	capi_connection *cp;
 	STRINGLIST *p;
 	time_t t;
 	int retry = 0;
@@ -1142,7 +1348,7 @@ again:
 		   } while (time(0) < t);
 		}
 
-		setupconnection(p->s, 1);
+		cp = setupconnection(p->s, 1);
 
 		/* Wait specific time for the server rejecting the call */
 		t = time(0)+opt_dialtimeout;
@@ -1150,10 +1356,10 @@ again:
 		      handlemessages();
 		      if (status != EXIT_OK)
 			 die(status);
-		} while (time(0) < t && conn && !isconnected);
+	        } while (time(0) < t && conn_inprogress(cp));
 
-		if (conn) {
-			dodisconnect();
+		if (conn_isconnected(cp)) {
+			dodisconnect(cp);
 			fatal("capiplugin: callback failed - other side answers the call (no reject)");
 	        } else if (was_no_reject()) {
 	        	goto again;
@@ -1169,9 +1375,9 @@ again:
 				   (void) capiconn_listen(ctx, controller, 0, 0);
 				   die(status);
 				}
-			} while (!isconnected && time(0) < t);
+			} while (!conn_incoming_connected() && time(0) < t);
 
-			if (isconnected) {
+                        if (conn_incoming_connected()) {
 				add_fd(capi20_fileno(applid));
 				setup_timeout();
 				return;
@@ -1212,17 +1418,17 @@ static void waitforcall(void)
 		   (void) capiconn_listen(ctx, controller, 0, 0);
 		   die(status);
 		}
-	        if (connectinprogress) try=1;
-		if (try && !connectinprogress) {
+		if (conn_incoming_inprogress()) try=1;
+		if (try && !conn_incoming_inprogress()) {
 		   try = 0;
-		   if (!isconnected) {
+		   if (!conn_incoming_connected()) {
 		      (void) capiconn_listen(ctx, controller, cipmask, 0);
 		      info("capiplugin: waiting for incoming call ...");
 		   }
 		}
-	} while (!isconnected);
+	} while (!conn_incoming_connected());
 
-        if (conn && isconnected) {
+        if (conn_incoming_connected()) {
 		time_t t = time(0)+opt_connectdelay;
 		do {
 			handlemessages();
@@ -1244,7 +1450,7 @@ static int capi_new_phase_hook(int phase)
 			if ((fd = capi20_fileno(applid)) >= 0)
 			   remove_fd(fd);
 			unsetup_timeout();
-			dodisconnect();
+			disconnectall();
 			break;
 		case PHASE_INITIALIZE:
 			info("capiplugin: phase initialize");
@@ -1260,7 +1466,7 @@ static int capi_new_phase_hook(int phase)
 		case PHASE_SERIALCONN:
 			info("capiplugin: phase serialconn%s",
 					opt_cbflag ? " (callback)" : "");
-	                if (isconnected)
+	                if (conn_isconnected(0))
 			   break;
 			plugin_check_options();
 			init_capiconn();
