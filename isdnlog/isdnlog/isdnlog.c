@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.9 1997/05/04 20:19:47 luethje Exp $
+/* $Id: isdnlog.c,v 1.10 1997/05/06 22:13:26 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.10  1997/05/06 22:13:26  luethje
+ * bugfixes in HTML-Code of the isdnrep
+ *
  * Revision 1.9  1997/05/04 20:19:47  luethje
  * README completed
  * isdnrep finished
@@ -294,7 +297,6 @@ static void init_variables(int argc, char* argv[])
   xlog = MAX_PRINTS_IN_QUEUE;
 
   sockets = NULL;
-  allflags = 0;
   known = NULL;
 
   opt_dat = NULL;

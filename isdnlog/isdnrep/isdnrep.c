@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.16 1997/05/05 21:04:21 luethje Exp $
+/* $Id: isdnrep.c,v 1.17 1997/05/06 22:13:31 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.17  1997/05/06 22:13:31  luethje
+ * bugfixes in HTML-Code of the isdnrep
+ *
  * Revision 1.16  1997/05/05 21:04:21  luethje
  * README completed
  * some changes for the isdnmon
@@ -215,6 +218,8 @@
 #define H_BODY_HEADER3 "<TH colspan=%d>%s</TH>\n"
 #define H_BODY_BOTTOM1 "<TD align=left colspan=%d>%s</TD>%s\n"
 #define H_BODY_BOTTOM2 "</TABLE><P>\n"
+
+#define H_LINE "<TR><TD colspan=%d><HR size=%d noshade width=100%%></TD></TR>\n"
 
 #define H_LEFT         "<TD align=left><TT>%s</TT></TD>"
 #define H_CENTER       "<TD align=center><TT>%s</TT></TD>"
@@ -2175,9 +2180,11 @@ static void strich(int type)
 	{
 		switch (type) {
 			case 3 : 
-			case 1 : print_msg(PRT_NORMAL,"<TR><TD colspan=%d><HR size=1 noshade width=100%></TD></TR>\n",get_format_size());
+			case 1 : print_msg(PRT_NORMAL,H_LINE,get_format_size(),1);
 			         break;
-			case 2 : print_msg(PRT_NORMAL,"<TR><TD colspan=%d><HR size=3 noshade width=100%></TD></TR>\n",get_format_size());
+			case 2 : print_msg(PRT_NORMAL,H_LINE,get_format_size(),3);
+			         break;
+			default: print_msg(PRT_ERR,"Internal error: Invalid line flag!\n");
 			         break;
 		} /* switch */
   }
