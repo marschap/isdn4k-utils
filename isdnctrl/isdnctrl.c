@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.24 1998/06/27 00:36:19 fritz Exp $
+/* $Id: isdnctrl.c,v 1.25 1998/07/22 19:07:20 keil Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.25  1998/07/22 19:07:20  keil
+ * Make it compiling with older I4L versions
+ *
  * Revision 1.24  1998/06/27 00:36:19  fritz
  * Misc. Fixes.
  * Added fallback to libdb for isdnctrl.
@@ -196,6 +199,9 @@
 #define _ISDNCTRL_C_
 #include "isdnctrl.h"
 
+#ifndef INF_DV
+#define INF_DV 0
+#endif
 
 #ifdef I4L_CTRL_CONF
 #	include "../lib/libisdn.h"
