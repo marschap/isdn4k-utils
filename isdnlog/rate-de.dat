@@ -1,4 +1,4 @@
-V:2.02 [10-Mar-2002 19:03:33]
+V:2.02 [22-Apr-2002 20:54:42]
 
 # Währungsformat
 U:%.3f EUR
@@ -8,7 +8,7 @@ U:%.3f EUR
 #
 # (C) Copyright 1999, 2001 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.116 2002/03/10 20:32:18 akool Exp $
+# $Id: rate-de.dat,v 1.117 2002/04/22 19:07:49 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -569,6 +569,7 @@ B:01013
 C:Name:Tele2 CbC
 C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
 C:Homepage:http://www.tele2.de
+C:Telefon:01805-01013-1
 C:Hotline:0800/24-01013
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Euro
@@ -576,7 +577,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
-C:200	-	Ausland
+C:200	- 205	Ausland
 # G:07-May-2001
 D:dtag
 Z:0 FreeCall
@@ -594,19 +595,77 @@ T:E,H/*=0.02/0,0.02/60
 Z:10 Mobilfunknetz
 A:_DEMF
 T:*/*=0.04/0,0.23/60
+#
+Z:200 Mobilfunk Euro
+# tobiasb/2002-04-19: Mobilfunk auskommentiert,
+# wenn nicht in country[-de].dat vom 22-Nov-2001.
+#A:Alaska Mobilfunk, Andorra Mobilfunk
+A:_BEMF,_DKMF
+#A:Färöer Inseln Mobilfunk
+A:_FIMF,_FRMF
+A:_UKMF
+#A:Hawaii Mobilfunk
+A:_IEMF,_ISMF
+A:_ITMF,_CAMF
+#A:Liechtenstein Mobilfunk
+A:_LUMF
+A:_MCMF,_NLMF,_NOMF,_ATMF
+A:_PTMF,_PRMF
+#A:San Marino Mobilfunk
+A:_SEMF
+A:_CHMF,_ESMF
+#A:USA Mobilfunk, Vatikanstadt Mobilfunk
+A:_GRMF
+#A:Jugoslawien Mobilfunk
+A:_PLMF
+A:_RUMF,_CZMF
+A:_TRMF,_HUMF
+T:*/*=0.04/0,0.23/60
+Z:201 Euro 1
+A:_ALAS,AD,BE,DK
+A:FO,FI,FR
+A:UK,_HAWA,IE,IS
+A:IT,CA,LI,LU
+A:MC,NL,NO,AT
+A:PT,PR,SM,SE
+A:CH,ES,US,VA
+T:*/*=0.04/0,0.04/60
+Z:202 Euro 2
+A:GR,YU,PL
+A:SU,CZ
+A:TR,HU
+T:*/*=0.04/0,0.20/60
+Z:203 Ozeanien
+A:AU,CN,HK
+A:JP,NZ,SG
+A:TW
+T:*/*=0.04/0,0.30/60
+Z:204 Welt 1
+A:AL,DZ,BA
+A:BG,EE,GI
+A:IL,HR,LV,LY
+A:LT,MT,EH,MK
+A:MD,RO,SK,SI
+A:TN,UA,BY,CY
+T:*/*=0.04/0,0.46/60
+Z:205 Welt 2
+A:+
+C:Welt 2 gilt nicht für Inmarsat.
+T:*/*=0.04/0,1/60
 #####################################################################
 P:13,1 Tele2 Privat Preselection
 B:01013
 C:Name:Tele2 Privat Preselection
 C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
 C:Homepage:http://www.tele2.de
+C:Telefon:01805-01013-1
 C:Hotline:0800/24-01013
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
-C:200	-	Ausland
+C:200	- 205	Ausland
 # G:15-Jun-2000
 D:dtag
 Z:0 FreeCall
@@ -624,6 +683,63 @@ T:E,H/*=0.02/0,0.02(60)/1
 Z:10 Mobilfunknetz
 A:_DEMF
 T:*/*=0.04/0,0.23(60)/1
+#
+Z:200 Mobilfunk Euro
+# tobiasb/2002-04-19: Mobilfunk auskommentiert,
+# wenn nicht in country[-de].dat vom 22-Nov-2001.
+#A:Alaska Mobilfunk, Andorra Mobilfunk
+A:_BEMF,_DKMF
+#A:Färöer Inseln Mobilfunk
+A:_FIMF,_FRMF
+A:_UKMF
+#A:Hawaii Mobilfunk
+A:_IEMF,_ISMF
+A:_ITMF,_CAMF
+#A:Liechtenstein Mobilfunk
+A:_LUMF
+A:_MCMF,_NLMF,_NOMF,_ATMF
+A:_PTMF,_PRMF
+#A:San Marino Mobilfunk
+A:_SEMF
+A:_CHMF,_ESMF
+#A:USA Mobilfunk, Vatikanstadt Mobilfunk
+A:_GRMF
+#A:Jugoslawien Mobilfunk
+A:_PLMF
+A:_RUMF,_CZMF
+A:_TRMF,_HUMF
+T:*/*=0.04/0,0.23(60)/1
+Z:201 Euro 1
+A:_ALAS,AD,BE,DK
+A:FO,FI,FR
+A:UK,_HAWA,IE,IS
+A:IT,CA,LI,LU
+A:MC,NL,NO,AT
+A:PT,PR,SM,SE
+A:CH,ES,US,VA
+T:*/*=0.04/0,0.04(60)/1
+Z:202 Euro 2
+A:GR,YU,PL
+A:SU,CZ
+A:TR,HU
+T:*/*=0.04/0,0.20(60)/1
+Z:203 Ozeanien
+A:AU,CN,HK
+A:JP,NZ,SG
+A:TW
+T:*/*=0.04/0,0.30(60)/1
+Z:204 Welt 1
+A:AL,DZ,BA
+A:BG,EE,GI
+A:IL,HR,LV,LY
+A:LT,MT,EH,MK
+A:MD,RO,SK,SI
+A:TN,UA,BY,CY
+T:*/*=0.04/0,0.46(60)/1
+Z:205 Welt 2
+A:+
+C:Welt 2 gilt nicht für Inmarsat.
+T:*/*=0.04/0,1(60)/1
 #####################################################################
 #
 #
@@ -651,14 +767,11 @@ A:112
 T:*/*=0
 Z:2-4 Ferngespräche bundesweit
 A:+49
-T:*/07-19=0.0613/60 Standard
-T:*/19-07=0.0409/60 Spar
+T:*/07-19=0.0608/60 Standard
+T:*/19-22=0.0455/60 Standard
+T:*/22-07=0.0251/60 Spar
 Z:10 Mobilfunk
-A:_DEMD1
-A:_DEMD2
-A:_DEME1
-A:_DEME2
-A:_DEMQ
+A:_DEMF
 T:*/*=0.2454/60
 Z:102 01019freenet
 A:01929
@@ -2084,9 +2197,9 @@ A:112
 T:*/*=0
 Z:2-4 Deutschland
 A:+49
-T:W/07-19=0.08/60 Hauptzeit
+T:W/08-19=0.08/60 Hauptzeit
 T:W/19-21=0.05/60 Freizeit
-T:W/21-07=0.021/60 Nebenzeit
+T:W/21-08=0.0219/60 Nebenzeit
 T:E,H/*=0.041/60 Wochenende
 Z:10 Mobilfunk
 A:_DEMD1
@@ -2108,9 +2221,9 @@ T:E,H/*=0.25/60
 # C:Hotline:  01802/2002
 # C:Faxabruf: 01802/2001
 #####################################################################
-P:[-31.03.2002] 50,0 Talkline CbC
+P:50,0 Talkline ID CbC
 B:01050
-C:Name:Talkline CbC
+C:Name:Talkline ID GmbH
 C:Address:Talkline GmbH & Co. KG, Talkline-Platz 1, 25388 Elmshorn
 C:Homepage:http://www.talkline.de
 C:Telefon:01802 / 2002
@@ -2135,11 +2248,9 @@ T:*/*=0
 Z:2-4 Fern
 A:DE
 T:W/07-18=0.082/60
-T:W/18-22=0.022/60
-T:W/22-07=0.019/60
+T:W/18-07=0.019/60
 T:E,H/07-18=0.05/60
-T:E,H/18-22=0.022/60
-T:E,H/22-07=0.019/60
+T:E,H/18-07=0.019/60
 Z:10 Mobil
 A:_DEMF
 T:*/*=0.30/60
@@ -2494,16 +2605,20 @@ T:*/*=0.29/60
 P:78,0 3U
 B:01078
 # G:10-Aug-2000
-C:Address:3U Telecom AG, Mergenthalerallee 79-81, 65760 Eschborn
 C:Name:3U
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:Address:3U Telecom AG
+C:Address:Mergenthalerallee 79-81
+C:Address:65760 Eschborn
+C:Homepage:http://www.uuu.de/
+C:EMail:info@3u.net
+C:Telefon:0800-01078-00
+C:Telefax:0800-01078-01
+C:Hotline:01805/01078-0
+C:Quelle:Gesamtpreisliste 2002, Stand 2002-01-02
+C:TarifURL:http://www.3u.net/download/Preisliste_D_3U.pdf
 C:Euro
-C:3U Telekommunikation GmbH
-C:Homepage: http://www.uuu.de
-C:Hotline:  01805/01078-0
-C:Adresse:  Mergenthalerallee 79-81
-C:	    65760 Eschborn
 D:dtag
 Z:0 FreeCall
 A:011*
@@ -2513,13 +2628,14 @@ A:110
 A:112
 T:*/*=0
 Z:2-4 Fern
-T:W/08-18=0.0455(60)/1
-T:W/18-08=0.0245(60)/1
-T:E,H/*=0.0245(60)/1
+T:W/08-18=0.046(60)/1
+T:W/18-08=0.025(60)/1
+T:E,H/*=0.025(60)/1
 A:+49
 Z:10-15
 A:_DEMF
-T:*/*=0.2449(60)/1
+T:*/*=0.245(60)/1
+# FIXME: Ausland fehlt
 #####################################################################
 #
 #
@@ -2719,6 +2835,7 @@ T:*/*=0
 Z:1-4 Fern
 A:+49
 T:W/08-18=0.07/60 Hauptzeit
+T:[18.02.2002-31.03.2002]W/08-18=0.029/60 Hauptzeit Sonderaktion
 T:W/18-08=0.029/60 Freizeit
 T:E,H/*=0.029/60 Freizeit
 Z:10 Mobil
@@ -2994,12 +3111,13 @@ T:*/*=1.40(60)/60
 #####################################################################
 #
 #
-P:224,0 0190024
+P:224,0 Pennyphone
 B:0190024
 C:Address:
-C:Name:0190024 (01058)
+C:Name:Pennyphone (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:02-Apr-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3009,13 +3127,13 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.018/60
+T:*/*=0.024/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.18/60
+T:*/*=0.195/60
 #####################################################################
 #
 #
@@ -3025,6 +3143,7 @@ C:Address:
 C:Name:Telebillig (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:02-Apr-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3034,10 +3153,10 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.027/60
+T:*/*=0.028/60
 Z:10 Mobilfunk
 A:_DEMF
-T:*/*=0.175/60
+T:*/*=0.20/60
 #####################################################################
 #
 #
@@ -3056,7 +3175,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.028/60
+T:*/*=0.014/60
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.19/60
@@ -3100,7 +3219,7 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.021/60
+T:*/*=0.026/60
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
@@ -3116,6 +3235,7 @@ C:Address:
 C:Name:Calladin (01058)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:02-Apr-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3125,15 +3245,43 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:W/08-19=0.03/0,0.028/60
-T:W/19-08=0.03/0,0.018/60
-T:E,H/*=0.03/0,0.018/60
+T:W/08-19=0.03/0,0.26/60 Hauptzeit
+T:W/19-08=0.03/0,0.18/60 Nebenzeit
+T:E,H/*=0.03/0,0.18/60 Freizeit
 Z:10 Mobilfunk
 A:_DEMD1
 A:_DEMD2
 A:_DEME1
 A:_DEME2
-T:*/*=0.159/60
+T:*/*=0.175/60
+#####################################################################
+#
+#
+P:271,0 RapidCall
+B:0190071
+C:Address:
+C:Name:RapidCall (01058)
+C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
+C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+C:TarifURL:http://www.rapidcall.de/tarife.php
+Z:0 FreeCall
+A:011*
+A:0130*,0800*,0801*
+A:031*
+A:110
+A:112
+T:*/*=0
+Z:1-4 GermanCall
+A:+49
+T:W/08-19=0.24(60)/240 Hauptzeit
+T:W/19-08=0.19(60)/240 Nebenzeit
+T:E,H/*=0.19(60)/240 Freizeit
+Z:10 Mobilfunk
+A:_DEMD1
+A:_DEMD2
+A:_DEME1
+A:_DEME2
+T:*/*=0.19/60
 #####################################################################
 #
 #
@@ -3143,6 +3291,7 @@ C:Address:
 C:Name:Telestunt (01051)
 C:Maintainer:Tarif Datenbank Crew <crew@rates4linux.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
+# G:02-Apr-2002
 Z:0 FreeCall
 A:011*
 A:0130*,0800*,0801*
@@ -3152,10 +3301,10 @@ A:112
 T:*/*=0
 Z:1-4 GermanCall
 A:+49
-T:*/*=0.017/60
+T:*/*=0.024/60
 Z:10 Mobilfunk
 A:_DEMF
-T:*/*=0.19/60
+T:*/*=0.17/60
 #####################################################################
 #
 #

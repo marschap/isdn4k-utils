@@ -1,4 +1,4 @@
-/* $Id: user_access.c,v 1.3 1999/10/25 18:33:15 akool Exp $
+/* $Id: user_access.c,v 1.4 2002/04/22 19:07:50 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,19 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: user_access.c,v $
+ * Revision 1.4  2002/04/22 19:07:50  akool
+ * isdnlog-4.58:
+ *   - Patches from Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+ *     - uninitialized variables in
+ *     	- isdn4k-utils/isdnlog/connect/connect.c
+ *       - isdn4k-utils/isdnlog/tools/rate.c
+ *     - return() of a auto-variable in
+ *       - isdn4k-utils/isdnlog/isdnlog/user_access.c
+ *
+ *     *Many* thanks to Enrico!!
+ *
+ *   - New rates as of April, 23. 2002 (EUR 0,014 / minute long distance call ;-)
+ *
  * Revision 1.3  1999/10/25 18:33:15  akool
  * isdnlog-3.57
  *   WARNING: Experimental version!
@@ -107,7 +120,7 @@ static int NoName = 1;
 /****************************************************************************/
 
 static int _read_file (void);
-static char *Find_Section(char* String);
+static char *Find_Section(char* Dest, char const *Src);
 static int Clear_All (user_access **Cursor);
 static int Set_Flags(access_flags **Cursor, char *String);
 static int _Set_Entry (char* Name, char* User, char *Host, char *Flags);
@@ -203,9 +216,8 @@ static int _read_file (void)
 
 		if (*String != '\0' && *String != '\n')
 		{
-			if ((Ptr = Find_Section(String)) != NULL)
+			if (Find_Section(Name, String) != NULL)
 			{
-				strcpy(Name,Ptr);
 				To_Upper(Name);
 				print_msg(PRT_DEBUG_CS,"Name:*%s*\n",Name);
 			}
@@ -253,13 +265,14 @@ static int _read_file (void)
 
 /****************************************************************************/
 
-static char *Find_Section(char* String)
+static char *Find_Section(char* Dest, char const *Src)
 {
 	char *Ptr = NULL;
 	char Help[SHORT_STRING_SIZE];
+	char *String;
 
 
-	strcpy(Help,String);
+	strcpy(Help,Src);
 	String = Kill_Blanks(Help);
 
 	if (*String == '\0' || *String != '[')
@@ -269,7 +282,8 @@ static char *Find_Section(char* String)
 	if (Ptr == strchr(String,']'))
 	{
 		*Ptr = '\0';
-		return String+1;
+		strcpy(Dest, String+1);
+		return Dest;
 	}
 
 	return NULL;

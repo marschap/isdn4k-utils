@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.83 2000/12/07 16:26:12 leo Exp $
+/* $Id: rate.c,v 1.84 2002/04/22 19:07:50 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,19 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.84  2002/04/22 19:07:50  akool
+ * isdnlog-4.58:
+ *   - Patches from Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+ *     - uninitialized variables in
+ *     	- isdn4k-utils/isdnlog/connect/connect.c
+ *       - isdn4k-utils/isdnlog/tools/rate.c
+ *     - return() of a auto-variable in
+ *       - isdn4k-utils/isdnlog/isdnlog/user_access.c
+ *
+ *     *Many* thanks to Enrico!!
+ *
+ *   - New rates as of April, 23. 2002 (EUR 0,014 / minute long distance call ;-)
+ *
  * Revision 1.83  2000/12/07 16:26:12  leo
  * Fixed isdnrate -X50
  *
@@ -1178,6 +1191,7 @@ static int parseDate(char **s, time_t *t) {
     return 0;
   (*s)++;
   tm.tm_year = strtoul(*s, s, 10)-1900;
+  tm.tm_isdst = -1;
   *t = mktime(&tm);
   return 1;
 }

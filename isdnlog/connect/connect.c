@@ -43,6 +43,7 @@ int server_connect(struct servent **sp, int port)
  	else
  		port = htons (port);
 
+  memset(&server, 0, sizeof(server));
   server.sin_family = AF_INET;
   server.sin_addr.s_addr = INADDR_ANY;
   server.sin_port = port;
