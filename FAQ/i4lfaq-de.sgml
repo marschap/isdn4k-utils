@@ -116,8 +116,8 @@ im <ref id="glossary" name="Glossar">.
 <p>
 <quote>
 Die Online-Version zum Lesen: <tt><htmlurl
-url="http://www.wolf-b.de/i4l/i4lfaq-de.html"
-name="http://www.wolf-b.de/i4l/i4lfaq-de.html"></tt>
+url="http://www.wolf-b.de"
+name="http://www.wolf-b.de"></tt>
 </quote>
 <quote>
 <bf>Downloads:</bf>
@@ -127,9 +127,9 @@ Alle folgenden Dateien liegen auf dem Server von ISDN4LINUX:
 ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/
 </quote>
 <quote>
-Die HTML-Version als tarball: <tt><htmlurl
-url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de.html.tar.gz"
-name="i4lfaq-de.html.tar.gz"></tt>
+Die HTML-Version als Tarball: <tt><htmlurl
+url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de-html.tar.gz"
+name="i4lfaq-de-html.tar.gz"></tt>
 </quote>
 <quote>
 Die HTML-Version als ZIP: <tt><htmlurl
@@ -142,9 +142,14 @@ url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de.sgml"
 name="i4lfaq-de.sgml"></tt>
 </quote>
 <quote>
-Die SGML-Version als ZIP: <tt><htmlurl
+Die SGML-Version als .GZ: <tt><htmlurl
 url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de-sgml.gz"
-name="i4lfaq-de.sgml"></tt>
+name="i4lfaq-de-sgml.gz"></tt>
+</quote>
+<quote>
+Die SGML-Version als ZIP: <tt><htmlurl
+url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de-sgml.zip"
+name="i4lfaq-de-sgml.zip"></tt>
 </quote>
 <quote>
 Die FAQ im Text-Format: <tt><htmlurl
@@ -152,13 +157,14 @@ url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de.txt"
 name="i4lfaq-de.txt"></tt>
 </quote>
 <quote>
-Die Text-Version als ZIP: <tt><htmlurl
+Die Text-Version als .GZ: <tt><htmlurl
 url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de-txt.gz"
-name="i4lfaq-de.txt"></tt>
+name="i4lfaq-de-txt.gz"></tt>
 </quote> 
 <quote>
-F&uuml;r Windows-User: Das bekannte ZIP-Tool WinZip kann auch mit den
-Dateien mit der Endung .gz umgehen. Also keine Panik!
+Die Text-Version als ZIP: <tt><htmlurl
+url="ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/i4lfaq-de-txt.zip"
+name="i4lfaq-de-txt.zip"></tt>
 </quote>
 
 Alle <bf>Mails</bf> zur deutschen Version sende bitte an: 
