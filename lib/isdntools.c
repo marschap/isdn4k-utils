@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.15 1997/06/15 23:50:34 luethje Exp $
+/* $Id: isdntools.c,v 1.16 1997/06/22 22:57:08 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.16  1997/06/22 22:57:08  luethje
+ * bugfixes
+ *
  * Revision 1.15  1997/06/15 23:50:34  luethje
  * some bugfixes
  *
@@ -367,6 +370,7 @@ int handle_runfiles(const char *_progname, char **_devices, int flag)
 {
 	static char   progname[SHORT_STRING_SIZE] = "";
   static char **devices = NULL;
+  auto   char **mydevices = NULL;
   auto   char   string[PATH_MAX];
   auto   char   string2[SHORT_STRING_SIZE];
   auto   char  *Ptr = NULL;
@@ -399,25 +403,27 @@ int handle_runfiles(const char *_progname, char **_devices, int flag)
 			if (RetCode > 0)
 			{
 				print_msg("Another %s is running with pid %d!\n", progname, RetCode);
-				print_msg("If not delete the file `%s' nad try it again!\n", string);
+				print_msg("If not delete the file `%s' and try it again!\n", string);
 			}
 
 			return RetCode;
 		}
 
-		while (*devices != NULL)
+		mydevices = devices;
+
+		while (*mydevices != NULL)
 		{
-			sprintf(string,"%s%c%s%s",LOCKDIR,C_SLASH,LOCKFILE,*devices);
+			sprintf(string,"%s%c%s%s",LOCKDIR,C_SLASH,LOCKFILE,*mydevices);
 
 			if ((RetCode = create_runfile(string,"%10d\n")) != 0)
 			{
 				if (RetCode > 0)
-					print_msg("Another process (pid=%d) is running on device %s!\n", RetCode, *devices);
+					print_msg("Another process (pid=%d) is running on device %s!\n", RetCode, *mydevices);
 
 				return RetCode;
 			}
 
-			devices++;
+			mydevices++;
 		}
 
 		RetCode = 0;
@@ -425,8 +431,25 @@ int handle_runfiles(const char *_progname, char **_devices, int flag)
 
 	if (flag == STOP_PROG)
 	{
-		sprintf(string,"%s%c%s.pid",RUNDIR,C_SLASH,progname);
-		unlink(string);
+		sprintf(string,"%s%c%s.%s.pid",RUNDIR,C_SLASH,progname,devices[0]);
+
+		if ((fp = fopen(string, "r")) != NULL)
+		{
+			if (fgets(string2,SHORT_STRING_SIZE,fp) != NULL)
+			{
+				if (atoi(string2) == (int)getpid())
+				{
+					if (unlink(string))
+						print_msg("Can not remove file %s (%s)!\n", string, strerror(errno));
+					else
+						print_msg("File %s removed!\n", string, strerror(errno));
+				}
+				else
+					print_msg("This is not my lock file `%s': Has PID %d!\n", string, atoi(string2));
+			}
+
+			fclose(fp);
+		}
 
 		while (*devices != NULL)
 		{
@@ -440,7 +463,11 @@ int handle_runfiles(const char *_progname, char **_devices, int flag)
 					{
 						if (unlink(string))
 							print_msg("Can not remove file %s (%s)!\n", string, strerror(errno));
+						else
+							print_msg("File %s removed!\n", string, strerror(errno));
 					}
+					else
+						print_msg("This is not my lock file `%s': Has PID %d!\n", string, atoi(string2));
 				}
 
 				fclose(fp);
