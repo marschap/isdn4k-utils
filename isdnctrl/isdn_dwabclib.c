@@ -1,4 +1,4 @@
-/* $Id: isdn_dwabclib.c,v 1.2 2001/03/01 14:59:15 paul Exp $
+/* $Id: isdn_dwabclib.c,v 1.3 2003/03/11 14:03:43 paul Exp $
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,6 +16,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdn_dwabclib.c,v $
+ * Revision 1.3  2003/03/11 14:03:43  paul
+ * Using sys_errlist[] is deprecated.
+ *
  * Revision 1.2  2001/03/01 14:59:15  paul
  * Various patches to fix errors when using the newest glibc,
  * replaced use of insecure tempnam() function
@@ -76,8 +79,7 @@ err:;
 		if(sock > -1)
 			close(sock);
 
-		if(errno < sys_nerr)
-			sprintf(em + strlen(em)," (%s)",sys_errlist[errno]);
+                    sprintf(em + strlen(em)," (%s)",strerror(errno));
 
 		return(-errno);
 	}
