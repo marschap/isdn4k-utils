@@ -1,6 +1,9 @@
 # Dont use EWE Tel
 P:14=99
 
+# dont use ISIS isiFON classic
+P:20=99
+
 # Dont use NetCologne
 P:22=99
 
@@ -10,7 +13,13 @@ P:28=99
 # Dont use ACC
 P:49=99
 
+# Kennzahl 70, mogliche Varianten:
+#   1=Arcor CbC
+#   2=Arcor Town to Town
+#   3=Arcor Town to Town Sekunde
+# use Arcor CbC
 P:70=1
+
 # Kennzahl 98, moegliche Varianten:
 #   0=Star
 #   1=Mox Telecom AG
@@ -19,4 +28,5 @@ P:70=1
 #   4=Nikocity Minutentakt
 #   5=Nikocity Sekundentakt
 #   6=C@llas Clever Communications
+# use Mox
 P:98=1
