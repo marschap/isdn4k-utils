@@ -1,6 +1,6 @@
-.\" $Id: ttyI.man.in,v 1.9 1999/09/06 08:03:23 fritz Exp $
+.\" $Id: ttyI.man.in,v 1.10 1999/09/21 19:20:27 armin Exp $
 .\"
-.\" CHECKIN $Date: 1999/09/06 08:03:23 $
+.\" CHECKIN $Date: 1999/09/21 19:20:27 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii ttyI.4 for ASCII output, or
@@ -417,6 +417,10 @@ Bit	Description
 0	0 = Disable CPN extended RING.
 .br
 	1 = Enable CPN extended RING.
+.br
+1	0 = Disable CPN extended FCON.
+.br
+	1 = Enable CPN extended FCON.
 .TP
 .SH AUTHOR
 Fritz Elfert <fritz@isdn4linux.de>
