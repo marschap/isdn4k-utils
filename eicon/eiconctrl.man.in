@@ -1,6 +1,6 @@
-.\" $Id: eiconctrl.man.in,v 1.7 2000/03/25 13:28:14 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.8 2000/04/24 07:51:28 armin Exp $
 .\"
-.\" CHECKIN $Date: 2000/03/25 13:28:14 $
+.\" CHECKIN $Date: 2000/04/24 07:51:28 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
@@ -66,7 +66,7 @@ may be given to
 sets the irq number to use (only ISA).
 If the interrupt value is omitted, the current setting will be printed.
 .TP
-.BI "load " -f " protocol " " [options]
+.BI "load "   " protocol " " [options]
 Downloads the protocol- and dsp-code into the card and starts operation.
 .LP
 .RS
@@ -107,6 +107,48 @@ trace-file for the xlog interpreter.
 .BI "isdnlog " [on | off]
 Switch trace-information for isdnlog on/off.
 .LP
+.LP
+.LP
+.SH CARD SPECIFIC DEFINITIONS
+.TP
+.BI "COMMON to all BRI-ISA"
+When using BRI-PtP set -S1 -n -t0 options. Some (very rare) switches
+require the -S2 here.The offset, set by the on-boards jumpers needs
+an additional '0' (f.e. Cards jumper setup is 0xd800 - means a membase of 0xd8000 ).
+.TP
+.BI "S SX SXn SCOM"
+when loading the card's module by insmod / modprobe, you need
+to specify Membase, IRQ and ID. Only the SCOM is also MCA-supported.
+.TP
+.BI "S2M"
+When using PRI-PtP set -n -S2
+.TP
+.BI "QUADRO"
+Loading this card as usual will automatically find and autoload the
+remaining three cards. Don't forget to set the Membase, IRQ and ID string
+using insmod or modprobe. Remember to "eiconctrl load <card_n>" for all "four" cards
+manually with the desired protocol. When setting the ID's last letter to an "a",
+the remaining ID's will be continued with "b, c, d" ; Otherwise the ID-string
+will add a "_2 _3 _4" to the cards device-description.
+.TP
+.BI "COMMON to all BRI/PRI PCI"
+All cards are auto detected and autoloaded w/o any parameters at insmod/modprobe.
+Using more than one card in a system will require the eiconctrl "-d" option to
+load the futher cards. (f.e eiconctrl -d eicon2) You can also use the -all option to
+get all boards loaded at one time (divaload only). The ETSI protocol is default and
+is not needed to be set as parm. Otherwise add the desired protocol to specify. The
+protocolcodes are normally located at /usr/lib/isdn/eicon.
+.TP
+.BI "4BRI"
+Loading this card will set the protocol to all "4 cards" same style. You cannot
+load diffrent codes. This is not a bug! The ID's are set while loading -
+automatically.
+.TP
+.BI "PRI"
+When using PRI-PtP set -n -S2
+.TP
+
+
 .SH EXAMPLE 
 .TP
 .BI eiconctrl " load etsi"
@@ -119,7 +161,7 @@ loads and starts S0 type adapter with protocol E-DSS1 PtP.
 loads and starts S2M type adapter with protocol E-DSS1.
 .LP
 .SH BUGS
-No bugs so far.
+No bugs so far but don't hesitate to contact us in case of obvious bug.
 .SH AUTHOR
 \(co 2000 by Armin Schindler <mac@melware.de>
 .LP
