@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.26 $";
+static char *revision = "$Revision: 1.27 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -1585,9 +1585,13 @@ static void makeconnection(STRINGLIST *numbers)
 		   t = time(0)+opt_dialtimeout;
 		   do {
 		      handlemessages();
-		      if (status != EXIT_OK && conn_find(cp)) {
-			info("capiplugin: pppd status %d, disconnecting ...", status);
-			 dodisconnect(cp);
+		      if (status != EXIT_OK) {
+			 if (conn_find(cp)) {
+			    info("capiplugin: pppd status %d, disconnecting ...", status);
+			    dodisconnect(cp);
+			 } else {
+			    die(status);
+			 }
 		      }
 		   } while (time(0) < t && conn_inprogress(cp));
 
