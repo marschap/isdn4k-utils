@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.11 1997/09/26 09:07:18 fritz Exp $
+/* $Id: isdnctrl.c,v 1.12 1997/10/26 23:12:20 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.12  1997/10/26 23:12:20  fritz
+ * Get rid of including ../.config in Makefile
+ * Now all configuration is done in configure.
+ *
  * Revision 1.11  1997/09/26 09:07:18  fritz
  * Check for missing triggercps in configuration.
  *
@@ -105,8 +109,6 @@
  *
  *
  */
-
-#undef  ISDN_DEBUG_MODEM_SENDOPT
 
 #include <stdio.h>
 #include <stdlib.h>

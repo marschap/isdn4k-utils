@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 1997/05/28 16:57:50 fritz Exp $
+# $Id: Makefile.in,v 1.6 1997/10/26 23:16:31 fritz Exp $
 #
 # Makefile for pcbitctl
 # (C) 1997 Fritz Elfert
@@ -6,30 +6,24 @@
 #
 SHELL			= /bin/sh
 CFLAGS			= -Wall -Wstrict-prototypes -O2 -g
-INCLUDES		= -I. -DDEBUG -I@KERNELDIR@/drivers/isdn/pcbit
+INCLUDES		= -I. -DDEBUG -I@CONFIG_KERNELDIR@/drivers/isdn/pcbit
 LDFLAGS			= -L../lib @LIBS@
 PROGRAM			= pcbitctl
 MODULES			= pcbitctl.o convhexbin.o
 MANPAGE			= pcbitctl.8
+INDIR			= @CONFIG_SBINDIR@
+MANDIR			= @CONFIG_MANDIR@
 INSTALL			= @INSTALL@
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-ifeq (../.config,$(wildcard ../.config))
-	SBINDIR			= $(CONFIG_SBINDIR)
-	mandir			= $(CONFIG_MANDIR)
-else
-	SBINDIR			= /sbin
-	mandir			= @mandir@
-endif
-MAN8DIR			= $(mandir)/man8
 CC				= @CC@
 
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-%.o: %.c
+%.o: %.c Makefile
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 all: $(PROGRAM)

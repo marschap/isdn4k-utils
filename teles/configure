@@ -12,6 +12,16 @@ ac_help=
 ac_default_prefix=/usr/local
 # Any additions from configure.in:
 ac_default_prefix=/usr
+ac_help="$ac_help
+  --with-kernel=DIR       Set kernel source directory [/usr/src/linux]"
+ac_help="$ac_help
+  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]"
+ac_help="$ac_help
+  --with-man=DIR          Set manpage dir. [/usr/man]"
+ac_help="$ac_help
+  --with-teles=y          Build telesctrl. [no]"
+ac_help="$ac_help
+  --with-hisax=y          Build hisaxctrl. [no]"
 
 # Initialize some variables set by options.
 # The variables have the same names as the options, with
@@ -523,12 +533,17 @@ fi
 
 I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
+CONFIG_SBINDIR=${CONFIG_SBINDIR:-"/sbin"}
+CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
+CONFIG_KERNELDIR=`eval echo ${CONFIG_KERNELDIR:-"/usr/src/linux"}`
+CONFIG_TELESCTRL=${CONFIG_TELESCTRL:-"n"}
+CONFIG_HISAXCTRL=${CONFIG_HISAXCTRL:-"n"}
 MANDATE=`grep CHECKIN hisaxctrl.man.in | awk '{print $4}'`
 
 # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:532: checking for $ac_word" >&5
+echo "configure:547: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_CC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -557,7 +572,7 @@ if test -z "$CC"; then
   # Extract the first word of "cc", so it can be a program name with args.
 set dummy cc; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:561: checking for $ac_word" >&5
+echo "configure:576: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_CC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -605,7 +620,7 @@ fi
 fi
 
 echo $ac_n "checking whether the C compiler ($CC $CFLAGS $LDFLAGS) works""... $ac_c" 1>&6
-echo "configure:609: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) works" >&5
+echo "configure:624: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) works" >&5
 
 ac_ext=c
 # CFLAGS is not in ac_cpp because -g, -O, etc. are not valid cpp options.
@@ -615,11 +630,11 @@ ac_link='${CC-cc} -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS 
 cross_compiling=$ac_cv_prog_cc_cross
 
 cat > conftest.$ac_ext <<EOF
-#line 619 "configure"
+#line 634 "configure"
 #include "confdefs.h"
 main(){return(0);}
 EOF
-if { (eval echo configure:623: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:638: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   ac_cv_prog_cc_works=yes
   # If we can't run a trivial program, we are probably using a cross compiler.
   if (./conftest; exit) 2>/dev/null; then
@@ -639,12 +654,12 @@ if test $ac_cv_prog_cc_works = no; then
   { echo "configure: error: installation or configuration problem: C compiler cannot create executables." 1>&2; exit 1; }
 fi
 echo $ac_n "checking whether the C compiler ($CC $CFLAGS $LDFLAGS) is a cross-compiler""... $ac_c" 1>&6
-echo "configure:643: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) is a cross-compiler" >&5
+echo "configure:658: checking whether the C compiler ($CC $CFLAGS $LDFLAGS) is a cross-compiler" >&5
 echo "$ac_t""$ac_cv_prog_cc_cross" 1>&6
 cross_compiling=$ac_cv_prog_cc_cross
 
 echo $ac_n "checking whether we are using GNU C""... $ac_c" 1>&6
-echo "configure:648: checking whether we are using GNU C" >&5
+echo "configure:663: checking whether we are using GNU C" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_gcc'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -653,7 +668,7 @@ else
   yes;
 #endif
 EOF
-if { ac_try='${CC-cc} -E conftest.c'; { (eval echo configure:657: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
+if { ac_try='${CC-cc} -E conftest.c'; { (eval echo configure:672: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
   ac_cv_prog_gcc=yes
 else
   ac_cv_prog_gcc=no
@@ -668,7 +683,7 @@ if test $ac_cv_prog_gcc = yes; then
   ac_save_CFLAGS="$CFLAGS"
   CFLAGS=
   echo $ac_n "checking whether ${CC-cc} accepts -g""... $ac_c" 1>&6
-echo "configure:672: checking whether ${CC-cc} accepts -g" >&5
+echo "configure:687: checking whether ${CC-cc} accepts -g" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_cc_g'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -725,7 +740,7 @@ ac_configure=$ac_aux_dir/configure # This should be Cygnus configure.
 # SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
 # ./install, which can be erroneously created by make from ./install.sh.
 echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
-echo "configure:729: checking for a BSD compatible install" >&5
+echo "configure:744: checking for a BSD compatible install" >&5
 if test -z "$INSTALL"; then
 if eval "test \"`echo '$''{'ac_cv_path_install'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -777,7 +792,7 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
 echo $ac_n "checking how to run the C preprocessor""... $ac_c" 1>&6
-echo "configure:781: checking how to run the C preprocessor" >&5
+echo "configure:796: checking how to run the C preprocessor" >&5
 # On Suns, sometimes $CPP names a directory.
 if test -n "$CPP" && test -d "$CPP"; then
   CPP=
@@ -792,13 +807,13 @@ else
   # On the NeXT, cc -E runs the code through the compiler's parser,
   # not just through cpp.
   cat > conftest.$ac_ext <<EOF
-#line 796 "configure"
+#line 811 "configure"
 #include "confdefs.h"
 #include <assert.h>
 Syntax Error
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:802: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:817: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   :
@@ -809,13 +824,13 @@ else
   rm -rf conftest*
   CPP="${CC-cc} -E -traditional-cpp"
   cat > conftest.$ac_ext <<EOF
-#line 813 "configure"
+#line 828 "configure"
 #include "confdefs.h"
 #include <assert.h>
 Syntax Error
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:819: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:834: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   :
@@ -838,12 +853,12 @@ fi
 echo "$ac_t""$CPP" 1>&6
 
 echo $ac_n "checking for ANSI C header files""... $ac_c" 1>&6
-echo "configure:842: checking for ANSI C header files" >&5
+echo "configure:857: checking for ANSI C header files" >&5
 if eval "test \"`echo '$''{'ac_cv_header_stdc'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 847 "configure"
+#line 862 "configure"
 #include "confdefs.h"
 #include <stdlib.h>
 #include <stdarg.h>
@@ -851,7 +866,7 @@ else
 #include <float.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:855: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:870: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -868,7 +883,7 @@ rm -f conftest*
 if test $ac_cv_header_stdc = yes; then
   # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
 cat > conftest.$ac_ext <<EOF
-#line 872 "configure"
+#line 887 "configure"
 #include "confdefs.h"
 #include <string.h>
 EOF
@@ -886,7 +901,7 @@ fi
 if test $ac_cv_header_stdc = yes; then
   # ISC 2.0.2 stdlib.h does not declare free, contrary to ANSI.
 cat > conftest.$ac_ext <<EOF
-#line 890 "configure"
+#line 905 "configure"
 #include "confdefs.h"
 #include <stdlib.h>
 EOF
@@ -907,7 +922,7 @@ if test "$cross_compiling" = yes; then
   :
 else
   cat > conftest.$ac_ext <<EOF
-#line 911 "configure"
+#line 926 "configure"
 #include "confdefs.h"
 #include <ctype.h>
 #define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
@@ -918,7 +933,7 @@ if (XOR (islower (i), ISLOWER (i)) || toupper (i) != TOUPPER (i)) exit(2);
 exit (0); }
 
 EOF
-if { (eval echo configure:922: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:937: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
   :
 else
@@ -945,17 +960,17 @@ for ac_hdr in fcntl.h sys/ioctl.h unistd.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:949: checking for $ac_hdr" >&5
+echo "configure:964: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 954 "configure"
+#line 969 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:959: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:974: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -983,15 +998,152 @@ done
 
 
 
+	OLD_CPPFLAGS="$CPPFLAGS"
+	lxdir="no"
+	eval tst_kerneldir=$CONFIG_KERNELDIR
+
+	# Check whether --with-kernel or --without-kernel was given.
+if test "${with_kernel+set}" = set; then
+  withval="$with_kernel"
+  DOTEST="y"; tst_kerneldir="${withval}"
+fi
+
+
+	if test "$DOTEST" = "y" || test "$CONFIG_KERNELDIR" != "" ; then
+		echo $ac_n "checking for linux kernel source in ${tst_kerneldir}""... $ac_c" 1>&6
+echo "configure:1015: checking for linux kernel source in ${tst_kerneldir}" >&5
+		CPPFLAGS="-nostdinc -I${tst_kerneldir}/drivers/isdn"
+		cat > conftest.$ac_ext <<EOF
+#line 1018 "configure"
+#include "confdefs.h"
+#include <isdn_common.h>
+EOF
+ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+{ (eval echo configure:1023: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ac_err=`grep -v '^ *+' conftest.out`
+if test -z "$ac_err"; then
+  rm -rf conftest*
+  lxdir=${tst_kerneldir}
+else
+  echo "$ac_err" >&5
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  echo "$ac_t"""no"" 1>&6
+fi
+rm -f conftest*
+	fi
+	if test "$lxdir" = "no" ; then
+		echo $ac_n "checking for linux kernel source in /usr/src/linux""... $ac_c" 1>&6
+echo "configure:1039: checking for linux kernel source in /usr/src/linux" >&5
+		CPPFLAGS="-nostdinc -I/usr/src/linux/drivers/isdn"
+		cat > conftest.$ac_ext <<EOF
+#line 1042 "configure"
+#include "confdefs.h"
+#include <isdn_common.h>
+EOF
+ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+{ (eval echo configure:1047: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ac_err=`grep -v '^ *+' conftest.out`
+if test -z "$ac_err"; then
+  rm -rf conftest*
+  lxdir=/usr/src/linux
+else
+  echo "$ac_err" >&5
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+	fi
+	if test "$lxdir" = "no" ; then
+		echo "$ac_t"""$lxdir"" 1>&6
+		echo $ac_n "checking for linux kernel source in /usr/local/src/linux""... $ac_c" 1>&6
+echo "configure:1062: checking for linux kernel source in /usr/local/src/linux" >&5
+		CPPFLAGS="-nostdinc -I/usr/local/src/linux/drivers/isdn"
+		cat > conftest.$ac_ext <<EOF
+#line 1065 "configure"
+#include "confdefs.h"
+#include <isdn_common.h>
+EOF
+ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+{ (eval echo configure:1070: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ac_err=`grep -v '^ *+' conftest.out`
+if test -z "$ac_err"; then
+  rm -rf conftest*
+  lxdir=/usr/local/src/linux
+else
+  echo "$ac_err" >&5
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+	fi
+	if test "$lxdir" != "no" ; then
+		echo "$ac_t"""yes"" 1>&6
+	else
+		lxdir=""
+		{ echo "configure: error: "Kernel source not found. You MUST specify a correct path to the linux source in the configuration."" 1>&2; exit 1; }
+	fi
+	CONFIG_KERNELDIR="$lxdir"
+	CPPFLAGS="$OLD_CPPFLAGS"
+	cat >> confdefs.h <<EOF
+#define CONFIG_KERNELDIR "$lxdir"
+EOF
+
+	
+
+for ac_hdr in $CONFIG_KERNELDIR/include/linux/isdn.h
+do
+ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
+echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
+echo "configure:1100: checking for $ac_hdr" >&5
+if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  cat > conftest.$ac_ext <<EOF
+#line 1105 "configure"
+#include "confdefs.h"
+#include <$ac_hdr>
+EOF
+ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
+{ (eval echo configure:1110: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+ac_err=`grep -v '^ *+' conftest.out`
+if test -z "$ac_err"; then
+  rm -rf conftest*
+  eval "ac_cv_header_$ac_safe=yes"
+else
+  echo "$ac_err" >&5
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  eval "ac_cv_header_$ac_safe=no"
+fi
+rm -f conftest*
+fi
+if eval "test \"`echo '$ac_cv_header_'$ac_safe`\" = yes"; then
+  echo "$ac_t""yes" 1>&6
+    ac_tr_hdr=HAVE_`echo $ac_hdr | sed 'y%abcdefghijklmnopqrstuvwxyz./-%ABCDEFGHIJKLMNOPQRSTUVWXYZ___%'`
+  cat >> confdefs.h <<EOF
+#define $ac_tr_hdr 1
+EOF
+ 
+else
+  echo "$ac_t""no" 1>&6
+{ echo "configure: error: "$CONFIG_KERNELDIR/include/linux/isdn.h missing. Kernel installed?"" 1>&2; exit 1; }
+
+fi
+done
+
+
 if test $ac_cv_prog_gcc = yes; then
     echo $ac_n "checking whether ${CC-cc} needs -traditional""... $ac_c" 1>&6
-echo "configure:989: checking whether ${CC-cc} needs -traditional" >&5
+echo "configure:1141: checking whether ${CC-cc} needs -traditional" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_gcc_traditional'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
     ac_pattern="Autoconf.*'x'"
   cat > conftest.$ac_ext <<EOF
-#line 995 "configure"
+#line 1147 "configure"
 #include "confdefs.h"
 #include <sgtty.h>
 Autoconf TIOCGETP
@@ -1009,7 +1161,7 @@ rm -f conftest*
 
   if test $ac_cv_prog_gcc_traditional = no; then
     cat > conftest.$ac_ext <<EOF
-#line 1013 "configure"
+#line 1165 "configure"
 #include "confdefs.h"
 #include <termio.h>
 Autoconf TCGETA
@@ -1033,12 +1185,12 @@ fi
 for ac_func in strtol
 do
 echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
-echo "configure:1037: checking for $ac_func" >&5
+echo "configure:1189: checking for $ac_func" >&5
 if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1042 "configure"
+#line 1194 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -1061,7 +1213,7 @@ $ac_func();
 
 ; return 0; }
 EOF
-if { (eval echo configure:1065: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1217: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_func_$ac_func=yes"
 else
@@ -1084,6 +1236,55 @@ else
   echo "$ac_t""no" 1>&6
 fi
 done
+
+
+# Check whether --with-sbin or --without-sbin was given.
+if test "${with_sbin+set}" = set; then
+  withval="$with_sbin"
+  CONFIG_SBINDIR="${withval}"
+	cat >> confdefs.h <<\EOF
+#define CONFIG_SBINDIR "${withval}"
+EOF
+
+fi
+
+
+# Check whether --with-man or --without-man was given.
+if test "${with_man+set}" = set; then
+  withval="$with_man"
+  CONFIG_MANDIR="${withval}"
+	cat >> confdefs.h <<\EOF
+#define CONFIG_MANDIR "${withval}"
+EOF
+
+fi
+
+
+# Check whether --with-teles or --without-teles was given.
+if test "${with_teles+set}" = set; then
+  withval="$with_teles"
+  CONFIG_TELESCTRL="${withval}"
+	cat >> confdefs.h <<\EOF
+#define CONFIG_TELESCTRL "${withval}"
+EOF
+
+fi
+
+
+# Check whether --with-hisax or --without-hisax was given.
+if test "${with_hisax+set}" = set; then
+  withval="$with_hisax"
+  CONFIG_HISAXCTRL="${withval}"
+	cat >> confdefs.h <<\EOF
+#define CONFIG_HISAXCTRL "${withval}"
+EOF
+
+fi
+
+
+
+
+
 
 
 
@@ -1237,10 +1438,15 @@ s%@CC@%$CC%g
 s%@INSTALL_PROGRAM@%$INSTALL_PROGRAM%g
 s%@INSTALL_DATA@%$INSTALL_DATA%g
 s%@CPP@%$CPP%g
+s%@CONFIG_KERNELDIR@%$CONFIG_KERNELDIR%g
 s%@INSTALL@%$INSTALL%g
 s%@MANDATE@%$MANDATE%g
 s%@I4LCONFDIR@%$I4LCONFDIR%g
 s%@I4LVERSION@%$I4LVERSION%g
+s%@CONFIG_SBINDIR@%$CONFIG_SBINDIR%g
+s%@CONFIG_MANDIR@%$CONFIG_MANDIR%g
+s%@CONFIG_TELESCTRL@%$CONFIG_TELESCTRL%g
+s%@CONFIG_HISAXCTRL@%$CONFIG_HISAXCTRL%g
 
 CEOF
 EOF
