@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.12 1998/10/21 16:18:48 paul Exp $
+/* $Id: isdnctrl.h,v 1.13 1999/03/15 15:53:06 cpetig Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.13  1999/03/15 15:53:06  cpetig
+ * added v110 and modem to the level2 encapsulations
+ *
  * Revision 1.12  1998/10/21 16:18:48  paul
  * Implementation of "dialmode" (successor of "status")
  *
@@ -188,6 +191,12 @@ char *l2protostr[] = {
 #ifdef ISDN_PROTO_L2_X25DTE
 	"x25dte", "x25dce",
 #endif
+#ifdef ISDN_PROTO_L2_V11096
+	"v110_9600", "v110_19200", "v110_38400",
+#endif
+#ifdef ISDN_PROTO_L2_MODEM
+	"modem",
+#endif
 	"\0"
 };
 
@@ -196,6 +205,12 @@ int l2protoval[] = {
         ISDN_PROTO_L2_X75BUI, ISDN_PROTO_L2_HDLC,
 #ifdef ISDN_PROTO_L2_X25DTE
 	ISDN_PROTO_L2_X25DTE, ISDN_PROTO_L2_X25DCE,
+#endif
+#ifdef ISDN_PROTO_L2_V11096
+	ISDN_PROTO_L2_V11096, ISDN_PROTO_L2_V11019, ISDN_PROTO_L2_V11038,
+#endif
+#ifdef ISDN_PROTO_L2_MODEM
+	ISDN_PROTO_L2_MODEM,
 #endif
 	-1
 };
