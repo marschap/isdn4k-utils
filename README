@@ -1,5 +1,5 @@
 #
-# $Id: README,v 1.7 1997/10/26 23:23:00 fritz Exp $
+# $Id: README,v 1.8 1998/08/01 19:59:12 paul Exp $
 #
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
@@ -76,6 +76,11 @@ System prerequisites:
    tool from kernel menuconfig.)
    There is a global configuration directory, where most programs
    expect their configuration files. The default is /etc/isdn.
+
+   - Alternatively you can edit the .config file by hand (once that
+     has been created once with "make config"), and run "make subconfig"
+     instead. This might be useful if you want to automate the building
+     of the package, e.g. for a Red Hat rpm or a Debian deb.
    
    Run "make"
 

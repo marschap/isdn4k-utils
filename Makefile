@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.22 1998/06/27 00:35:57 fritz Exp $
+# $Id: Makefile,v 1.23 1998/08/01 19:59:10 paul Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -133,7 +133,7 @@ clean:
 	-set -e; \
 	for i in `echo ${wildcard */Makefile}`; do \
 		$(MAKE) -i -C `dirname $$i` clean; \
-    done;
+	done;
 	-rm -f *~ *.o
 
 distclean: clean
@@ -154,28 +154,26 @@ distclean: clean
 scripts/lxdialog/lxdialog:
 	@$(MAKE) -C scripts/lxdialog all
 
-#
+scripts/autoconf.h: .config
+	perl scripts/mk_autoconf.pl
+
 # Next target makes three attempts to configure:
-#  - if a Makefile already exists, make config
 #  - if a configure script exists, execute it
 #  - if a Makefile.in exists, make -f Makefile.in config
+#  - if a Makefile already exists, make config
 #
-subconfig:
+subconfig: scripts/autoconf.h
 	@echo Selected subdirs: $(SUBDIRS)
 	@set -e; for i in `echo $(SUBDIRS)`; do \
 		if [ -x $$i/configure ] ; then \
 			echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
 			(cd $$i; ./configure); \
-		else \
-			if [ -f $$i/Makefile.in ] ; then \
-				echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
-				$(MAKE) -C $$i -f Makefile.in config; \
-			else \
-				if [ -f $$i/Makefile ] ; then \
-					echo -e "\nRunning make config in $$i ...\n"; sleep 1; \
-					$(MAKE) -C $$i config; \
-				fi; \
-			fi; \
+		elif [ -f $$i/Makefile.in ] ; then \
+			echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
+			$(MAKE) -C $$i -f Makefile.in config; \
+		elif [ -f $$i/Makefile ] ; then \
+			echo -e "\nRunning make config in $$i ...\n"; sleep 1; \
+			$(MAKE) -C $$i config; \
 		fi; \
 	done
 
