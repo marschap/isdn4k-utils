@@ -1,5 +1,5 @@
 /*
- * $Id: capiconn.c,v 1.6 2002/05/03 11:55:05 calle Exp $
+ * $Id: capiconn.c,v 1.7 2002/05/03 11:57:49 calle Exp $
  *
  * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
  * Copyright 2000 AVM GmbH Berlin (info@avm.de)
@@ -10,6 +10,9 @@
  *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.c,v $
+ * Revision 1.7  2002/05/03 11:57:49  calle
+ * Bugfix of Bugfix.
+ *
  * Revision 1.6  2002/05/03 11:55:05  calle
  * Bugfix: some PBX send INFO_IND even when callednumber was complete.
  *
@@ -36,7 +39,7 @@
 #include <string.h>
 #include "capiconn.h"
 
-static char *revision = "$Revision: 1.6 $";
+static char *revision = "$Revision: 1.7 $";
 
 /* xxxxxxxxxxxxxxxxxx */
 static _cmsg cmdcmsg;
@@ -102,7 +105,7 @@ struct capi_contr {
 		unsigned incoming:1,
 			 disconnecting:1,
 			 localdisconnect:1,
-	                 callednumbercomplete = 1;
+	                 callednumbercomplete:1;
 
 		_cword disconnectreason;
 		_cword disconnectreason_b3;
