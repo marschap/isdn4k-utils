@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.3 1999/06/30 17:17:37 akool Exp $
+/* $Id: isdnrate.c,v 1.4 1999/06/30 20:53:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.4  1999/06/30 20:53:28  akool
+ * added "-t" option to "isdnrate"
+ *
  * Revision 1.3  1999/06/30 17:17:37  akool
  * isdnlog Version 3.39
  *
@@ -34,15 +37,18 @@
 
 #include "isdnlog.h"
 
+#define WIDTH   13
+#define MAXLAST	 5
 
 static char *myname, *myshortname;
-static char  options[] = "Vvd:hb:s:";
+static char  options[] = "Vvd:hb:s:t";
 static char  usage[]   = "%s: usage: %s [ -%s ] Destination ...\n";
 
-static int verbose = 0, header = 0, best = MAXPROVIDER;
-static int duration = LCR_DURATION;
+static int    verbose = 0, header = 0, best = MAXPROVIDER, table = 0;
+static int    duration = LCR_DURATION;
 static time_t start;
-static int day, month, year, hour, min;
+static int    day, month, year, hour, min;
+static char   country[BUFSIZ], area[BUFSIZ], msn[BUFSIZ];
 
 
 typedef struct {
@@ -162,6 +168,9 @@ static int opts(int argc, char *argv[])
                    }
       	       	 }
                  break;
+
+      case 't' : table++;
+      	       	 break;
 
       case '?' : print_msg(PRT_ERR, usage, myshortname, myshortname, options);
       	       	 break;
@@ -283,13 +292,10 @@ static void numsplit(char *num, char *country, char *area, char *msn)
 } /* numsplit */
 
 
-static int compute(char *target)
+static int normalizeNumber(char *target)
 {
-  register int      i, n = 0;
-  auto 	   char     num[BUFSIZ];
-  auto 	   char     country[BUFSIZ], area[BUFSIZ], msn[BUFSIZ];
-  auto 	   COUNTRY *Country;
-  auto 	   RATE     Rate;
+  auto COUNTRY *Country;
+  auto char     num[BUFSIZ];
 
 
   if (isalpha(*target)) {
@@ -304,8 +310,15 @@ static int compute(char *target)
     strcpy(num, target);
 
   numsplit(num, country, area, msn);
+  return(1);
+} /* normalizeNumber */
 
-  n = 0;
+
+static int compute()
+{
+  register int  i, n = 0;
+  auto 	   RATE Rate;
+
 
   for (i = 0; i < MAXPROVIDER; i++) {
     clearRate(&Rate);
@@ -349,8 +362,8 @@ static void result(char *target, int n)
   *num = 0; /* FIXME */
 
   if (header)
-    print_msg(PRT_NORMAL, "Ein %d Sekunden langes Gespraech nach %s (%s) kostet am %s\n",
-      duration, target, num, ctime(&start));
+    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s nach %s %s %s kostet am %s\n",
+      duration, mycountry, myarea, country, area, msn, ctime(&start));
 
   if (n > best)
     n = best;
@@ -381,41 +394,147 @@ static void purge(int n)
         0..23 Uhr
 */
 
-static void table()
+static void printTable()
 {
-  register int n;
+  register int        n, d, i, lasthour;
+  register char      *px;
   auto 	   struct tm *tm;
+  auto	   SORT	      last[MAXLAST];
+  auto 	   int        used[MAXPROVIDER];
+  auto 	   int        hours[MAXPROVIDER];
 
 
-  buildtime();
-  tm = localtime(&start);
+  if (header)
+    print_msg(PRT_NORMAL, "Eine %d Sekunden lange Verbindung von %s %s nach %s %s %s kostet\n",
+      duration, mycountry, myarea, country, area, msn);
 
-  while (tm->tm_wday) { /* find next sunday */
-    start += (60 * 60 * 24);
+  for (d = 0; d < 2; d++) {
+    last[0].prefix = UNKNOWN;
+    lasthour = UNKNOWN;
+
+    buildtime();
     tm = localtime(&start);
-  } /* while */
 
-  splittime();
-  buildtime();
+    if (!d) { 	     	         /* Wochenende */
+      while (tm->tm_wday) {      /* find next sunday */
+        start += (60 * 60 * 24);
+      	tm = localtime(&start);
+      } /* while */
+    }
+    else   	                 /* Werktag (Montag) */
+      start += (60 * 60 * 24);
 
-  hour = 7;
-  min = 0;
+    splittime();
+    buildtime();
 
-  while (1) {
+    hour = 7;
+    min = 0;
 
-    n = compute("+49");
-    print_msg(PRT_NORMAL, "%02d Uhr : %s%02d %s %8.3f (%s)\n", hour, vbn, sort[0].prefix, currency, sort[0].rate, sort[0].explain);
-    purge(n);
+    if (header)
+      print_msg(PRT_NORMAL, "\n%s:\n", d ? "Werktag" : "Wochende");
 
-    hour++;
+    while (1) {
 
-    if (hour == 24)
-      hour = 0;
-    else if (hour == 7)
-      break;
-  } /* while */
+      n = compute();
 
-} /* table */
+      if (last[0].prefix == UNKNOWN) {
+        for (i = 0; i < MAXLAST; i++) {
+          if (sort[i].prefix) {
+            last[i].prefix = sort[i].prefix;
+  	    last[i].rate = sort[i].rate;
+  	    last[i].explain = strdup(sort[i].explain);
+          } /* if */
+        } /* for */
+      } /* if */
+
+      if (lasthour == UNKNOWN)
+        lasthour = hour;
+
+      if (sort[0].prefix != last[0].prefix) {
+        for (i = 0; i < MAXLAST; i++) {
+          if (last[i].prefix == UNKNOWN)
+            px = "";
+          else
+            px = getProvider(last[i].prefix);
+
+          if (!i)
+            print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s = %s %s (%s)\n",
+              lasthour, hour - 1, vbn, last[i].prefix, px,
+              max(WIDTH, strlen(px)) - strlen(px), "", currency,
+              double2str(last[i].rate, 5, 3, DEB),
+              last[i].explain);
+          else
+            print_msg(PRT_NORMAL, "                   %s%02d:%s%*s = %s %s (%s)\n",
+              vbn, last[i].prefix, px,
+              max(WIDTH, strlen(px)) - strlen(px), "", currency,
+              double2str(last[i].rate, 5, 3, DEB),
+              last[i].explain);
+        } /* for */
+
+        used[last[0].prefix] = 1;
+
+        if (lasthour >= hour)
+          hours[last[0].prefix] += ((24 - lasthour) + hour);
+        else
+          hours[last[0].prefix] += hour - lasthour;
+
+        for (i = 0; i < MAXLAST; i++) {
+          last[i].prefix = sort[i].prefix;
+  	  last[i].rate = sort[i].rate;
+  	  last[i].explain = strdup(sort[i].explain);
+        } /* for */
+
+        lasthour = hour;
+      } /* if */
+
+      purge(n);
+
+      hour++;
+
+      if (hour == 24)
+        hour = 0;
+      else if (hour == 7)
+        break;
+    } /* while */
+
+    for (i = 0; i < MAXLAST; i++) {
+      if (last[i].prefix == UNKNOWN)
+        px = "";
+      else
+        px = getProvider(last[i].prefix);
+
+      if (!i)
+        print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s = %s %s (%s)\n",
+          lasthour, hour - 1, vbn, last[i].prefix, px,
+          max(WIDTH, strlen(px)) - strlen(px), "", currency,
+          double2str(last[i].rate, 5, 3, DEB),
+          last[i].explain);
+      else
+        print_msg(PRT_NORMAL, "                   %s%02d:%s%*s = %s %s (%s)\n",
+          vbn, last[i].prefix, px,
+          max(WIDTH, strlen(px)) - strlen(px), "", currency,
+          double2str(last[i].rate, 5, 3, DEB),
+          last[i].explain);
+#if 0
+    if ((lasthour == 7) && (hour == 7))
+      print_msg(PRT_NORMAL, "    immer          %s%02d:%s%*s = %s %s (%s)\n",
+        vbn, last[0].prefix, px, max(WIDTH, strlen(px)) - strlen(px), "",
+        currency, double2str(last[0].rate, 5, 3, DEB), last[0].explain);
+    else
+      print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s = %s %s (%s)\n",
+        lasthour, hour - 1, vbn, last[0].prefix, px, max(WIDTH, strlen(px)) - strlen(px), "",
+        currency, double2str(last[0].rate, 5, 3, DEB), last[0].explain);
+#endif
+    } /* for */
+
+    used[last[0].prefix] = 1;
+
+    if (lasthour >= hour)
+      hours[last[0].prefix] += ((24 - lasthour) + hour);
+    else
+      hours[last[0].prefix] += hour - lasthour;
+  } /* for */
+} /* printTable */
 
 
 int main(int argc, char *argv[], char *envp[])
@@ -445,14 +564,15 @@ int main(int argc, char *argv[], char *envp[])
 #endif
 
     while (i < argc) {
-      if (*argv[i] == '.')
-        table();
-      else {
-        n = compute(argv[i]);
-	result(argv[i], n);
-	purge(n);
-      } /* else */
-
+      if (normalizeNumber(argv[i])) {
+        if (table)
+          printTable();
+        else {
+          n = compute();
+	  result(argv[i], n);
+	  purge(n);
+        } /* else */
+      } /* if */
       i++;
     } /* while */
   }
@@ -463,6 +583,7 @@ int main(int argc, char *argv[], char *envp[])
     print_msg(PRT_NORMAL, "\t-v\t\tverbose\n");
     print_msg(PRT_NORMAL, "\t-d duration\t duration of call in seconds (default %d seconds)\n", LCR_DURATION);
     print_msg(PRT_NORMAL, "\t-h\t\tshow a header\n");
+    print_msg(PRT_NORMAL, "\t-t\t\tshow a table\n");
     print_msg(PRT_NORMAL, "\t-b best\tshow only the first <best> provider(s) (default %d)\n", MAXPROVIDER);
     print_msg(PRT_NORMAL, "\t-s d/m/y/h/m\tstart of call (default now)\n");
   } /* else */
