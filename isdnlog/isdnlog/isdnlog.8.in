@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.11 2003/07/25 22:18:03 tobiasb Exp $
-.\" CHECKIN $Date: 2003/07/25 22:18:03 $
+.\" $Id: isdnlog.8.in,v 1.12 2003/08/14 12:18:57 tobiasb Exp $
+.\" CHECKIN $Date: 2003/08/14 12:18:57 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -94,7 +94,7 @@ would be correct.
 .B \-i\fIx\fB	internS0="value"
 Telefon number shorter then
 .I value
-are considered to be internal numbers one your PABX
+are considered to be internal numbers on your PABX.
 
 .TP
 .B \-o	other={yes|no}
@@ -127,8 +127,8 @@ are doing. With \fIx\fR=2 you can increase the debug output - every single
 digit will be displayed.
 
 Some setups may require workarounds for reliable logging.  These workarounds
-are enabled by addition of the following numbers to the dual value.  It is
-also possible but untested to use the workarounds without dualmode.
+are enabled by addition of the following numbers to the dual value.  They are
+intended for the dualmode but may also be useful without. 
 In this case, specify only the sum of the following numbers without
 1 or 2 for the dual mode. 
 
@@ -139,9 +139,12 @@ Enable this when the destination number of an outgoing call
 contains the number of the previous call, e.g. calling 222
 after calling 111 before results in 111222 for the second call.
 
+This may also help in situations where an unanswered incoming call
+causes incorrect logging of the following outgoing call.
+
 .TP
 0x200
-Enable this when outgoing call are logged without a source number (own MSN).
+Enable this when outgoing calls are logged without a source number (own MSN).
 
 .TP
 0x400
@@ -404,7 +407,7 @@ For changing the ISP a script is called. s. next option 'providerchange'
 .B	providerchange="path_top_script"
 (There is no commandline option for this)
 This script is called with 3 parameters, the new provider number
-(fron rate-CC.dat) the number, which would be dialed, and the servicename.
+(from rate-CC.dat), the number, which would be dialed, and the servicename.
 The script should adjust routing, name resolution and so on to
 connect to the ISP.
 If the script returns non zero, LCR will not be done.

@@ -1,7 +1,7 @@
-V:1.52 Int [04-May-2003 16:00:00]
+V:1.53 Int [12-Aug-2003 01:00:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.41 2003/07/25 21:33:02 tobiasb Exp $
+# $Id: country-de.dat,v 1.42 2003/08/14 12:18:57 tobiasb Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -1418,13 +1418,25 @@ C:+4574, +4573
 R:DK
 T:_SOEN
 
+N:Dänemark Freephone
+E:Denmark freephone
+C:+4580
+R:DK
+T:_DKFF
+
 N:Dänemark Mobilfunk
 E:Denmark cellphone
 A:Dänemark Mobile
-C:+45503, +45502, +45501, +45409, +45408, +45407, +45406, +45405, +45404, +45403, +45402, +45401, +4530, +4528, +4526, +4523, +4522, +4521, +45209, +45208, +45207, +45206, +45205, +45204, +45203, +45202, +45201
+C:+452
+C:+4530, +4531
+C:+4540
+C:+4550, +4551
+C:+4560, +4561
 R:DK
 T:_DKMF
 
+# Source (2003-07-07)
+# http://www.itst.dk/wimpdoc.asp?page=tema&objno=95024386
 N:Dänemark
 E:Denmark
 C:+45

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.124 2003/07/25 22:18:03 tobiasb Exp $
+/* $Id: processor.c,v 1.125 2003/08/14 12:18:57 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.125  2003/08/14 12:18:57  tobiasb
+ * Allow dualmode workaround 0x100 aka DUALFIX_DESTNUM to work also with
+ *   CALL_PROCEEDING messages for cleaning up unanswered incoming calls.
+ *   (http://lists.suse.com/archive/suse-isdn/2003-Aug/0026.html in German)
+ * Update for `Denmark cellphone' entry in destination database.
+ *
  * Revision 1.124  2003/07/25 22:18:03  tobiasb
  * isdnlog-4.65:
  *  - New values for isdnlog option -2x / dual=x with enable certain
@@ -4855,12 +4861,16 @@ static void processctrl(int card, char *s)
          * Hopefully the second line does it right:
          * - !call[chan].dialog && call[chan].dialin && call[chan].cause!=-1
          *   turned out to be to restrictive,
-         * - !call[chan].dialog turned out to be to generally. |TB|
+         * - !call[chan].dialog turned out to be to generally.
+         * - ... && type=SETUP_ACKNOWLEDGE is to restrictrive.  In case of
+         *   SETUP with complete called party number, the exchange responds
+         *   with C_PROC instead of S_ACK and C_PROC contains the B-channel. 
          * This workaround requires the value of DUALFIX_DESTNUM in dualfix,
          * which is set with -2.. or dual=.. at command line or parameter file. 
+         * |TB| 2003-08-14
          */
         if (!chanused[chan] || (dualfix & DUALFIX_DESTNUM &&
-            !call[chan].dialog && !call[5].dialin && type==SETUP_ACKNOWLEDGE)) {
+            !call[chan].dialog && !call[5].dialin)) { 
           /* nicht --channel, channel muss unveraendert bleiben! */
           if (chanused[chan]) { /* catch second line condition */
             print_msg(PRT_DEBUG_BUGS, " DEBUG> %s: %s contained channel B%d which is marked as in use -- overwriting anyway.\n", st+4, (type==SETUP_ACKNOWLEDGE)?"S_ACK":"C_PROC", call[5].channel);
