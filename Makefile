@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.33 1999/04/16 15:40:38 calle Exp $
+# $Id: Makefile,v 1.34 1999/05/07 21:36:36 werner Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -37,6 +37,9 @@ else
 endif
 ifeq ($(CONFIG_ISDNCTRL),y)
 	SUBDIRS := $(SUBDIRS) isdnctrl
+endif
+ifeq ($(CONFIG_DIVERTCTRL),y)
+	SUBDIRS := $(SUBDIRS) divertctrl
 endif
 ifeq ($(CONFIG_IPROFD),y)
 	SUBDIRS := $(SUBDIRS) iprofd
