@@ -20,7 +20,8 @@ use Getopt::Std;
 my ($inf, $outf, $rc,$verbose, $normalize, $newinf, $oldinf, $keep_files, $LEN);
 my ($opt_only);
 # statistics
-my (@red, $redt, $tot, $rem);
+my (@rem, $tot);
+my($OP) = 1;
 
 my $LINK = 127; # maxzone
 
@@ -67,7 +68,7 @@ sub go {
 #
 	my ($i);
 	for ($i=0; $i<20; $i++) {
-	    $red[$i] = 0;
+	    $rem[$i] = 0;
 	}
 	open(IN, "$inf") or die("Can't read $inf");
 	open(OUT, ">$outf") or die("Can't write $outf");
@@ -79,32 +80,41 @@ sub go {
 		print "Normalizing ...\n" if ($verbose);
 		&normalize;
 	}
-#
+	else {
+		$tot = `wc --lines $inf`;
+		$tot =~ /(\d+)\s/;
+		$tot = $1;
+	}	
+	printf "%d initial records\n", $tot if($verbose);
+#	
 #	data are prepared now, let's do the real work
 #
-    if($opt_only) {
+	if($opt_only) {
 		&optimize;
-    }
-    else {
+	}
+	else {
 		&reduce;
 		&optimize;
-    }
+	}
 	&clean_up unless($keep_files);
-	my $perc = $tot?$redt/$tot*100:0;
 	if ($verbose) {
+		my $rem = $rem[$OP + 10];
+	  	my $redt = $tot-$rem;
+		my $perc = $tot?($redt)/$tot*100:0;
 		print "Finito:\t$redt of $tot data where eliminated\n";
-		printf "\tThis is a reduction of %4.1f %%\n", $perc;
+		printf "\tThis is a reduction of %5.2f %%\n", $perc;
 		if ($verbose > 1) {
 			my ($ab, $r);
 			print "\nDetails\n";
 			printf "Total records\t%6d\n", $tot;
-			foreach $ab ('b','a') {
+			foreach $ab ('b','o') {
 				for ($i=1; $i<=$rc; $i++) {
-					$r = $red[$i + 10*($ab eq 'a')];
-					printf "Pass %s-%d\t%6d\n", $ab, $i, 0-$r if($r);
+					$r = $rem[$i + 10*($ab eq 'o')];
+					printf "Pass %s-%d\t%6d\n", $ab, $i, $r;
+					last if($ab eq 'o' and $i >= $OP);
 				}
 			}
-			printf "Remaing recs\t%6d\n", $tot-$redt;
+			printf "Remaing recs\t%6d\n", $r;
 		}
 	}
 }
@@ -189,16 +199,16 @@ sub reduce {
 }
 sub reduce_2 {
 	my ($pass) = $_[0];
-	my($from, $to, $z, $i, $old, $olda, $red1, $j, $red, $k);
+	my($from, $to, $z, $i, $old, $olda, $j, $k, $rem);
 	my (@from, @to, @z, %zc, $redc, $eof, $line, $oldto);
 	my ($which) = $LEN-$pass;
 	print "Starting Pass b-$pass ...\n" if ($verbose);
 	$old = $olda = '';
 	my $XXX = 'X' x $pass;
-	$red = $rem = 0;
+	$rem = 0;
 	$i=0;
 	while (1) {
-		print STDERR "$i $red $rem\r" if ($verbose == 2 && $i%1000==0);
+		print STDERR "$i $rem\r" if ($verbose == 2 && $i%1000==0);
 		$i++;
 		if (!$eof) {
 			$eof = 1 unless defined ($line = <IN>);
@@ -249,7 +259,6 @@ sub reduce_2 {
 		    substr($to[$k], $which, $pass) = 'X' x $pass;
 		    print OUT "$from[$k] $to[$k] $z[$k]\n";
 		    $rem++;
-		    $redt-=$n,$red-=$n;
 	        }
 		else {
 		my ($l);
@@ -266,7 +275,6 @@ sub reduce_2 {
 		for ($j=0 ;$j < $n; $j++) {
 			$to[$j] =~ /^\d+/;
 			if ($z[$j] == $redc && length($&) == $l) {
-				$red1++,$redt++,$red++;
 				$k=$j;
 				next;
 			}
@@ -278,7 +286,6 @@ sub reduce_2 {
 		    substr($to[$k], $which, $pass) = 'X' x $pass;
 		    print OUT "$from[$k] $to[$k] $z[$k]\n";
 		    $rem++;
-		    $redt--,$red--;
 		}
 		}
 		# clean up & init for next bunch
@@ -291,18 +298,15 @@ sub reduce_2 {
 		}
 		$olda = $from;
 		$oldto = $to;
-		$red1 = 0;
 		# are we ready?
 		last if ($eof);
 	} # while
-	$tot = $i if($pass == 1 && $tot==0);
-	$red[$pass] = $red;
-	print "Pass b-$pass: $red data killed $rem remaining\n" if ($verbose);
+	$rem[$pass] = $rem;
+	print "Pass b-$pass: $rem remaining\n" if ($verbose);
 }
 
 sub optimize {
 	my ($pass);
-	my($OP) = 1;
 	for ($pass = 1; $pass <= $OP; $pass++) {
 		&optimize_2($pass);
 		open_new("$inf.a-${pass}p");
@@ -327,31 +331,28 @@ sub sort_opt {
     $newinf = "$inf.a-${pass}q";
     rename($outf, $newinf);
     system(qq(sort < $newinf |uniq | sed -e"s/X\\+//g"  > $outf));
-	my ($red, $wc, $orem);
+	my ($rem, $wc);
 	$wc = `wc --lines $outf`;
 	$wc =~ /(\d+)\s/;
-	$orem = $rem;
 	$rem = $1;
-	$red = $orem - $rem;
-	$redt += $red;
-    print "Pass o-$pass: $red data killed $rem remaining\n" if ($verbose);
-    $red[$pass + 10] = $red;
+    print "Pass o-$pass: $rem remaining\n" if ($verbose);
+    $rem[$pass + 10] = $rem;
 
 }
 
 
 sub optimize_2 {
     my ($pass) = $_[0];
-    my ($from, $to, $z, $i, $old, $oldfr1, $oldfr2, $red1, $j, $red, $k, $jj);
-    my (@from, @to, @z, %zc, $redc, $eof, $line, $stopped, $rem);
+    my ($from, $to, $z, $i, $old, $oldfr1, $oldfr2,  $j, $rem, $k, $jj);
+    my (@from, @to, @z, %zc, $redc, $eof, $line, $stopped);
     my (@fr1, @to1, @z1);
     my (@fr2, @to2, @z2, %used1, %used2, %toprint);
     print "Starting Pass o-$pass ...\n" if ($verbose);
     $old = $oldfr1 = $oldfr2 = '';
-    $red = $rem = 0;
+    $rem = 0;
     $i = 0;
     while (1) {
-		print STDERR "$i $red\r" if ($verbose == 2 && $i%100==0);
+		print STDERR "$i $rem\r" if ($verbose == 2 && $i%100==0);
 		$i++;
 		if (!$eof) {
     	    $eof = 1 unless defined ($line = <IN>);
@@ -377,13 +378,6 @@ sub optimize_2 {
 		my ($next1, $next2, %udif, %short);
 		$stopped = 0;
 		$next1 = 0;
-		if ($#from < 1) {
-		    $rem++,print OUT "$from[0] $to[0] $z[0]\n if(@from)";
-		    print OUT "$from $to $z\n";
-		    $rem++;
-		    last if ($eof);
-	    	next;
-		}
 		push(@from,'end'); # for the loop to finish
 		OUTER:
 		for ($jj = 0; $jj < @from; $jj++) {
@@ -486,7 +480,6 @@ sub optimize_2 {
 					    	print "Used $from[$next1] $from[$next2]\n" if($verbose==4);
 						    my %found;
 							my $p;
-							$red ++;
 							if (!$used1{$from[$next1]}) {
 							    for ($k=0; $k < @fr1; $k++) {
 									$p="$from[$next1+$k] $to1[$k] $z1[$k]";
@@ -550,5 +543,4 @@ sub optimize_2 {
 		$old = '';
 		last if($eof);
     } # while
-    $tot = $i if($pass == 1 && $opt_only);
 } # optimize
