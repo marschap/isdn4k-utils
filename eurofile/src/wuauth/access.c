@@ -30,10 +30,8 @@
  */
 
 #ifndef lint
-static char rcsid[] = "@(#)$Id: access.c,v 1.1 1999/06/30 17:19:29 he Exp $";
+static char rcsid[] = "@(#)$Id: access.c,v 1.2 1999/10/05 21:23:23 he Exp $";
 #endif /* not lint */
-
-#include "config.h"
 
 #include <stdio.h>
 #include <errno.h>
@@ -52,6 +50,8 @@ static char rcsid[] = "@(#)$Id: access.c,v 1.1 1999/06/30 17:19:29 he Exp $";
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <sys/param.h>
+
+#include "config.h"
 
 #include "pathnames.h"
 #include "extensions.h"
@@ -834,9 +834,10 @@ char *msgfile;
 /* FUNCTION  : access_init                                               */
 /* PURPOSE   : Read and parse the access lists to set things up          */
 /* ARGUMENTS : none                                                      */
+/* return: != 0 if error ist detected */
 /*************************************************************************/
 
-void
+int
 #ifdef __STDC__
 access_init(void)
 #else
@@ -845,19 +846,23 @@ access_init()
 {
     struct aclmember *entry;
     extern char *eft_access;
+    int ret;
 
     /* if (!readacl(_PATH_FTPACCESS)) changed -- he */
     if (!readacl(eft_access)){
-      if(use_accessfile) fprintf(stderr,"readacl() failed (file: %s)\n", eft_access);
-        return;
+      if(use_accessfile){
+	fprintf(stderr,"readacl() failed (file: %s)\n", eft_access);
+        return 1;
+      }
     }
-    (void) parseacl();
+    ret = parseacl();
 
     Shutdown[0] = '\0';
     entry = (struct aclmember *) NULL;
     if (getaclentry("shutdown", &entry) && ARG0 != NULL)
         (void) strncpy(Shutdown, ARG0, sizeof(Shutdown));
-
+    if( ret && use_accessfile) return 1;
+    return 0;
 }
 
 /*************************************************************************/

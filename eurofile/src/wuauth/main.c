@@ -33,8 +33,14 @@
 #endif
 #include <time.h>
 
+
 #include "config.h"
 #include "extensions.h"
+
+#ifdef SHADOW_PASSWORD
+#include <shadow.h>
+#endif
+
 #include "pathnames.h"
 
 #ifndef MAXHOSTNAMELEN
@@ -83,10 +89,6 @@ char	autherrmsg [256];
 #define SPT_SCO		6	/* write kernel u. area */
 #define SPACELEFT(buf, ptr)  (sizeof buf - ((ptr) - buf))
 
-#ifdef SHADOW_PASSWORD
-#include <shadow.h>
-#endif
-
 #ifdef HAVE_DIRENT
 #include <dirent.h>
 #else
@@ -106,8 +108,8 @@ char	autherrmsg [256];
 #endif
 
 extern int errno;
-extern int pidfd;
-
+extern int pidfd
+;
 extern char *ctime(const time_t *);
 #ifndef NO_CRYPT_PROTO
 extern char *crypt(const char *, const char *);
@@ -297,7 +299,7 @@ int wuftp_check_user (char *user, char *passw, char *isdnno) {
     int rval = 1;
     char *xpasswd, *salt;
 
-    access_init();
+    if(access_init()) return 0;
 
     strcpy (remotehost, isdnno);
     strcpy (remoteaddr, isdnno);

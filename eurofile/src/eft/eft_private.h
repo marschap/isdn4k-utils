@@ -1,7 +1,7 @@
-/* $Id: eft_private.h,v 1.1 1999/06/30 17:18:20 he Exp $ */
+/* $Id: eft_private.h,v 1.2 1999/10/05 21:23:21 he Exp $ */
 #include <sys/param.h>  /* MAXPATHLEN */
 
-/* files orm transfer names beginning with this prefix are
+/* file names beginning with this prefix are
  * used to store meta information used by the eftp4linux implementaion
  */
 #define EFT_METAFILE_PREFIX ".++eft"
@@ -69,3 +69,19 @@ extern const char * eft_use_as_tname(const char *, int, int);
 extern const char * eft_signature;
 extern const char * eft_flat_dir_name;
 extern int eft_is_alias(const char *);
+
+#define DIRENT_CMP_TYPE (int (*)(const void*,const void *)) 
+#define CONST_DIRENT
+
+/* glibc1 has different definition of scandir */
+#ifdef __GNU_LIBRARY__
+#ifndef __GLIBC__
+
+#undef CONST_DIRENT
+#define CONST_DIRENT const 
+#undef DIRENT_CMP_TYPE
+#define DIRENT_CMP_TYPE
+
+#endif
+#endif
+

@@ -1,4 +1,4 @@
-/* $Id: eftd.c,v 1.2 1999/07/25 21:55:58 he Exp $ */
+/* $Id: eftd.c,v 1.3 1999/10/05 21:23:22 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -22,22 +22,26 @@
  * eft server. Experimental and incomplete right now. Use with care.
  */
 
+/* for strsignal() */
+#define _GNU_SOURCE       
+
+#include <sys/param.h>
+#include <sys/time.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/time.h>
-#include <sys/wait.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <signal.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
+#include <syslog.h>
 #include <linux/x25.h>
 /* for error mask setting */
 #include <tdu_user.h>
 #include <eft.h>
-#include <string.h>
-#include <syslog.h>
 /* is in net/x25.h, not in the public header file linux/x25.h. Why?*/ 
 #ifndef X25_ADDR_LEN
 #define X25_ADDR_LEN 16
@@ -48,6 +52,12 @@
 
 #include <pwd.h>
 #include <sys/types.h>
+
+#ifdef  __USE_GNU
+/* Return a string describing the meaning of the signal number in SIG.  */
+extern char *strsignal __P ((int __sig));
+#endif
+
 
 static time_t session_start;
 
@@ -94,12 +104,21 @@ static int eft_check_user( struct eft *eft, char* user, char* pass, char *isdn_n
 	long flags=eft_get_flags(eft);
 
 	tdu_printf(TDU_LOG_LOG,"checking wu user (user=\"%s\", pass=\"%s\")\n",user,"xxx" /* pass */);
-	if( *user == 0 ) user = "ftp";
-	
+	if( *user == 0 )
+		user = "ftp";
 	verified = wuftp_check_user(user, pass, isdn_no);
+	printf("user check: ruid=%d, euid=%d\n",getuid(),geteuid());
+	/* 
+	 * Be paranoid about buggy authentification functions that claim
+	 * success but are still runnung as root.
+	 */
+	if (verified && !geteuid()){
+		tdu_printf(TDU_LOG_ERR, "eftd: BUG in authentification procedure.\n (claims success, but process runs still with root priviliges).\nRejecting login for security reasons.\n");
+		/* verified=0; */
+	}
+
 	if( ! verified ){
-		/* FIXME: should we set uid and gid to "nobody" here? */
-		
+		setreuid(-1,-1); /* nobody */
 		tdu_printf(TDU_LOG_WARN, "autentification of user \"%s\" failed.", user);   
 		/* seems better then TDU_RE_WRONG_ID, but EFT_RE_ID_REJECTED
 		 * needs to be appended by caller */

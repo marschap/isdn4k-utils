@@ -1,4 +1,4 @@
-/* $Id: CHANGES,v 1.5 1999/07/26 22:04:24 he Exp $
+/* $Id: CHANGES,v 1.6 1999/10/05 21:23:20 he Exp $
 #  Change log for eftp4Linux
 #
 # [new] means 'new feature added'
@@ -18,6 +18,19 @@
 #
 
 $Log: CHANGES,v $
+Revision 1.6  1999/10/05 21:23:20  he
+glibc2 compatibility and misc other cleanups
+
+
+- [chg] src/eft* #include <stdlib.h> where needed for realpath()
+	(for glibc2 support)
+- [imp] added paranoia check in eftd.c authentification handling.
+- [imp] wuauth/{main,access,acl}.c: reject login if access file is required
+	but opening or reading fails
+- [imp] wuauth/{*.c,config.h}: changed ordering of #include's and added
+	some conditional #define's to suppress glibc2 warnings
+ 
+
 Revision 1.5  1999/07/26 22:04:24  he
 eftp suid support
 

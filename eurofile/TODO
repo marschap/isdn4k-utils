@@ -1,11 +1,11 @@
-$Id: TODO,v 1.4 1999/07/26 22:04:27 he Exp $
+$Id: TODO,v 1.5 1999/10/05 21:23:20 he Exp $
 
 
 Important:
-
-   The server and client initially need to run with root priviliges.
+ 
+   The server and client initially need to run with root privileges.
    Thus, those parts need careful review by experienced unix
-   programmers who should watch out for potential securirity hazards.
+   programmers who should watch out for potential security hazards.
 
    In particular buffer overflows triggered by cmd line options or
    environment (eftp) or received protocol data units (eftd)
@@ -15,14 +15,14 @@ Important:
 Not showstoppers, but should be done before a possible stable release:
 
 	- 'make install', with reasonable default config files.
-	- remove old execve()/script rleated stuff from setup/autoconf
+	- remove old execve()/script related stuff from setup/autoconf
 	- more casefix testing with new mangeling method
-	- selectivly and automatically (for filesystems not supporting
+	- selectively and automatically (for file systems not supporting
 	  symlinks) disallow symlink-based transfer name database
 	  lookup   
 	- certain disconnect scenarios result in error/warning
           messages which are harmless, but might confuse novice users.
-	  (in particualar, release/wait for release seems to be buggy)
+	  (in particular, release/wait for release seems to be buggy)
 	- make eftp command input working when stdin is a pipe.
 	- scan all source files for FIXME/XXX/#if 0 labels and
 	  try cleaning this up.
@@ -53,10 +53,10 @@ Not showstoppers, but should be done before a possible stable release:
 
 
    Currently the CI field of the result/reason parameter of received
-   T-response-pos/neg is not allways checked for matching the corresponding
+   T-response-pos/neg is not always checked for matching the corresponding
    command CI.
 
-   To do:  Check and implement appropriate exeception actions if
+   To do:  Check and implement appropriate exception actions if
            mismatch is detected.
 
 
@@ -68,7 +68,7 @@ Not showstoppers, but should be done before a possible stable release:
 
    Currently, certain ETS 300 075 services (in particular T_Delete, T_Rename,
    T_Read_Restart) are not supported. The supported
-   services don't support all (optional) paramaters. Thus, the corresponding
+   services don't support all (optional) parameters. Thus, the corresponding
    Eurofile services are not supported, either (in particular no
    deletion nor renaming of files).
 
@@ -84,11 +84,11 @@ if anybody is interested:
 
    For future portability to non-posix system, consider implementing a
    tdu_stream object which is based on standard C file handles
-   instead of unix file-descripters. This might also improve performance
+   instead of unix file-descriptors. This might also improve performance
    due to internal buffering.
 
    The eftp client provided with eftp4linux is a rather primitive
-   front end (this is intentinoal) to the eft protocol library's
+   front end (this is intentional) to the eft protocol library's
    client code.
 
    To Do: write more user friendly client front ends. Or even better,

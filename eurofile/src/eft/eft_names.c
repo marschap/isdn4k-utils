@@ -1,4 +1,4 @@
-/* $Id: eft_names.c,v 1.1 1999/06/30 17:18:18 he Exp $ */
+/* $Id: eft_names.c,v 1.2 1999/10/05 21:23:21 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -97,7 +97,7 @@ int eft_need_slash_fix(struct eft * eft)
 /*
  * check whether a dirent case-insensitivly matches g_fname
  */
-static int dent_casecmp(const struct dirent * dent)
+static int dent_casecmp(CONST_DIRENT struct dirent * dent)
 {
 	return( strcasecmp(dent->d_name,g_fname) == 0 );
 }
@@ -286,7 +286,7 @@ int eft_valid_fstore_name(const unsigned char *fstore)
  * check whether the inode number reffered by dent is equal to g_inode
  * (g_inode is a global variable)
  */
-static int dent_has_g_inode(const struct dirent * dent)
+static int dent_has_g_inode(CONST_DIRENT struct dirent * dent)
 {
 	struct stat s[1];
 	int old_errno = errno;

@@ -1,4 +1,4 @@
-/* $Id: eftp.c,v 1.3 1999/07/26 22:04:57 he Exp $ */
+/* $Id: eftp.c,v 1.4 1999/10/05 21:23:22 he Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -104,9 +104,8 @@
 
    */
 
-       
-
-
+/* for strsignal() */
+#define _GNU_SOURCE       
 
 #include <stdio.h>
 #include <termios.h>
@@ -114,19 +113,20 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
 #include <signal.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <sys/wait.h>
 #include <linux/x25.h>
-/* for error mask setting */
-#include <tdu_user.h>
-#include <eft.h>
 #include <string.h>
 #include <stdlib.h>
 #include <glob.h>
 #include <fnmatch.h>
 #include <ctype.h>
+
+#include <tdu_user.h>
+#include <eft.h>
 
 #define MAX_COMMAND_LINE_LEN 4096
 

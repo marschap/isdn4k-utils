@@ -1,4 +1,4 @@
-/* $Id: eft_dir.c,v 1.1 1999/06/30 17:18:14 he Exp $ */
+/* $Id: eft_dir.c,v 1.2 1999/10/05 21:23:21 he Exp $ */
 /*
   Copyright 1998 by Henner Eisen
 
@@ -22,10 +22,11 @@
 
 
 #include <malloc.h>
+#include <sys/param.h>
+#include <sys/stat.h>
 #include <dirent.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/param.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
@@ -34,12 +35,11 @@
 #include "eft_private.h"
 #include <tdu_user.h>
 #include "fileheader.h"
-/* #include "../config.h" */
 
 /*
  * check wether a dent refers a regular file 
  */
-int eft_valid_dent_r(const struct dirent * dent)
+int eft_valid_dent_r(CONST_DIRENT struct dirent * dent)
 {
 	struct stat s[1];
 	int old_errno = errno;
@@ -55,7 +55,7 @@ int eft_valid_dent_r(const struct dirent * dent)
  * check whether a dent refers a regular file and can be used as a transfer 
  * name 
  */
-int eft_valid_dent_r_t(const struct dirent * dent)
+int eft_valid_dent_r_t(CONST_DIRENT struct dirent * dent)
 {
 	struct stat s[1];
 	int old_errno = errno;
@@ -72,7 +72,7 @@ int eft_valid_dent_r_t(const struct dirent * dent)
  * check whether a dent refers a regular file and can be used as a transfer 
  * name keyword
  */
-int eft_valid_dent_r_k(const struct dirent * dent)
+int eft_valid_dent_r_k(CONST_DIRENT struct dirent * dent)
 {
 	struct stat s[1];
 	int old_errno = errno;
@@ -89,7 +89,7 @@ int eft_valid_dent_r_k(const struct dirent * dent)
  * check whether a dent refers a symlink to a regular file
  * and can be used as a transfer name keyword
  */
-int eft_valid_dent_s_k(const struct dirent * dent)
+int eft_valid_dent_s_k(CONST_DIRENT struct dirent * dent)
 {
 	struct stat s[1];
 	int old_errno = errno;
@@ -111,7 +111,7 @@ int eft_valid_dent_s_k(const struct dirent * dent)
  * Check whether a dent refers a regular file that has been assigned
  * a transfer name in the database.
  */
-int eft_mapped_dent(const struct dirent * dent)
+int eft_mapped_dent(CONST_DIRENT struct dirent * dent)
 {
 	int old_errno = errno, ret=0;
 
@@ -127,7 +127,7 @@ int eft_mapped_dent(const struct dirent * dent)
  * check whether a dent refers a symlink and can be used as a transfer 
  * name keyword and a valid DO$ file name.
  */
-int eft_valid_dent_s_kd(const struct dirent * dent)
+int eft_valid_dent_s_kd(CONST_DIRENT struct dirent * dent)
 {
 	if( ! eft_valid_dosname(dent->d_name) ) return 0;
         return eft_valid_dent_s_k(dent);
@@ -137,7 +137,7 @@ int eft_valid_dent_s_kd(const struct dirent * dent)
  * check whether a dent refers a regular file but cannot be used as 
  * a valid transfer name keyword
  */
-int eft_invalid_dent_r_k(const struct dirent * dent)
+int eft_invalid_dent_r_k(CONST_DIRENT struct dirent * dent)
 {
 	struct stat s[1];
 	int old_errno = errno;
@@ -159,7 +159,7 @@ int eft_invalid_dent_r_k(const struct dirent * dent)
  */
 const char * g_dir=".";
 
-int eft_valid_dent_d(const struct dirent * dent)
+int eft_valid_dent_d(CONST_DIRENT struct dirent * dent)
 {
 	struct stat s[1];
 	char path[MAXPATHLEN+NAME_MAX+2];
@@ -213,11 +213,12 @@ static int eft_dir_is_hidden(char * dname, int strict_tree)
  * words.
  *
  * The resulting ordering on existing symlinks is intended to select nice
- * transfer names for files whose name does not form a valid eft
+ * transfer names for files whose name do not form a valid eft
  * transfer name keyword.
  */
-static int trn_sort(const struct dirent * const *a,
-		    const struct dirent * const *b)
+
+static int trn_sort( const struct dirent * const *a,
+		     const struct dirent * const *b)
 {
 	const char ugly[] = "?{}[];|#", *c;
 	int ra, rb;
@@ -297,7 +298,8 @@ void eft_update_db(const char * dname)
 #if 0
         printf("scanning dir %s for ordered list of tkey symlinks\n",dname);
 #endif
-	ndirs = scandir(dname, &namelist, eft_valid_dent_s_k, trn_sort );
+	ndirs = scandir(dname, &namelist, eft_valid_dent_s_k,
+			DIRENT_CMP_TYPE trn_sort );
 	/* printf("%d entries\n",ndirs); */
 	if (ndirs < 0) { 
 		perror("eft_update_db:scandir dent_s_k");
@@ -314,8 +316,7 @@ void eft_update_db(const char * dname)
 #if 0	
         printf("scanning dir %s for non-tkey regular files\n",dname);
 #endif
-	ndirs = scandir(dname, &namelist, eft_invalid_dent_r_k,
-			alphasort );
+	ndirs = scandir(dname, &namelist, eft_invalid_dent_r_k,	alphasort);
 	/* printf("%d entries\n",ndirs); */
 	if (ndirs < 0) { 
 		perror("eft_update_db:scandir dent_r_k");

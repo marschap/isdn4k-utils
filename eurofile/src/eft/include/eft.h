@@ -1,4 +1,4 @@
-/* $Id: eft.h,v 1.2 1999/07/25 21:55:53 he Exp $ */
+/* $Id: eft.h,v 1.3 1999/10/05 21:23:22 he Exp $ */
 /*
  * Interface for accessing eurofile service primitives.
  * Eurofile for Linux is implemented as a library. Programmers
@@ -11,10 +11,11 @@ struct eft;
 
 extern int eft_connect (struct eft *, unsigned char *);
 extern int eft_disconnect (struct eft *);
+#ifdef FD_SET
 struct timeval;
 extern int eft_select( struct eft *, int, fd_set *,
 		       fd_set *, fd_set *, struct timeval *);
-
+#endif
 extern struct eft * eft_make_instance();
 extern int eft_attach_socket(struct eft *, int);
 extern int eft_get_socket(struct eft *);

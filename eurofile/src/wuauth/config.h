@@ -1,6 +1,6 @@
 /*
  * Linux configuration file
- * $Id: config.h,v 1.1 1999/06/30 17:19:31 he Exp $
+ * $Id: config.h,v 1.2 1999/10/05 21:23:23 he Exp $
  */
 #include <linux/version.h>
 #if defined(LINUX_VERSION_CODE)
@@ -45,7 +45,9 @@
 #define __USE_POSIX
 #endif
 #include <limits.h>
+#ifndef NBBY
 #define NBBY 8
+#endif
 #ifndef NCARGS
 #ifdef _POSIX_ARG_MAX
 #define NCARGS _POSIX_ARG_MAX
