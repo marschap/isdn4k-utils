@@ -1,4 +1,4 @@
-/* $Id: libtools.h,v 1.7 1998/10/13 21:53:37 luethje Exp $
+/* $Id: libtools.h,v 1.8 1998/10/13 22:17:25 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.h,v $
+ * Revision 1.8  1998/10/13 22:17:25  luethje
+ * isdnlog: evaluate the variable PATH for program starts.
+ *
  * Revision 1.7  1998/10/13 21:53:37  luethje
  * isdnrep and lib: bugfixes
  *
@@ -54,6 +57,10 @@ extern char *basename __P((__const char *__name));
 
 #ifndef TMPDIR
 # define TMPDIR P_tmpdir
+#endif
+
+#ifndef PATH_ENV
+# define PATH_ENV "PATH"
 #endif
 
 /****************************************************************************/
@@ -110,6 +117,7 @@ _EXTERN char *Replace_Variable(char *String);
 _EXTERN char *int2str(int value, int prec);
 _EXTERN char *Strncpy(char *dest, const char *src, int len);
 _EXTERN char *Strncat(char *dest, const char *src, int len);
+_EXTERN const char *Pathfind(const char *path, const char *name, char *mode);
 
 #undef _EXTERN
 

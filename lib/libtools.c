@@ -1,4 +1,4 @@
-/* $Id: libtools.c,v 1.7 1998/10/13 21:53:36 luethje Exp $
+/* $Id: libtools.c,v 1.8 1998/10/13 22:17:22 luethje Exp $
  * ISDN accounting for isdn4linux.
  *
  * Copyright 1996 by Stefan Luethje (luethje@sl-gw.lake.de)
@@ -18,6 +18,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.c,v $
+ * Revision 1.8  1998/10/13 22:17:22  luethje
+ * isdnlog: evaluate the variable PATH for program starts.
+ *
  * Revision 1.7  1998/10/13 21:53:36  luethje
  * isdnrep and lib: bugfixes
  *
@@ -47,6 +50,7 @@
 #include <malloc.h>
 #include <fnmatch.h>
 #include <ctype.h>
+#include <unistd.h>
 
 #include "libtools.h"
 
@@ -674,6 +678,65 @@ char *Strncpy(char *dest, const char *src, int len)
 	dest[l] = '\0';
 
 	return dest;
+}
+
+/****************************************************************************/
+
+const char *Pathfind(const char *path, const char *name, char *mode)
+{
+	static char file[PATH_MAX];
+	char _path[PATH_MAX];
+	int _mode = 0;
+	char *ptr = _path;
+
+
+	if (name == NULL)
+		return NULL;
+
+	if (path == NULL)
+	{
+		if ((ptr = getenv(PATH_ENV)) == NULL)
+			return NULL;
+
+		Strncpy(_path,ptr,PATH_MAX);
+		ptr = _path;
+		_mode = X_OK;
+	}
+	else
+		Strncpy(_path,path,PATH_MAX);
+
+	if (mode != NULL)
+		while (*mode)
+		{
+			switch(*mode++)
+			{
+				case 'x': _mode |= X_OK;
+				          break;
+				case 'w': _mode |= W_OK;
+				          break;
+				case 'r': _mode |= R_OK;
+				          break;
+				default :
+			}
+		}
+
+
+	if (strchr(name,C_SLASH) != NULL)
+		if (!access(name,_mode))
+			return name;
+		else
+			return NULL;
+
+	while((ptr = strtok(ptr,":")) != NULL)
+	{
+		snprintf(file,PATH_MAX-1,"%s/%s",ptr,name);
+		if (!access(file,_mode))
+			return file;
+
+		ptr = NULL;
+	}
+
+	return NULL;
 }
 
 /****************************************************************************/

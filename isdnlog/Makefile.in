@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.43 1998/10/03 18:05:48 akool Exp $
+## $Id: Makefile.in,v 1.44 1998/10/13 22:17:09 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.44  1998/10/13 22:17:09  luethje
+## isdnlog: evaluate the variable PATH for program starts.
+##
 ## Revision 1.43  1998/10/03 18:05:48  akool
 ##  - processor.c, takt_at.c : Patch from Michael Reinelt <reinelt@eunet.at>
 ##    try to guess the zone of the calling/called party
@@ -345,7 +348,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.33
+VERSION     = 2.99.34
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES
