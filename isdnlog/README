@@ -28,19 +28,6 @@ Quick-Installation-Guide
      vi | emacs | vim | e | nedit | ... | /etc/isdn/isdn.conf
 
    -----------------------------------------------------
-   [GLOBAL]
-   AREACODE    =069
-   COUNTRYCODE =+49
-
-   [ISDNLOG]
-   ILABEL    = %b %e %T %ICall to tei %t from %N2 on %n2
-   OLABEL    = %b %e %T %Itei %t calling %N2 with %n2
-   CHARGEMAX = 1000.00
-   -----------------------------------------------------
-
-     vi | emacs | vim | e | nedit | ... | /etc/isdn/callerid.conf
-
-   -----------------------------------------------------
    [MSN]
    NUMBER = 4711
    SI     = 1
@@ -59,9 +46,6 @@ Quick-Installation-Guide
    ALIAS  = X.75
    ZONE   = 1
    -----------------------------------------------------
-   mit:
-     AREACODE=<Eigene_Vorwahl>
-     COUNTRYCODE=<Landesvorwahl>
 
      NUMBER = <eigene_Telefonnumer_ohne_Vorwahl>
      SI = <Dienstkennung>
@@ -395,6 +379,8 @@ Gegebenheiten angepasst werden:
 
   LOGFILE  (/var/log/isdn.log)
     Wie soll das Logbuch heissen
+    (Diese Einstellung laesst sich spaeter noch zur Laufzeit in der isdn.conf
+    aendern)
 
   RUNDIR  (/var/run/)
   	Wol liegen die pid files (lock-Dateien).
@@ -504,7 +490,8 @@ von Bedeutung sind. Hier sind folgende Eintrage zu finden:
 AREACODE:
   Beinhaltet die eigene Ortsvorwahl (mit oder ohne vorlaufender "0". Der
 	Prefix "0" wird in der Datei config.h durch das Macro S_AREA_PREFIX
-	representiert).  Dieser Eintrag ist zwingend.
+	oder durch den Eintrag AREAPREFIX representiert).  Dieser Eintrag ist
+	zwingend.
 	Wird isdnlog im 1TR6 eingesetzt, muss hier die _gesamte_ Telefonnummer
 	exclusive der EAZ eingetragen werden. Diese Variable ist absolute Pflicht!
 	Beispiel fuer Hamburg (Euro-ISDN !!!):
@@ -518,7 +505,8 @@ AREACODE:
 COUNTRYCODE:
 	Hier wird die eigene Laenderkennung gesetzt (mit oder ohne vorlaufendem "+".
 	Der Prefix "+" wird in der Datei config.h durch das Macro S_COUNTRY_PREFIX
-	representiert). Dieser Eintrag ist ebenfalls zwingend.
+	oder durch den Eintrag AREAPREFIX representiert). Dieser Eintrag ist
+	ebenfalls zwingend.
 	Beispiel fuer Deutschland:
 	COUNTRYCODE = +49 # oder
 	COUNTRYCODE = 49
@@ -526,6 +514,14 @@ COUNTRYCODE:
 	Wenn S_COUNTRY_PREFIX den String "0815" enthaelt, dann ist auch folgende
 	Zeile erlaubt:
 	COUNTRYCODE = 081549
+
+AREAPREFIX:
+  Es enthaelt den Prefix zur Ortsvorwahl. Beim Kompilieren ist dieser
+  Wert defaultmaessig auf "0" gesetzt. Dieser Eintrag ist optional.
+
+COUNTRYPREFIX:
+  Es enthaelt den Prefix zur Laenderkennung. Beim Kompilieren ist dieser
+  Wert defaultmaessig auf "+" gesetzt. Dieser Eintrag ist optional.
 
 AREALIB:
   Enthaelt den vollen Pfad zu der Datei "areacodes". Diese Angabe ist
@@ -755,10 +751,11 @@ Die Datei "~/.isdn" kann jeder Benutzer haben, der den isdnrep und den isdnconf
 verwendet. Hier sind die Rechte der Datei voellig egal. Diese Datei ist
 dafuer bestimmt, dass ein Benutzer soetwas wie ein eigenes Telefonverzeichnis
 anlegen kann, wo auch die Nummer nur beim isdnrep angezeigt werden.
+Es koennen hier aber die [MSN]-Eintraege ueberschrieben werden fuer die
+beiden Programme isdnconf und isdnrep.
 
 Es gibt bestimmte Regeln, nachdem Eintraege aus der Datei "~/.isdn" die
 Eintraege der "callerid.conf" ueberschreiben:
-
 
 Der Sektionsname ist in "callerid.conf" und "~/.isdn" gleich (entweder
 [MSN] oder [NUMBER]).
@@ -823,7 +820,6 @@ Im obigen Fall gilt das gleiche wie beim vorherigen Beispiel.
 Jede Sektion (Nummer) kann eine Dienstekennung enthalten. Dieses wird durch
 einen Eintrag in der Form
 
-****************************gestern*****************************************
 SI=4 # Video
 
 realisiert.
@@ -917,14 +913,9 @@ folgen. Das gleiche gilt fuer die Sektionen innerhalb einer Datei.
 Im folgenden werden nun die einzelnen Eintraege unter den Sektionen MSN
 und NUMBER erwaehnt:
 
-******** Was ist das? *************
-MSN    Alias Zone Interface Info-Args
------------------------------------------------------------
-4711,1 Phone 1    -	    IORA=auplay dingdong.au,,18-21;
 
-
-4.2.1 1. Eintrag: Telefonnummer [NUMBER]
-----------------------------------------
+4.2.1 1. Eintrag: Telefonnummer [NUMBER] und [MSN]
+--------------------------------------------------
 
 Hier muss zwischen 1TR6 und DSS1 unterschieden werden:
 
@@ -993,7 +984,7 @@ ALIAS = helmut kohl
 
 
 4.2.3 3. Eintrag: Tarifzone
---------------------------
+---------------------------
 
 Ein weiterer Eintrag ist die Tarifzone, in der sich von uns aus gesehen
 diese Nummer befindet:
@@ -1014,7 +1005,7 @@ oder
 ZONE = 5
 
 4.2.4 4. Eintrag: IP-Interface
------------------------------
+------------------------------
 
 Dieser Eintrag repraesentiert das IP-Interface, welches auf dieser
 Nummer konfiguriert wurde, oder ein "-", falls dieser Nummer kein
@@ -1025,25 +1016,41 @@ Beispiel:
 
 INTERFACE=ippp0
 
-*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 4.2.5 5. Eintrag: Info-Args
---------------------------
+---------------------------
 
-ACHTUNG: Syntax hat sich geaendert!
+Hier besteht unter der Sektion [NUMBER] und [MSN] eine Untersektion. Diese
+ist allerdings optional. Diese Informationen werden vom isdnlog nur ausgewertet,
+wenn die Option -S gesetzt wurde.
+Die Untersektion traegt den Namen START.
+
+Es koennen mehrere Programme pro Nummer angegeben werden, zum Beispiel fuer
+jedes Event. Hier folgt nun ein Beispiel. Die Erklaerung folgt anschliessend:
+
+[MSN]
+NUMBER    = 4711
+SI        = 1                  # Das normale Telefon
+ALIAS     = Phone
+START     = {                  # Beginn der Untersektionen
+	[FLAG]
+	FLAGS   = I|O|R              # alternativ geht auch FLAGS=IORA
+	PROGRAM = auplay ring.au
+
+	[FLAG]
+	FLAGS   = A
+	PROGRAM = auplay pay.au
+}                              # Ende der Untersektionen
+
 
 Hier werden jetzt alle anderen Spalten wie Flags, Time und Info-Arg vereinigt.
 
-Aufbau:
-"Flags"="Info-Arg"[,Intervall[,"Time"[,"Time",..]]]; ["Flags....]
+Jeder Programmstart fuer ein Event wird mit der (Unter-)Sektion [FLAG]
+eingeleitet.
 
----------------------------------------------------^
-Es ist darauf zu achten, dass nach jedem Info-Arg ein Semikolon kommt!
-Auch nach dem letzten Info-Arg _muss_ ein Semikolon!
+Unter dieser Sektion sind nun verschiedene Eintraege zu finden. Die folgende
+Reihenfolge muss allerdings innerhalb der Sektion nicht eingehalten werden:
 
-Es koennen pro MSN mehrere Befehle angegeben werden. z.B. fuer jedes Event
-eines.
-
-Flags:
+Eintrag Flags:
 ------
 
 Hier wird angegeben, bei welchem Event das Info-Programm gestartet werden
@@ -1168,6 +1175,54 @@ kann, dass isdnlog darauf nicht reagiert.
 | RING |
 -------H
 
+In der Zeile koennen die einzelnen Events entweder als ein "Wort" geschrieben
+werden oder aber durch das Zeichen "|" getrennt werden:
+
+FLAGS = IORA
+
+oder
+
+FLAGS = I|O|R|A
+
+Wobei die zweite Schreibweise wesentlich uebersichtlicher ist.
+
+
+User
+----
+
+Wenn ein Programm gestartet wird, kann die User-ID umgestellt werden. Dieses
+ist sogar notwendig, wenn der Benutzer (nicht noetig fuer den Bernutzer root !!)
+die Rechte an der Datei besitzt. isdnlog verbietet es seit der Version 3.0,
+dass das Programm als normaler Benutzer gestartet wird. Ebenso wird es
+unterbunden ein Programm zu starten, wo ein Benutzer Leserechte besitzt
+und dieses als root gestartet wird. Dieses koennte sich als trojanisches Pferd
+verwenden lassen. Daher muessen Programme, die nicht root gehoeren oder
+die jeder (others) beschreiben kann mit dem Eintrag USER belegt werden.
+Der Eintrag hat folgende Syntax:
+
+USER=fred
+
+oder
+
+USER=103
+
+Es kann also entweder der Benutzername oder die Benutzer-ID verwendet werden.
+
+Group
+-----
+
+Dieser Eintrag verhaelt sich analog zu dem Eintrag USER. Auch hier gilt wieder
+die Systemsicherheit. Die Syntax ist wie folgt:
+
+GROUP=freaks
+
+oder
+
+GROUP=201
+
+Es kann also entweder der Gruppenname oder die Gruppen-ID verwendet werden.
+
+*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 Time
 ----
 
