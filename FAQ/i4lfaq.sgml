@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.91, 31. October 2004
+<date>v2.0.92, 9. January 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -861,9 +861,9 @@ assume you have a passive card. More about the difference: see question
 <ref id="hardware_activepassive" name="hardware_activepassive">.
 
 Right now there is a driver for all passive card with certain Siemens
-chipsets (HiSax driver). Have a look at the <tt/README.HiSax/ that comes with
-the driver for the most up to date information on supported cards and which
-parameter to pass to Hisax.
+chipsets (HiSax driver). Have a look at the <tt>README.HiSax</tt> that comes
+with the driver for the most up to date information on supported cards and
+which parameter to pass to Hisax.
 Here the status from 1st February 2002 (constantly improving):
 <itemize>
 <item>Teles 8.0/16.0/16.3 and compatible ones (like: Dr. Neuhaus Niccy
@@ -1183,10 +1183,13 @@ mode like a leased line.
 
 However, some special software named PBX4Linux has been written for this.
 You may want to have a look at the German article in ct 9/2004 on how to use
-PBX4Linux.
+PBX4Linux. You can also check the web site
+<tt><url url="http://isdn.jolly.de"></tt>.
+You may especially be interested in the information about card support for the
+NT mode with mISDN at: <tt><url url="http://isdn.jolly.de/cards.html"></tt>.
 
 Another alternative for emulation of a PBX is Asterisk, to be found on:
-<tt><url url="http://www.asterisk.org"></tt>
+<tt><url url="http://www.asterisk.org"></tt>.
 
 Also, it is possible to give up one B-channel in exchange for reading the
 complete D-channel protocol, which is great for isdnlog. The later can
@@ -1854,8 +1857,6 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <tt><url url="http://www-ti.informatik.uni-tuebingen.de/~hippm/isdn.html"></tt>
 <item>Chargeint tips:
 <tt><url url="http://www.auf-der-er.de/chargeint.html"></tt>
-<item>Homepage of kisdn (only works with Qt/KDE):
-<tt><url url="http://www.millenniumx.de/kisdn.html"></tt>
 <item>Homepage of linecontrol (manage isdn dialing similar to kisdn):
 <tt><url url="http://linecontrol.sourceforge.net"></tt>
 <item>(German) Homepage of ISDN Sniffer (read ISDN bus, e.g. via reversed
