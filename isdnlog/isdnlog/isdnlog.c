@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.22 1998/09/26 18:29:07 akool Exp $
+/* $Id: isdnlog.c,v 1.23 1998/10/06 12:50:57 paul Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.23  1998/10/06 12:50:57  paul
+ * As the exec is done within the signal handler, SIGHUP was blocked after the
+ * first time. Now SIGHUP is unblocked so that you can send SIGHUP more than once.
+ *
  * Revision 1.22  1998/09/26 18:29:07  akool
  *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
  *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -848,10 +852,11 @@ void raw_mode(int state)
 int main(int argc, char *argv[], char *envp[])
 {
   register char  *p;
-  register int 	  i, res = 0;
-  auto 	   int    lastarg;
-	auto     char   rlogfile[PATH_MAX];
-	auto     char **devices = NULL;
+  register int    i, res = 0;
+  auto     int    lastarg;
+  auto     char   rlogfile[PATH_MAX];
+  auto     char **devices = NULL;
+  sigset_t        unblock_set;
 #ifdef TESTCENTER
   extern   void   test_center(char*);
 #endif
@@ -958,6 +963,15 @@ int main(int argc, char *argv[], char *envp[])
 
     if (!(allflags & PRT_DEBUG_GENERAL))
       signal(SIGSEGV, exit_on_signal);
+
+    /*
+     * If hup_handler() already did an execve(), then SIGHUP is still
+     * blocked, and so you can only send a SIGHUP once. Here we unblock
+     * SIGHUP so that this feature can be used more than once.
+     */
+    sigemptyset(&unblock_set);
+    sigaddset(&unblock_set, SIGHUP);
+    sigprocmask(SIG_UNBLOCK, &unblock_set, NULL);
 
     sockets[ISDNCTRL].descriptor = !strcmp(isdnctrl, "-") ? fileno(stdin) : open(isdnctrl, O_RDONLY | O_NONBLOCK);
     if (*isdnctrl2)
