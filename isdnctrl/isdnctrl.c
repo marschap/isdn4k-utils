@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.9 1997/08/21 14:47:00 fritz Exp $
+/* $Id: isdnctrl.c,v 1.10 1997/09/11 19:03:32 fritz Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.10  1997/09/11 19:03:32  fritz
+ * Bugfix: Tried to get Version-Info on wrong device.
+ *
  * Revision 1.9  1997/08/21 14:47:00  fritz
  * Added Version-Checking of NET_DV.
  *
@@ -1075,7 +1078,14 @@ int exec_args(int fd, int argc, char **argv)
 	return 0;
 }
 
-void check_version(int fd) {
+void check_version() {
+	int fd;
+
+	fd = open("/dev/isdninfo", O_RDWR);
+	if (fd < 0) {
+		perror("/dev/isdninfo");
+		exit(-1);
+	}
 	data_version = ioctl(fd, IIOCGETDVR, 0);
 	if (data_version < 0) {
 		fprintf(stderr, "Could not get version of kernel ioctl structs!\n");
@@ -1083,6 +1093,7 @@ void check_version(int fd) {
 		fprintf(stderr, "(Try recompiling isdnctrl).\n");
 		exit(-1);
 	}
+	close(fd);
 	data_version = (data_version >> 8) & 0xff;
 	if (data_version != NET_DV) {
 		fprintf(stderr, "Version of kernel ioctl structs (%d) does NOT match\n",
@@ -1121,17 +1132,18 @@ void main(int argc, char **argv)
 	else
 		cmd = argv[0];
 
+	if (argc == 1) {
+		usage();
+		exit(-1);
+	}
+	check_version();
+
 	fd = open("/dev/isdnctrl", O_RDWR);
 	if (fd < 0) {
 		perror("/dev/isdnctrl");
 		exit(-1);
 	}
 
-	if (argc == 1) {
-		usage();
-		exit(-1);
-	}
-	check_version(fd);
 
 	exec_args(fd,argc-1,argv+1);
 	close(fd);
