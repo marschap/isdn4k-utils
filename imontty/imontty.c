@@ -2,7 +2,7 @@
  *
  * (c) 1995-97 Volker Götz
  *
- * $Id: imontty.c,v 1.1 1997/03/03 04:10:12 fritz Exp $
+ * $Id: imontty.c,v 1.2 1997/04/05 14:18:30 calle Exp $
  */
 
 #include <stdlib.h>
@@ -10,6 +10,128 @@
 #include <string.h>
 #include <linux/isdn.h>
 #include "imontty.h"
+
+struct phone_entry {
+   struct phone_entry *next;
+   char phone[30];
+   char name[30];
+};
+
+static struct phone_entry *phones;
+static char *phonebook;
+static int show_names = 1;
+
+static int Star(char *, char *);
+
+/*
+ * Wildmat routines
+ */
+static int wildmat(char *s, char *p) {
+  register int   last;
+  register int   matched;
+  register int   reverse;
+
+  for ( ; *p; s++, p++)
+    switch (*p) {
+    case '\\':
+      /* Literal match with following character; fall through. */
+      p++;
+    default:
+      if (*s != *p)
+	return(0);
+      continue;
+    case '?':
+      /* Match anything. */
+      if (*s == '\0')
+	return(0);
+      continue;
+    case '*':
+      /* Trailing star matches everything. */
+      return(*++p ? Star(s, p) : 1);
+    case '[':
+      /* [^....] means inverse character class. */
+      if ((reverse = (p[1] == '^')))
+	p++;
+      for (last = 0, matched = 0; *++p && (*p != ']'); last = *p)
+	/* This next line requires a good C compiler. */
+	if (*p == '-' ? *s <= *++p && *s >= last : *s == *p)
+	  matched = 1;
+      if (matched == reverse)
+	return(0);
+      continue;
+    }
+  return(*s == '\0');
+}
+
+static int Star(char *s, char *p) {
+  while (wildmat(s, p) == 0)
+    if (*++s == '\0')
+      return(0);
+  return(1);
+}
+
+/*
+ * Read phonebook file and create a linked
+ * list of phone entries.
+ */
+static void readphonebook() {
+  FILE *f;
+  struct phone_entry *p;
+  struct phone_entry *q;
+  char line[255];
+  char *s;
+
+  if (!(f = fopen(phonebook, "r"))) {
+    fprintf(stderr, "Can't open %s\n",phonebook);
+  }
+  p = phones;
+  while (p) {
+    q = p->next;
+    free(p);
+    p = q;
+  }
+  phones = NULL;
+  while (fgets(line,sizeof(line),f)) {
+    if ((s = strchr(line,'\n')))
+      *s = '\0';
+    if (line[0]=='#')
+      continue;
+    s = strchr(line,'\t');
+    *s++ = '\0';
+    if (strlen(line) && strlen(s)) {
+      q = malloc(sizeof(struct phone_entry));
+      q->next = phones;
+      strcpy(q->phone,line);
+      strcpy(q->name,s);
+      phones = q;
+    }
+  }
+  fclose(f);
+  if (!phones)
+    show_names = 0;
+}
+
+/*
+ * Find a phone number in list of phone entries.
+ * If found, return corresponding name, else
+ * return number string.
+ */
+char *find_name(char *num) {
+  struct phone_entry *p = phones;
+  static char tmp[100];
+
+  sprintf(tmp, "%-28s", num);
+  if (!show_names)
+	return(tmp);
+  while (p) {
+    if (wildmat(num, p->phone)) {
+      sprintf(tmp, "%-28s", p->name);
+      break;
+    }
+    p = p->next;
+  }
+  return tmp;
+}
 
 void scan_str(char * buffer, char * field[], int max) {
     char * buf = buffer;
@@ -35,7 +157,7 @@ void scan_int(char * buffer, int (*field)[], int max) {
     }
 }
 
-void main(void) {
+void main(int ac, char **argv) {
 
     FILE * isdninfo;
     char buf[IM_BUFSIZE];
@@ -53,6 +175,11 @@ void main(void) {
         fprintf(stderr, "ERROR: Can't open '%s'\n", PATH_ISDNINFO);
         exit(1);
     }
+
+    phonebook = argv[1];
+
+    if (phonebook)
+       readphonebook();
 
     fgets(buf, IM_BUFSIZE, isdninfo);
     scan_str(buf, idmap, ISDN_MAX_CHANNELS);
@@ -116,7 +243,7 @@ void main(void) {
 	    }
 
 	    if(usage[i] & ISDN_USAGE_MASK)
-		printf("%s\n", phone[i]);
+		printf("%s\n", find_name(phone[i]));
             else
 		printf("\n");
 
