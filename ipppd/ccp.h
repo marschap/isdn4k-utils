@@ -24,7 +24,7 @@
  * OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS,
  * OR MODIFICATIONS.
  *
- * $Id: ccp.h,v 1.3 1998/03/25 13:13:36 hipp Exp $
+ * $Id: ccp.h,v 1.4 1998/07/08 16:48:22 hipp Exp $
  */
 
 typedef struct ccp_options {
@@ -32,9 +32,12 @@ typedef struct ccp_options {
     u_int deflate: 1;		/* do Deflate? */
     u_int predictor_1: 1;	/* do Predictor-1? */
     u_int predictor_2: 1;	/* do Predictor-2? */
+    u_int lzs: 1;		/* do STAC LZS? */
     u_short bsd_bits;		/* # bits/code for BSD Compress */
     u_short deflate_size;	/* lg(window size) for Deflate */
-	short method;			/* code for chosen compression method */
+    u_short lzs_hists;		/* number of hists for LZS */
+    u_char lzs_cmode;		/* check mode for LZS */
+    short method;		/* code for chosen compression method */
     unsigned long protos;
 } ccp_options;
 

@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.10 1998/05/05 08:51:26 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.11 1998/07/08 16:48:22 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -52,6 +52,8 @@ char options_rcsid[] = "$Id: options.c,v 1.10 1998/05/05 08:51:26 hipp Exp $";
 #include "ipxcp.h"
 
 #include <linux/ppp-comp.h>
+
+#include <linux/isdn_lzscomp.h>
 
 #define FALSE	0
 #define TRUE	1
@@ -126,6 +128,7 @@ int refuse_pap = 0;         /* Set to say we won't do PAP */
 int refuse_chap = 0;        /* Set to say we won't do CHAP */
 
 int log_raw_password = 0;
+int force_driver = 0;
 
 struct option_info auth_req_info;
 struct option_info devnam_info;
@@ -221,6 +224,8 @@ static int setlcpechofails __P((int,char **));
 static int setbsdcomp __P((int,char **));
 static int noccp __P((int));
 static int setnobsdcomp __P((int));
+static int setlzs __P((int,char **));
+static int setnolzs __P((int));
 static int setdeflate __P((int,char **));
 static int setnodeflate __P((int));
 static int setpred1comp __P((int));
@@ -259,6 +264,8 @@ static int setnohostroute __P((int));
 static int number_option __P((char *, u_int32_t *, int));
 static int int_option __P((char *, int *));
 static int readable __P((int));
+static int setforcedriver(int dummy);
+ 
 #ifdef RADIUS
 char *make_username_realm ( char * );
 int __P (radius_init ( void ));
@@ -374,6 +381,9 @@ static struct cmd {
     {"bsdcomp", 1, setbsdcomp},		/* request BSD-Compress */
     {"nobsdcomp", 0, setnobsdcomp},    /* don't allow BSD-Compress */
     {"-bsdcomp", 0, setnobsdcomp},	/* don't allow BSD-Compress */
+    {"lzs", 1, setlzs},                /* request LZS Compression */
+    {"nolzs", 0, setnolzs},    /* disable LZS Compression */
+    {"-lzs", 0, setnolzs},     /* disable LZS Compression */
     {"deflate", 1, setdeflate},                /* request Deflate compression */
     {"nodeflate", 0, setnodeflate},    /* don't allow Deflate compression */
     {"-deflate", 0, setnodeflate},     /* don't allow Deflate compression */
@@ -418,6 +428,7 @@ static struct cmd {
     {"hostroute", 0, sethostroute}, /* Add host route (default) */
     {"-hostroute", 0, setnohostroute}, /* Don't add host route */
 #endif
+    {"+force-driver",0,setforcedriver},
 
     {NULL, 0, NULL}
 };
@@ -2050,6 +2061,78 @@ static int setnobsdcomp(int slot)
     return 1;
 }
 
+static int setlzs(int ccp_slot,char ** argv)
+{
+    int rhists, rcmode, xhists, xcmode;
+    char *str, *endp;
+
+    rhists = LZS_DECOMP_DEF_HISTS;
+    xhists = LZS_COMP_DEF_HISTS;
+    rcmode = xcmode = LZS_CMODE_SEQNO;
+
+    str = *argv;
+    rhists = xhists = strtol(str, &endp, 0);
+    if (endp != str) {
+       if(*endp == ':') {
+           str = endp + 1;
+           rcmode = xcmode = strtol(str, &endp, 0);
+       }
+       if(endp != str) {
+           if(*endp == ',') {
+               str = endp + 1;
+               xhists = strtol(str, &endp, 0);
+           }
+           if(endp != str) {
+               if(*endp == ':') {
+                   str = endp + 1;
+                   xcmode = strtol(str, &endp, 0);
+               }
+           }
+       }
+    }
+
+    if (*endp != 0 || endp == str) {
+       option_error("invalid parameter '%s' for lzs option", *argv);
+       return 0;
+    }
+    if(rhists < 0 || rhists > LZS_DECOMP_MAX_HISTS) {
+       option_error("lzs recv hists must be 0 .. %d", LZS_DECOMP_MAX_HISTS);
+       return 0;
+    }
+    if(xhists < 0 || xhists > LZS_COMP_MAX_HISTS) {
+       option_error("lzs xmit hists must be 0 .. %d", LZS_COMP_MAX_HISTS);
+       return 0;
+    }
+    if(rcmode < 0 || rcmode > 4) {
+       option_error("lzs recv check mode %d unknown", rcmode);
+       return 0;
+    }
+    if(xcmode < 0 || xcmode > 4) {
+       option_error("lzs xmit check mode %d unknown", xcmode);
+       return 0;
+    }
+
+    fprintf(stderr, "LZS: recv hists %d check %d xmit hists %d check %d\n",
+           rhists, rcmode, xhists, xcmode);
+
+    ccp_wantoptions[ccp_slot].lzs = 1;
+    ccp_wantoptions[ccp_slot].lzs_hists = rhists;
+    ccp_wantoptions[ccp_slot].lzs_cmode = rcmode;
+
+    ccp_allowoptions[ccp_slot].lzs = 1;
+    ccp_allowoptions[ccp_slot].lzs_hists = xhists;
+    ccp_allowoptions[ccp_slot].lzs_cmode = xcmode;
+
+    return 1;
+}
+
+static int setnolzs(int ccp_slot)
+{
+    ccp_wantoptions[ccp_slot].lzs = 0;
+    ccp_allowoptions[ccp_slot].lzs = 0;
+    return 1;
+}
+
 static int setdeflate(int ccp_slot,char ** argv)
 {
     int rbits, abits;
@@ -2372,5 +2455,11 @@ static int resetipxproto(int slot)
 	ipxcp_protent.enabled_flag = 1;
     return 1;
 }
+
+static int setforcedriver(int dummy)
+{
+  force_driver = 1;
+}
+
 
 

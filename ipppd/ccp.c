@@ -1,4 +1,4 @@
-/*
+/* -*- mode: c; c-basic-offset: 4 -*-
  * ccp.c - PPP Compression Control Protocol.
  *
  * Copyright (c) 1994 The Australian National University.
@@ -25,7 +25,7 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.6 1998/03/25 13:13:35 hipp Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.7 1998/07/08 16:48:20 hipp Exp $";
 
 #include <string.h>
 #include <syslog.h>
@@ -41,6 +41,8 @@ char ccp_rcsid[] = "$Id: ccp.c,v 1.6 1998/03/25 13:13:35 hipp Exp $";
 #include "ccp.h"
 
 #include "compressions.h"
+
+#include <linux/isdn_lzscomp.h>
 
 /*
  * Protocol entry points from main code.
@@ -96,6 +98,15 @@ struct protent ccp_protent = {
     NULL
 };
 
+/*
+ * Remember that CCP is negotiating the _decompression_ method the peer
+ * asking for configuration is willing to do. More exactly spoken, if
+ * peer A sends a Configure-Request to peer B this request enumerates
+ * the _decompression_ methods A is willing to use on _receiving_ data
+ * from B, aka in direction B->A. The RFC does not use clear enough words
+ * to make this unmisunderstandable IMHO.
+ */
+
 fsm ccp_fsm[NUM_PPP];
 ccp_options ccp_wantoptions[NUM_PPP];	/* what to request the peer to use */
 ccp_options ccp_gotoptions[NUM_PPP];	/* what the peer agreed to do */
@@ -140,7 +151,8 @@ static fsm_callbacks ccp_callbacks = {
  * Do we want / did we get any compression?
  */
 #define ANY_COMPRESS(opt)	((opt).deflate || (opt).bsd_compress \
-				 || (opt).predictor_1 || (opt).predictor_2)
+				 || (opt).predictor_1 || (opt).predictor_2 \
+				 || (opt).lzs)
 
 /*
  * Local state (mainly for handling reset-reqs and reset-acks).
@@ -183,6 +195,18 @@ static void ccp_init(int unit)
     ccp_allowoptions[unit].bsd_compress = 1;
     ccp_allowoptions[unit].bsd_bits = BSD_MAX_BITS;
     ccp_allowoptions[unit].predictor_1 = 1;
+
+    /* Are these 0/unit mixups intended or just typos ? */
+
+    /* What we want to decompress */
+    ccp_wantoptions[unit].lzs = 1;
+    ccp_wantoptions[unit].lzs_hists = LZS_DECOMP_DEF_HISTS;
+    ccp_wantoptions[unit].lzs_cmode = LZS_CMODE_SEQNO;
+
+    /* What we allow to compress */
+    ccp_allowoptions[unit].lzs = 1;
+    ccp_allowoptions[unit].lzs_hists = LZS_COMP_DEF_HISTS;
+    ccp_allowoptions[unit].lzs_cmode = LZS_CMODE_SEQNO;
 }
 
 int ccp_getunit(int linkunit,int protocol)
@@ -300,6 +324,7 @@ static void ccp_l_input(int linkunit,u_char *p,int len)
 
 /*
  * Handle a CCP-specific code.
+ * With the new reset handling in the kernel, this code will become unused.
  */
 static int ccp_extcode(fsm *f,int code,int id,u_char *p,int len)
 {
@@ -383,7 +408,7 @@ static void ccp_resetci(fsm *f)
 
     /*
      * Check whether the kernel knows about the various
-     * compression methods we might request.
+     * DEcompression methods we might request.
      */
     if (go->bsd_compress) {
 	opt_buf[0] = CI_BSD_COMPRESS;
@@ -412,6 +437,18 @@ static void ccp_resetci(fsm *f)
 	if (ccp_test(unit, opt_buf, CILEN_PREDICTOR_2, 0) <= 0)
 	    go->predictor_2 = 0;
     }
+
+    if(go->lzs) {
+	opt_buf[0] = CI_LZS_COMPRESS;
+	opt_buf[1] = CILEN_LZS_COMPRESS;
+	opt_buf[2] = LZS_HIST_BYTE1(LZS_DECOMP_DEF_HISTS);
+	opt_buf[3] = LZS_HIST_BYTE2(LZS_DECOMP_DEF_HISTS);
+	opt_buf[4] = LZS_CMODE_SEQNO;
+	if(ccp_test(unit, opt_buf, CILEN_LZS_COMPRESS, 0) <= 0) {
+	    go->lzs = 0;
+	    fprintf(stderr, "kernel check for LZS failed\n");
+	}
+    }
 }
 
 /*
@@ -429,7 +466,8 @@ static int ccp_cilen(fsm *f)
     return (go->bsd_compress? CILEN_BSD_COMPRESS: 0)
 	+ (go->deflate? CILEN_DEFLATE: 0)
 	+ (go->predictor_1? CILEN_PREDICTOR_1: 0)
-	+ (go->predictor_2? CILEN_PREDICTOR_2: 0);
+	+ (go->predictor_2? CILEN_PREDICTOR_2: 0)
+	+ (go->lzs? CILEN_LZS_COMPRESS: 0);
 }
 
 /*
@@ -514,6 +552,20 @@ static void ccp_addci(fsm *f,u_char *p,int *lenp)
 	    p += CILEN_PREDICTOR_2;
 	}
     }
+    if(go->lzs) {
+	p[0] = CI_LZS_COMPRESS;
+	p[1] = CILEN_LZS_COMPRESS;
+	p[2] = LZS_HIST_BYTE1(go->lzs_hists);
+	p[3] = LZS_HIST_BYTE2(go->lzs_hists);
+	p[4] = go->lzs_cmode;
+	if(p == p0 && ccp_test(unit, p, CILEN_LZS_COMPRESS, 0) <= 0) {
+	    /* TODO: Try less histories and finally try cmode 4 until the
+	       kernel accepts a method before really wiping LZS */
+	    go->lzs = 0;
+	} else {
+	    p += CILEN_LZS_COMPRESS;
+	}
+    }
 
     go->method = (p > p0)? p0[0]: -1;
 
@@ -577,6 +629,17 @@ static int ccp_ackci(fsm *f,u_char *p,int len)
 	if (p == p0 && len == 0)
 	    return 1;
     }
+    if(go->lzs) {
+	if(len < CILEN_LZS_COMPRESS
+	   || p[0] != CI_LZS_COMPRESS || p[1] != CILEN_LZS_COMPRESS
+	   || LZS_HIST_WORD(p[2], p[3]) != go->lzs_hists
+	   || p[4] != go->lzs_cmode)
+	    return 0;	/* Brocken ack - line noise ? */
+	p += CILEN_LZS_COMPRESS;
+	len -= CILEN_LZS_COMPRESS;
+	if(p == p0 && len == 0)
+	    return 1;
+    }
     if (len != 0)
 	return 0;
     return 1;
@@ -591,6 +654,8 @@ static int ccp_nakci(fsm *f,u_char *p,int len)
     ccp_options *go;
     ccp_options no;		/* options we've seen already */
     ccp_options try;		/* options to ask for next time */
+
+    int nb;
 
     if(f->protocol == PPP_CCP)
       go = &ccp_gotoptions[lns[f->unit].ccp_unit];
@@ -631,6 +696,26 @@ static int ccp_nakci(fsm *f,u_char *p,int len)
 	    try.bsd_bits = BSD_NBITS(p[2]);
 	p += CILEN_BSD_COMPRESS;
 	len -= CILEN_BSD_COMPRESS;
+    }
+
+    if(go->lzs && len >= CILEN_LZS_COMPRESS && p[0] == CI_LZS_COMPRESS
+       && p[1] == CILEN_LZS_COMPRESS) {
+	no.lzs = 1;
+	/*
+	 * Peer wants us to use a different number of histories or
+	 * a different check mode.
+	 */
+	nb = LZS_HIST_WORD(p[2], p[3]);
+	if(nb != go->lzs_hists) {
+	    if(nb >= 0 && nb <= LZS_DECOMP_MAX_HISTS)
+		try.lzs_hists = nb;
+	    else
+		try.lzs = 0;
+	}
+	if(p[4] != go->lzs_cmode)
+	    try.lzs_cmode = p[4];
+	p += CILEN_LZS_COMPRESS;
+	len -= CILEN_LZS_COMPRESS;
     }
 
     /*
@@ -700,6 +785,14 @@ static int ccp_rejci(fsm *f,u_char *p,int len)
 	try.predictor_2 = 0;
 	p += CILEN_PREDICTOR_2;
 	len -= CILEN_PREDICTOR_2;
+    }
+    if(go->lzs && len >= CILEN_LZS_COMPRESS
+       && p[0] == CI_LZS_COMPRESS && p[1] == CILEN_LZS_COMPRESS) {
+	if(LZS_HIST_WORD(p[2], p[3]) != go->lzs_hists || p[4] != go->lzs_cmode)
+	    return 0;
+	try.lzs = 0;
+	p += CILEN_LZS_COMPRESS;
+	len -= CILEN_LZS_COMPRESS;
     }
 
     if (len != 0)
@@ -857,6 +950,47 @@ static int ccp_reqci(fsm *f,u_char *p,int *lenp,int dont_nak)
 		}
 		break;
 
+	    case CI_LZS_COMPRESS:
+		if(!ao->lzs || clen != CILEN_LZS_COMPRESS) {
+		    newret = CONFREJ;
+		    break;
+		}
+		ho->lzs = 1;
+		ho->lzs_hists = nb = LZS_HIST_WORD(p[2], p[3]);
+		ho->lzs_cmode = p[4];
+		if(nb < 0 || nb > ao->lzs_hists) {
+		    newret = CONFNAK;
+		    if(!dont_nak) {
+			p[2] = LZS_HIST_BYTE1(ao->lzs_hists);
+			p[3] = LZS_HIST_BYTE2(ao->lzs_hists);
+			break;
+		    }
+		}
+		if(p[4] != ao->lzs_cmode) {
+		    /* Peer wants another checkmode - accept only EXT for now */
+		    if(p[4] != LZS_CMODE_EXT) {
+			newret = CONFNAK;
+			if(!dont_nak)
+			    p[4] = ao->lzs_cmode;
+			break;
+		    } else {
+			/* EXT is Ok but requires hists to be 1 */
+			if(nb != 1) {
+			    newret = CONFNAK;
+			    if(!dont_nak) {
+				p[2] = LZS_HIST_BYTE1(1);
+				p[3] = LZS_HIST_BYTE2(1);
+			    }
+			    break;
+			}
+		    }
+		}
+		/* Finally verify the kernel is thinking the same way */
+		if(p == p0 && ccp_test(unit, p, CILEN_LZS_COMPRESS, 1) <= 0) {
+		    newret = CONFREJ;
+		}
+		break;
+
 	    default:
 		newret = CONFREJ;
 	    }
@@ -915,6 +1049,16 @@ static char *method_name(ccp_options *opt,ccp_options *opt2)
        return "Predictor 1";
     case CI_PREDICTOR_2:
        return "Predictor 2";
+    case CI_LZS_COMPRESS:
+	if (opt2 != NULL && (opt2->lzs_hists != opt->lzs_hists ||
+	    opt2->lzs_cmode != opt->lzs_cmode))
+	    sprintf(result, "LZS (hists %d check %d/hists %d check %d)",
+		    opt->lzs_hists, opt->lzs_cmode,
+		    opt2->lzs_hists, opt2->lzs_cmode);
+	else
+	    sprintf(result, "LZS (hists %d check %d)",
+		    opt->lzs_hists, opt->lzs_cmode);
+	break;
     default:
        sprintf(result, "Method %d", opt->method);
     }
@@ -1054,10 +1198,17 @@ static int ccp_printpkt(u_char *p,int plen,void (*printer)(void*,char*,...),void
 		    p += CILEN_PREDICTOR_2;
 		}
 		break;
+	    case CI_LZS_COMPRESS:
+		if(optlen >= CILEN_LZS_COMPRESS) {
+		    printer(arg, "LZS hists %d check %d",
+			    (p[2] << 16) | p[3], p[4]);
+		    p += CILEN_LZS_COMPRESS;
+		}
+		break;
+		while (p < optend)
+		    printer(arg, " %.2x", *p++);
+		printer(arg, ">");
 	    }
-	    while (p < optend)
-		printer(arg, " %.2x", *p++);
-	    printer(arg, ">");
 	}
 	break;
 

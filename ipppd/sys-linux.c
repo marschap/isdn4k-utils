@@ -22,7 +22,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char sys_rcsid[] = "$Id: sys-linux.c,v 1.13 1998/04/29 14:29:48 hipp Exp $";
+char sys_rcsid[] = "$Id: sys-linux.c,v 1.14 1998/07/08 16:48:24 hipp Exp $";
 
 #define _LINUX_STRING_H_
 
@@ -64,12 +64,16 @@ char sys_rcsid[] = "$Id: sys-linux.c,v 1.13 1998/04/29 14:29:48 hipp Exp $";
 # include <linux/if_ether.h>
 #endif
 
+#include <linux/isdn_ppp.h>
+
 #include "fsm.h"
 #include "ipppd.h"
 #include "ipcp.h"
 #include "ipxcp.h"
 #include "ccp.h"
 #include "lcp.h"
+
+extern int force_driver;
 
 static int prev_kdebugflag     = 0;
 static int has_default_route   = 0;
@@ -1265,16 +1269,16 @@ int ppp_available(void)
 /*
  * Validate the version of the driver against the version that we used.
  */
-	decode_version (PPP_VERSION, &my_version, &my_modification, &my_patch);
+	decode_version (IPPP_VERSION, &my_version, &my_modification, &my_patch);
 
     /* The version numbers must match and the modification levels must be legal */
-    if (driver_version != my_version || driver_modification < my_modification)
+    if ( (driver_version != my_version || driver_modification < my_modification) && !force_driver)
 	{
 		extern char *no_ppp_msg;
 		no_ppp_msg = route_buffer;
 
 		sprintf(no_ppp_msg,
-			"Sorry - PPP driver version %d.%d.%d is out of date.\n"
+			"Sorry - isdnPPP driver version %d.%d.%d is out of date.\n"
 			"Maybe ippp0 has no 'syncppp' encapsulation?\n",
 			driver_version, driver_modification, driver_patch);
 		return 0;
