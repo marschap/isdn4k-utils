@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.60 2000/03/09 18:50:02 akool Exp $
+/* $Id: isdnlog.c,v 1.61 2000/04/02 17:35:07 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.61  2000/04/02 17:35:07  akool
+ * isdnlog-4.18
+ *  - isdnlog/isdnlog/isdnlog.8.in  ... documented hup3
+ *  - isdnlog/tools/dest.c ... _DEMD1 not recogniced as key
+ *  - mySQL Server version 3.22.27 support
+ *  - new rates
+ *
  * Revision 1.60  2000/03/09 18:50:02  akool
  * isdnlog-4.16
  *  - isdnlog/samples/isdn.conf.no ... changed VBN
@@ -1518,6 +1525,37 @@ int main(int argc, char *argv[], char *envp[])
 	    if (*version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 	    } /* if */
+
+#if 0 /* AK: Ausgabe der gesamten "/etc/isdn/isdn.conf" als SQL-Import-File */
+      	    {
+	      auto     FILE *fo = fopen("/tmp/isdn.conf.sql", "w");
+              register int   i;
+	      register char *p1, *p2;
+
+
+              if (fo != (FILE *)NULL) {
+                fprintf(fo, "USE isdn;\n");
+
+      	        for (i = 0; i < knowns; i++) {
+                  p1 = known[i]->num;
+                  while (p2 = strchr(p1, ',')) {
+                    *p2 = 0;
+              	    fprintf(fo, "INSERT INTO conf VALUES('%s',%d,'%s');\n",
+  		      p1, known[i]->si, known[i]->who);
+              	    *p2 = ',';
+              	    p1 = p2 + 1;
+                    while (*p1 == ' ')
+                      p1++;
+                  } /* while */
+                  fprintf(fo, "INSERT INTO conf VALUES('%s',%d,'%s');\n",
+                    p1, known[i]->si, known[i]->who);
+		} /* for */
+              } /* if */
+
+              fclose(fo);
+              exit(0);
+      	    }
+#endif
 
             loop();
 

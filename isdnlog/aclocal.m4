@@ -76,6 +76,12 @@ AC_DEFUN(AC_CHECK_MYSQLDB, [
 		fi
 		if test "$mydir" = "no" ; then
 			AC_MSG_RESULT("$mydir")
+			AC_MSG_CHECKING([for mysql in /usr])
+			AC_EGREP_HEADER(MYSQL,/usr/include/mysql/mysql.h,
+			mydir=/usr)
+		fi
+		if test "$mydir" = "no" ; then
+			AC_MSG_RESULT("$mydir")
 			AC_MSG_CHECKING([for mysql in /lib/mysql])
 			AC_EGREP_HEADER(MYSQL,/lib/mysql/include/mysql.h,
 			mydir=/lib/mysql)

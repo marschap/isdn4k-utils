@@ -1,10 +1,10 @@
-ISDNLOG - Version 4.16 -  				09-Mar-2000
+ISDNLOG - Version 4.18 -  				31-Mar-2000
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-4.16 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
+isdnlog-4.18 wurde ausgiebig mit Linux-2.0.38, Linux-2.2.13 sowie
 Linux-2.3.35 getestet.
 
 
@@ -3802,8 +3802,8 @@ Inhalt der Datei grants.txt:
 
 --
 
-INSERT INTO user VALUES ('localhost','isdn',password('isdn'),'N','N','N','N','N','N','N','N','N','N');
-INSERT INTO db VALUES ('localhost','isdn','isdn','N','Y','N','N','N','N');
+INSERT INTO user VALUES ('localhost','isdn',password('isdn'),'N','N','N','N','N','N','N','N','N','N','N','N','N','N');
+INSERT INTO db VALUES ('localhost','isdn','isdn','N','Y','N','N','N','N','N','N','N','N');
 
 --
 
@@ -3814,8 +3814,8 @@ Inhalt der Datei table.txt:
 CREATE TABLE isdnlog (
   sdate date NOT NULL,
   stime time NOT NULL,
-  calling varchar(30) NOT NULL,
-  called varchar(30) NOT NULL,
+  calling varchar(32) NOT NULL,
+  called varchar(32) NOT NULL,
   charge int(4) NOT NULL,
   dir char(1) NOT NULL,
   in_bytes int(4) NOT NULL,

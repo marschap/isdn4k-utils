@@ -1,4 +1,4 @@
-/* $Id: mysqldb.c,v 1.1 1998/04/06 15:45:18 keil Exp $
+/* $Id: mysqldb.c,v 1.2 2000/04/02 17:35:07 akool Exp $
  *
  * Interface for mySQL-Database for isdn4linux. (db-module)
  *
@@ -20,6 +20,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: mysqldb.c,v $
+ * Revision 1.2  2000/04/02 17:35:07  akool
+ * isdnlog-4.18
+ *  - isdnlog/isdnlog/isdnlog.8.in  ... documented hup3
+ *  - isdnlog/tools/dest.c ... _DEMD1 not recogniced as key
+ *  - mySQL Server version 3.22.27 support
+ *  - new rates
+ *
  * Revision 1.1  1998/04/06 15:45:18  keil
  * Added missing files
  *
@@ -128,7 +135,7 @@ int mysql_dbAdd( mysql_DbStrIn *in)
   char         out_txt[400];
   struct tm   *tm;
 
-  assert( (int)in);
+  /* assert( (int)in); */
 
   if ( mysql_dbStatus() )   /* returns -1 when not open */
     if ( mysql_dbOpen() )   /* returns -1 when error appears */

@@ -1,5 +1,5 @@
-.\" $Id: isdnlog.8.in,v 1.6 2000/03/09 18:50:02 akool Exp $
-.\" CHECKIN $Date: 2000/03/09 18:50:02 $
+.\" $Id: isdnlog.8.in,v 1.7 2000/04/02 17:35:07 akool Exp $
+.\" CHECKIN $Date: 2000/04/02 17:35:07 $
 .TH isdnlog 8 "@MANDATE_ISDNLOG8@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
@@ -413,6 +413,12 @@ isdnctrl, but this would have the same effect).
 
 You should run isdnlog with -t1 or better with -t2, so isdnlog sets the
 local time in sync with telephone switching office.
+
+If there is a third number in value, this is the minimum connection time for providers
+charging a basic rate per connection.
+.br
+e.g. hangup 3:5:60
+
 
 .SH "START MODULE"
 

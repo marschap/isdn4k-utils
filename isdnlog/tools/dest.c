@@ -203,7 +203,7 @@ static bool isKey(const char *p)
   bool    key = true;
 
   for (; *p; p++)
-    if (*p != '_' && (!isalpha(*p) || !isupper(*p))) {
+    if(!isupper(*p) && *p != '_' && !isdigit(*p)) { /* e.g. _DEMD1 */
       key = false;
       break;
     }
