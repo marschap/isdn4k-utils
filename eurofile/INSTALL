@@ -1,11 +1,35 @@
 Installation instructions for eftp4linux
 
+Quick Install:
+
+eftp4linux needs a 2.2.x kernel which supports some special features
+and recent isdn4k-utils.
+
+Provided that your distribution is deliverd with such a 2.2.x kernel
+pre-installed, you might be able to use the basic functionality of
+the eftp4linux package without any other modifications to your system.
+You can test this by runing the shell script by changing to the
+"scripts"-sub-directory and typing
+
+sh check_system
+
+On success, you can directly go to the "This eftp4linux package"
+section and proceed. Otherwise, you need to upgrade your system.
+
+(Presence of the x25_utils packages, the isdnloop driver and the
+loopctrl binary is not checked by the script. But most features
+of eftp4linux will work without them. You can upgrade later after
+your first success events with eftp4linux).
+
+
 Kernel
 ======
 
-You need a recent kernel 2.2.x kernel that supports some special
-features.  2.0.x kernels won't work. As erly 2.2.x kernels contain
-outdated isdn code, it is recommended to use kernel 2.2.12 or newer.
+eftp4linux needs a 2.2.x kernel with X.25 PLP support and
+"X.25 on top of isdn" support.
+
+As erly 2.2.x kernels contain outdated isdn code, it is recommended
+to use kernel 2.2.12 or newer.
 
 When configuring the kernel for compilation, (i.e. by `make
 menuconfig') enable the following:
@@ -48,7 +72,7 @@ booting your 2.2.x kernel as an alternative to 2.0.x.
 It is possible (but not necessary) to apply additional
 patches to the kernel before compilation:
 
-ix25-2.1.128.patch	fixes a bug in the Linus X.25 PLP layer. This is
+ix25-2.1.128.patch	fixes a bug in the Linux X.25 PLP layer. This is
 			only necessary to communicate with certain
 			buggy eft clients (CSD isdn toolbox,
 			maybe also some RVS clients). If you want to
@@ -60,7 +84,7 @@ ix25-2.1.128.patch	fixes a bug in the Linus X.25 PLP layer. This is
 isdn4linux CVS snapshot can be used to replace your kernel's isdn
 			subsystem whith a more recent versions.
 
-			As Kernels 2.2.12 and 2.3.14 now contain
+			As Kernels 2.2.12 and 2.3.15 now contain
 			up-to-date isdn versions, this should no longer
 			be necessary.
 	
@@ -72,11 +96,11 @@ isdn4k-utils
   you want to test locally with the isdnloop driver).
   You need isdn4k-utils-3.0beta2.tar.gz or newer.
 
-  The utilities must be compiled against the (patched) 2.2.x
+  The utilities must be compiled against the 2.2.x
   kernel headers. The location of that kernel can be set from the
   isdn4k-utils configuration menu.
  
-  The 3.0beta2 package is availabe from ftp.franken.de
+  The 3.0beta2 package is availabe from ftp.isdn4linux.de
 
 
 x25_utils
@@ -115,7 +139,7 @@ utility found first is the one just compiled as above (against the
 The directory where the isdn configuration files are located is
 assumed to be /etc/isdn. If this is not true for your installation,
 either create that directory or set the environment variable
-I4LCONFDIR to an alternative directory.
+I4LCONFDIR to an alternative directory prior to compilation.
 
 As I could not test with all compiler/libc/distribution combinations,
 maybe I missed something. If configuration should fail or some files
