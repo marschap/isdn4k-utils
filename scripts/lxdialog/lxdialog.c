@@ -204,8 +204,26 @@ j_inputbox (const char *t, int ac, const char * const * av)
 {
     int ret = dialog_inputbox (t, av[2], atoi (av[3]), atoi (av[4]),
                             ac == 6 ? av[5] : (char *) NULL);
-    if (ret == 0)
-        fputs(dialog_input_result, stderr);
+    if (ret == 0) {
+		unsigned char escaped_result[MAX_LEN+1];
+		unsigned char *p = escaped_result;
+		unsigned char *q = dialog_input_result;
+
+		while (*q) {
+			if (*q == '\'') {
+				*p++ = '\\';
+				*p++ = '"';
+				*p++ = '0';
+				*p++ = '4';
+				*p++ = '7';
+				*p++ = '"';
+				q++;
+			} else
+				*p++ = *q++;
+		};
+		*p = '\0';
+        fputs(escaped_result, stderr);
+	}
     return ret;
 }
 
