@@ -1,10 +1,10 @@
-/* $Id: eiconctrl.c,v 1.3 1999/02/25 22:35:14 armin Exp $
+/* $Id: eiconctrl.c,v 1.4 1999/03/02 11:35:57 armin Exp $
  *
  * Eicon-ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1998    by Fritz Elfert (fritz@wuemaus.franken.de)
- * Copyright 1998,99 by Armin Schindler (mac@topmail.de)
- * Copyright 1999    Cytronics & Melware (cytronics-melware@topmail.de)
+ * Copyright 1998,99 by Armin Schindler (mac@melware.de)
+ * Copyright 1999    Cytronics & Melware (info@melware.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: eiconctrl.c,v $
+ * Revision 1.4  1999/03/02 11:35:57  armin
+ * Change of email address.
+ *
  * Revision 1.3  1999/02/25 22:35:14  armin
  * Did not compile with new version.
  *

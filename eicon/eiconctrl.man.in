@@ -1,6 +1,6 @@
-.\" $Id: eiconctrl.man.in,v 1.1 1999/01/01 17:27:59 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.2 1999/03/02 11:35:58 armin Exp $
 .\"
-.\" CHECKIN $Date: 1999/01/01 17:27:59 $
+.\" CHECKIN $Date: 1999/03/02 11:35:58 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
@@ -154,7 +154,7 @@ loads and starts S2M type PCI adapter with protocol E-DSS1.
 .SH BUGS
 No bugs so far.
 .SH AUTHOR
-\(co 1999 by Armin Schindler <mac@topmail.de>
+\(co 1999 by Armin Schindler <mac@melware.de>
 .LP
 .SH SEE ALSO
 .BR isdnctrl "(8), " isdnctrl "(4), " ttyI "(4), " isdn_cause "(7), " isdninfo (4).
