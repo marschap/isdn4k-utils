@@ -38,7 +38,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char auth_rcsid[] = "$Id: auth.c,v 1.18 2001/07/18 18:51:34 keil Exp $";
+char auth_rcsid[] = "$Id: auth.c,v 1.19 2002/03/11 15:53:21 paul Exp $";
 
 #include <stdio.h>
 #include <stddef.h>
@@ -1124,7 +1124,7 @@ int auth_ip_addr(int unit,u_int32_t addr)
 		} else {
 			np = getnetbyname (ptr_word);
 			if (np != NULL && np->n_addrtype == AF_INET)
-				a = htonl (*(u_int32_t *)np->n_net);
+				a = htonl ((unsigned long)np->n_net);
 			else
 				a = inet_addr (ptr_word);
 		}
