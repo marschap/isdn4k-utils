@@ -1,5 +1,5 @@
 /* 
- * $Id: divertctrl.c,v 1.4 2001/06/10 17:38:25 werner Exp $
+ * $Id: divertctrl.c,v 1.5 2002/07/04 10:36:54 paul Exp $
  *
  * Control program for the dss1 diversion supplementary services. (User side)
  *
@@ -20,6 +20,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. 
  *
  * $Log: divertctrl.c,v $
+ * Revision 1.5  2002/07/04 10:36:54  paul
+ * Include stdlib.h for prototypes;
+ * Make some things depend on NETWORK_DIAL define.
+ *
  * Revision 1.4  2001/06/10 17:38:25  werner
  *
  * Updated tool and manpage with new remote dial feature
@@ -38,6 +42,7 @@
  *
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -109,7 +114,11 @@ void usage(void)
   fprintf(stderr,"   insertrule  <drivers> -> insert a rule at list start\n");
   fprintf(stderr,"   flushrules  [drivers] -> flush all rules for specified drivers\n");
   fprintf(stderr,"   append- and insertrule take the following arguments:\n");
+#ifdef NETWORK_DIAL
   fprintf(stderr,"   <drivers> <action> [msn] [si1] [si2] [caller] [screen] [delay] [callopt] [destnr/if]\n");
+#else
+  fprintf(stderr,"   <drivers> <action> [msn] [si1] [si2] [caller] [screen] [delay] [callopt] [destnr]\n");
+#endif
   fprintf(stderr,"   drivers -> driver names for D-chans, %% separated, - = all D-chan\n"); 
   fprintf(stderr,"   action -> 0/ignore 1/report 2/proceed 3/alert 4/reject\n");
   fprintf(stderr,"   msn -> - = wildcard or explicit selected msn.subaddress\n");
@@ -189,7 +198,11 @@ void setrulepar(void)
      usage();
    }
   dr->action = u & 0xFF;
+#ifdef NETWORK_DIAL
   if (((dr->action == DEFLECT_ALERT) || (dr->action == NETWORK_DIAL)) && (argrest != 9))
+#else
+  if ((dr->action == DEFLECT_ALERT) && (argrest != 9))
+#endif
    { fprintf(stderr,"alerting/dialing action must be supplied with all parms\n");
      usage();
    }    
