@@ -97,11 +97,11 @@ Inhalt:
  4.     Die Konfigurationsdatei "isdn.conf"
  4.1    Grundeinstellungen
  4.2    Telefonnummern
- 4.2.1  1. Spalte: Telefonnummer
- 4.2.2  2. Spalte: Alias
- 4.2.3  3. Spalte: Tarifzone
- 4.2.4  4. Spalte: IP-Interface
- 4.2.5  5. Spalte: Info-Args
+ 4.2.1  1. Eintrag: Telefonnummer
+ 4.2.2  2. Eintrag: Alias
+ 4.2.3  3. Eintrag: Tarifzone
+ 4.2.4  4. Eintrag: IP-Interface
+ 4.2.5  5. Eintrag: Info-Args
  4.2.6  Konkretes Beispiel fuer die "-S" Option
  5.     Die Konfigurationsdatei "isdnlog.users"
  5.1    Aufbau
@@ -643,7 +643,7 @@ Ring) nicht (siehe Info von Gernot Zander), ist also kein Bug vom isdnlog.
 Wenn ja, wird dieser ausgefuehrt und der Eintrag "START" ignoriert.
 
 Wenn die Nummer in der Datei "isdn.conf" keinen Eintrag hat, oder unter
-der Nummer in der Spalte Flags nichts eingetragen ist, dann schaut isdnlog
+der Nummer in der Sektion [Flag] nichts eingetragen ist, dann schaut isdnlog
 unter "START" nach.
 
 Diese Zeilen koennen verwendet werden, wenn man fuer alle Verbindungen
@@ -660,8 +660,12 @@ zusaetzlichen Parametern angegeben werden.
 Die Angabe _aller_ eigenen Telefonnummern ist zwingend, alle weiteren
 Partner-Telefonnummern koennen eingeben werden.
 
-Jede MSN kann - durch ein Komma getrennt - um die Dienstkennung erweitert
-werden:
+Jede Sektion (Nummer) kann eine Dienstekennung enthalten. Dieses wird durch 
+einen Eintrag in der Form
+
+SI=4 # Video
+
+relisiert.
 
 isdnlog unterscheidet rein- und rausgehende Verbindungen nach der
 MSN (Telefonnummer), sowie dem Service Indicator ("Dienstkennung").
@@ -681,16 +685,30 @@ Eintrag, bei dem sowohl die MSN, als auch der SI uebereinstimmen.
 Wird solch ein Eintrag nicht gefunden, nimmt isdnlog den _ersten_ Eintrag
 mit der passenden MSN.
 
+Ein eindeutiger Key fuer eine Nummer ist nun die Telefonnummer selber und die
+Dienstkennung. Es kann also eine Nummer mehrfach erscheinen mit jeweils
+einer anderen Dienstkennung. Wird in der Sektion fuer eine Nummer kein
+Eintrag fuer die Dienstkennung angegeben (keine Zeile SI=x), wird die Kennung
+"0" angenommen. Das bedeutet alle Dienste werden ueber diese Sektion erkannt.
+Es gibt also fuer eine Nummer nur einen einzigen Eintrag.
+
+Zum Verstaendnis:
+
+Nehmen wir mal eine eigne MSN (das funktioniert auch fuer fremde Nummern!).
+Dort kann man mit einer MSN eine ISDN-Verbindung mit LINUX unterhalten und
+parallel diese MSN zum Telefonieren verwenden. Obwohl die gleiche Nummer
+dort verwendet wird, reagiert z.B. das Telefon nicht (es klingelt nicht!),
+wenn ein Teilnehmer sich mit einem PC an dieser Nummer anwaehlt.
 Beispiel:
 
 Auf der MSN 4711 lauscht sowohl die Teles-Karte auf X.75 Anrufe, als auch
 ein Analoges Telefon ueber eine Telefonanlage.
 
-Hier wuerden folgende Eintraege in der "isdn.conf" passen:
+Hier wuerden folgende Eintraege in der "callerid.conf" passen:
 
 [MSN]
 NUMBER    = 4711
-SI        = 1
+SI        = 1                  # Das normale Telefon
 ALIAS     = Phone
 START     = {
 	[FLAG]
@@ -700,7 +718,7 @@ START     = {
 
 [MSN]
 NUMBER    = 4711
-SI        = 7
+SI        = 7                  # Der Linux-Rechner
 ALIAS     = X.75
 START     = {
 	[FLAG]
@@ -721,21 +739,63 @@ dies als "Phone" angezeigt, da in obigem Beispiel die Dienstkennung "4"
 nicht gesondert definiert wurde.
 
 
-*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
+Es gibt zwei verschienden Sektionen in diesen Dateien:
+
+[MSN]
+[NUMBER]
+
+Die Eintraege in den einzelnen Sektionen sind gleich. Es koennen beliebig viele
+von den einzelnen Sektionen (MSN,NUMBER) existieren. Im Gegensatz zu frueheren
+Versionen des isdnlog's muss nun nicht mehr die Anzahl der eigenen MSN angegeben
+werden (MYMSNS entfaellt). 
+
+
+Alle Eintraege in einer Sektion koennen in einer beliebigen Reihenfolge
+folgen. Das gleiche gilt fuer die Sektionen innerhalb einer Datei.
+
+Im folgenden werden nun die einzelnen Eintraege unter den Sektionen MSN
+und NUMBER erwaehnt:
+
 MSN    Alias Zone Interface Info-Args
 -----------------------------------------------------------
 4711,1 Phone 1    -	    IORA=auplay dingdong.au,,18-21;
 
 
-4.2.1 1. Spalte: Telefonnummer
-------------------------------
+4.2.1 1. Eintrag: Telefonnummer [NUMBER]
+----------------------------------------
 
-Die eigenen MSN's muessen _ohne_ Vorwahl eingegeben werden (diese wurde
-ja bereits via AREACODE und COUNTRYCODE definiert), alle anderen
-Telefonnummern immer mit kompletter Vorwahl.
+Hier muss zwischen 1TR6 und DSS1 unterschieden werden:
 
-Inlaendische Telefonnummern muessen mit einer vorlaufenden "0",
-auslaendische mit zwei vorlaufenden "0" angegeben werden (Also genau so, wie man die Telefonnummern waehlen wuerde).
+im 1TR6 muss unter [MSN] nur die EAZ eingetragen werden. Unter der Sektion
+[NUMBER] kommt dort die komplette Nummer. Diese Nummer muss _mindestens_
+die Vorwahl enthalten.
+
+Im DSS1 ist dieses ziemlich egal. Man kann die Nummern so eintragen, wie man
+sie vom eigenen Telefon waehlen wuerde. Es muss die Voreinstellungen der
+Installation beruecksichtigt werden. Die Werte von S_PREFIX_AREA
+und S_PREFIX_COUNTRY, wie sie waehrend der Installation eingestellt wurden,
+werden so ueberall uebernommen.
+
+Es ist aber empfehlenswert ueberall die Vorwahl mit anzugeben (ist auch bei
+der MSN moeglich). Wenn man z.B. umzieht in eine ander Stadt,
+muss man sonst die gesamte Datei ueberarbeiten. Das entfallt, wenn
+ueberall die Vorwahl angibt.
+
+Die Syntax ist jetzt ziemlich frei. Es koennen dort angegeben werden,
+wie man sie ueblicherweise kennt:
+
+4711
+0815/4711
+0815/471-0
++49 815/4711
++49 815/471*
++49 815/471?
++49 815/47[!6]1
+
+Es werden alle NICHT-Zahlen dort herausgefiltert, bis auf die Wildcards '?',
+'*' und "[]"
+
+Ein Plus '+' am Anfang wird durch S_PREFIX_COUNTRY ersetzt.
 
 Alle Telefonnummern koennen die ueblichen Wildcard-Symbole enthalten,
 also "?" matched genau ein Zeichen, "*" matched beliebig viele
@@ -744,15 +804,33 @@ moegliche Zeichen angegeben werden (oder auch eine Range [4-7], oder auch
 die Verneinung, also [!6])
 
 
-4.2.2 2. Spalte: Alias
-----------------------
+4.2.2 2. Eintrag: Alias [ALIAS]
+-------------------------------
 
-In der zweiten Spalte steht eine beliebige Symbolische Beschreibung fuer
-diese Nummer ("Mausi", "EUnet" usw.). Diese darf *kein* Blank enthalten!
-Weiterhin darf diese Beschreibung maximal 14 Zeichen lang sein.
+In diesem Entrag steht eine beliebige Symbolische Beschreibung fuer
+diese Nummer ("Mausi", "EUnet" usw.). Diese darf Blanks enthalten!
+Wenn hier das Zeichen '#' verwendet werden soll, muss dieses gequotet
+werden mit "\#". 
 
+ALIAS = MSN #1
+ist falsch, dieses fuehrt zu dem Ergebnis:
+ALIAS = MSN
 
-4.2.3 3. Spalte: Tarifzone
+Richtig waere:
+
+ALIAS = MSN \#1
+
+Auch ein Eintrag
+
+ALIAS = Helmut Kohl
+
+ist erlaubt. Allerdings unterscheidet sich dieser von
+
+ALIAS = helmut kohl
+
+*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
+
+4.2.3 3. Eintrag: Tarifzone
 --------------------------
 
 In der dritten Spalte steht die Tarifzone, in der sich von uns aus gesehen
@@ -765,7 +843,7 @@ diese Nummer befindet:
  5 = Vis-'a-vis 1
 
 
-4.2.4 4. Spalte: IP-Interface
+4.2.4 4. Eintrag: IP-Interface
 -----------------------------
 
 In der vierten Spalte wird das IP-Interface angegeben, das auf dieser
@@ -774,7 +852,7 @@ IP-Interface zugeordnet wurde.
 Diese Information wird fuer die "-hx" huptimeout Option benoetigt.
 
 
-4.2.5 5. Spalte: Info-Args
+4.2.5 5. Eintrag: Info-Args
 --------------------------
 
 ACHTUNG: Syntax hat sich geaendert!

@@ -1,4 +1,4 @@
-/* $Id: isdntools.c,v 1.5 1997/03/18 23:01:50 luethje Exp $
+/* $Id: isdntools.c,v 1.6 1997/03/19 00:08:43 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdntools.c,v $
+ * Revision 1.6  1997/03/19 00:08:43  luethje
+ * README and function expand_number() completed.
+ *
  * Revision 1.5  1997/03/18 23:01:50  luethje
  * Function Compare_Sections() completed.
  *
@@ -192,6 +195,7 @@ int num_match(char* Pattern, char *number)
 
 char *expand_number(char *s)
 {
+	int all_allowed = 0;
 	char *Ptr;
 	int   Index;
 	char Help[SHORT_STRING_SIZE];
@@ -215,8 +219,15 @@ char *expand_number(char *s)
 
 	while(*Ptr != '\0')
 	{
-		if (isdigit(*Ptr) || *Ptr == '?' || *Ptr == '*')
+		if (isdigit(*Ptr) || *Ptr == '?' || *Ptr == '*'|| 
+		    *Ptr == '[' ||  *Ptr == ']' || all_allowed   )
 		{
+			if (*Ptr == '[')
+				all_allowed  = 1;
+
+			if (*Ptr == ']')
+				all_allowed  = 0;
+
 			Index = strlen(Help);
 			Help[Index] = *Ptr;
 			Help[Index+1] = '\0';
