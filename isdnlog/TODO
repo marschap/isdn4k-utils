@@ -50,4 +50,8 @@ Vorschlaege von ak realisieren
   - Rabatte
   - einige Provider "vergessen", bei laufenden Gespaechen einen evtl.
     Tarifwechsel abzurechnen
+      01050:Talkline
+      01079:Viatel
+      01015:RSL Com
+    machen *keinen* Tarifwechsel in einer laufenden Verbindung!
   - Sonderbehandlung von 24. Dezember bis 31. Dezember (Telekom)
