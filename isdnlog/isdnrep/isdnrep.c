@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.43 1998/09/26 18:29:55 akool Exp $
+/* $Id: isdnrep.c,v 1.44 1998/10/03 15:21:48 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.44  1998/10/03 15:21:48  luethje
+ * isdnrep: some bugfixes in output functions
+ *
  * Revision 1.43  1998/09/26 18:29:55  akool
  *  - quick and dirty Call-History in "-m" Mode (press "h" for more info) added
  *    - eat's one more socket, Stefan: sockets[3] now is STDIN, FIRST_DESCR=4 !!
@@ -1015,6 +1018,7 @@ static int print_bottom(double unit, char *start, char *stop)
 		print_line2(F_BODY_HEADERL,"Outgoing calls ordered by Zone");
 		strich(1);
 
+		/* Andreas: zones[i] ist manchmal immer NULL, warum ? */
 		for (i = 1; i < MAXZONES; i++)
 			if (zones[i]) {
 
@@ -1031,12 +1035,13 @@ static int print_bottom(double unit, char *start, char *stop)
 				print_line3(NULL,
 				          "Zone", (char) i+48, p, zones_usage[i],
 				          double2clock(zones_dur[i]), print_currency(zones_dm[i],0));
-		} /* if */
+			} /* if */
 
+/* Was soll das werden, Andreas ? */
 		if (known[knowns-1]->eh > 0)
 		{
 			print_line3(NULL,
-			          'x', S_UNKNOWN,
+			          "Zone", 'x', S_UNKNOWN,
 			          known[knowns-1]->usage[DIALOUT], double2clock(known[knowns-1]->dur[DIALOUT]),
 #ifdef ISDN_NL
 			          print_currency(known[knowns-1]->eh * unit + known[knowns-1]->usage[DIALOUT] * 0.0825,0));
@@ -1077,7 +1082,7 @@ static int print_bottom(double unit, char *start, char *stop)
 		for (k = 0; k <= mymsns; k++) {
 			if (msn_sum[k]) {
 
-				print_line3(NULL, ((k == mymsns) ? "UNKNOWN" : known[k]->who),
+				print_line3(NULL, ((k == mymsns) ? S_UNKNOWN : known[k]->who),
 				  usage_sum[k],
 				  double2clock(dur_sum[k]),
 				  print_currency(msn_sum[k], 0));
@@ -3835,15 +3840,17 @@ static int find_format_length(char *string)
 static int app_fmt_string(char *target, int targetlen, char *fmt, int condition, char *value)
 {
 	char tmpfmt[BUFSIZ];
+	char tmpvalue[BUFSIZ];
 	int len;
 
 	strcpy(tmpfmt,fmt);
+	strcpy(tmpvalue,value);
 	len = find_format_length(tmpfmt);
 
-	if (len != -1 && len > 0 && strlen(value) > len)
-		value[len] = '\0';
+	if (len != -1 && len > 0 && strlen(tmpvalue) > len)
+		tmpvalue[len] = '\0';
 
-	value = condition?html_conv(value):value;
+	value = condition?html_conv(tmpvalue):tmpvalue;
 
 	return snprintf(target,targetlen,tmpfmt,value);
 }
