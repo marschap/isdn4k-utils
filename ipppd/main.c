@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.15 1998/12/29 15:21:53 paul Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.16 1999/06/21 13:28:49 hipp Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -55,6 +55,7 @@ char main_rcsid[] = "$Id: main.c,v 1.15 1998/12/29 15:21:53 paul Exp $";
 #include "lcp.h"
 #include "ipcp.h"
 #include "ipxcp.h"
+#include "environ.h"
 
 #include "upap.h"
 #include "chap.h"
@@ -900,10 +901,7 @@ int run_program(char *prog,char **args,int must_exist,int unit)
 {
 	int pid;
 	char *nullenv[1];
-#ifdef RADIUS
 	char **envtouse;
-	extern char **environment; /* from radius.c */
-#endif
 
 	pid = fork();
 	if (pid < 0) {
@@ -938,15 +936,11 @@ int run_program(char *prog,char **args,int must_exist,int unit)
 		}
 
 		nullenv[0] = NULL;
-#ifdef RADIUS
-		if (environment)
-			envtouse = environment;
+		if (script_env)
+			envtouse = script_env;
 		else
 			envtouse = nullenv;
 		execve(prog, args, envtouse);
-#else
-		execve(prog, args, nullenv);
-#endif
 		if (must_exist || errno != ENOENT)
 			syslog(LOG_WARNING, "Can't execute %s: %m", prog);
 		exit(99); /* CHILD exit */
@@ -1361,5 +1355,4 @@ void reload_config(void)
 {
   auth_reload_upap_pw();
 }
-
 

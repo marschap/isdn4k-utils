@@ -1,5 +1,5 @@
 /*
- * $Id: radius.c,v 1.3 1998/05/05 08:51:28 hipp Exp $
+ * $Id: radius.c,v 1.4 1999/06/21 13:28:52 hipp Exp $
  *
  * Copyright (C) 1996, Matjaz Godec <gody@elgo.si>
  * Copyright (C) 1996, Lars Fenneberg <in5y050@public.uni-hamburg.de>
@@ -49,12 +49,6 @@ struct ifstats
 	long 	tx_bytes;
 	long 	tx_packets;
 };
-
-ENV *env = NULL;
-char **environment;
-#ifndef ENV_SIZE
-#define ENV_SIZE 128
-#endif
 
 /***************************************************************************
  *
@@ -305,8 +299,7 @@ radius_wtmp_logging(user,unit)
  *
  ***************************************************************************/
 int 
-radius_buildenv(env, vp)
-	ENV     *env ;
+radius_buildenv(vp)
 	VALUE_PAIR *vp ;
                       
 {
@@ -317,7 +310,7 @@ radius_buildenv(env, vp)
 	int acount[256];
 	int attr;
         
-        rc_add_env(env, "RADIUS_USER_NAME", radius_user);
+	script_setenv("RADIUS_USER_NAME", radius_user);
 
 	while (vp)
 	{
@@ -347,11 +340,8 @@ radius_buildenv(env, vp)
 				strcat(name,buf);
 			}
 		}
-		
-		if (rc_add_env(env, name, value) < 0)
-		{
-			return 1;
-		}
+	
+		script_setenv(name, value);	
 		
 		vp = vp->next;
 	}
@@ -423,20 +413,9 @@ radius_pap_auth (unit, user, passwd, msg, msglen )
 		else
 		{
 			/* Build the environment for ip-up and ip-down */
-			if ( env != NULL )  
-			{
-				rc_free_env ( env ) ;
-			} ;
+			script_unsetenv_prefix("RADIUS_");
 
-			env = rc_new_env(ENV_SIZE);
-
-			if (env != NULL)
-			{
-				if (radius_buildenv(env, received))
-					env = NULL;
-				if (env != NULL)
-					environment = env->env;
-			}
+			radius_buildenv(received);
 		}
 	}
 	else

@@ -1,5 +1,5 @@
 
-# $Id: README.LZS,v 1.3 1998/07/10 17:40:51 hipp Exp $
+# $Id: README.LZS,v 1.4 1999/06/21 13:28:31 hipp Exp $
 
 *** ALPHA *** ALPHA *** ALPHA *** ALPHA *** ALPHA *** ALPHA *** ALPHA ***
 
@@ -34,6 +34,25 @@ insight into isdn_ppp will adopt and complete them. The API to the com-
 pressor could also get a general facelift, but one thing after the other.
 
 
+                           INSTALL
+
+
+The easiest way to build the module is to copy isdn_lzscomp.c to
+linux/drivers/isdn/ and to edit the Makefile in this directory, adding
+a line for LZS like:
+
+      ifdef CONFIG_ISDN_PPP
+        O_OBJS += isdn_ppp.o
+        M_OBJS += isdn_bsdcomp.o
++       M_OBJS += isdn_lzscomp.o
+      endif
+
+The module will be built on the next "make modules". If you want to use
+any CCP method with I4L, you must first load the relevant module(s). Then
+you start the connection. You may need to give options to ipppd in order
+to make sure negotiations succeed, see below.
+
+
                        Supported Modes
 
 
@@ -42,6 +61,16 @@ and LZS check mode 4 (the derivative used by Micro$oft in Win0.95). If your
 peer is an Ascend Max, the correct options are "Stac-9" for mode 3 and
 "MS-Stac" for mode 4. Ask your ISP for what their NAS speaks. Either mode
 is Ok, but if you insist on non-M$, I'm virtually yours.
+
+Note: If your peer sends you CCP with the LZS identity (0x11) but a
+      length of 6 bytes, it is not compatible with RFC1974 but uses
+      a proprietary predecessor of it. Typical case is an Ascend Max
+      that has never been set to something else but the default "Stac"
+      in "Answer" and doesn't override this per-profile, either. Ask
+      your ISP about changing this, nobody (but other Ascend boxes)
+      will ever be able to use this compression. Especially not Win95,
+      if the ISP wants interoperability with Win95 he needs to set
+      MS-Stac, and then this module works as well.
 
 If the NAS you are talking to will not negotiate gracefully you may want
 to wire the exact mode ipppd is requesting. For instance, an Ascend Max
@@ -168,14 +197,39 @@ net for more than a hour without any problem. Your milage may vary.
 The source code isdn_lzscomp.c is heavily commented (so I can still read it
 in a month). It contains a thorough description of the compression algo-
 rithm used and how I came to it. This in turn involves Credits to the
-net.persons who helped me with getting that compressor faster. I'll
-append a Credit list to this file ASAP.
+net.persons who helped me with getting that compressor faster. When we
+are at it:
+
+
+                             Credits
+
+Phil Katz and L. Peter Deutsch
+	for the zlib and deflate format and specifications
+
+Jean-loup Gailly and Mark Adler
+	for deflate, gzip and zlib as well as the comp.compression FAQ
+
+David Carr
+	for a lot of general tips, hints and tricks speeding up a
+	compressor, pointers to freeze and the sigma buffer and especially
+	explaining to me the concept of the barrier hash until I finally
+	got it
+
+Leonid Broukis
+	for the freeze implementation with the sigma buffer which
+	inspired my 8-buffer and for pointing out how memcmp(3) can
+	be used in match searching
+
+Ojala Pasi 'Albert'
+	for general tips and his website which was the first reading
+	I had about speeding up a compressor beyond brute force
 
 
                              Contact
 
 
 You can reach me by EMail: beck@ibh.de
-Discussion will take place at de.alt.isdn4linux, the USENET mirror of the
-official I4L Mailing List.
+Discussion will take place at de.alt.comm.isdn4linux, the USENET mirror
+of the official I4L Mailing List.
+Check http://www.ibh-dd.de/~beck/stuff/lzs4i4l/ for new versions.
 

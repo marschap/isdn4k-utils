@@ -66,6 +66,9 @@ CHANGELOG:
  - minor bug with corrupted MPdiscr fixed
 22.03.98:
  - more CCP changes
+21.Jun.99:
+ - I got two different DNS patches. Applied one of them.
+ - added changes from A. Beck to ccp.c
 
 
 -----------------------------------------------------------------

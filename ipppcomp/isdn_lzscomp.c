@@ -1,15 +1,24 @@
 /* -*- mode: c; c-basic-offset: 1 -*-
  *
- * $Id: isdn_lzscomp.c,v 1.3 1998/07/10 17:40:52 hipp Exp $
+ * $Id: isdn_lzscomp.c,v 1.4 1999/06/21 13:28:33 hipp Exp $
  *
- * PPP link compression code for Stac LZS support
- * Initially just a RFC1974 decompressor is provided
- * If interest is sufficient a compressor may follow
+ * PPP link compression code for Stac LZS (RFC1974) support
  *
- * GPL - you know
+ * (Copyleft) 1998 by Andre Beck <beck@ibh.de> under terms of the GPL
+ *
+ * Originally just a RFC1974 decompressor, this module now contains
+ * a useable compressor as well, but that one is disabled by default.
+ *
+ * This code is still in ALPHA state but appears to be quite stable.
+ *
  *
  * Compile with:
  *  gcc -O2 -I/usr/src/linux/include -D__KERNEL__ -DMODULE -c isdn_lzscomp.c
+ *
+ * Or even easier, copy isdn_lzscomp.c to linux/drivers/isdn/, add a line
+ * for it to the Makefile there (just below isdn_bsdcomp.o) and it is
+ * compiled automatically with full kernel optimizations.
+ *
  */
 
 #ifndef MODULE
@@ -17,7 +26,7 @@
 #endif
 
 static const char
-rcsid[] = "$Id: isdn_lzscomp.c,v 1.3 1998/07/10 17:40:52 hipp Exp $";
+rcsid[] = "$Id: isdn_lzscomp.c,v 1.4 1999/06/21 13:28:33 hipp Exp $";
 
 /* Wow. No wonder this needs so long to compile. This include list
  * is a shameless rip from other compressor code. Hopefully no (C)
@@ -66,16 +75,15 @@ rcsid[] = "$Id: isdn_lzscomp.c,v 1.3 1998/07/10 17:40:52 hipp Exp $";
 #include <linux/if_arp.h>
 #include <linux/ppp-comp.h>
 
-#include "isdn_ppp.h"
+#include <linux/isdn_ppp.h>
 #include <linux/isdn_lzscomp.h>
 
 /*
 #define TEST_BROKEN_SEQNO 10
 #define TEST_BROKEN_CCNT 10
-*/
-
 #define TEST_COMP_BROKEN_CCNT 10
 #define TEST_COMP_BROKEN_SEQNO 10
+*/
 
 /*
  * Values for debug:
@@ -916,7 +924,7 @@ static int lzsCompress(void *state, struct sk_buff *skbin,
  register int llen, nlen, retry;
  register u32 hidx, lidx, next;
  register u8 hash;
- int prepd, ohlen, totlen, ext, ilen, cols;
+ int prepd, ohlen, totlen, ext, ilen, cols, uncomp;
  u8 *ibuf;
 
  /* Prefill statistics for the case of sending uncompressed - this will then
@@ -1123,17 +1131,30 @@ static int lzsCompress(void *state, struct sk_buff *skbin,
     just shows the particular inability of reading a standard paper by
     these guys. If you want to send uncompressed, just do it - it is that
     simple.
+
+    UPDATE: We must use the inband sending method if we have to commu-
+    nicate a compressor state reset to the decompressor. EXT mode has
+    no ResetAck but does that using a bit in a uncompressed frame, so
+    we need to do this as well whenever a ResetAck is outstanding.
  */
 
  totlen = ohlen + skbout->len;
+
+ /* Assume that data is compressed for EXT first */
+ uncomp = 0;
+
+#ifdef COMP_XMIT_ADVANCED_HEURISTICS    
 
  /* HACK Attack Warning - this looks weird. Would really be nice to have
     the real MTU here. But I don't have a way to find it out. Seems that
     another API change would be necessary to allow for this. On the other
     hand, the MTU is never set or used by the isdn_ppp stuff, the ioctl(2)
     for that job doesn't do anything. Thus, to have something to try with
-    at all, assume MTU is 1500 fixed. HACK anyway. */
-    
+    at all, assume MTU is 1500 fixed. HACK anyway.
+
+    Stability over Performance IMHO - use trivial decision until code
+    has settled a bit, then implement MTU based stuff. */
+
  if((totlen + 4) > 1500) {
   if(debug > 1)
    printk(KERN_DEBUG "lzsComp: compressed size exceeds MTU\n");
@@ -1153,6 +1174,32 @@ static int lzsCompress(void *state, struct sk_buff *skbin,
  } else {
   s->lastinc = 0;
  }
+
+#else
+
+ /* Trivial does-or-does-not-expand decision - suboptimal but stable */
+
+ if(totlen > skbin->len) {
+  if(debug > 1)
+   printk(KERN_DEBUG "lzsComp: frame expands\n");
+  resetCompHist(s, h);
+  if(s->cmode == LZS_CMODE_EXT) {
+   /* In EXT mode, we must send an EXT frame with uncompressed data
+      and the flush-bit set now */
+   uncomp = 1;
+   /* Copy input data to output data unmodified (Hmm, looks crashy) */
+   p = skbout->data;
+   *p++ = proto >> 8;
+   *p++ = proto & 0xff;
+   memcpy(p, skbin->data, skbin->len);
+   skbout->len = skbin->len + 2;
+  } else {
+   /* All other modes just send uncompressed */
+   return 0;
+  }
+ }
+
+#endif
 
  /* Step 8 - fill the remaining parts of the frame by prepending them to
     the skbout. Return the frame length so it can be sent. */
@@ -1212,9 +1259,11 @@ static int lzsCompress(void *state, struct sk_buff *skbin,
 
   s->ccnt++;
   s->ccnt &= 0x0fff;
-  /* Mark the frame as compressed by setting bit C */
-  ext |= 0x2000;
-  if(s->ackrs) {
+  /* Mark the frame as compressed by setting bit C - except it is not
+     compressed but a uncompressed inband flush */
+  if(!uncomp)
+   ext |= 0x2000;
+  if(s->ackrs || uncomp) {
    /* Mark the frame as an inband reset ack by setting bit A */
    ext |= 0x8000;
    s->ackrs = 0;
@@ -1274,14 +1323,17 @@ static int lzsCompress(void *state, struct sk_buff *skbin,
  /* Adapt statistics - correct the former assumption of an incompressible
     packet by tweaking the counters */
 
- s->stats.inc_bytes -= skbin->len + 2;
- s->stats.inc_packets--;
-
  s->stats.bytes_out -= skbin->len + 2;
  s->stats.bytes_out += skbout->len;
 
- s->stats.comp_bytes += skbout->len;
- s->stats.comp_packets++;
+ if(!uncomp) {
+  /* Correct only if not sending a uncompressed EXT frame inband */
+  s->stats.inc_bytes -= skbin->len + 2;
+  s->stats.inc_packets--;
+
+  s->stats.comp_bytes += skbout->len;
+  s->stats.comp_packets++;
+ }
 
  return skbout->len;
 }

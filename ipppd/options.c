@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-char options_rcsid[] = "$Id: options.c,v 1.13 1998/10/29 17:28:47 hipp Exp $";
+char options_rcsid[] = "$Id: options.c,v 1.14 1999/06/21 13:28:50 hipp Exp $";
 
 #include <stdio.h>
 #include <errno.h>
@@ -242,7 +242,9 @@ static int setsessionlimit __P((int,char **));
 #endif
 static int setholdoff __P((int,char **));
 static int setdnsaddr __P((int,char **));
+static int setgetdnsaddr __P((int,char **));
 static int setwinsaddr __P((int,char **));
+static int setgetwinsaddr __P((int,char **));
 static int resetipxproto __P((int));
 static int setuseifip __P((int));
 static int setusefirstip __P((int));
@@ -403,6 +405,8 @@ static struct cmd {
     {"holdoff", 1, setholdoff},                /* set holdoff time (seconds) */
     {"ms-dns", 1, setdnsaddr},         /* DNS address for the peer's use */
     {"ms-wins", 1, setwinsaddr},         /* WINS address for the peer's use */
+    {"ms-get-dns", 0, setgetdnsaddr},  /* DNS address for the my use */
+    {"ms-get-wins", 0, setgetwinsaddr},    /* Nameserver for SMB over TCP/IP for me */
     {"noipx",  0, resetipxproto},      /* Disable IPXCP (and IPX) */
     {"-ipx",   0, resetipxproto},      /* Disable IPXCP (and IPX) */
 
@@ -2294,6 +2298,26 @@ static int setwinsaddr(int ipcp_slot,char **argv)
     }
 
     return (1);
+}
+
+/*
+ * setgetdnsaddr - ask peer's idea of DNS server's address
+ */
+static int setgetdnsaddr(int slot,char **argv)
+{
+	ipcp_wantoptions[slot].neg_dns1 = 1;
+	ipcp_wantoptions[slot].neg_dns2 = 1;
+	return 1;
+}
+
+/*
+ * setgetwinsaddr - ask peer's idea of WINS server's address
+ */
+static int setgetwinsaddr(int slot,char **argv)
+{
+	ipcp_wantoptions[slot].neg_wins1 = 1;
+	ipcp_wantoptions[slot].neg_wins2 = 1;
+	return 1;
 }
 
 static int setipxrouter (int slot,char **argv)

@@ -1,6 +1,6 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.man.in,v 1.4 1998/12/03 14:30:05 paul Exp $
-.\" CHECKIN $Date: 1998/12/03 14:30:05 $
+.\" $Id: ipppd.man.in,v 1.5 1999/06/21 13:28:47 hipp Exp $
+.\" CHECKIN $Date: 1999/06/21 13:28:47 $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -313,6 +313,21 @@ This option sets the IP address or addresses for the Domain Name
 Server. It is used by Microsoft Windows clients. The primary DNS
 address is specified by the first instance of the ms-dns option. The
 secondary is specified by the second instance.
+.TP
+.B ms-get-dns
+Implements the client side of RFC1877.  If pppd is acting as a client
+to a server that implements RFC1877 such as one intended to be used
+with Microsoft Windows clients, this option allows pppd to obtain one
+or two DNS (Domain Name Server) addresses from the server.  It does
+not do anything with these addresses except put them in the
+environment (MS_DNS1 MS_DNS2) that is passed to scripts.  The /etc/ppp/ip-up
+script should use this information to perform whatever adjustment is
+necessary.  Note: RFC1877 is a horrible protocol layering violation,
+the correct approach would be to use DHCP after the IPCP phase.
+.TP
+.B ms-get-wins
+As ms-get-dns but for WINS (Windows Internet Name Services) server
+addresses. Environment variables are MS_WINS1 and MS_WINS2.
 .TP
 .B domain \fI<d>
 Append the domain name <d> to the local host name for authentication

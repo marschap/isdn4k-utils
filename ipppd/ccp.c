@@ -25,26 +25,24 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.10 1998/12/01 12:59:38 hipp Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.11 1999/06/21 13:28:42 hipp Exp $";
 
 #include <string.h>
 #include <syslog.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
+#if 0
+#include </usr/include/net/ppp_defs.h>
+#endif
+#include <linux/ppp-comp.h>
 
 #include "fsm.h"
 #include "ipppd.h"
 #include "ccp.h"
 
-#include <linux/ppp-comp.h>
-
 #include "compressions.h"
 
-#ifdef HAVE_LZSCOMP_H
 #include <linux/isdn_lzscomp.h>
-#else
-#include "../ipppcomp/isdn_lzscomp.h"
-#endif
 
 /*
  * Protocol entry points from main code.
@@ -448,7 +446,6 @@ static void ccp_resetci(fsm *f)
 	opt_buf[4] = LZS_CMODE_SEQNO;
 	if(ccp_test(unit, opt_buf, CILEN_LZS_COMPRESS, 0) <= 0) {
 	    go->lzs = 0;
-	    syslog(LOG_NOTICE,"Kernel check for LZS failed\n");
 	}
     }
 }
@@ -1201,12 +1198,32 @@ static int ccp_printpkt(u_char *p,int plen,void (*printer)(void*,char*,...),void
 		}
 		break;
 	    case CI_LZS_COMPRESS:
-		if(optlen >= CILEN_LZS_COMPRESS) {
-		    printer(arg, "LZS hists %d check %d",
+		/* Make sure we differ real (RFC1974) from old pre-RFC
+		   implementations like Ascends. ISPs who never set up
+		   LZS on an Ascend Max will end up announcing the
+		   mode "Stac" which claims to be 0x11 - the same
+		   value used for RFC1974 conforming LZS - but has
+		   another format, primarily a length of 6 of the
+		   config element. While I know a bit about that mode
+		   I refrain from implementing it. Users who see that
+		   stuff announced should contact their ISPs and ask
+		   for RFC compliant compression. Usually, it is just
+		   an oversight at the ISP, no bad taste */
+		if(optlen == CILEN_LZS_COMPRESS) {
+		    printer(arg, "LZS (RFC) hists %d check %d",
 			    (p[2] << 16) | p[3], p[4]);
 		    p += CILEN_LZS_COMPRESS;
+		} else if(optlen == 6) {
+		    printer(arg, "LZS (Ascend pre-RFC)");
+		    p += optlen;
+		} else {
+		    printer(arg, "LZS (non-RFC)");
+		    p += optlen;
 		}
 		break;
+		/* Looks like the following default was missing. I added
+		   it, hopefully it is correct. ---abp */
+	    default:
 		while (p < optend)
 		    printer(arg, " %.2x", *p++);
 		printer(arg, ">");
