@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.28 $";
+static char *revision = "$Revision: 1.29 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -1536,27 +1536,50 @@ static capi_connection *setupconnection(char *num, int awaitingreject)
 static void makeleasedline(void)
 {
 	capi_connection *cp;
+	int retry = 0;
 	time_t t;
 
-	cp = setupconnection("", 0);
-
-	t = time(0)+opt_dialtimeout;
 	do {
-		handlemessages();
-		if (status != EXIT_OK && conn_find(cp)) {
-			info("capiplugin: pppd status %d, disconnecting ...", status);
- 			dodisconnect(cp);
-		}
-	} while (time(0) < t && conn_inprogress(cp));
+	     if (retry) {
+		t = time(0)+opt_redialdelay;
+		do {
+		   handlemessages();
+		   if (status != EXIT_OK)
+		      die(status);
+		} while (time(0) < t);
+	     }
 
-	if (status != EXIT_OK)
+	     cp = setupconnection("", 0);
+
+	     t = time(0)+opt_dialtimeout;
+	     do {
+		handlemessages();
+		if (status != EXIT_OK) {
+		   if (conn_find(cp)) {
+		      info("capiplugin: pppd status %d, disconnecting ...", status);
+		      dodisconnect(cp);
+		   } else {
+		      die(status);
+		   }
+		}
+	     } while (time(0) < t && conn_inprogress(cp));
+
+	     if (conn_isconnected(cp))
+		goto connected;
+
+	     if (status != EXIT_OK)
 		die(status);
 
+	} while (++retry < opt_dialmax);
+
+connected:
         if (conn_isconnected(cp)) {
-		t = time(0)+opt_connectdelay;
-		do {
-			handlemessages();
-		} while (time(0) < t);
+	   t = time(0)+opt_connectdelay;
+	   do {
+	      handlemessages();
+	      if (status != EXIT_OK)
+		 die(status);
+	   } while (time(0) < t);
 	}
 
 	if (status != EXIT_OK)
@@ -1567,7 +1590,7 @@ static void makeleasedline(void)
 }
 
 /* -------------------------------------------------------------------- */
-/* -------- connect a dislup connection ------------------------------- */
+/* -------- connect a dialup connection ------------------------------- */
 /* -------------------------------------------------------------------- */
 
 static void makeconnection(STRINGLIST *numbers)
@@ -1613,10 +1636,12 @@ static void makeconnection(STRINGLIST *numbers)
 
 connected:
         if (conn_isconnected(cp)) {
-		t = time(0)+opt_connectdelay;
-		do {
-			handlemessages();
-		} while (time(0) < t);
+	   t = time(0)+opt_connectdelay;
+	   do {
+	      handlemessages();
+	      if (status != EXIT_OK)
+		 die(status);
+	   } while (time(0) < t);
 	}
 
         if (!conn_isconnected(cp))
@@ -1737,10 +1762,12 @@ static void waitforcall(void)
 	} while (!conn_incoming_connected());
 
         if (conn_incoming_connected()) {
-		time_t t = time(0)+opt_connectdelay;
-		do {
-			handlemessages();
-		} while (time(0) < t);
+	   time_t t = time(0)+opt_connectdelay;
+	   do {
+	      handlemessages();
+	      if (status != EXIT_OK)
+		 die(status);
+	   } while (time(0) < t);
 	}
 	add_fd(capi20_fileno(applid));
 	setup_timeout();
