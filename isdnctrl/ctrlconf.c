@@ -1,4 +1,4 @@
-/* $Id: ctrlconf.c,v 1.2 1997/06/26 21:25:14 luethje Exp $
+/* $Id: ctrlconf.c,v 1.3 1997/07/22 22:36:08 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: ctrlconf.c,v $
+ * Revision 1.3  1997/07/22 22:36:08  luethje
+ * isdnrep:  Use "&nbsp;" for blanks
+ * isdnctrl: Add the option "reset"
+ *
  * Revision 1.2  1997/06/26 21:25:14  luethje
  * Added the trigger function to the config file.
  *
@@ -58,15 +62,19 @@ int writeconfig(int fd, char *file)
 {
 	section *Section;
 	section *ConfigSection;
+/*
 	section *PhoneSection;
+*/
 
 	ConfigSection = read_file(NULL,file,C_NOT_UNIQUE|C_NO_WARN_FILE);
+/*
 	read_conffiles(&PhoneSection,NULL);
+*/
 
 	if ((Section = Set_Section(&ConfigSection,CONF_SEC_ISDNCTRL,C_OVERWRITE | C_WARN)) == NULL)
 		return -1;
 
-	readinterfaces(fd,Section,PhoneSection);
+	readinterfaces(fd,Section,NULL /*PhoneSection*/);
 
 	if (write_file(ConfigSection,file,cmd,VERSION) == NULL)
 		return -1;
@@ -264,7 +272,9 @@ int readconfig(int fd, char *file)
 {
 	section *Section;
 	section *ConfigSection;
+/*
 	section *PhoneSection;
+*/
 	entry   *Entry;
 	char    *argv[5];
 	char    *name;
@@ -273,7 +283,9 @@ int readconfig(int fd, char *file)
 	if ((ConfigSection = read_file(NULL,file,C_NOT_UNIQUE|C_NO_WARN_FILE)) == NULL)
 		return -1;
 
+/*
 	read_conffiles(&PhoneSection,NULL);
+*/
 
 	if ((Section = Get_Section(ConfigSection,CONF_SEC_ISDNCTRL)) == NULL)
 	{

@@ -1,11 +1,15 @@
 #!/bin/sh
-# $Id: isdnctrl.man.in,v 1.3 1997/06/26 21:25:16 luethje Exp $
+# $Id: isdnctrl.man.in,v 1.4 1997/07/22 22:36:12 luethje Exp $
 #
 # Generator for isdnctrl manpage
 # (C) 1997 Stefan Luethje
 #
 #
 # $Log: isdnctrl.man.in,v $
+# Revision 1.4  1997/07/22 22:36:12  luethje
+# isdnrep:  Use "&nbsp;" for blanks
+# isdnctrl: Add the option "reset"
+#
 # Revision 1.3  1997/06/26 21:25:16  luethje
 # Added the trigger function to the config file.
 #
@@ -74,6 +78,12 @@ number starting from 0.
 .TP 5
 .B delif name
 Removes the ISDN IP-interface "name" from the kernel.
+.TP 5
+.B reset
+Removes all ISDN IP-interfaces from the kernel if it possible.
+At first all entries for ISDN of the command 
+.B ifconfig
+have to be removed.
 .TP 5
 .B addphone name out num
 Set the phone number(s) of the remote site for the IP-interface

@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.h,v 1.2 1997/07/20 16:36:28 calle Exp $
+/* $Id: isdnctrl.h,v 1.3 1997/07/22 22:36:11 luethje Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@wuemaus.franken.de)
@@ -21,6 +21,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.h,v $
+ * Revision 1.3  1997/07/22 22:36:11  luethje
+ * isdnrep:  Use "&nbsp;" for blanks
+ * isdnctrl: Add the option "reset"
+ *
  * Revision 1.2  1997/07/20 16:36:28  calle
  * isdnctrl trigger was not working.
  *
@@ -41,7 +45,7 @@ enum {
         CHARGEINT, DIALMAX, SDELAY, CHARGEHUP,
         CBHUP, IHUP, SECURE, CALLBACK,
         L2_PROT, L3_PROT, ADDLINK, REMOVELINK,
-        ENCAP, TRIGGER,
+        ENCAP, TRIGGER, RESET,
 #ifdef I4L_CTRL_CONF
         WRITECONF, READCONF
 #endif /* I4L_CTRL_CONF */
@@ -93,6 +97,7 @@ cmd_struct cmds[] =
         {"removelink", "1"},
         {"encap", "12"},
         {"trigger", "12"},
+        {"reset", "0"},
 #ifdef I4L_CTRL_CONF
         {"writeconf", "01"},
         {"readconf", "01"},
