@@ -1,5 +1,5 @@
 /*
-** $Id: vboxconvert.c,v 1.8 1997/05/10 10:58:54 michael Exp $
+** $Id: vboxconvert.c,v 1.9 2000/09/15 09:08:37 paul Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 **
@@ -419,8 +419,6 @@ static void start_vboxtoau(int samplemode, int samplerate)
 
 static void leave_vboxtoau(int sig)
 {
-fprintf(stderr, "sig: %d\n", sig);
-
 	if (vboxtmpfile) fclose(vboxtmpfile);
 	
 	if (vboxtmpname)
