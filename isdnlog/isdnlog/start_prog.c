@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.5 1997/04/16 22:22:51 luethje Exp $
+/* $Id: start_prog.c,v 1.6 1997/05/04 20:19:50 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.6  1997/05/04 20:19:50  luethje
+ * README completed
+ * isdnrep finished
+ * interval-bug fixed
+ *
  * Revision 1.5  1997/04/16 22:22:51  luethje
  * some bugfixes, README completed
  *
@@ -772,19 +777,22 @@ const char *Set_Ringer_Flags( int condtion, int InOut )
 
 int Start_Interval(void)
 {
-	interval *Ptr   = RootIntervall;
+	interval *Ptr  = RootIntervall;
+	interval *next;
 	time_t cur_time = time(NULL);
 	int RetCode     = 0;
 
 	while (Ptr != NULL)
 	{
+		next = Ptr->next;
+
 		if (Ptr->next_start <= cur_time)
 		{
-			RetCode += Start_Ring(Ptr->chan, Ptr->infoarg, Ptr->event, RING_INTERVAL);
 			Ptr->next_start = cur_time + Ptr->infoarg->interval;
+			RetCode += Start_Ring(Ptr->chan, Ptr->infoarg, Ptr->event, RING_INTERVAL);
 		}
 
-		Ptr = Ptr->next;
+		Ptr = next;
 	}
 
 	return RetCode;
@@ -851,6 +859,7 @@ int Del_Interval(int chan, info_args *infoarg)
 		if ((*Ptr)->infoarg == infoarg && (*Ptr)->chan == chan)
 		{
 			Ptr2 = (*Ptr)->next;
+			memset(*Ptr, 0, sizeof(**Ptr));
 			free(*Ptr);
 			*Ptr = Ptr2;
 			return 0;

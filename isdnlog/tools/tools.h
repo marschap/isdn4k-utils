@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.11 1997/04/20 22:52:36 luethje Exp $
+/* $Id: tools.h,v 1.12 1997/05/04 20:20:05 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.12  1997/05/04 20:20:05  luethje
+ * README completed
+ * isdnrep finished
+ * interval-bug fixed
+ *
  * Revision 1.11  1997/04/20 22:52:36  luethje
  * isdnrep has new features:
  *   -variable format string
@@ -390,6 +395,8 @@
 #define CONF_ENT_INTVAL  "INTERVAL"
 #define CONF_ENT_TIME    "TIME"
 
+#define CONF_ENT_REPFMT  "REPFMT"
+
 /****************************************************************************/
 
 #define PRT_ERR                1
@@ -624,6 +631,7 @@ _EXTERN char* rebootcmd = REBOOTCMD;
 _EXTERN char* logfile   = LOGFILE;
 _EXTERN int  (*_print_msg)(const char *, ...) = printf;
 _EXTERN int   use_new_config = 1;
+_EXTERN char ***lineformats = NULL;
 
 #else
 #define _EXTERN extern
@@ -634,6 +642,7 @@ _EXTERN char* rebootcmd;
 _EXTERN char* logfile;
 _EXTERN int  (*_print_msg)(const char *, ...);
 _EXTERN int   use_new_config;
+_EXTERN char ***lineformats;
 
 #endif
 

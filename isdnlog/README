@@ -1,7 +1,8 @@
 # Lock und PID-Files
 # Beschreibung, was bei der Installation genau gemacht werden muss
+# und was gemacht wird.
 # (isdn.conf vorhanden oder neu)
-ISDNLOG - Version 3.0 -  				31-Mar-97  22:09
+ISDNLOG - Version 3.0 -  				4-Mai-97  22:09
 
 
 isdnlog ist ein Tool zur Auswertung der Info's vom ISDN-S0-Bus sowie
@@ -141,9 +142,11 @@ Sourcen.
 
 Aenderungen seit Version 2.50:
 
-    - Konfigurationsdatei heisst jetzt isdn.conf statt isdnlog.conf
-    - Neue Syntax der Konfigurationsdatei
+    - Konfigurationsdateien heissen jetzt isdn.conf, callerid.conf und
+      ~/.isdn statt isdnlog.conf
+    - Neue Syntax der Konfigurationsdateien
     - Watchdog-Funktion (isdnlog ueberwacht isdn4linux)
+    - HTML-Ausgabe des isdnrep
 
 Aenderungen seit Version 2.41:
 
@@ -338,10 +341,6 @@ Dazu siehe jedoch Kapitel 15. Dual-Mode !
 3. Installation
 ---------------
 
-Der X11-Client ist zwar im isdnlog-Paket enthalten, aber es ist _nicht_
-zwingend notwendig ihn einzusetzen. Der isdnlog laeuft auch weiter
-wie gewohnt, ohne den Client.
-
 Nun kann isdnlog ausgepackt (wohl bereits geschehen ;-) und erstellt
 sowie installiert werden:
 
@@ -350,8 +349,9 @@ sowie installiert werden:
   cd isdnlog-<Version>
   make install
 
-Vor dem "make" koennen folgende Eintraege im "Makefile" den eigenen
-Gegebenheiten angepasst werden:
+Vor dem "make" koennen folgende Eintraege koennen im Installationsmenue
+den eigenen Gegebenheiten angepasst werden. Bitte nicht mehr direkt im Makefile
+editieren, da diese Eintraege ueberschrieben werden.
 
   COPTS
     Compiler-Optionen fuer den gcc
@@ -417,34 +417,15 @@ ACHTUNG: Durch die Syntaxandaerung und den Erweiterungen, muessen folgende
          Anderungen _zuerst_ an der bestehenden isdnlog.conf durchgefuehrt
          werden:
 
-         - MYPREFIX wird durch AREACODE ersetzt.
-         - Es gibt einen weiteren zwingenden Eintrag COUNTRYCODE.
+         Bei der Installation von isdnlog werden automatisch die neuen
+         Konfigurationsdatei angelegt.
 
-         COUNTRYCODE. beinhaltet die Anwahl an das eigene Land von aussen
-         her. Die beiden Eintrage sollten also folgende Form aufweisen:
-
-         COUNTRYCODE=+49 # fuer Anwender innerhalb Deutschland
-         AREA=7531       # fuer Anwender im Ortsnetz Konstanz
-
-Wer sowohl das Motif-Development-Kit 2.0  (und hoeher) besitzt, und
-dazu nicht vor Software im Alpha-Stadium zurueckschreckt, kann sich mit
-
-  make xinstall
-
-den X11-Client "xisdn" erstellen.
-
-In der Datei "/etc/services" sollte der folgende Eintrag eingefuegt werden,
-falls noch nicht vorhanden:
-
-isdnlog		20011/tcp	isdnlog
-
-Der X11-Client benoetigt eine eigene Resource-Datei.
-Diese hat den Namen "Isdn".
-Waehrend der Installation wird die Datei in das Verzeichnis
-"/usr/X11R6/lib/X11/app-defaults" kopiert.
-Wenn dieses bei der Installation unterdrueckt wird, muss dem X11-Client
-"von Hand" mitgeteilt werden, wo sich sein Resourcen-File befindet:
-"export XENVIRONMENT=./Isdn"
+         Wenn isdnlog noch nie installiert war, muss noch die Datei
+         callerid.conf editiert werden.
+         Bestand schon eine aeltere Version von isdnlog und wurde der alte
+         Pfad der Dateien korrekt im Installationsmenue angegeben,
+         werden alle Daten aus der alten Datei isdnlog.conf in die neuen
+         uebernommen. Es sollte also keine Nachbearbeitung noetig sein.
 
 Im Verzeichnis "xisdnload" befindet sich ein weiterer X11-Client von
 Frank Strauss (strauss@escape.de), der die Durchsatz-Rate pro B-Kanal
@@ -579,7 +560,7 @@ LOGFILE   = /var/log/isdn.log
 
 Dieses ist das Logfile in dem isdnlog alle Gespraeche ablegt, und isdnrep
 sie anschliessend anzeigt. Wenn diese sich in einem anderen Platz befindet,
-als zur Compilationszeitpinkt (in der Regel /var/log/isdn.log), dann kann
+als zur Compilationszeitpunkt (in der Regel /var/log/isdn.log), dann kann
 dieses hier passieren.
 Die Option  "-f" vom isdnrep ueberschreibt diesen Wert dann allerdings wieder.
 
@@ -642,6 +623,33 @@ angegeben zu werden.
   Defaultmaessig steht im isdnrep "0.12,DM". Daher entfaellt diese
   Angabe fuer Deutschland.
 
+  Wenn man zum Beispiel die Nettogebuehren (ohne MwSt.) sich anzeigen
+  lassen will, kann man hier z. B. folgenden Wert setzen:
+
+  CURRENCY=0.1043,DM
+
+Fuer den isdnrep kann man einen oder mehrere Formatsstrings definieren,
+wie der isdnrep die einzelnen Gebuehren anzeigen soll. Die genaue Syntax
+wird unter dem Kapitel isdnrep beschrieben.
+
+Alle Formateintraege sind optional. Bei der Installation werden diese
+allerdings erzeugt.
+
+Die folgenden beiden sind Standard-Eintraege, die der isdnrep sucht:
+
+REPFMT    = "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
+REPFMTWWW = "%X %D %17.17H %T %-17.17F %-20.20l %9u %U %I %O"
+
+Der erste ist fuer den "normalen" Gebuehrenausdruck. Der zweite wird
+verwendet, falls die Ausgabe im HTML-Format erfolgen soll.
+
+Es koennen noch weitere angegeben werden:
+
+REPFMTxxx = ...
+
+Fuer "xxx" kann eine beliebige Zeichenfolge ohne Leerzeichen und Tabulator
+stehen. Dieser Formatstring wird dann vom isdnrep verwendet mit der
+Option -Fxxx.
 
 ILABEL=xxxxx
 OLABEL=xxxxx
@@ -1463,8 +1471,7 @@ START={
   TIME    = 8-14,16-22
 }
 
-*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
-Die letzte Zeile wird also wie folgt expandiert als Kommando, wenn ich
+Die letzte Sektion wird also wie folgt expandiert als Kommando, wenn ich
 jemanden anrufe mit der Nummer 0815 (Meine MSN 040/1234):
 "/bin/auplay  OC 0401234 0815"
 
@@ -1474,8 +1481,8 @@ Ausgehendes Gspraech (O), Ereignis CONNECT (C)
 Nummer des Anrufenden (also Meine)
 Nummer des Angerufenden
 
-Die Variablen von isdnlog ($1, $2, ..) kann man nicht in geschweiften Klammern
-setzen. Also auch nicht anhaengen.
+Die Variablen von isdnlog ($1, $2, ..) kann man ebenfalls in geschweiften
+Klammern setzen. Also auch nicht anhaengen.
 
 Wenn eine unbekannte Variable verlangt wird (meistens wohl Tipp-Fehler;-)),
 dann wird die mit einem "?"  ersetzt, damit wenigstens die Parameterzahl
@@ -1512,24 +1519,101 @@ ACHTUNG: Bei eigenen MSN's, auf die kein eigenes Geraet reagiert
 4.2.6  Konkretes Beispiel fuer die "-S" Option
 ----------------------------------------------
 
-MYPREFIX = 0815
+[GLOBAL]
+AREACODE    = 0815
+COUNTRYCODE = 49
+
+[VARIABLES]
 PLAYER   = /usr/bin/auplay
 SOUNDS   = /usr/sounds
 
-START    = O R  L = $PLAYER ${SOUNDS}/unknown_ring.au,,8-14,16-22;\
-           IOA    = $PLAYER ${SOUNDS}/pay.au,,8-14,16-22;\
-           IOC  U = /usr/bin/who_is_it $2 $3;\
-           IOH    = $PLAYER ${SOUNDS}/hangup.au,,8-14,16-22;\
-           IORAH  = $PLAYER ${SOUNDS}/silent.au,,14-16,22-8;
+START    = {
 
-4711      MSN\#1        1 -     I RK = $PLAYER ${SOUNDS}/msn1_ring.au,5,8-14,16-22;\
-                          -     IOA  = $PLAYER ${SOUNDS}/msn1_pay.au,,8-14,16-22;
-4712      MSN\#2        1 -     I RK = $PLAYER ${SOUNDS}/msn2_ring.au,5,8-14,16-22;
-4713      MSN\#3        1 -     I RK = $PLAYER ${SOUNDS}/msn3_ring.au,5,8-14,16-22;
+  [FLAG]
+  FLAGS    = O R  L
+  PROGRAM  = $PLAYER ${SOUNDS}/unknown_ring.au
+  TIME     = 8-14,16-22
 
-*40441777 My_Provider   4 isdn0 OIR  = $PLAYER ${SOUNDS}/provider_ring.au;\
-                          	OICU = /usr/bin/get.mails.from.provider,300;\
-                          	OICU = /usr/bin/get.news.from.provider,1800;
+  [FLAG]
+  FLAGS    = IOA
+  PROGRAM  = $PLAYER ${SOUNDS}/pay.au
+  TIME     = 8-14,16-22
+
+  [FLAG]
+  FLAGS    = IOC  U
+  PROGRAM  = /usr/bin/who_is_it $2 $3
+
+  [FLAG]
+  FLAGS    = IOH
+  PROGRAM  = $PLAYER ${SOUNDS}/hangup.au
+  TIME     = 8-14,16-22
+
+  [FLAG]
+  FLAGS    = IORAH
+  PROGRAM  = $PLAYER ${SOUNDS}/silent.au
+  TIME     = 14-16,22-8
+}
+
+[MSN]
+NUMBER   = 4711
+ALIAS    = MSN\#1
+ZONE     = 1
+START    = {
+
+  [FLAG]
+  FLAGS    = I RK
+  PROGRAM  = $PLAYER ${SOUNDS}/msn1_ring.au
+  INTERVAL = 5
+  TIME     = 8-14,16-22
+}
+
+[MSN]
+NUMBER   = 4712
+ALIAS    = MSN\#2
+ZONE     = 1
+START    = {
+
+  [FLAG]
+  FLAGS    = I RK
+  PROGRAM  = $PLAYER ${SOUNDS}/msn2_ring.au
+  INTERVAL = 5
+  TIME     = 8-14,16-22
+}
+
+[MSN]
+NUMBER   = 4713
+ALIAS    = MSN\#3
+ZONE     = 1
+START    = {
+
+  [FLAG]
+  FLAGS    = I RK
+  PROGRAM  = $PLAYER ${SOUNDS}/msn3_ring.au
+  INTERVAL = 5
+  TIME     = 8-14,16-22
+}
+
+[NUMBER]
+NUMBER   = *40441777
+ALIAS    = My_Provider
+ZONE     = 4
+INTERFACE= isdn0
+START    = {
+
+  [FLAG]
+  FLAGS    = OIR
+  PROGRAM  = $PLAYER ${SOUNDS}/provider_ring.au
+
+  [FLAG]
+  FLAGS    = OICU
+  PROGRAM  = /usr/bin/get.mails.from.provider
+  INTERVAL = 300
+
+  [FLAG]
+  FLAGS    = OICU
+  PROGRAM  = /usr/bin/get.news.from.provider
+  INTERVAL = 1800
+}
 
 
 Erklaerung zum Beispiel:
@@ -1570,7 +1654,8 @@ kommt. So wie "/usr/bin/auplay" beendet ist, wird es wieder neu gestartet.
 Die Flags "OR" haben allerdings keine Bedeutung fuer andere Geraete am S0-Bus,
 da die ISDN-Karte die Ring-Phase von anderen Geraeten am Bus nicht mitbekommt.
 
-Kommentare in der in der Telefonnummerndateien:
+Kommentare in den Konfigurationsdateien isdn.conf, callerid.conf und ~/.isdn:
+-----------------------------------------------------------------------------
 
 Es koennen koennen Kommentare an beliebiger Stelle beginnend mit de Zeichen
 '#' eingefuegt werden (siehe lib/README.Syntax.conffile).
@@ -1820,6 +1905,8 @@ Daneben bietet isdnlog noch folgende interessante Zusatz-Funktion:
 8. Start von isdnlog
 --------------------
 
+ACHTUNG: Ab der Version 3.0 kann der isdnlog nur noch als root gestartet werden!
+
 Vor dem Start von "isdnlog" muss das D-Channel Q.931 logging des
 Teles-Treiber eingeschaltet werden. Bis "isdn4linux0.6.6beta" ist dazu
 
@@ -1878,8 +1965,9 @@ angegeben werden.
  -V  isdnlog zeigt seine eigene Versionsnummer an, und terminiert wieder
 
  -fX isdnlog liest eine Konfigurationsdatei "X". Hier koennen Optionen
-     angegeben werden.
-     Der Aufbau der Datei (Beispiel).
+     angegeben werden. Die Datei hat nichts mit der isdn.conf zu tun.
+     Hier befinden sich nur Parameter zum starten von isdnlog.
+     Der Aufbau der Datei (Beispiel):
 
      [options] # Muss immer zuerst kommen.
      log=yes
@@ -1995,7 +2083,18 @@ angegeben werden.
 
      Beispiel:
        Mein Internet-Provider steht folgendermassen in der "isdn.conf" :
-         4711 EUnet 3 isdn0 OC=$CMD ${SOUNDS}/dial.au
+
+         [NUMBER]
+         NUMBER    = 4711
+         ALIAS     = EUnet
+         ZONE      = 3
+         INTERFACE = isdn0
+         START = {
+
+           [FLAG]
+           FLAGS     = OC
+           PROGRAM   = $CMD ${SOUNDS}/dial.au
+         }
 
        Konfiguriert wurde dessen IP-Interface "isdn0" in der "rc.isdn" so:
          isdnctrl huptimeout isdn0 12
@@ -2021,14 +2120,14 @@ angegeben werden.
      Tarif, also um 9:00, 12:00, 18:00, 21:00, 2:00 sowie 5:00 Uhr.
 
      ACHTUNG: Die Gebuehrenimpulse der VSt kommen keineswegs im Rythmus
-     	      der wirklichen Gebuehrentakt-Laenge, sondern in jeweils
+     	        der wirklichen Gebuehrentakt-Laenge, sondern in jeweils
               auf 10 Sekunden gerundeten Abschnitten (entsprechend eigener
               Beobachtungen)
-	      In obigem Beispiel also nicht nach 12,24,36,48 .. Sekunden,
+	            In obigem Beispiel also nicht nach 12,24,36,48 .. Sekunden,
               sondern nach 20,30,40,50 Sekunden.
 
      ACHTUNG: Wird dieses Feature genutzt, sollte isdnlog mindestens
-     	      mit "-t1", besser mit "-t2" synchron zur Uhr der VSt
+     	        mit "-t1", besser mit "-t2" synchron zur Uhr der VSt
               laufen!
 
      Fuer diese Funktionalitaet benoetigt isdnlog das Programm "isdnctrl"
@@ -2220,6 +2319,13 @@ Gestartet wird isdnrep mittels:
 
          isdnrep [ -anvt:f:d: ]
 
+Der isdnrep kann seit der Version 3.0 die Ausgabe im HTML-Format erzeugen.
+Dieses kann ueber zwei Wege erreicht werden:
+- Option -wX
+- Der Name des isdnrep hat die Endung ".cgi" (z.B. isdnrep.cgi). Diese
+  entspricht der Option -w1. Man kann also z.B. einen Link auf
+  den isdnrep machen: ln -s isdnrep isdnrep.cgi
+
 Die Optionen von isdnrep haben im einzelnen folgende Funktion:
 
   -a        "all"     isdnrep druckt alle Verbindungen an, die sich in der
@@ -2230,6 +2336,8 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                         Gespraeche und Gebuehren angezeigt.
                         Dieses ist sinnvoll, wenn man den Output in ein
                         anderes Programm einlesen will.
+                        Diese Option hat keine Funktion, wenn der isdnrep
+                        ebenfalls mit der Option -wX aufgerufen wurde.
 
   -n        "numbers" isdnrep druckt anstelle der Symbolischen Namen die
                       Telefonnummern an
@@ -2364,8 +2472,67 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      callerid.conf oder ~/.isdn eingetragen sind.
                      Diese Option laeuft nicht bei der Ausgabe im HTML-Format.
                      
+-wX         "WWW"    Der isdnrep kann die Ausgabe im HTML-Format erzeugen.
+                     dieses wird mit der Option -w erreicht. Es gibt dort zwei 
+                     Modi:
+                     0  Es wird der HTML-Header unterdrueckt. Dieses ist
+                        sinnvoll, wenn die Ausgabe der isdnrep in eine
+                        bestehende Seite eingebettet werden soll.
+                     1  Es wird eine eigenstaendige Seite im HTML-Format
+                        erzeugt.
 
-Es wird nun auf stdout eine Abrechnung mit folgender Optik generiert:
+-sX         "format string"
+                     Die Ausgabe des isdnrep kann beeinflusst werden, indem
+                     ein Formatstring angegeben wird, welche Informationen
+                     Pro Verbindung gezeigt werden soll. Die Syntax
+                     entspricht dem printf. Folgende Platzhalter sind bekannt:
+
+                     %X: Die Zeit ohne Datum (z.B. 23:54:06)
+                     %x: Das Datum (z.B. 05/07/97)
+                     %y: Datum ohne Jahresangabe (z.B. Sun May 04)
+                     %Y: Das Jahr, vierstellig (z.B. 1997)
+
+                     %D: Gespraechsdauer (z.B. 00:03:34)
+                     %H: Die eigene MSN, wenn ein Eintrag in der callerid.conf
+                         gefunden wurde wird dort das Alias angezeigt.
+                     %h: Die eigene MSN (kein Alias, nur die Nummer)
+                     %F: Der andere Gesprachsteilnehmer, wenn ein Eintrag in
+                         der callerid.conf gefunden wurde wird dort das Alias
+                         angezeigt.
+                     %f: Der andere Gesprachsteilnehmer (kein Alias, nur die
+                         Nummer)
+                     %L: Gibt den Ort aus fuer die eigene MSN falls bekannt,
+                         sonst ein Leerstring.
+                     %l: Gibt den Ort aus fuer den anderen Gesprachsteilnehmer
+                         falls bekannt, sonst ein Leerstring.
+                     %T: Gibt den Pfeil an zischen den Nummern ("->" oder "<-")
+                         fuer die Gespraechsrichtung. Die eigene MSN
+                         sollte hierbei immer links vom Pfeil stehen.
+                     %t: Gibt den Pfeil an zischen den Nummern ("->" oder "<-")
+                         fuer die Gespraechsrichtung. Die eigene MSN
+                         sollte hierbei immer rechts vom Pfeil stehen.
+
+                     %u: Gibt die Einheiten aus, falls vorhanden (z.B. 6 EH)
+                     %U: Gibt die Gebuehren aus, falls vorhanden (z.B. 2,28 DM)
+                     %I: Gibt den INPUT-Datendurchsatz an.
+                     %O: Gibt den OUTPUT-Datendurchsatz an.
+
+                     Defaultmaessig ist der folgende String fuer den isdnrep
+                     (nicht HTML) eingestellt:
+
+                     "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
+
+-FX         "format" Es koennen in der Datei isdn.conf Format-Strings definiert
+                     werden. Diese koennen mit Option -F verwendet werden.
+                     Unter der Sektion [ISDNLOG] kann es Eintraege namens
+                     "REPFMTxxx" existieren. Der String nach der Option -F
+                     muss identisch sein mit "xxx". Beispiel:
+
+                     REPFMT1        = ... # -> isdnrep -F1
+                     REPFMTMYSTRING = ... # -> isdnrep -Fmystring oder
+                                          #    isdnrep -FMYSTRING
+
+Es wird nun auf stdout eine Abrechnung mit folgender Default-Optik generiert:
 
 $ isdnrep -v -t 6/1/96
 I S D N  Connection Report  -  Sun Jan  7 22:21:19 1996
@@ -2380,7 +2547,7 @@ Sat Jan  6 1996
   20:02:28  0:02:37     Phone/HDLC <- UNKNOWN                                (1)
   20:09:53  0:07:01     Modem/X.75 -> T-Online          3 EH      0,36 DM    (2)
   21:27:56                 UNKNOWN -> UNKNOWN        User busy               (3)
-  22:09:41  0:29:36        UNKNOWN -> UNKNOWN          43 EH      9,89 DM *
+  22:09:41  0:29:36        UNKNOWN -> UNKNOWN          43 EH      9,89 DM*
 =========================================================================
   1 IN= 0:02:37,  13 OUT= 3:40:14,   3 failed         210 EH     25,20 DM
 (6)^^^^^^^^^^^^  (7)^^^^^^^^^^^^^  (8)^^^^^^^      (9)^^^^^^ (10)^^^^^^^^
@@ -2423,6 +2590,7 @@ Einheiten gemeldet (Charging-Info fehlte)
 Daher steht dann hier die von isdnrep errechnete Anzahl Einheiten.
 
 
+*************** Bis hier ist sl gekommen, die Doku zu ueberarbeiten ***********
 11. Das Konfigurations-Tool isdnconf
 ------------------------------------
 
@@ -2594,6 +2762,10 @@ Kommentare werden geloescht.
 
 12. Der X-Client xisdn
 ----------------------
+
+ACHTUNG: Der xisdn ist noch nicht an die Version 3.0 angepasst. Daher ist der
+         Client in dieser Version nicht enthalten. Es kann allerdings nicht
+         garantiert werden, ob der xisdn mit der Version 3.0 lauffaehig ist.
 
 Der xisdn basiert auf Motif-2.0. Daher werden die wenigsten ihn selber
 uebersetzen koennen. Der xisdn liegt als binary direkt neben dem isdnlog-Paket

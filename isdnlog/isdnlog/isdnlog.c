@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.8 1997/04/17 20:09:32 luethje Exp $
+/* $Id: isdnlog.c,v 1.9 1997/05/04 20:19:47 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.9  1997/05/04 20:19:47  luethje
+ * README completed
+ * isdnrep finished
+ * interval-bug fixed
+ *
  * Revision 1.8  1997/04/17 20:09:32  luethje
  * patch of Ingo Schneider
  *
@@ -144,7 +149,7 @@ static void loop(void)
         /* Damit sich der neue Client anmelden kann, ohne
            das was anderes dazwischen funkt ... */
         if (sockets[NewClient].descriptor >= 0)
-	        FD_SET_MAX(sockets[Cnt].descriptor, &readmask, maxdesc);
+	        FD_SET_MAX(sockets[NewClient].descriptor, &readmask, maxdesc);
 
       	NewClient = 0;
       }

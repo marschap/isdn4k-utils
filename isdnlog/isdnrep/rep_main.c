@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.2 1997/04/20 22:52:29 luethje Exp $
+/* $Id: rep_main.c,v 1.3 1997/05/04 20:19:58 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.3  1997/05/04 20:19:58  luethje
+ * README completed
+ * isdnrep finished
+ * interval-bug fixed
+ *
  * Revision 1.2  1997/04/20 22:52:29  luethje
  * isdnrep has new features:
  *   -variable format string
@@ -136,6 +141,7 @@
 /*****************************************************************************/
 
 static int print_in_modules(int Level, const char *fmt, ...);
+static int set_linefmt(char *linefmt);
 
 /*****************************************************************************/
 
@@ -145,9 +151,10 @@ int main(int argc, char *argv[], char *envp[])
 	auto char  fnbuff[512] = "";
 	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
 	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ac:nviot:f:d:p:NVhw:u";
+	auto char  options[]   = "ac:d:f:hinop:s:t:uvw:NVF:";
 	auto char *myname      = basename(argv[0]);
-	auto char *ptr;
+	auto char *ptr         = NULL;
+	auto char *linefmt     = "";
 
 
 	set_print_fct_for_tools(printf);
@@ -202,6 +209,13 @@ int main(int argc, char *argv[], char *envp[])
       case 'w' : html = strtol(optarg, NIL, 0)?H_PRINT_HEADER:H_PRINT_HTML;
                  break;
 
+      case 's' : lineformat = strdup(optarg);
+                 linefmt = NULL;
+                 break;
+
+      case 'F' : linefmt = strdup(optarg);
+                 break;
+
       case 'N' : use_new_config = 0;
                  break;
 
@@ -212,14 +226,36 @@ int main(int argc, char *argv[], char *envp[])
                  return(1);
     } /* switch */
 
+  if (readconfig(myname) != 0)
+  	return 1;
+
 	if (!html && (ptr = strrchr(myname,'.')) != NULL && !strcasecmp(ptr+1,"cgi"))
 		html = H_PRINT_HEADER;
 
 	if (html)
+	{
 		seeunknowns = 0;
+		header++;
+	}
 
-  if (readconfig(myname) != 0)
-  	return 1;
+	if (linefmt != NULL)
+	{
+		if (*linefmt == '\0')
+		{
+			if (html)
+				set_linefmt("WWW");
+			else
+				set_linefmt(linefmt);
+		}
+		else
+		{
+			if (set_linefmt(linefmt))
+			{
+				printf("Error: %s can not find format `%s%s'!\n",myname,CONF_ENT_REPFMT,To_Upper(linefmt));
+				exit(0);
+			}
+		}
+	}
 
   if (!currency_factor)
     currency = "DM";
@@ -244,6 +280,31 @@ static int print_in_modules(int Level, const char *fmt, ...)
 
 	return fprintf(Level == PRT_ERR?stderr:stdout, "%s", String);
 } /* print_in_modules */
+
+/*****************************************************************************/
+
+int set_linefmt(char *linefmt)
+{
+	int i = 0;
+	int RetCode = -1;
+
+ 	if (lineformats != NULL)
+ 	{
+	 	while(lineformats[i] != NULL)
+ 		{
+ 			if (!strcasecmp(linefmt,lineformats[i][0]))
+ 			{
+ 				lineformat = lineformats[i][1];
+ 				RetCode = 0;
+ 				break;
+ 			}
+
+ 			i++;
+ 		}
+ 	}
+
+ 	return RetCode;
+}
 
 /*****************************************************************************/
 
