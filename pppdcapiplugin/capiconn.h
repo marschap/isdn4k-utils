@@ -1,7 +1,18 @@
 /*
- * $Id: capiconn.h,v 1.1 2000/05/18 14:58:35 calle Exp $
+ * $Id: capiconn.h,v 1.2 2000/10/25 10:01:47 calle Exp $
+ *
+ * Copyright 2000 Carsten Paeth (calle@calle.in-berlin.de)
+ * Copyright 2000 AVM GmbH Berlin (info@avm.de)
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version
+ *  2 of the License, or (at your option) any later version.
  *
  * $Log: capiconn.h,v $
+ * Revision 1.2  2000/10/25 10:01:47  calle
+ * (c) in all files
+ *
  * Revision 1.1  2000/05/18 14:58:35  calle
  * Plugin for pppd to support PPP over CAPI2.0.
  *
