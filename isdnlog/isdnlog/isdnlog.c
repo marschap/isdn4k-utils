@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.45 1999/06/15 20:04:03 akool Exp $
+/* $Id: isdnlog.c,v 1.46 1999/06/16 23:37:31 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.46  1999/06/16 23:37:31  akool
+ * fixed zone-processing
+ *
  * Revision 1.45  1999/06/15 20:04:03  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -1122,7 +1125,7 @@ int main(int argc, char *argv[], char *envp[])
   register char  *p;
   register int    i, res = 0;
   auto     int    lastarg;
-  auto     char   rlogfile[PATH_MAX];
+  auto     char   rlogfile[PATH_MAX], s[BUFSIZ];
   auto	   char	  *version;
   auto     char **devices = NULL;
   sigset_t        unblock_set;
@@ -1339,15 +1342,21 @@ int main(int argc, char *argv[], char *envp[])
 	    mysql_dbOpen();
 #endif
 
+	    sprintf(s, "%s%s", mycountry, myarea);
+            mynum = strdup(s);
+
 	    initHoliday(holifile, &version);
+
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
 	    initCountry(countryfile, &version);
+
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 
 	    initRate(rateconf, ratefile, zonefile, &version);
+
 	    if (!Q931dmp && *version)
 	      print_msg(PRT_NORMAL, "%s\n", version);
 

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.45 1999/06/15 20:05:22 akool Exp $
+/* $Id: tools.h,v 1.46 1999/06/16 23:38:09 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.46  1999/06/16 23:38:09  akool
+ * fixed zone-processing
+ *
  * Revision 1.45  1999/06/15 20:05:22  akool
  * isdnlog Version 3.33
  *   - big step in using the new zone files
@@ -1013,6 +1016,7 @@ _EXTERN int	ignoreRR;
 _EXTERN int	ignoreCOLP;
 _EXTERN int 	interns0;
 _EXTERN	char    *vbn;
+_EXTERN char	*mynum;
 #undef _EXTERN
 
 /****************************************************************************/

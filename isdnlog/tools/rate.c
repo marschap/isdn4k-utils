@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.22 1999/06/16 19:13:00 akool Exp $
+/* $Id: rate.c,v 1.23 1999/06/16 23:37:50 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.23  1999/06/16 23:37:50  akool
+ * fixed zone-processing
+ *
  * Revision 1.22  1999/06/16 19:13:00  akool
  * isdnlog Version 3.34
  *   fixed some memory faults
@@ -1146,6 +1149,7 @@ int getRate(RATE *Rate, char **msg)
     if (Rate->domestic && *(Rate->dst)=='+') {
       int l=strlen(mycountry);
       int z=getZone(prefix, Rate->src+l, Rate->dst+l);
+      print_msg(PRT_NORMAL, "@@@ getZone(%d,%s,%s)=%d\n", prefix, Rate->src + l, Rate->dst + l, z);
       if (z!=UNKNOWN) {
 	for (i=0; i<Provider[prefix].nZone; i++) {
 	  for (j=0; j<Provider[prefix].Zone[i].nNumber; j++) {
