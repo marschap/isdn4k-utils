@@ -1,4 +1,4 @@
-ISDNLOG - Version 3.0 -  				07-Nov-98  17:36
+ISDNLOG - Version 3.0 -  				19-Nov-98  12:14
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
@@ -16,9 +16,9 @@ Quick-Installation-Guide
      CONFIG_ISDN=m
      CONFIG_ISDN_DRV_HISAX=m
 
-2. isdn4k-utils-2.1.tar.gz auspacken, erstellen und installieren:
+2. isdn4k-utils-3.0.tar.gz auspacken, erstellen und installieren:
      cd /usr/src
-     tar xzf isdn4k-utils-2.1.tar.gz
+     tar xzf isdn4k-utils-3.0.tar.gz
      cd isdn4k-utils
      make config
      make
@@ -2326,6 +2326,12 @@ angegeben werden.
      internen Teilnehmernummern. sollte hier 3 angegeben werden.
      (interns0="value")
 
+ -Rx Angabe der Verbindungsnetzbetreiberauswahlnummer der Telefongesellschaft,
+     auf die man preselected ist. Hierbei ist 010 wegzulassen, d.h. z.b.
+     bei Arcor ist -R70 anzugeben.
+     Fehlt diese Angabe, wird 33, d.h. die Deutsche Telekom angenommen.
+     (preselected="value")
+
 
 Bei den Optionen -mX, -lX -xX sind folgende Flags moeglich:
 
@@ -2739,6 +2745,14 @@ Die Optionen von isdnrep haben im einzelnen folgende Funktion:
                      REPFMT1        = ... # -> isdnrep -F1
                      REPFMTMYSTRING = ... # -> isdnrep -Fmystring oder
                                           #    isdnrep -F MYSTRING
+
+-Rx                  Angabe der Verbindungsnetzbetreiberauswahlnummer
+		     der Telefongesellschaft, auf die man preselected ist.
+		     Hierbei ist 010 wegzulassen, d.h. z.b.
+     		     bei Arcor ist -R70 anzugeben.
+     		     Fehlt diese Angabe, wird 33, d.h. die Deutsche Telekom
+     		     angenommen.
+
 
 Abspielen von Anrufen vom vbox und Anzeigen von Faxen vom mgetty im HTML-Format
 -------------------------------------------------------------------------------
@@ -4022,4 +4036,4 @@ rumgeschraubt habe!
 
 Viel Spass mit isdnlog wuenscht
 
-Andreas Kool (akool@Kool.f.UUnet.de)
+Andreas Kool (akool@isdn4linux.de)

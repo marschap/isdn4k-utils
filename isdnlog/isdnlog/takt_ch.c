@@ -1,8 +1,8 @@
-/* $Id: takt_ch.c,v 1.3 1998/11/05 19:09:57 akool Exp $
+/* $Id: takt_ch.c,v 1.4 1998/11/24 20:52:14 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.UUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -409,7 +409,7 @@ float taktlaenge(int chan, char *description)
     if (zone != -1) {
 
   if (provider == -1)
-    provider = 33;
+    provider = preselect;
 
       call[chan].zone = zone;
 

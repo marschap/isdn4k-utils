@@ -1,8 +1,8 @@
-/* $Id: rep_main.c,v 1.5 1998/03/29 19:54:22 luethje Exp $
+/* $Id: rep_main.c,v 1.6 1998/11/24 20:52:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
- * Copyright 1995, 1997 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,17 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.6  1998/11/24 20:52:55  akool
+ *  - changed my email-adress
+ *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
+ *  - made Provider-Prefix 6 digits long
+ *  - full support for internal S0-bus implemented (-A, -i Options)
+ *  - isdnlog now ignores unknown frames
+ *  - added 36 allocated, but up to now unused "Auskunft" Numbers
+ *  - added _all_ 122 Providers
+ *  - Patch from Jochen Erwied <mack@Joker.E.Ruhr.DE> for Quante-TK-Anlagen
+ *    (first dialed digit comes with SETUP-Frame)
+ *
  * Revision 1.5  1998/03/29 19:54:22  luethje
  * idnrep: added html feature (incoming/outgoing calls)
  *
@@ -157,7 +168,7 @@ int main(int argc, char *argv[], char *envp[])
 	auto char  fnbuff[512] = "";
 	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
 	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ac:d:f:hinop:s:t:uvw:NVF:M:";
+	auto char  options[]   = "ac:d:f:hinop:s:t:uvw:NVF:M:R:";
 	auto char *myname      = basename(argv[0]);
 	auto char *ptr         = NULL;
 	auto char *linefmt     = "";
@@ -232,6 +243,9 @@ int main(int argc, char *argv[], char *envp[])
 
       case 'M' : htmlreq = strdup(optarg);
                  break;
+
+      case 'R' : preselect = (int)strtol(optarg, NIL, 0);
+      	       	 break;
 
       case 'V' : print_version(myname);
                  exit(0);

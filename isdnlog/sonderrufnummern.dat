@@ -177,5 +177,42 @@
 11871   |?   |       |     |      |      | Arcor Telefonauskunft Ausland                    |
 11880   |?   |       |     |      |      | Telegate Telefonauskunft Inland                  |
 11890   |?   |       |     |      |      | Telegate Telefonauskunft Ausland                 |
+11875   |?   |       |     |      |      | Auskunft Inland ARCIS Media·COM Management GmbH  |
+11815   |?   |       |     |      |      | Auskunft Inland Bayerische Telefonbuch-Verlags   | GmbH i. Gr., Ingolstadt
+11823   |?   |       |     |      |      | Auskunft Inland Communikationsnetze Süd-West     | GmbH & Co. KG, Stuttgart
+11882   |?   |       |     |      |      | Auskunft Inland City Com Netze      		    | GmbH i. Gr., Nürnberg
+11819   |?   |       |     |      |      | Auskunft Inland CityLine Telefondienste 	    | GmbH, Schleswig
+11885   |?   |       |     |      |      | Auskunft Inland Deutsche Telekom Medien 	    | GmbH, Frankfurt
+11877   |?   |       |     |      |      | Auskunft Inland E-Plus Mobilfunk 		    | GmbH, Düsseldorf
+11816   |?   |       |     |      |      | Auskunft Inland EWE TEL 			    | GmbH, Oldenburg
+11858   |?   |       |     |      |      | Auskunft Inland KaTel 			    | Gesellschaft für Telekommunikation mbH, Köln
+11843   |?   |       |     |      |      | Auskunft Inland KielNet 			    | GmbH
+11872   |?   |       |     |      |      | Auskunft Inland Mannesmann Mobilfunk 	    | GmbH, Düsseldorf
+11883   |?   |       |     |      |      | Auskunft Inland Mega Satellitenfernsehen 	    | GmbH, Kaarst
+11888   |?   |       |     |      |      | Auskunft Inland o.tel.o 			    | communications GmbH, Düsseldorf
+11844   |?   |       |     |      |      | Auskunft Inland pc-plus Connect 		    | GmbH, München
+11822   |?   |       |     |      |      | Auskunft Inland PLUSNET 			    | Gesellschaft für Netzwerk Services mbH, Düsseldorf
+11850   |?   |       |     |      |      | Auskunft Inland Talkline 			    | PS PhoneService GmbH
+11861   |?   |       |     |      |      | Auskunft Inland Telecom-Infoservice 		    | GmbH, Wien (A)
+11812   |?   |       |     |      |      | Auskunft Inland Telefonbuch-Verlag 		    | Sachsen GmbH, Dresden
+11810   |?   |       |     |      |      | Auskunft Inland Teleglobe 			    | GmbH
+11881   |?   |       |     |      |      | Auskunft Inland VIAG INTERKOM 		    | GmbH & Co. KG, München
+11855   |?   |       |     |      |      | Auskunft Inland WorldCom 			    | Telecommunication Services GmbH, Frankfurt
+11829   |?   |       |     |      |      | Auskunft Ausland CityLine 			    | Telefondienste GmbH, Schleswig
+11824   |?   |       |     |      |      | Auskunft Ausland Communikationsnetze Süd-West    | GmbH & Co. KG, Stuttgart
+11828   |?   |       |     |      |      | Auskunft Ausland Debitel 			    | Kommunikationstechnik GmbH & Co. KG, Stuttgart
+11886   |?   |       |     |      |      | Auskunft Ausland Deutsche Telekom Medien 	    | GmbH, Frankfurt
+11878   |?   |       |     |      |      | Auskunft Ausland E-Plus Mobilfunk 		    | GmbH, Düsseldorf
+11817   |?   |       |     |      |      | Auskunft Ausland EWE TEL 			    | GmbH, Oldenburg
+11873   |?   |       |     |      |      | Auskunft Ausland Mannesmann Mobilfunk 	    | GmbH
+11898   |?   |       |     |      |      | Auskunft Ausland o.tel.o    			    | communications GmbH, Düsseldorf
+11866   |?   |       |     |      |      | Auskunft Ausland pc-plus Connect 		    | GmbH, München
+11851   |?   |       |     |      |      | Auskunft Ausland Talkline 			    | PS PhoneService GmbH
+11860   |?   |       |     |      |      | Auskunft Ausland Telecom-Infoservice 	    | GmbH, Wien (A)
+11887   |?   |       |     |      |      | Auskunft Ausland Telegate Anklam		    |
+11814   |?   |       |     |      |      | Auskunft Ausland Teleglobe 			    | GmbH
+11889   |?   |       |     |      |      | Auskunft Ausland VIAG INTERKOM 		    | GmbH & Co. KG, München
+11856   |?   |       |     |      |      | Auskunft Ausland WorldCom 			    | Telecommunication Services GmbH, Frankfurt
 #QUELLE: Programm "t-tarife.exe" Version: 1.16  Stand: 07.1998
-#        sowie eigene Recherchen, Stand: 15-Oct-98
+#	 http://www.regtp.de
+#        sowie eigene Recherchen, Stand: 22-Nov-98

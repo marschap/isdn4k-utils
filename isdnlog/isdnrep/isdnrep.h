@@ -1,8 +1,8 @@
-/* $Id: isdnrep.h,v 1.10 1998/03/29 19:54:17 luethje Exp $
+/* $Id: isdnrep.h,v 1.11 1998/11/24 20:52:46 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.EUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
  *                     and Stefan Luethje (luethje@sl-gw.lake.de)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,17 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.11  1998/11/24 20:52:46  akool
+ *  - changed my email-adress
+ *  - new Option "-R" to supply the preselected provider (-R24 -> Telepassport)
+ *  - made Provider-Prefix 6 digits long
+ *  - full support for internal S0-bus implemented (-A, -i Options)
+ *  - isdnlog now ignores unknown frames
+ *  - added 36 allocated, but up to now unused "Auskunft" Numbers
+ *  - added _all_ 122 Providers
+ *  - Patch from Jochen Erwied <mack@Joker.E.Ruhr.DE> for Quante-TK-Anlagen
+ *    (first dialed digit comes with SETUP-Frame)
+ *
  * Revision 1.10  1998/03/29 19:54:17  luethje
  * idnrep: added html feature (incoming/outgoing calls)
  *
@@ -93,12 +104,14 @@ _EXTERN double cheap(time_t when, int zone);
 #define _SET_NULL   = NULL
 #define _SET_0      = 0
 #define _SET_1      = 1
+#define _SET_33	    = 33
 #define _SET_EMPTY  = ""
 #else
 #define _EXTERN extern
 #define _SET_NULL
 #define _SET_0
 #define _SET_1
+#define _SET_33
 #define _SET_EMPTY
 #define _SET_FILE
 #endif
@@ -126,6 +139,7 @@ _EXTERN char	  timestring[256] _SET_EMPTY;
 _EXTERN char	  *lineformat     _SET_NULL;
 _EXTERN time_t  begintime       _SET_0;
 _EXTERN time_t  endtime         _SET_0;
+_EXTERN int     preselect	_SET_33;
 
 #undef _SET_NULL
 #undef _SET_0

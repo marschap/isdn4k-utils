@@ -1,8 +1,8 @@
-/* $Id: takt_de.c,v 1.3 1998/11/05 19:10:19 akool Exp $
+/* $Id: takt_de.c,v 1.4 1998/11/24 20:52:16 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
- * Copyright 1995, 1998 by Andreas Kool (akool@Kool.f.UUnet.de)
+ * Copyright 1995, 1998 by Andreas Kool (akool@isdn4linux.de)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -337,7 +337,7 @@ float taktlaenge(int chan, char *description)
 
   if (description) *description = 0;
 
-  if (!call[chan].dialin && *call[chan].num[1]) {
+  if (!call[chan].dialin && *call[chan].num[CALLED]) {
 
     if ((provider == 11) || /* o.tel.o */
         (provider == 13) || /* Tele2 */
@@ -372,8 +372,8 @@ float taktlaenge(int chan, char *description)
 
   tm = localtime(&connect);
 
-    if (call[chan].sondernummer != -1) {
-      switch (SN[call[chan].sondernummer].tarif) {
+    if (call[chan].sondernummer[CALLED] != -1) {
+      switch (SN[call[chan].sondernummer[CALLED]].tarif) {
         case  0 : if (description) sprintf(description, "FreeCall");  /* Free of charge */
               	  return(60 * 60 * 24);              /* one day should be enough ;-) */
 
@@ -382,14 +382,14 @@ float taktlaenge(int chan, char *description)
 
         case -1 : if ((tm->tm_wday > 0) && (tm->tm_wday < 6)) {
               	    if ((tm->tm_hour > 8) && (tm->tm_hour < 18))
-                      takt = SN[call[chan].sondernummer].takt1;  /* Werktag 9-18 Uhr */
+                      takt = SN[call[chan].sondernummer[CALLED]].takt1;  /* Werktag 9-18 Uhr */
               	    else
-                      takt = SN[call[chan].sondernummer].takt2;  /* Restliche Zeit */
+                      takt = SN[call[chan].sondernummer[CALLED]].takt2;  /* Restliche Zeit */
         	  }
     	    	  else
-    	    	    takt = SN[call[chan].sondernummer].takt2;
+    	    	    takt = SN[call[chan].sondernummer[CALLED]].takt2;
 
-                  if (description) strcpy(description, SN[call[chan].sondernummer].sinfo);
+                  if (description) strcpy(description, SN[call[chan].sondernummer[CALLED]].sinfo);
 		  return(takt);
                   break;
 
@@ -397,7 +397,7 @@ float taktlaenge(int chan, char *description)
     } /* if */
 
     if (zone == -1) {
-      zone2 = area_diff(NULL, call[chan].num[1]);
+      zone2 = area_diff(NULL, call[chan].num[CALLED]);
 
       if ((zone2 == -1) && (c = call[chan].confentry[OTHER]) > -1)
         zone = known[c]->zone;
@@ -409,7 +409,7 @@ float taktlaenge(int chan, char *description)
     if (zone != -1) {
 
   if (provider == -1)
-    provider = 33;
+    provider = preselect;
 
       call[chan].zone = zone;
 
