@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.37 1999/08/20 19:28:05 akool Exp $
+/* $Id: isdnconf.c,v 1.38 1999/09/26 10:55:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.38  1999/09/26 10:55:20  akool
+ * isdnlog-3.55
+ *   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *     added hup3 to option file
+ *   - changed country-de.dat to ISO 3166 Countrycode / Airportcode
+ *
  * Revision 1.37  1999/08/20 19:28:05  akool
  * isdnlog-3.45
  *  - removed about 1 Mb of (now unused) data files
@@ -262,6 +268,8 @@
  * some bugfixes
  *
  */
+
+#define _ISDN_CONF_C_
 
 #include "isdnconf.h"
 

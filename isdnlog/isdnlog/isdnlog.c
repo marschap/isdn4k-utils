@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.49 1999/09/11 22:28:23 akool Exp $
+/* $Id: isdnlog.c,v 1.50 1999/09/26 10:55:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.50  1999/09/26 10:55:20  akool
+ * isdnlog-3.55
+ *   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *     added hup3 to option file
+ *   - changed country-de.dat to ISO 3166 Countrycode / Airportcode
+ *
  * Revision 1.49  1999/09/11 22:28:23  akool
  * isdnlog-3.50
  *   added 3. parameter to "-h" Option: Controls CHARGEHUP for providers like
@@ -959,7 +965,12 @@ static int read_param_file(char *FileName)
                  		    *p = 0;
                  		    hup1 = atoi(Ptr->value);
                  		    hup2 = atoi(p + 1);
-      	       	 		  } /* if */
+
+				    if ((p = strchr(p + 1, ':')))
+				      hup3 = atoi(p + 1);
+				  } /* if */
+				  else
+				    printf("%s: WARNING: \"-h\" Option requires 2 .. 3 arguments\n", myshortname);
 				}
 				else
                                 if (!strcmp(Ptr->name, CONF_ENT_TRIM)) {

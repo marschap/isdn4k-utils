@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.12 1999/09/09 11:21:06 akool Exp $
+/* $Id: rate.h,v 1.13 1999/09/26 10:55:20 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.13  1999/09/26 10:55:20  akool
+ * isdnlog-3.55
+ *   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *     added hup3 to option file
+ *   - changed country-de.dat to ISO 3166 Countrycode / Airportcode
+ *
  * Revision 1.12  1999/09/09 11:21:06  akool
  * isdnlog-3.49
  *
@@ -153,7 +159,7 @@ typedef struct {
   double     Duration;  /* Länge eines Tarifimpulses */
   int        Units;     /* verbrauchte Tarifimpulse */
   double     Charge;    /* gesamte Verbindungskosten */
-  double     Rhythm[2]; /* Taktung */  
+  double     Rhythm[2]; /* Taktung */
   time_t     Time;      /* gesamte Verbindungszeit */
   time_t     Rest;      /* bezahlte, aber noch nicht verbrauchte Zeit */
 } RATE;
@@ -168,6 +174,7 @@ char *getComment(int prefix, char *key);
 void  clearRate (RATE *Rate);
 int   getRate(RATE *Rate, char **msg);
 int   getLeastCost(RATE *Current, RATE *Cheapest, int booked, int skip);
+int   getZoneRate(RATE* Rate, int domestic, int first);
 int   guessZone (RATE *Rate, int aoc_units);
 char *explainRate (RATE *Rate);
 char *printRate (double value);

@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.108 1999/09/22 09:02:59 akool Exp $
+## $Id: Makefile.in,v 1.109 1999/09/26 10:55:19 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.109  1999/09/26 10:55:19  akool
+## isdnlog-3.55
+##   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+##     added hup3 to option file
+##   - changed country-de.dat to ISO 3166 Countrycode / Airportcode
+##
 ## Revision 1.108  1999/09/22 09:02:59  akool
 ## isdnlog-3.54
 ##
@@ -773,7 +779,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.54
+VERSION     = 3.55
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

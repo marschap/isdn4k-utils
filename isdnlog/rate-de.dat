@@ -1,4 +1,4 @@
-V:1.10-Germany [19-Sep-1999 16:09:48]
+V:1.10-Germany [22-Sep-1999 11:16:14]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.46 1999/09/19 14:16:26 akool Exp $
+# $Id: rate-de.dat,v 1.47 1999/09/26 10:55:19 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -12587,6 +12587,68 @@ T:*/*=0.99/60
 Z:14 E-Plus
 A:+49177,+49178
 T:*/*=1.49/60
+Z:60-66,68-75 Funkruf
+A:0164,01682,01683,01684,01685,01687,01688,01689 Cityruf automatic
+A:016951,016952 Cityruf Operator
+A:01680 Scall IVR
+A:01681 Scall DTMF
+A:01699 Scall Operator
+A:01696 Scall Modem
+A:01660,01665,01669 Telmi automatic
+A:01692,01693 Skyper
+A:016953 Skyper Operator
+A:01650,01655 Quix Service
+A:01651 Quix DTMF
+A:016591,016592,016593 Quix Modem
+A:01653 Quix Operator 1
+A:01654 Quix IVR
+A:01656 Quix Operator 2
+T:*/*=2.99/60
+Z:67 Funkruf
+A:01661 Telmi Operator
+T:*/*=5.99/60
+Z:81 Dienst 01801
+A:01801
+T:*/*=0.12/60
+Z:82 Dienst 01802
+A:01802
+T:*/*=0.12/0,0/1
+Z:83 Dienst 01803
+A:01803
+T:*/*=0.24/60
+Z:84 Dienst 01804
+A:01804
+T:*/*=0.48/0,0/1
+Z:85 Dienst 01805
+A:01805
+T:*/*=0.24/60
+Z:162-163 Televotum
+A:01371,01372,01373,01374,01378
+T:*/*=0.48/60
+Z:101 Online-Dienste (T-Online, AOL)
+A:0191011,01914,019161
+T:W/8-20=0.08/60
+T:W/20-8=0.05/60
+T:E,H/*=0.05/60
+Z:200 Europa
+A:Österreich, Schweiz
+T:*/*=0.36/60
+Z:201 Europa 1
+A:Niederlande, Belgien, Frankreich, Spanien, Finnland, Luxemburg, Irland
+A:Liechtensctein, Italien, Vatikanstadt, Großbritannien, Nordirland
+A:Insel Man, Kanalinseln, Dänemark, Schweden, Norwegen, Polen
+T:*/*=0.69/60
+Z:202 Europa 2
+A:Island, Zypern, Ungarn, Andorra, Monaco, Griechenland, Faröer, Portugal
+A:San Marino, Malta, Jugoslawien, Kroatien, Tschechische Republik
+A:Slowakische Republik, Türkei
+T:*/*=0.99/60
+Z:203 Welt 1
+A:USA, Kanada
+Z:*/*=0.69/60
+Z:204 Welt 2
+A:Australien, Neuseeland, Singapur, Japan, Korea (Republik), Hongkong
+T:*/*=1.49/60
 #####################################################################
 #
 #
@@ -14803,6 +14865,7 @@ T:*/*=0.847/0,0.121/6.7
 #    51:01051 Telecom		02.07.1999 je
 #    66:Interroute		02.07.1999 je
 #    70:Arcor			01.05.1999 ak
+#    75:Call Callino            21.09.1999 je
 #    78:3U			01.05.1999 ak
 #    79:Viatel			20.06.1999 je
 #    85:GTS-WESTCom		02.07.1999 je

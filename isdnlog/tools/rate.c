@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.47 1999/09/22 09:03:00 akool Exp $
+/* $Id: rate.c,v 1.48 1999/09/26 10:55:20 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.48  1999/09/26 10:55:20  akool
+ * isdnlog-3.55
+ *   - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *     added hup3 to option file
+ *   - changed country-de.dat to ISO 3166 Countrycode / Airportcode
+ *
  * Revision 1.47  1999/09/22 09:03:00  akool
  * isdnlog-3.54
  *
@@ -354,8 +360,6 @@ extern const char *basename (const char *name);
 #else
 #include "isdnlog.h"
 #include "tools.h"
-#define verbose 2
-/*extern int verbose;*/
 #endif
 
 #include "holiday.h"
