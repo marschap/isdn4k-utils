@@ -4633,9 +4633,9 @@
 8728	Geratskirchen
 8731	Dingolfing
 8732	Frontenhausen
-8733	Menkofen
+8733	Mengkofen
 8734	Reisbach Niederbay
-8735	Ganghofen-Kollbach
+8735	Gangkofen-Kollbach
 8741	Vilsbiburg
 8742	Velden Vils
 8743	Geisenhausen
@@ -4654,7 +4654,7 @@
 8771	Ergoldsbach
 8772	Mallersdorf-Pfaffenberg
 8773	Neufahrn i.NB
-8774	Bayersbach b. Ergoldsbach
+8774	Bayerbach b. Ergoldsbach
 8781	Rottenburg a.d.Laaber
 8782	Pfeffenhausen
 8783	Rohr i.NB
@@ -4689,14 +4689,14 @@
 8868	Schwabsoien
 8869	Kinsau
 89	München
-9002	unbekannt
-9003	unbekannt
-9004	unbekannt
-9005	unbekannt
-9006	unbekannt
-9007	unbekannt
-9008	unbekannt
-9009	unbekannt
+9002	Rain Lech
+9003	Harburg
+9004	Tapfheim
+9005	Bissingen
+9006	Mertingen
+9007	Marxheim
+9008	Bissingen-Unterringingen
+9009	Kaisheim
 906	Donauwörth
 9071	Dillingen
 9072	Lauingen
@@ -5199,7 +5199,7 @@
 9907	Zenting
 9908	Schöfweg
 991	Deggendorf
-9920	Bischofsmals
+9920	Bischofsmais
 9921	Regen
 9922	Zwiesel
 9923	Teisnach

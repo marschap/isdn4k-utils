@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.141 2000/01/23 22:31:13 akool Exp $
+## $Id: Makefile.in,v 1.142 2000/01/24 23:06:20 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.142  2000/01/24 23:06:20  akool
+## isdnlog-4.05
+##  - ABC_LCR tested and fixed. It's really working now, Detlef!
+##  - Patch from Hans Klein <hansi.klein@net-con.net>
+##    German-"Verzonungstabelle" fixed
+##  - new "zone-de-dtag.gdbm" generated
+##
 ## Revision 1.141  2000/01/23 22:31:13  akool
 ## isdnlog-4.04
 ##  - Support for Luxemburg added:
@@ -1025,7 +1032,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.04
+VERSION     = 4.05
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

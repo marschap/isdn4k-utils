@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.97 2000/01/23 22:31:13 akool Exp $
+/* $Id: processor.c,v 1.98 2000/01/24 23:06:20 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.98  2000/01/24 23:06:20  akool
+ * isdnlog-4.05
+ *  - ABC_LCR tested and fixed. It's really working now, Detlef!
+ *  - Patch from Hans Klein <hansi.klein@net-con.net>
+ *    German-"Verzonungstabelle" fixed
+ *  - new "zone-de-dtag.gdbm" generated
+ *
  * Revision 1.97  2000/01/23 22:31:13  akool
  * isdnlog-4.04
  *  - Support for Luxemburg added:
@@ -897,7 +904,7 @@
 #include "asn1_comp.h"
 #include "zone.h"
 #include "telnum.h"
-#if HAVE_ABCEXT
+#ifdef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
 #include <linux/isdn_dwabc.h>
 #endif
 
@@ -1260,7 +1267,7 @@ static int parseRemoteOperationProtocol(char **asnp, struct Aoc *aoc)
   while (*asnp < asne) {
     *p++ = strtol(*asnp, NIL, 16);
     *asnp += 3;
-  } 
+  }
   ParseASN1(msg, p, 0);
   if (ParseComponent(aoc, msg, p) < 0)
     return 0;
@@ -4844,7 +4851,7 @@ void processflow()
 } /* processflow */
 
 
-#if HAVE_ABCEXT
+#ifdef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
 static void processlcr(char *p)
 {
   auto char                        res[BUFSIZ], s[BUFSIZ];
@@ -4873,6 +4880,21 @@ static void processlcr(char *p)
 
   sprintf(s, "ABC_LCR: Request for number %s\n", formatNumber("%l via %p", &destnum));
   info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+
+  if (!*destnum.msn) { /* BUG: Leo: Bei Sonderrufnummern steht die ganze Nummer in destnum.area, die restlichen Felder sind "" */
+    memset(&i, 0, sizeof(i));
+
+    i.lcr_ioctl_sizeof = sizeof(i);
+    i.lcr_ioctl_callid = atol(cid);
+    i.lcr_ioctl_flags = 0;
+
+    cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i);
+
+    sprintf(s, "ABC_LCR: \"%s\" is a Sonderrufnummer -- no action -- RESULT=%d\n", destnum.area, cc);
+    info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
+
+    return;
+  } /* if */
 
   clearRate(&Rate);
   time(&Rate.start);
@@ -4915,7 +4937,7 @@ static void processlcr(char *p)
       i.lcr_ioctl_flags = DWABC_LCR_FLG_NEWNUMBER;
       strcpy(i.lcr_ioctl_nr, res);
 
-      cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i));
+      cc = ioctl(sockets[ISDNCTRL].descriptor, IIOCNETLCR, &i);
 
       sprintf(s, "ABC_LCR: New number \"%s\" (via %s:%s) -- RESULT=%d\n",
         res, prov, getProvider(prefix), cc);
@@ -5001,7 +5023,7 @@ retry:
           processctrl(atoi(p3), p3 + 3);
       }
       else {
-#if HAVE_ABCEXT
+#ifdef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
         if (!memcmp(p1 + 9, "DW_ABC_LCR", 10))
           processlcr(p1);
         else
