@@ -1,6 +1,9 @@
 /* define if we have XLOG capability */
 #undef HAVE_XLOG
 
+/* define if we have TRACE capability */
+#undef HAVE_TRACE
+
 /* define if we have PCI code in native driver */
 #undef HAVE_NPCI
 

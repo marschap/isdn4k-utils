@@ -40,6 +40,7 @@ AC_CHECK_HEADER($CONFIG_KERNELDIR/drivers/isdn/eicon/eicon.h,,
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_XLOG
 AC_CHECK_NPCI
+AC_CHECK_TRACE
 
 dnl Checks for library functions.
 AC_PROG_GCC_TRADITIONAL

@@ -1,14 +1,14 @@
-.\" $Id: eiconctrl.man.in,v 1.4 1999/08/18 20:20:47 armin Exp $
+.\" $Id: eiconctrl.man.in,v 1.5 2000/01/26 18:35:05 armin Exp $
 .\"
-.\" CHECKIN $Date: 1999/08/18 20:20:47 $
+.\" CHECKIN $Date: 2000/01/26 18:35:05 $
 .\"
 .\" Process this file with
 .\" groff -man -Tascii eiconctrl.1 for ASCII output, or
 .\" groff -man -Tps eiconctrl.1 for PostScript output
 .\"
-.TH EICONCTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.TH EICONCTRL 8 "@MANDATE@" eiconctrl-V1.1 "Linux System Administration"
 .SH NAME
-eiconctrl \- configure Eicon.Diehl active ISDN adaptor
+eiconctrl \- configure Eicon active ISDN adaptor
 .SH SYNOPSIS
 .B eiconctrl [-v] [-d
 .IB Driver-Id ]
@@ -16,7 +16,7 @@ eiconctrl \- configure Eicon.Diehl active ISDN adaptor
 .B ...
 .SH DESCRIPTION
 .B eiconctrl
-is used to setup the Eicon.Diehl
+is used to setup the Eicon
 .SM ISDN
 device driver and for downloading the firmware into the
 .SM ISDN
@@ -24,7 +24,7 @@ card.
 .LP
 The use of
 .I eiconctrl
-makes sense, if you are using an active Eicon.Diehl ISDN card only.
+makes sense, if you are using an active Eicon ISDN card only.
 .LP
 .SH OPTIONS
 .TP
@@ -79,6 +79,8 @@ Downloads the protocol- and dsp-code into the card and starts operation.
 .br
 .BR 1tr6 " German ISDN Protocol"
 .br
+.BR .... " other protocols are also possible"
+.br
 .RE
 .LP
 .RS
@@ -108,11 +110,16 @@ Downloads the protocol- and dsp-code into the card and starts operation.
 .BI "manage " [read | exec " " <path>]
 Starts Management-Interface.
 .TP
-.BI "xlog " [cont]
+.BI "xlog " [cont | <filename>]
 Retrieving XLOG entries of adapter.
 With option
 .I cont
 given, it will be on a continuous cycle.
+Using a driver release 1.77 or newer you can specify a
+trace-file for the xlog interpreter.
+.TP
+.BI "isdnlog " [on | off]
+Switch trace-information for isdnlog on/off.
 .LP
 .SH EXAMPLE 
 .TP
@@ -125,7 +132,7 @@ loads and starts S2M type adapter with protocol E-DSS1.
 .SH BUGS
 No bugs so far.
 .SH AUTHOR
-\(co 1999 by Armin Schindler <mac@melware.de>
+\(co 2000 by Armin Schindler <mac@melware.de>
 .LP
 .SH SEE ALSO
 .BR isdnctrl "(8), " isdnctrl "(4), " ttyI "(4), " isdn_cause "(7), " isdninfo (4).

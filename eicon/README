@@ -25,6 +25,14 @@ in a specified directory.
 
 In addition, this utility provides some trace and debug features.
 
+If you want to use isdnlog with your active Eicon card, the good
+news are, you can activate this with the command
+
+   eiconctrl isdnlog on
+
+(off course, you can deactivate this using "eiconctrl isdnlog off").
+The bad news are, this is only possible with the
+DIVA Server BRI card.
 
 NOTICE : 
 This package is also part of isdn4k-utils package for isdn4linux
