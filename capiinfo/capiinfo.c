@@ -1,10 +1,13 @@
-/* $Id: capiinfo.c,v 1.7 2003/01/14 13:56:47 calle Exp $
+/* $Id: capiinfo.c,v 1.8 2003/03/11 13:36:27 paul Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
- * This program is free software; you can redistribute it and/or modify          * it under the terms of the GNU General Public License as published by          * the Free Software Foundation; either version 2, or (at your option)
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- *                                                                               * This program is distributed in the hope that it will be useful,
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -14,6 +17,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.8  2003/03/11 13:36:27  paul
+ * Fixed wrapping of GNU license (only obvious on tty > 80 columns).
+ *
  * Revision 1.7  2003/01/14 13:56:47  calle
  * bugfix in output of manufacturer version.
  *
@@ -141,7 +147,7 @@ int main(int argc, char **argv)
    CAPI20_GET_PROFILE(0, (CAPI_MESSAGE)&cprofile);
    ncontr = cprofile.ncontroller;
    printf("Number of Controllers : %d\n", ncontr);
- 
+
    err = CAPI20_REGISTER(1, 1, 2048, &ApplId);
    if (err != CapiNoError) {
        fprintf(stderr, "could not register - %s (%#x)\n", capi_info2str(err), err);
@@ -231,7 +237,7 @@ int main(int argc, char **argv)
        SuppServices |= cmsg.FacilityConfirmationParameter[7] << 8;
        SuppServices |= cmsg.FacilityConfirmationParameter[8] << 16;
        SuppServices |= cmsg.FacilityConfirmationParameter[9] << 24;
-       
+
        printf("\nSupplementary services support: 0x%08x\n", SuppServices);
        showbitvalues(SupportedServices, SuppServices);
        printf("\n");
