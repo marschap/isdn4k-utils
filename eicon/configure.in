@@ -15,21 +15,30 @@ AC_PROG_INSTALL
 AC_PROG_CC
 
 dnl Checks for libraries.
+AC_CHECK_LIB(ncurses, newpad,,
+	AC_CHECK_LIB(curses, newpad,,
+		AC_MSG_ERROR("Missing ncurses library")))
 
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
+AC_CHECK_HEADERS(ncurses.h,,
+	AC_CHECK_HEADERS(ncurses/curses.h,,
+		AC_CHECK_HEADERS(curses/ncurses.h,,
+			AC_CHECK_HEADERS(curses.h,,
+				AC_MSG_ERROR("Missing \(n\)curses.h")))))
 
 dnl Find current kernel source
 AC_FIND_KERNEL
-AC_CHECK_HEADERS($CONFIG_KERNELDIR/include/linux/isdn.h,,
+AC_CHECK_HEADER($CONFIG_KERNELDIR/include/linux/isdn.h,,
 	AC_MSG_ERROR("$CONFIG_KERNELDIR/include/linux/isdn.h missing. Kernel installed?")
 )
-AC_CHECK_HEADERS($CONFIG_KERNELDIR/drivers/isdn/eicon/eicon.h,,
+AC_CHECK_HEADER($CONFIG_KERNELDIR/drivers/isdn/eicon/eicon.h,,
 	AC_MSG_ERROR("$CONFIG_KERNELDIR/drivers/isdn/eicon/eicon.h missing. Kernel installed?")
 )
 
 dnl Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_XLOG
 
 dnl Checks for library functions.
 AC_PROG_GCC_TRADITIONAL
@@ -70,4 +79,5 @@ AC_SUBST(CONFIG_KERNELDIR)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(I4LVERSION)
+AC_CONFIG_HEADER(config.h)
 AC_OUTPUT(Makefile eiconctrl.man)
