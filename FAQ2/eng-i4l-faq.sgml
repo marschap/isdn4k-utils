@@ -1,0 +1,3536 @@
+<!doctype linuxdoc system>
+
+<article>
+
+<title>FAQ for isdn4linux
+<author>Matthias Hessler, <tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>
+<date>v2.0.2, 22. June 1999
+<abstract>
+This FAQ answers questions that were frequently asked in the newsgroup
+de.alt.comm.isdn4linux. It contains questions any user should
+know about ISDN under Linux using isdn4linux, as well as hints on how to
+best make use of all the features isdn4linux provides.  
+
+Version 2 of the FAQ is derived from an earlier version which had become
+outdated at the time of this writing. To obtain information on old versions
+of isdn4linux (1997 and earlier) please have a look at the FAQ version 1.3.4.
+
+About the format of this FAQ:
+The main basis of this FAQ is the i4l mailing list (see question
+<ref id="docu_mailinglist">). I´ve treated the knowledge gained from reading as
+public domain, without quoting the author of the original mail. The FAQ is now
+written in SGML, as this format is flexible to convert into any other form of
+documentation (though some restrictions apply). The FAQ is now maintained in
+English since German-speaking people can easily follow the mailing
+list/newsgroup (or search in the archives). Whoever wants to translate back to
+German is welcome to do so!
+
+The countless links in this documents are not always complete and I´m sure many
+are no longer correct. I do not have the time to check them all. If you
+discover a bad link, please let me know (I´ll try to install some automatic
+checking when I have the time).
+
+Additions, improvements and other suggestions are always welcome (also
+correction of typographical errors!), preferably send "diffs" from the ASCII
+version. Thank you very much in advance!
+
+Send feedback about this FAQ to:
+<tt><htmlurl url="mailto:i4lfaq@isdn4linux.de"
+	     name="i4lfaq@isdn4linux.de"></tt>
+or:
+<tt><htmlurl url="mailto:hessler@isdn4linux.de"
+	     name="hessler@isdn4linux.de"></tt>
+
+The newest version of this FAQ can be found at:
+<tt><url url="http://www.mhessler.de/faq.html"></tt>
+or:
+<tt><url url="http://www.isdn4linux.de/"></tt>
+
+This FAQ is protected by the GNU General Public License (GPL) Version 2;
+(C) 1999 Matthias Hessler (for version 2.0)
+Distribution under the terms of the GPL is welcome. However,
+we offer NO GUARANTEES for the information herein. Please read the GNU
+General Public License for further details. A printed version is available
+from Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+An electronic version is available from the author.
+</abstract>
+
+<!-- Table of Content
+-->
+
+<toc>
+
+
+<!-- General Section: About isdn4linux, features
+-->
+
+<sect> general: General information about isdn4linux
+<label id="general">
+
+<sect1> general_i4l: What is isdn4linux?
+<p>
+isdn4linux is a set of kernel modules which are part of the Linux
+kernel. It consists of the main module <tt/isdn/ and the
+actual hardware driver that control some specific card.
+In addition, the package <tt/isdn4k-utils/ contains utilities to
+make use of ISDN specific features.
+
+<sect1> general_hardware: What hardware is supported by isdn4linux?
+<p>
+Generally, isdn4linux can control ISDN cards that are connected to the pc's
+ISA or PCI bus. Also a few PCMCIA cards are supported. However, isdn4linux can
+<bf/not/ make use of any devices connected via a serial or parallel
+interface (which are called 'terminal adaptors'). For more details on which
+cards are supported see section <ref id="hardware">.
+
+<sect1> general_features: What features are supported by isdn4linux?
+<p>
+Basically, isdn4linux can receive and transmit data via ISDN in many ways
+(X.75, HDLC, raw ip, synchronous ppp, asynchronous ppp). Some of its utilities
+offer additional features. Two examples are <tt/isdnlog/, which allows to log
+and react upon ISDN events (including calculating any charges); and <tt/vbox/
+which provides voice answering machine capabilities. For more details see the
+section <ref id="feature">.
+
+<sect1> general_countries: Which countries are supported by isdn4linux?
+<p>
+At least all countries which use Euro-ISDN are supported, however some
+pecularities apply. To find more about your country, check section
+<ref id="countries">.
+
+<sect1> general_docu: Where do I find more documentation, howto's, helpful tips
+&amp; tricks?
+<p>
+Besides this FAQ have a look at the various man pages and Readme's that come
+with the isdn4linux package. There is also a news group and a mailing list on
+isdn4linux which will give you the most up to date information. To find out
+more about these great information sources, see section
+<ref id="docu">.
+
+<sect1> general_getlatest: Where do I get the latest version of isdn4linux?
+<p> The latest version of the kernel drivers should be found in the Linux
+kernel. However, sometimes the Linux kernel does not have the latest version or
+does not yet support your ISDN card. Additionally, you may need to use the
+isdn4k-util package. In those cases you could try to get the very latest
+version that is currently in development. See the section
+<ref id="distrib">.
+
+
+<!-- Development & Distribution -->
+
+<sect> distrib: Distribution
+<label id="distrib">
+
+<!-- Who are the developers? -->
+
+<sect1> distrib_getlatest: How can I get the latest isdn4linux?
+<p>
+You can find the kernel source it in any kernel, however it may be outdated. To
+get a newer version, as well as the utility package you have several options.
+<enum>
+<item><bf>Via CVS:</bf>
+See question about access to CVS, which the developers use to merge their
+latest code: <ref id="distrib_cvs">.
+<item><bf>Via FTP:</bf>
+There is a list of mirrors of the cvs tree; check:
+<tt><url url="http://www.isdn4linux.de/download.php3"></tt>.
+</enum>
+
+<sect1> distrib_cvs: How can I access the source from the current
+development/what is the CVS tree all about?
+<label id="distrib_cvs">
+<p>
+CVS - Concurrent Version System
+
+This is a multiuser/server extension to RCS (Revision Control System).
+The I4L drivers are developed under CVS, and there exists on server
+(cvs.isdn4linux.de) a CVS tree to which all developers have access.
+In addition, Fritz has put together an anonymous read-only access. If you
+must have the very newest versions, you can get them there, however they
+may contain more bugs than the released versions!!!
+
+Here is how to get the latest version:
+<enum>
+<item>Create and go to the directory where you want to store i4l
+<code>mkdir ~/cvs; cd ~/cvs</code>
+<item>Set CVSROOT to <tt>:pserver:guest@cvs.isdn4linux.de:/i4ldev</tt>
+<code>export CVSROOT=:pserver:guest@cvs.isdn4linux.de:/i4ldev</code>
+<item>Login in (asks for a password, any password will work)
+<code>cvs login</code>
+<item>Get the isdn kernel driver stuff (same hierarchy as in the linux source)
+<code>cvs checkout isdn</code>
+<item>Get the utility package into the current directory
+<code>cvs checkout isdn4k-utils</code>
+If you want to get the latest version for kernel 2.0.x rather than for the
+latest kernel, then you have to give the additional option `-r':
+<code>cvs checkout -r isdn4kernel_2_0 isdn</code>
+</enum>
+
+WATCH OUT!!! THE NEWEST STUFF SOMETIMES IS REALLY INSTABLE OR EVEN
+DOES NOT COMPILE WITHOUT PROGRAMMING KNOWLEDGE -
+No newbies questions on this PLEASE! Use the source, Luke!
+
+People who want to help <em>continuously</em> developing isdn4linux by writing
+new driver etc. can get a real account for full access. In this case write
+an email to Fritz Elfert <tt><htmlurl url="mailto:fritz@isdn4linux.de"
+name="fritz@isdn4linux.de"></tt>
+
+
+<!-- Features
+-->
+
+<sect> Features
+<label id="feature">
+
+<sect1> feature_not: Which ISDN features can not be offered by isdn4linux?
+<p>
+Some ISDN features are device-specific and cannot be activated by
+isdn4linux for other devices, unless isdn4linux were to falsify 
+the TEI (which would probably confuse the other device).
+Such device-specific ISDN features are, among others: rejection of a
+waiting call, caller id on/off, hold, conference calls, differing COLP/CLRP.
+
+<sect1> feature_data: Which ISDN data transmission modes are supported?
+<p>
+These low-level formats are possible:
+<itemize>
+<item> 56k asynchronous : no
+<item> 64k synchronous  : yes
+<item>128k synchronous  : yes (channel bundling - see the question <ref id="feature_2channel">)
+</itemize>
+These level2 formats are possible:
+<itemize>
+<item>HDLC
+<item>X.75
+<item>transparent
+</itemize>
+These encapsulations are possible:
+<itemize>
+<item>rawip
+<item>ethernet
+<item>Sync PPP
+<item>X.25 (requires 2.1)
+<item>cisco and cisco-h
+<item>plus a few specialities.
+</itemize>
+
+<sect1> feature_voice: Can I use isdn4linux as an answering machine?
+<p>
+Yes, voice support is possible with the current version of isdn4linux.
+You can either use &dquot;vgetty&dquot; from Gert Doerings &dquot;mgetty+sendfax&dquot;, 
+or &dquot;vboxgetty&dquot; from Michael Herold, which is made especially for
+isdn4linux.
+The latter can be found at:
+<tt><url url="ftp://ftp.franken.de/pub/isdn4linux/contributions/"></tt>
+
+<sect1> feature_fax: Can I fax with isdn4linux?
+<p>
+<bf>NO, for all passive cards</bf>. However, there is a project working on this
+rather complicated problem. For more info on its status have a look at:
+<tt><url url="http://home.telia.no/Morten.Rolland/linux/i4lfax/index.html"></tt>
+<bf>Yes, for the active card AVM B1</bf> (its firmware has implemented fax as one
+of its features).
+If you do want to fax now, your best choice is to install an analog fax modem
+along with your ISDN card.
+
+<sect1> feature_divert: Is it possible to initiate call forwarding with i4l?
+<p>
+Call diversion features are implemented in the latest cvs tree version for
+kernel 2.0.x (but not 2.1/2.2/2.3). Use the new program <tt/divertctrl/. So far
+no howto and little documentation does exist for it, therefore currently this
+is something for the more  experienced user. Alternatively in the Netherlands,
+the keypad protocol can be used.
+
+<sect1> feature_ipx: Can I route ipx/spx over ISDN with Linux?
+<p>
+Yes, just set up an ISDN interface with encapsulation
+<tt/ethernet/. <em/mars_nwe/ can do the rest (e.g. routing). Also, you can
+route ipx with ipppd, see question <ref id="cfg_syncppp_ipx">.
+
+<sect1> feature_2channel: Does isdn4linux support channel bundling?
+<label id="feature_2channel">
+<p>
+The current version of isdn4linux support 2 methods of channel 
+bundling:
+<itemize>
+<item><bf>MPPP</bf> (based on sync PPP)
+<item><bf>Raw bundling</bf> (configured by so-called slave channels)
+</itemize>
+Both variants have their own advantages and disadvantages  See the question &dquot;
+How do I use channel bundling?&dquot; in the &dquot;Channel bundling&dquot; section below.
+Warning: Channel bundling saves time, but not any telephone charges.
+Only if you really need the extra bandwidth is it useful.
+
+<sect1> feature_diald: Can I combine isdn4linux with diald?
+<p>
+Yes, see the &dquot;Diald&dquot; part of the &dquot;Configuration&dquot;
+section.
+
+<sect1> feature_dod: Does the driver support &dquot;dial on demand&dquot;?
+<p>
+Yes. If a network interface (e.g. &dquot;isdn0&dquot;) is set up, the driver
+will dial the number. If in addition a hangup timeout (Idle Timeout) has been
+given, isdnctrl huptime interface time, then the driver will automatically hang
+up when no data was been transferred over the interface for &dquot;time&dquot;
+seconds. However, with syncPPP there are problems (see the syncPPP section).
+Also look at the dialmode description (configuration section).
+You may also be very interested in the big part of this FAQ that handles
+unwanted dialouts...
+
+<sect1> feature_btx: Is the German videotex/Btx/Datex-J possible with isdn4linux?  
+<p>
+Yes, it works with the modem emulation with the ttyI* devices. There is
+a special register to set for videotex (ATSx=y -  see the Readme's)
+Warning! XCept (formerly Xbtx) has an ISDN configuration option. This
+should NOT be used. XCept should be configured as if a normal modem
+were being used.
+
+<sect1> feature_clock: How can I set the clock of my computer with ISDN?
+<p>
+Isdnlog offers this feature with option &dquot;-t&dquot;. Unfortunately, the
+seconds are not transmitted via ISDN, and the transmitted time is
+not very accurate - depending on the ISDN equipment of your
+telephone company there may be a deviation of several minutes (!).
+It's better to get a PC clock that is set by radio signals and
+check it with, for example, xntp. You can also use a time server in
+the Internet with &dquot;netdate&dquot; or &dquot;rdate&dquot;. One time server
+can be found in Cologne: time.rrz.uni-koeln.de, but there are many more.
+
+<sect1> feature_dosemu: Can I use isdn4linux under dosemu?
+<p>
+Yes, you really can! Steffan Henke <tt><htmlurl url="mailto:henker@informatik.uni-bremen.de"
+name="henker@informatik.uni-bremen.de"></tt>
+wrote on 25 Oct 96:
+<quote>
+In dosemu.conf it is enough to enter a virtual com port,
+(for example com2) that can be used with e.g. Telix or
+Terminate: serial { com 2 device /dev/ttyI3 }
+Access with Fossil is possible if fossil.com (included with
+dosemu) is started.  Tested with the following configurations: 
+- Kernel 2.0.21, Teles driver incl. Karsten's patches 
+- Kernel 2.0.21, HiSax
+</quote>   
+
+<sect1> feature_rawip: What is Raw IP, when should I use it?
+<p>
+Raw IP does without the use of a protocol such as  X.75 or HDLC
+(for modem emulation, etc.) or PPP. TCP/IP packets are directly
+exchanged.
+Raw IP has both advantages and disadvantages.
+Advantages:
+<itemize>
+<item> No handshaking (= faster connections)
+<item> Authorization by Caller ID (= fast, safe, no password)
+<item> Fixed IP address (= a broken connection can be continued by redialing)
+<item> Higher data transfer rates
+<item> Better stability (smaller driver = almost no bugs)
+</itemize>
+Disadvantages:
+<itemize>
+<item> No handshaking 
+= Configuration must occur beforehand (IP addresses,...)
+= sensible to use for only for one provider at a time 
+<item> Authorization only by Caller ID
+= Dialin only possible from one's own number
+<item> Fixed IP address
+= must be known ahead of time, more IP addresses required, no dynamic
+assignment of addresses possible.
+</itemize>
+From this summary it should be clear under what conditions it makes sense
+to use raw IP.
+
+<!-- Feature reversed card -->
+
+<!-- Chargeint -->
+
+<!-- Feature Raw-IP -->
+
+<!-- Feature both caller ids -->
+
+<!-- Feature leased line -->
+
+<!-- Eurofile -->
+
+
+<!-- Helpful docu, links, mailing list, config examples, howto's -->
+
+<sect> docu: Documentation, Howto's, Tips &amp; Tricks, Mailing List/Newsgroup
+<label id="docu">
+
+<sect1> docu_first: What documents should I read first?
+<p>
+<itemize> 
+<item>ISDN kernel subsystem:
+/usr/src/linux/Documentation/isdn/README
+<item>ISDN cards:
+/usr/src/linux/Documentation/isdn/README.card
+E.g.: /usr/src/linux/Documentation/isdn/README.HiSax
+<item>Synchronous PPP:
+/usr/src/linux/Documentation/isdn/README.syncppp
+/usr/src/linux/Documentation/isdn/README.syncPPP.FAQ
+<item>Voice capability:
+/usr/src/linux/Documentation/isdn/README.audio
+<item>ISDN Utilities:
+/usr/src/isdn4k-utils-version/README(.*)
+</itemize>
+Many of the utilities also have man pages!
+
+In a Suse distribution the following information might also be helpful:
+<itemize>
+<item>Synchronous PPP:       /usr/doc/faq/faq/PPP-FAQ
+<item>Email configuration:  /usr/doc/howto/mini/Mail-Queue.gz
+</itemize>
+
+<sect1> docu_newsgroup: Where is the newsgroup for isdn4linux? 
+<p>
+The newsgroup is <tt/de.alt.comm.isdn4linux/. Most isdn4linux developers are
+present, and many other knowledgeable people. Don't be confused by the many
+German messages on it. <bf>English postings are very welcome, and will be
+answered in english!</bf>
+
+<sect1> docu_mailinglist: Where is the mailing list for isdn4linux?
+<label id="docu_mailinglist">
+<p>
+The mailing list contains the same messages as the newsgroup. A bidirectional
+gateway ensures that both are in sync.
+To subscribe to the mailing list, send an email message to 
+<tt><htmlurl url="mailto:majordomo@listserv.isdn4linux.de"
+name="majordomo@listserv.isdn4linux.de"></tt>.
+The subject doesn't matter. The message body should read <tt/subscribe
+isdn4linux &lt;email address&gt;/, where &lt;email address&gt; is the
+address to which mail from the list should be sent. To unsubscribe send a
+message with the body <tt/unsubscribe isdn4linux &lt;email address&gt;/ at the
+same address. Please note: there are about 20-50 messages per day on this
+mailing list.
+
+<sect1> docu_mailarchive: Is there an archive of the isdn4linux mailing list?
+<p>
+To quickly search for keywords, you can make use of
+<tt><url url="http://www.deja.com"></tt>. Make sure to also select older
+archive to do a complete search.
+
+Messages are also saved (unsorted) at hub-wue.franken.de, collected by
+month. To access the archive, send Email to
+<tt><htmlurl url="mailto:majordomo@listserv.isdn4linux.de"
+name="majordomo@listserv.isdn4linux.de"></tt>.
+The subject doesn't matter. These commands are possible: 
+<itemize>
+<item>index isdn4linux - list which archive files are available
+<item>get isdn4linux filename - retrieves the file filename
+</itemize>
+The archives are named &dquot;archiv.yearmonth&dquot;, so
+&dquot;archiv.9610&dquot; is the archive for October 1996.
+
+Other archives are:
+<itemize>
+<item><tt><url
+url="ftp://ftp.uni-oldenburg.de/pub/unix/linux/isdn/isdn4linux/Mailing-List"></tt>
+<item><tt><url url="http://wws.mathematik.hu-berlin.de/ldr/ISDN/isdn4linux/"></tt>
+</itemize>
+
+
+<!-- Supported Hardware
+-->
+
+<sect> hardware: Supported hardware, and its specialities
+<label id="hardware">
+
+<sect1> hardware_support: What hardware is supported?
+<p>
+Only internal cards that plug into an ISA or PCI slot are
+supported. ISA Plug&amp;Play cards are also supported, but need some additional
+manual configuration by means of the <tt/isapnptools/. For details on the
+configuration see question <ref id="config_general_pnp">.
+
+Right now there is a driver for all passive card with certain Siemens
+chipsets (HiSax driver). Have a look at the <tt/README.HiSax/ that comes with
+the driver for the most up to date information on supported cards.
+Here the latest status (8th June 1999):
+<itemize>
+<item>Teles 8.0/16.0/16.3 and compatible ones (like: Dr. Neuhaus Niccy
+1016, Creatix 16/S0)
+<item>Teles 16.3c (can not be used as reversed card)
+<item>Teles S0/PCMCIA
+<item>Teles PCI
+<item>Teles S0Box
+<item>Creatix S0Box
+<item>Creatix PnP S0
+<item>Compaq ISDN S0 ISA card
+<item>AVM A1 (Fritz, Teledat 150)
+<item>AVM Fritz PCMCIA
+<item>AVM Fritz PnP
+<item>AVM Fritz PCI
+<item>ELSA Microlink PCC-16, PCF, PCF-Pro, PCC-8
+<item>ELSA Quickstep 1000
+<item>ELSA Quickstep 1000PCI
+<item>ELSA Quickstep 3000 (same settings as QS1000)
+<item>ELSA Quickstep 3000PCI
+<item>ELSA PCMCIA
+<item>ITK ix1-micro Rev.2
+<item>Eicon.Diehl Diva 2.0 ISA and PCI (S0 and U interface, no PRO version)
+<item>Eicon.Diehl Diva Piccola
+<item>ASUSCOM NETWORK INC. ISDNLink 128K PC adapter (order code I-IN100-ST-D)
+<item>Dynalink IS64PH (OEM version of ASUSCOM NETWORK INC. ISDNLink 128K
+adapter)
+<item>PCBIT-DP (OEM version of ASUSCOM NETWORK INC. ISDNLink)
+<item>HFC-2BS0 based cards (TeleInt SA1)
+<item>Sedlbauer Speed Card (Speed Win, Teledat 100, PCI, Fax+)
+<item>Sedlbauer Speed Star/Speed Star2 (PCMCIA)
+<item>Sedlbauer ISDN-Controller PC/104
+<item>USR Sportster internal TA (compatible Stollmann tina-pp V3)
+<item>ith Kommunikationstechnik GmbH MIC 16 ISA card
+<item>Traverse Technologie NETjet PCI S0 card
+<item>Dr. Neuhaus Niccy PnP/PCI
+</itemize>
+Note:
+<itemize>
+<item>PCF, PCF-Pro: up to now, only the ISDN part is supported
+<item>PCC-8: not tested yet
+<item>Teles PCMCIA is EXPERIMENTAL
+<item>Teles 16.3c is EXPERIMENTAL
+<item>Teles PCI is EXPERIMENTAL
+<item>Teles S0Box is EXPERIMENTAL
+<item>Eicon.Diehl Diva U interface not tested
+</itemize>
+
+A few active cards that are also supported, see next question.
+
+<sect1> hardware_activepassive: What is the difference between an active and a passive ISDN card?
+<p>
+An active ISDN card handles most of the ISDN connection protocols 
+(dialing, accepting calls, etc.) itself. The card includes a kind 
+of minicomputer with its own software (firmware). With a passive card, the
+computer in which the card is installed has to perform these functions.
+
+In principle, both types are supported by isdn4linux. However, since active
+cards have non-standard interfaces, a driver can only be made when the producer
+publishes the interface. Also, the card's firmware needs to be made freely
+available. In contrast, many passive cards share the same chipset. Therefore
+many passive cards can be supported once a driver supports this one chipset.
+
+These active cards are currently supported by an individual driver:
+<itemize>
+<item>AVM B1
+<item>ICN
+</itemize>
+
+<sect1> hardware_recommend: Which card is recommended by the developers?
+<p>
+The developers suggest to use ELSA cards. ELSA has made their specifications
+available to the developers, and provided a lot of support, resulting in an
+excellent driver. Also, their cards are certified for usage in Germany, see
+question <ref id="country_certified">.
+
+<sect1> hardware_external: Does isdn4linux support external terminal adapters?
+<p>
+No, but it doesn't need to. Terminal adapters are designed to behave
+either like a modem or like a network card. Linux already supports both
+modems and network cards without isdn4linux - so no special ISDN driver
+is necessary (which usually greatly simplifies the configuration).
+
+<sect1> trouble: Why should I avoid IRQ 12 and 15 for my ISDN card?
+<p>
+On many PCI boards, interrupt 12 is often used by a PS/2 mouse (even though you
+may not have any or the IRQ is not activated for it). It may be used even when
+you have no PS/2 port. Interrupt 15 is also often used by the second IDE bus
+(even when you are not using it or the IRQ is not activated for it).
+Even though one thinks that some IRQs are available they are still somehow
+reserved by the BIOS. Good IRQs to try are always IRQ 5 and IRQ 9. Without mice
+or modems you could also try 4 and 3, which works even on very exotic boards.
+
+<sect1> hardware_alpha: Can I run isdn4linux on a DEC Alpha with Linux?
+<p>
+Yes, most cards should run with isdn4linux on a DEC Alpha. Many cards have been
+reported to work with the HiSax driver. Also the active ICN card has been
+reported to work.
+
+<sect1> hardware_maxcards: How many ISDN cards can I put into my computer?
+<p>
+It depends on the availability of slots, interrupts/IO addresses in your
+computer as well as the possibilities of the ISDN card. Most passive cards
+are limited by the supported IO addresses (e.g.: Teles 16.x: only 3 addresses
+are legally possible), and the total usage of interrupts (every card needs one).
+
+To use more cards, the ICN card may be your choice. It has no interrupts, a
+more flexible port configuration and the driver places the shared memory area
+of all ICN cards at the same address. The card memory is shown only as
+needed. Therefore, one can use as many cards are there are slots.
+
+<sect1> hardware_teles: What should I know about before buying an ISDN card from Teles?
+<p>
+Teles´ business practices are very customer- and developer-unfriendly when
+compared to those of other companies. Naturally, the developers give
+priority to cards for which support is available, and where the specifications
+are freely available.
+
+So far, Teles has had a very unfriendly attitude towards the i4l
+developers. No support has ever been received from them, and they don´t publish
+any information about how to access their card. The developers have invested a lot
+of private effort into getting this card to work from the beginning without
+receiving any support. The driver has been a complete private effort. Yet,
+Teles has bragged on their web site that their cards run under Linux, without
+giving proper credit.
+
+Even companies that buy Teles cards and resell them under their own name have
+not been able to improve the support. This has lead to the situation where a
+re-branding company (!) itself had to go through the effort of obtaining
+approval to legally use i4l in Germany on a Teles card.
+
+From a customer point of view, check out the prices for their hotline before
+you buy any hardware from them! The author of the FAQ refuses to use any
+hotline that charges 216,- DM per hour. Reports about quality and waiting time
+have not always been favorable.
+
+Warning: Teles has often changed their cards without notice, while still
+using the same name. When you buy a Teles card, you may find out that your
+brand-new card can not be supported by i4l!
+
+The developers will try to support new Teles cards when information about how
+to access it becomes available, and when they have no other priorities. Of
+course you can always send a patch.
+
+<sect1> hardware_icn: What is special about the ICN card?
+<p>
+This was the first active card supported by isdn4linux. The manufacturer has
+always supported i4l developers (<tt><url url="http://www.think.de/"></tt>).
+The ICN does not need any interrupt (polling), therefore a PC can be equipped
+with many of them without any interrupt conflicts. The newest firmware should
+be available at <tt><url url="ftp://ftp.think.de/pub/isdn4linux/firmware/"></tt>.
+Unfortunately, the ICN is not produced any more.
+
+
+<!-- Trouble Hardware
+-->
+
+<sect1> trouble: How can I tell whether or not my passive ISDN card is recognized
+correctly by the HiSax driver?
+<p>
+During booting a message &dquot;kernel: HSCX version A:5 B:5&dquot; and &dquot;kernel:
+channels 2&dquot; should appear. A:4 B:4 is also okay. Other values
+(in particular A:0 B:0 or A:f B:f) mean the card is not recognized 
+correctly.
+
+<sect1> trouble: If i4l uses one B-channel then the other one will be blocked
+(incoming as well as outgoing)...
+<p>
+This behavior is typical for a cable with confused a/b wiring. Some
+NT from Quante had a wrong labeling. They caused exactly the
+mentioned behavior if the PBX was connected to the plug of the NT
+and the ISDN card to the pins of the NT. As soon as some device
+activates the bus the other one can no longer get through.
+
+<sect1> trouble: On my ELSA card, the LED for the loss of the TEI often blinks. My 
+connections are also often disrupted...
+<p>
+These blinking LEDS are often caused by a bad cable or a too long or
+unterminated SO bus.
+
+<sect1> trouble: In the instructions for my NTBA it says that a crossed 
+a/b cable pair has no effect on the operation?
+<p>
+Gernot Zander <tt><htmlurl url="mailto:hifi@scorpio.in-berlin.de"
+name="hifi@scorpio.in-berlin.de"></tt> wrote on 21 Jan 1997:
+But only if for all devices a/b or a2/b2 are incorrect. When the
+devices work individually, then the order of the receiving/
+sending pair is correct.
+
+<sect1> trouble: How can I test whether a a/b cable pair has been crossed?
+<p>
+Karsten Keil <tt><htmlurl url="mailto:keil@temic-ech.spacenet.de"
+name="keil@temic-ech.spacenet.de"></tt> wrote on 21 Jan 1997:
+
+I simply start with the Western plug: 4 lines are used:
+<verb>
+| | | | 
+| | | |
+1 2 3 4
+</verb>
+Then I can try to switch 14 or 23 or both.
+Never switch the outer with the inner lines . (That would cross the  
+RX and TX lines and nothing will work - Ed.)
+
+Gernot Zander <tt><htmlurl url="mailto:hifi@scorpio.in-berlin.de"
+name="hifi@scorpio.in-berlin.de"></tt> added on 21 Jan 1997:
+
+I'm assuming that you have connected the Teles not with the 
+RJ45, but rather with a bus line attached to the NT. (?)
+Then open it up and switch a1 and b1. Try it out. If it doesn't
+work, put them back and switch a2 and b2. If it still doesn't work,
+try switching them both, although then I'd suspect that the RJ45
+cable from the Telekom is crossed (which would then switch _both_).
+As long as {a|b}1 and {a|b}2 are kept, nothing can break. If you
+want to be sure, before plugging it in measure between pins
+4 and 5 and between Pins 2 and 6 on the socket; there should be no
+current, but between 3 and 4 and between 6 and 5 should be 40 V,
+6 and 3 positive
+
+If both devices are attached via RJ45, then one of the cables
+has been twisted. That usually happens if one of the RJ45 plugs
+has been attached upside-down (a1/b1 are inside, a2/b2 are outside,
+so the order of the sending/receiving pairs is maintained), then
+you just need a new plug and of course pliers for the RJ45, old
+plug off, and new plug (in the right direction) on.
+
+drauf.
+
+Of course you can check the Cable FAQ and simply test everything with
+a multimeter.
+
+
+
+<!-- Configuration/Troubleshooting
+-->
+
+<sect> cfg_general: Configuration/General
+
+<sect1> cfg_general_msn: How should I set up isdn4linux with my MSNs?
+<p>
+See section <ref id="config_msn">.
+
+<sect1> cfg_general_hardware: How should I configure my hardware? Is there something special I should
+know about my ISDN card?
+<p>
+Have a look in section <ref id="hardware">.
+
+<sect1> cfg_general_dialmode: When an IP packet should go over the link (which usually triggers a
+dialout), all I see in the log is: &dquot;dial rejected: interface not in
+dialmode `auto'&dquot;?
+<label id="config_general_dialmode">
+<p>
+The new ISDN drivers in 2.0.36 defaults to manual dialmode, not
+autodial. This is done to prevent unexpected (and unnoticed) dialouts.
+
+To enable autodial for a given interface e.g. ippp0, use
+<code>isdnctrl dialmode ippp0 auto</code>
+
+The meaning of the values for dialmode is:
+<descrip>
+<tag/off/
+means that you (or the system) cannot make any connection
+(neither incoming nor outgoing connections are possible). Use
+this if you want to be sure that no connections will be made.
+
+<tag/auto/
+means that the interface is in auto-dial mode, and will
+attempt to make a connection whenever a network data packet needs
+the interface's link. Note that this can cause unexpected dialouts,
+and lead to a high phone bill! Some daemons or other pc's that use
+this interface can cause this.
+Incoming connections are also possible.
+
+<tag/manual/
+(DEFAULT) is a dial mode created to prevent the unexpected dialouts.
+In this mode, the interface will never make any connections on its
+own. You must explicitly initiate a connection with:
+<code>isdnctrl dial ippp0</code>
+Please note that the <tt/huptimeout/ may still end the connection
+automatically! To ensure that you have to hang up manually, you have to switch
+this off:
+<code>isdnctrl huptimeout ippp0 0</code>
+To end the connection, use:
+<code>isdnctrl hangup ippp0</code>
+</descrip>
+
+
+<sect1> cfg_general_pnp: How do I configure a PNP (Plug and Play) card?
+<label id="config_general_pnp">
+<p>
+For PCI cards Plug and Play works automatically, they don´t need any manual
+configuration if the correct card type is provided. ISA PNP cards will
+require some manual configuration:
+<enum>
+<item>With &dquot;make menuconfig&dquot; (or &dquot;make config&dquot;) set the
+following kernel options:
+<itemize>
+<item>ISDN = &dquot;M&dquot; (as module - otherwise PNP doesn't work!)
+<item>HiSax = &dquot;M&dquot; (as module - otherwise PNP doesn't work!)
+<item>16.3/PNP support
+<item>EURO support
+</itemize>
+<item>Compile and install kernel and modules, depmod. (Reboot!)
+<item>Read the configuration of the PNP card with:
+<code>pnpdump &gt; /etc/isapnp.conf</code>
+<item>The configuration file <tt>/etc/isapnp.conf</tt> has to be set by
+hand. Set the following values:
+<itemize>
+<item>INT0 - the interrupt used by the card (Default for Teles 16.3 PNP: 10)
+<item>IO0, IO1 - the IO ports used by the card (Default for Teles 16.3 PNP:
+0x580 and 0x180) (Attention: these values must be 64-bit aligned (ending with
+0, 4, 8, or c)! Early versions of the PNP cards may suggest incorrect values!)
+<item><bf>Remove comment in front of ACT Y!</bf>
+</itemize>
+<item>Activate the configuration with:
+<code>isapnp /etc/isapnp.conf</code> (must be started at every boot)
+<item>Now the HiSax module can be started for Euro-ISDN with:
+<code>modprobe hisax io=4,2,INT,IO0,IO1</code>
+(Replace INT, IO0, and IO1 with the your values in isapnp.conf.)
+</enum>
+
+<sect1> cfg_general_permission: How can I set up user permissions for the use
+of ISDN?
+<label id="config_general_permission">
+<p>
+ISDN usage depends on the permissions to the devices <tt>/dev/ttyI*</tt> and
+<tt>/dev/cui*</tt>. To restrict dialout permissions you can establish the
+group `isdn' in <tt>/etc/group</tt>, and then do
+<code>
+chgrp isdn /dev/ttyI* /dev/cui*
+chmod o-rw /dev/ttyI* /dev/cui*
+</code>
+Then all users not in the group 'isdn' have no reading or writing 
+privileges for the ISDN ttys. Those allowed to use ISDN have to be
+explicitly added to the group 'isdn'.
+
+
+<sect1> cfg_general_kerneld: Why shouldn´t I use <em>kerneld</em> to load the ISDN
+modules in the kernel as needed?
+<label id="config_general_nokerneld">
+<p>
+<em>kerneld</em> does not work well with the ISDN modules, since the ISDN
+modules can not store their status, and could miss important messages on the
+D channel. Newer versions of i4l ensure that they won´t be unloaded by
+kerneld, but you should not try to use kerneld with any version of i4l.
+
+
+<sect1> cfg_general_runlevel: How can I boot Linux sometimes with
+ISDN, and sometimes without?
+<label id="config_general_runlevel">
+<p>
+Yes, you can define two different run level for this (under SysVInit) in
+<tt>/etc/inittab</tt>. One run level includes the ISDN processes, where the
+other one does not.
+
+<!-- links outdated? - may need to be reworked! -->
+
+<sect1> cfg_general_links: What helpful links are there about isdn4linux?
+<p>
+Please note: these link list may be outdated, they have not been checked for a
+long while.
+<itemize>
+<item>Scripts and installation tips from several people:
+<tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
+<item>I4l, syncPPP, email, Usenet, Voicebox, this FAQ and more:
+<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
+<item>Michael Hipp's page (general informations):
+<tt><url url="http://www.sfs.nphil.uni-tuebingen.de/&tilde;hipp/isdn/"></tt>
+<item>Chargeint instructions:
+<tt><url url="http://www.provi.de/&tilde;gvz/chargeint.html"></tt>
+<item>Stefan Nehlsen's instructions for syncPPP:
+<tt><url url="http://www.techfak.uni-kiel.de/&tilde;stn/i4l/"></tt>
+<item>xled (formerly xvboxled) is at:
+<tt><url url="http://fb4-1112.uni-muenster.de/pub/ffwd/"></tt>
+<item>Example configurations for isdn4linux are said to be at:
+<tt><url url="http://www.datenhighway.com/isdn4linux.html"></tt>
+<item>This FAQ along with isdn4linux is at:
+<tt><url url="ftp://ftp.franken.de/pub/isdn4linux/"></tt>
+<item>This FAQ is also so:
+<tt><url url="ftp://ftp.pop.de/pub2/linux/isdn4linux/FAQ"></tt>
+<item>Configuration examples and scripts: 
+<tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
+<item>Many HowTo's on basic installation, syncPPP, Email setup, 
+Usenet News, answering machine, and more:
+<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
+<item>Further FAQs with example scripts:
+<tt><url url="http://www.fzi.de/sim/people/trautw/i4l/index.html"></tt>
+<item>Eurofile client + server software (alpha):
+<tt><url url="ftp://ftp.hamburg.pop.de/pap/LOCAL/linux/i4l-eft/"></tt>
+</itemize>
+
+
+<!-- Config MSN
+-->
+
+<sect> cfg_msn: Configuration/MSNs
+<label id="config_msn">
+
+<sect1> cfg_msn_my1: What is my MSN?
+<p>
+Your telephone company will tell you your MSN. It is your own telephone
+number. If you don't know your MSN, then check section <ref id="countries">,
+together with the following questions.
+
+<sect1> cfg_msn_my2: How can I find out how my telephone number is transmitted
+to the calling party?
+<p>
+The transmitted MSN can simply be determined by calling yourself
+(for example by telephone). In the log files you will find the
+entry that looks like: &dquot;isdn_tty: call from XXX - YYY ignored&dquot;
+(in order for this to work, you must of course already have the ISDN
+drivers in your kernel and active).
+
+<sect1> cfg_msn_config: How do I configure my MSN?
+<p>
+If your telephone number were 56789, then it would be configured as follows:
+<itemize>
+<item>Modem emulation: <tt>&dquot;AT&amp;e56789&dquot;</tt>
+<item>Network interfaces: <tt>&dquot;isdnctrl msn interface 56789&dquot;</tt>
+<item>For test calls to yourself add the area code (e.g. 01234):
+<code>
+&dquot;isdnctrl addphone interface in 123456789&dquot; (without leading zero)
+&dquot;isdnctrl addphone interface out 0123456789&dquot; (with leading zero)
+</code>
+</itemize>
+You may find national differences here (check section <ref id="countries">).
+
+<sect1> cfg_msn_mindialin: How can I minimize usage of MSNs for digital data dialin?
+<p>
+i4l gives priority to net interfaces. Therefore, you can get away with only
+one MSN when you set it up like this:
+<enum>
+<item>Set up net interfaces (sync ppp, rawip) for all users that will want to
+use them (ipppd or rawip), with their incoming phone number (precondition is
+that it is transmitted).
+<item>Set up ttyI* for all other users (X.75, async ppp).
+<item>Set option `secure on'.
+</enum>
+i4l gives priority to net interfaces. `secure on' ensures that only users
+that have been set up will be connected to a net interface. Users that want
+to choose between both will have to use different outgoing MSNs to call you.
+
+<sect1> cfg_msn_onlyone: How can I use one MSN for everything?
+<p>
+Digital data dialin can easily be distinguished from voice/analog modem
+dialin by the 'Service Recognition' code (&dquot;digital, data&dquot;).
+
+For the differentiation between net interfaces (ipppd, rawip) and ttyI*
+(X.75) see last question.
+
+To get voice/analog modem to work in parallel, use mgetty for the analog
+modem. Mgetty can handle analog data calls, faxes, and even voice calls as
+answering machine if the modem supports it. Configure it for 10 rings. If
+you take the phone and hear a fax or modem, send mgetty a USR1 signal (kill
+-USR1 mgetty-pid). If your phone socket is correctly wired, the modem will
+take over the connection, cutting off the phone. If you have an ISDN PBX
+then you can forward the call to a different analog port when you picked up
+a fax/modem call.
+
+If your analog modem can not handle voice calls, then you have to
+choose since incoming voice calls can not be distinguished from analog
+fax/data calls. Use either VBOX to take your voice calls as an answering
+machine. Or forget about voice calls and set up your modem to handle only
+faxes and/or analog data calls.
+
+<sect1> cfg_msn_buendel: Can I have several NTBAs, all with the same MSN?
+<p>
+Yes, but you need the cooperation of your telecommunication company. They
+can set up several BRIs in Point-to-point mode that have the same MSN. In
+Germany it is called a bundled line (`Bündelanschluß').
+
+
+<sect> cfg_remote: Config/remote ISDN device
+<label id="config_remote">
+
+<!-- Config Win95
+-->
+
+<sect1> cfg_remote_w95: What do I have to watch out for to connect to Windows95?
+<p>
+VJ (i.e. header) compression should be turned off on both sides, at least for
+the beginning (for more details on compression see question
+<ref id="cfg_general_compression">). Windows95 is very touchy if this option is
+rejected by isdn4linux.
+
+<!-- Config Mac
+-->
+
+<sect1> cfg_remote_mac: I'd like to exchange data with a Macintosh (Leonardo card),
+what do I or the Mac user have to watch out for?
+<p>
+Currently, the Leonardo protocol is not supported by i4l. When you call the
+Mac, he should set the protocol to X.75 or HDLC. When he calls you, he must
+explicitly set the protocol (e.g. by inserting an &dquot;X&dquot; for X.75) in
+the called number.
+
+
+<sect1> cfg_remote_macpap: A Macintosh with a Leonardo card tries to call in,
+and wants to negotiate chap md5. How can I switch it to CHAP/PAP?
+<p>
+You can't. The user should use LeoPort (always included with the card) and
+switch the CTB port to the ISDN card. Then with FreePPP 2.5v2
+<tt><url url="http://www.rockstar.com"></tt> set the Leo as the modem and
+configure FreePPP as usual. Then PAP/CHAP can be set.
+
+<sect1> cfg_remote_cisco: How does isdn4linux work with a Cisco (HDLC) on the other side?
+<p>
+On the Cisco router the &dquot;keep alive&dquot; packets have to be turned off.
+isdn4linux has to be configured with HDLC, transparent, with Cisco
+encapsulation:
+<code>
+isdnctrl l2_prot &lt;interface&gt; hdlc
+isdnctrl l3_prot &lt;interface&gt; trans
+isdnctrl encap &lt;interface&gt; cisco-h
+</code>
+
+<sect1> cfg_remote_ispa: What settings does ISPA etc. (DOS, Windows) need to work with the 
+standard settings of isdn4linux?
+<p>
+The following configurations are possible (these also apply to the
+other drivers from H. Hanewinkel, i.e. CINDI, CANDI, WISPA...)
+that can be found via <tt><url url="http://www.informatik.uni-bremen.de/&tilde;henker/dank"></tt>
+<verb>
+i4l side                             ISPA side
+====================================================
+isdnctrl l2_prot isdn0 hdlc           \
+isdnctrl l3_prot isdn0 trans              -h0
+isdnctrl encap   isdn0 rawip          /
+----------------------------------------------------
+isdnctrl l2_prot isdn0 hdlc           \
+isdnctrl l3_prot isdn0 trans              -h1
+isdnctrl encap   isdn0 uihdlc         /
+----------------------------------------------------
+isdnctrl l2_prot isdn0 x75i           \
+isdnctrl l3_prot isdn0 trans              -l0
+isdnctrl encap   isdn0 rawip          /
+----------------------------------------------------
+isdnctrl l2_prot isdn0 x75i           \
+isdnctrl l3_prot isdn0 trans              -l1
+isdnctrl encap   isdn0 uihdlc         /
+---------------------------------------------------- 
+</verb>
+The parameter with the least problems is -h0.
+
+
+<!-- ttyI* devices
+-->
+
+<sect> cfg_ttyI: Configuration of the ttyI* devices (`Modem emulation')
+
+<sect1> cfg_ttyI_nomodem: Don´t the ttyI* devices emulate an analog modem?
+<p>
+No! The ttyI* devices just offer a similar communication interface, where
+all commands are started with <em/AT/. This makes it easy to reuse software
+that was written to communicate with a modem. <bf>Communication with a remote analog
+modem is not possible via the ttyI* devices!</bf> The real communication
+happens in digital, not analog form.
+
+<sect1> cfg_ttyI_dev: Which devices should I use for calls out or calls in?
+<p>
+Only the ttyI* devices should be used. The cui* devices are created 
+only for reasons of compatibility. Now that there is mgetty, there is not
+reason to use the cui* devices any longer. If they are used, locking will
+not work correctly (several programs could simultaneously attempt to use
+the same device).
+
+<sect1> cfg_ttyI_hdlc: How to I switch the modem emulation from X.75 to HDLC?  
+<p>
+With the option S14=3; for example &dquot;ATS13=3&dquot;.
+
+<sect1> cfg_ttyI_uucp: How can I poll with Taylor-UUCP using isdn4linux?
+<p>
+As usual, the same as with serial interfaces. Simply use /dev/ttyI* as the
+device, as the init string for the modem emulation you have to set the
+correct MSN or EAZ with &dquot;AT&amp;Emsn/eaz&dquot;.
+
+<sect1> cfg_ttyI_speed: What speed should I set for the ttyI* devices?
+<p>
+It doesn't matter. The driver internally always uses the full speed that
+ISDN offers. This is also given in the connect string.
+
+
+
+
+<!-- Config Async PPP
+-->
+
+<sect> cfg_asyncppp: Configuration Async PPP
+
+<sect1> cfg_asyncppp_whichppp: pppd, ipppd, async PPP, sync PPP - what are they? Which should I use?
+<label id="config_asyncppp_def">
+<p>
+<bf>async PPP</bf> is a character-based protocol which is usually used over
+analog serial lines (async = asynchronous). You have to use the program
+<tt/pppd/ for it, and use it with the ttyI* devices.
+
+In contrast, <bf>Sync PPP</bf> is a bit-oriented protocol (sync = synchronous),
+for which the original <tt/pppd/ cannot be used. Michael Hipp has written an
+adapted version called <tt/ipppd/ which will use ipppd* net devices.
+
+With i4l you can have both. It all depends on what your ISDN counterpart
+supports. If it immediately begins to send frames, then you´ve probably reached
+an sync PPP machine. If you can log in via same terminal screen, and then can
+start ´pppd´, this can be an indication of async PPP.
+
+Usually using <bf/sync PPP/ works fine, and it is slightly more efficient. To
+take advantage of newer features of the <tt/pppd/, use <bf/async PPP/.
+
+<sect1> cfg_asyncppp_logindelay: How can I reduce login delay?
+<p>
+You can write out a login session with (&dquot;Debug-Log&dquot;), and see which
+options the other computer is refusing. Next time, configure ipppd
+without these unused options. A further side effect is that such
+unused options increase the redundance (e.g. when the other computer
+has bugs and refuses the options incorrectly). To create a log file, 
+see &dquot;How to I create a log for ipppd&dquot;.
+
+<sect1> cfg_asyncppp_fast: How can I increase my transfer rates with PPP?
+<p>
+You can add more channels with MPPP (see the appropriate section).
+For everyone for whom that's to expensive and who use <em>async PPP</em>,
+there's a little trick. With the option &dquot;asyncmap 0&dquot; you can avoid
+escaping all control characters (ASCII32). If the other side goes 
+along with this, you can increase the transfer rate by about 12&percnt;.
+
+
+<!-- Troubleshooting Async PPP
+-->
+
+<sect1> trouble: How can I get a log for pppd?
+<p>
+See this question for Sync PPP, it works the same way for pppd.
+
+<sect1> trouble: Establishing the connection works fine, but pppd crashes just after
+that (i.e. the first bytes get through, but then everything stops)
+<p>
+This is probably due to an incorrect block size on your side. Initialize your
+ttyI* device with <tt/AT&amp;B512/ or even smaller block sizes.
+
+
+<!-- Config Sync PPP
+-->
+
+<sect> cfg_syncppp: Sync PPP
+
+<sect1> cfg_syncppp_whichppp: pppd, ipppd, syncPPP, asyncPPP .. what is they? What should I use?
+<p>
+See this question in the <em/asnyc PPP/; section: <ref id="config_asyncppp_def">.
+
+
+<sect1> cfg_syncppp_compile: How do I compile isdn4linux with syncPPP?
+<p>
+To compile the kernel with syncPPP included in ISDN4Linux, you have to answer
+the appropriate questions with &dquot;yes&dquot;. Don't forget to load the
+module slhc.o before isdn.o, if VJ compression is not compiled into the kernel
+e.g. if you have no PPP and no CSLIP in the kernel. (Note that the use of VJ
+is problematic and does not work reliably - however, the support should still
+be included in the kernel, since there can otherwise be side effects.)
+
+<sect1> cfg_syncppp: How should I name my network interface?
+<p>
+The name of the network interface should <em>always</em> begin with
+&dquot;ippp&dquot;, <em>not</em> with &dquot;syncppp&dquot; or
+&dquot;isdn&dquot;; otherwise the communication with ipppd will not work
+correctly.
+
+<sect1> cfg_syncppp_config: How do I configure isdn4linux with syncPPP?
+<p>
+Synchronous PPP is simply another encapsulation for ISDN4Linux. This
+encapsulation is called &dquot;syncppp&dquot;. Here is an example to
+configure the link level device ippp0:
+<code>
+/sbin/isdnctrl addif ippp0
+/sbin/isdnctrl encap ippp0 syncppp
+</code>
+All ippp* devices in use must be configured separately. Each ippp* device
+should be assigned to its own IP address  (routing!). Several ippp* devices can
+be assigned to a single MSN. Several callers can then simultaneously use this MSN.
+
+To use these devices you need the program <tt/ipppd/, which you have to
+configure. You have to start ipppd once after the modules are installed. ipppd
+communicates with the isdn4linux link level devices through <tt>/dev/ippp0</tt>
+to <tt>/dev/ippp63</tt>. A single ipppd can handle all devices at once. If you
+want two PPP connections at the same time, you need to bind ipppd to two devices,
+etc. As a result, <tt/ipppd/ provides the network device <tt>ippp0</tt>,
+which can be checked with ifconfig (even so it has the same name, the network
+device <tt/ippp0/ is not to be confused with <tt>/dev/ippp0</tt> which is used
+for communication between ipppd and link level.
+
+ipppd has an additional option: &dquot;useifip&dquot; uses the IP address
+of the connected network interface (if it is not 0.0.0.0). (Even then, ipppd
+tries to use the pointopoint address as the remote IP.) For the beginning,
+disable all compression (lzs/stac, bsd, van jacobson), later you can try to
+enable it (see question <ref id="cfg_general_compression">).
+
+You can find an example configuration in the file <tt>etc/rc.isdn.syncppp</tt>
+in the isdn4kernel-util package.
+
+<sect1> cfg_syncppp: How can I tell if a connection is unsuccessful (busy)?
+<p>
+When giving the option ´defaultroute´, then you can wait a few seconds, then
+check whether the default route exists. Another way, when giving option
+<tt>useifip</tt> is to check whether you find entries like <tt>&dquot;Local IP:
+x.y.z.a&dquot;</tt> and/or <tt>&dquot;Remote IP: x.y.z.a&dquot;</tt> in syslog.
+In either case, the connection is up.
+
+<sect1> cfg_syncppp_logindelay: How can I reduce login delay?
+<p>
+You can write out a login session with (&dquot;Debug-Log&dquot;), and see which
+options the other computer is refusing. Next time, configure ipppd
+without these unused options. A further side effect is that such
+unused options increase the redundance (e.g. when the other computer
+has bugs and refuses the options incorrectly). To create a log file, 
+see &dquot;How to I create a log for ipppd&dquot;.
+
+<sect1> cfg_syncppp: I want to talk to remote machines which needs different
+configurations. The only way I found to do this is to kill the ipppd and start
+a new one with another config to connect to the second machine.    
+<p>
+You must bind a network interface explicitly to an ippp device, where you 
+can connect a (for this interface) individually configured ipppd. With the 
+(unfortunately poorly documented) command
+<code>
+&dquot;isdnctrl pppbind interface Number&dquot;
+</code>
+you can link the interface interface to the device ipppNummer. You can 
+release the link with &dquot;pppunbind&dquot;. 
+
+<sect1> cfg_syncppp: How does the (little-documented) &dquot;pppbind&dquot;
+command in isdnctrl work?
+<p>
+You have to first know how ipppd gets its data. All data that come in
+over the ISDN line is received by the network devices (these are 
+set up with isdnctrl). Then the data given to one of the /dev/ippp*
+devices - to one where a ipppd daemon is waiting for data.
+
+To the network interfaces, all ipppd's appear to be able to handle the
+just-received data - therefore it is normally impossible to predict
+which ipppd will receive data from which network interface.
+
+In practice, you usually install several ipppd's with differing 
+configurations. Each of these should receive data <em>exclusively</em> 
+from a certain network interface (that has also be specially configured).
+The &dquot;pppdbind&dquot; command serves just this purpose. With:
+<code>
+&dquot;isdnctrl pppbind interface number&dquot;
+</code>
+attaches the interface interface to the device /dev/ipppnumber.
+
+Example: To attach the interface &dquot;ippp5&dquot; to /dev/ippp2, the following
+configuration should be used:
+<code>
+&dquot;isdnctrl pppbind ippp5 2&dquot;
+</code>
+Similarly, the command &dquot;pppunbind&dquot; will undo this attachment.
+
+<sect1> cfg_syncppp: I want to use dynamic IP address assignment. How must I
+configure the network device?
+<p>
+At least you must have a route, which forwards a packet to the ippp 
+network interface to trigger dialing. A default route to the ippp interface 
+will work. Now you must choose a dummy IP address for your interface. If for
+some reason you can't set the default route to the ippp interface, you may 
+take any address of the subnet from which you expect your dynamic IP number 
+and set a 'network route' for this subnet to the ippp interface. To allow 
+overriding of the dummy address you must call the ipppd with
+the 'ipcp-accept-local' option. You must know how the ipppd gets the
+addresses it has to configure. If you don't give any option, the ipppd
+tries to negotiate the local host address!  With the option 'noipdefault'
+it requests an address from the remote machine. With 'useifip' it gets the 
+addresses from the net interface. You also can set the addresses in the 
+option line with the a.b.c.d:e.f.g.h option. Note: the IP address of the 
+remote machine must be configured locally, or the remote machine must send 
+it in an IPCP request. If your side doesn't know the IP address after 
+negotiation, it closes the connection! You must allow overriding of 
+addresses with the 'ipcp-accept-*' options, if you have set your own or the 
+remote address explicitly. Try these options, e.g.:
+<code>
+/sbin/ipppd :&dollar;REMOTE noipdefault /dev/ippp0
+</code>
+where REMOTE must be the address of the remote machine (the machine giving 
+your address to you) 
+
+<sect1> cfg_syncppp: How can I do IPX over ipppd?
+<label id="cfg_syncppp_ipx">
+<p>
+Give the option <tt/+ipx-protocol/ to the ipppd.
+
+<sect1> cfg_syncppp: How can I increase my PPP data transfer rates?
+<p>
+You can establish more channels with MPPP (see the MPPP section). Another way
+is to use compression, see question <ref id="cfg_general_compression">.
+
+<sect1> cfg_general_compression: Which compressions can I use with ipppd?
+<label id="cfg_general_compression">
+<p>
+<em>Van Jacobson compression</em> (header compression) is in experimental state. It
+works for some remote devices, but not for others. Check it out on your own
+risk, to be sure disable it. <em>Lzs compression</em> (sometimes also called
+<em>Stac compression</em>) works quite well. To enable it, some manual work has
+to be done to add the code to the ipppd (see the isdn4k-util package).
+<em>Bsd compression</em> also seems to work, but is in experimental stage. You
+find it in the CVS tree.
+
+
+<!-- Config Network
+-->
+
+<sect> cfg_lan: ISDN4Linux in a LAN
+
+<sect1> cfg_lan: How can I set up Linux so that other computers in my LAN can
+access the internet via my Linux computer?
+<p>
+There are several possibilities:
+<enum>
+<item>Your LAN is an official Class C net with IP addresses valid on the Internet.
+This case is the easiest of configure. You give each network card on your
+network one of these addresses and set a default route on the ISDN card that
+goes to your provider.
+<item>You'd only like to do http in Internet from your LAN. In this case you
+can make up IP addresses for your LAN; the only official IP address is that for
+your ISDN card. Then install a proxy server on your Linux router, and enter it
+in all of your browsers. In this case you do not need a default route.
+<item>From your LAN you only want to log in to your Linux ISDN router and FROM
+THERE do your work on the Internet. This is even simpler, then you don't even
+need a proxy server.
+<item>Use ip masquerading. This is the most comfortable one to use, but more
+difficult to set up. The Linux computer acts as a gateway. The trick is that it
+hides the ip addresses of the LAN, by giving its own internet address as
+response address. When receiving the response, it will forward it to the
+correct computer on the LAN. You can also use masquerading with dynamic ip
+addresses. If you don´t want to start the ISDN connection from the Linux
+computer to your internet provider manually, then you can set up dial on demand
+functionality (see section <ref id="dod">).
+</enum>
+
+
+<sect1> cfg_lan: How can I allow the users in my LAN to dial out via the ISDN
+card(s) in my Linux PC (like a modem server)?
+<p>
+On the Linux side use modemd, which is a very short perl script:
+<code>
+&num;!/usr/bin/perl
+select((select(STDOUT), &dollar;| = 1)(&dollar;());
+select((select(STDIN), &dollar;| = 1)(&dollar;());
+exec &dquot;cu&dquot;,&dquot;-E&dquot;,&dquot;''&dquot;, &dquot;-l&dquot;, &dquot;&dollar;ARGV(0)&dquot;;
+die &dquot;&dollar;0: Cannot exec cu: &dollar;!\n&dquot;;
+</code>
+It has to be started in inetd:
+<code>
+modem           20006/tcp       modemd  &num; Modem service via TCP
+isdn            20007/tcp       modemd  &num; ISDN  service via TCP
+</code>
+Additionally, you need some software on your non-ISDN computer which emulates a
+serial port, but redirects it via telnet to the Linux ISDN computer.
+Some telnet clients allow this functionality (e.g. some uucicos).
+If you generally want to offer all applications a kind of &dquot;remote COM
+port&dquot;, then there is COMT for Windows (95), and
+&dquot;telser.device&dquot; for Amigas. Disadvantage of COMT: it is only visible
+to 16bit applications.
+
+COMT may be found on Simtel or one of its mirror:
+<tt><url url="ftp://ftp.funet.fi/pub/simtelnet/win3/inet/comt200.zip"></tt>
+
+
+<sect> isdnlog: Isdnlog
+
+<sect1> isdnlog: Can I see the service type from an incoming call in the output
+from isdnrep?
+<p>
+Andreas Kool <tt><htmlurl url="mailto:akool@Kool.f.EUnet.de"
+name="akool@Kool.f.EUnet.de"></tt> wrote on 3 Dec 1996:
+
+Indirectly in isdnrep, yes -- as soon as you enter an alias for the
+decoded service types in your &dquot;isdnlog.conf&dquot; ...
+
+<sect1> isdnlog: Why don't I always receive from the German Telekom the number of a 
+caller (&dquot;Caller ID&dquot;)?
+<p>
+For data privacy reasons, telephone numbers from the analog network
+are not transmitted unless the caller has explicitly allowed the Telekom 
+to do so (costs nothing).
+
+Those with an ISDN connection, on the other hand, must explicitly
+deny permission for the Telekom to transmit the number, or apply to
+be able to do this on a call-by-call basis (CLIR). Call-by-call
+denial is free; call-by-call transmission costs extra. However, it
+seems to be <em>very</em> difficult for the Telekom to configure this
+correctly on the first try.  If you depend on the transmission of
+Caller ID, you should check closely that everything is configured
+correctly.
+
+<sect1> isdnlog: Do I receive the Caller ID from foreign calls (German Telekom)?
+<p>
+Yes, with calls from countries that don't view Caller ID quite as strictly
+as does Germany (e.g. USA, Canada).
+
+<sect1> isdnlog: I've heard that actually two Caller IDs are transmitted?
+<p>
+That's right, there's one that is &dquot;User-Provided, not
+screened&dquot;, and the other is &dquot;Network-Provided&dquot; (from the
+telephone company). As the name says, the first one is provided by the
+user, whereas the second one is transmitted by the network.
+Providing a caller ID is only possible for a PBX connected in
+Point-to-point configuration with the feature &dquot;CLIP no
+screening&dquot;.
+
+<!-- Feature reversed card
+-->
+
+<sect1> isdnlog: Why doesn't isdnlog record the number dialed by my other ISDN devices,
+since it records the charges?
+
+<p>
+Because the ISDN card, like all ISDN device, has separate lines for
+sending and receiving (RX and TX lines). Isdnlog has to read data
+from the receiving line to learn the number dialed. This isn't possible,
+at least for the Teles cards, as Karsten Keil <tt><htmlurl url="mailto:keil@temic-ech.spacenet.de"
+name="keil@temic-ech.spacenet.de"></tt> 
+wrote on 12 Feb 1997:
+<quote>
+This is the case for all cards with 1 Siemens ISAX; it has (and needs)
+only 1 sender and 1 receiver.
+Theoretically, it's possible to read the entire D channel with just one
+receiver (even with the ISAC); the D bits from the RX line are copied 
+(somewhat delayed) to the TX line, over which the access control 
+(collision recognition) of the SO bus takes place.
+Unfortunately with the ISAC it's not possible to read the echo bits 
+in TA mode from a register.
+</quote>
+See the next questions for a possible solution.
+
+
+<sect1> isdnlog: How can I get isdnlog to also show the telephone numbers for other
+ISDN devices?
+<p>
+There are two possibilities. First, the German Telekom offers the service
+COLP (Connected Line Identification Presentation, ca. DM 10 per month per
+basic line) that returns all data sent. This can then be read by isdnlog
+(=2.52) from the TX line
+
+Alternatively, the next version of isdnlog (currently 2.52) will offer
+the possibility to work with a second &dquot;re-poled&dquot; Teles card, i.e. the 
+RX line is connected to the TX connection of the card. The RX line of the
+card should not be connected to any line! Because of this setup, the Teles
+card cannot be used for anything else. The whole thing looks something like
+this:
+<verb>
+      3 -- RX+ 2a ---------------\
+ISDN  4 -- TX+ 1a -- open         ------------  ISDN
+bus   5 -- TX- 1b -- open         ------------  card
+      6 -- RX- 2b ---------------/ 
+</verb>
+A third (theoretical) possibility exists for those who have their own
+PBX to which the other devices are connected. If the PBX can protocol
+all outgoing calls, this can be read (usually over a serial port).
+
+There is a reason why isdnlog has not support this until now. To evaluate
+this data, isdnlog has to be able to access the date immediately after
+the RELEASE COMPLETE, before any new data is sent on the D channel. The
+PBXs tested up to now have all been too slow (in particular the widely
+used ISTEC). The only possibility is to combine the data afterwards. But
+then there are problems with synchronizing the different times. Whoever
+want to attempt to do this is welcome (I'll make the logs from my
+Ackermann Euracom available - Matthias Heßler <tt><htmlurl url="mailto:hessler@wi-inf.uni-essen.de"
+name="hessler@wi-inf.uni-essen.de"></tt>).
+
+
+
+<!-- isdnlog Features
+-->
+
+<sect1> isdnlog: How can I display the data transfer rates graphically?
+<p>
+You can use &dquot;xisdnload&dquot;. Clemens Perz <tt><htmlurl url="mailto:listperz@gwsnet.ttt.de"
+name="listperz@gwsnet.ttt.de"></tt> on 6 Feb 1997
+knew of another possibility:
+
+On Sunsite I found a little tool for the console called netload, and
+apapted it for the ISDN interfaces. With it you can quite easily see
+the current traffic on the line. It can be found at:
+
+<tt><url url="ftp://ftp.region.trier.de/pub/unix/linux/sources/network/isdn/netload-0.92.isdn.tar.gz"></tt>
+
+Simply start with netload isdnxx
+
+
+<sect> Audio
+<p>
+(Most of the answers you will find here are taken from the vbox manual by
+Matthias Hessler <tt><htmlurl url="mailto:hessler@wi-inf.uni-essen.de"
+name="hessler@wi-inf.uni-essen.de"></tt> and
+Bernhard Hailer <tt><htmlurl url="mailto:dl4mhk@lrz.uni-muenchen.de"
+name="dl4mhk@lrz.uni-muenchen.de"></tt>; you can get the manual at:
+
+<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
+
+- click on &dquot;Audio!&dquot; (still in German we're afraid - sorry...)
+They are currently outdated, but may give you a few hints?
+
+<sect1> audio_format: What is the format of the audio messages (.msg) vbox plays when it
+answers a call?
+<p>
+You can get the format from the messages with rmdgetheader. The samples
+messages in the packages are recorded using format 4 (the latest
+Zyxel-Compression)
+
+
+<sect1> audio_recordmsg: How can I record my own messages for vboxgetty?
+<label id="audio_recordmsg">
+<p>
+First call yourself on the number you configured vboxgetty to answer and
+leave a message. Then rename the message to *.msg (standard.msg for the
+main answering message) and copy it to the directory where all the
+messages are kept (usually /var/spool/vbox/user/messages where user is
+the user for which vboxgetty is configured).
+You can also record a message using a microphone and the soundcard.
+
+<sect1> audio: How can I play audio messages locally using /dev/audio?
+<p>
+This is best achieved with vbox using format 6 (uLaw - must be compiled
+in). You can then easily play the messages using:
+<code>
+cat xxx  /dev/audio
+</code>
+where xxx is the message-file.
+
+<sect1> audio: If vboxgetty has recorded a message in a format which can not be
+played using &dquot;cat xxx/dev/audio&dquot; how can I still hear the message?
+<p>
+See question <ref id="audio_recordmsg">.
+
+<sect1> audio: How can I convert audio messages which where recorded by vbox to
+other formats (i.e. from uLaw to WAV)?
+<p>
+The standard tool for converting all sound formats is SOX. SOX is
+available as source code for both UNIX and DOS. You can get it at:
+
+<tt><url url="http://www.powerweb.de/mpeg/util/msdos/sox10c.zip"></tt>
+
+(including sources that compile under Linux).
+
+<sect1> audio: How can I format WAV for uLaw (for my vbox announcement message)?
+<p>
+We receive the following tip form Christian Stueble 
+<tt><htmlurl url="mailto:stueble@ls6.informatik.uni-dortmund.de"
+name="stueble@ls6.informatik.uni-dortmund.de"></tt> on 15 Jan 1997:
+
+For me, the following (somewhat indirect) method works:   
+<code>
+sox file.wav -r 8000 file.ul rate
+rmdcatheader -u file.ul  file.msg
+cat file.ul  file.msg
+</code>
+It could be that you have to give different parameters to sox.
+As a first test you can try file.msg  /dev/audio, you should
+be able to hear something.
+
+<!-- Audio Troubleshooting
+-->
+
+<sect1> audio: My vboxgetty does not answer any incoming calls.
+<p>
+vboxgetty needs &dquot;.vboxrc&dquot; in the home directory of the user for which
+vboxgetty is configured. The number of rings is taken from this file.
+
+
+<sect1> audio: My vboxgetty answers at the first ring but the number of rings is set to 4.
+<p>
+The rings are created by a timer in the isdn module that doesn't 
+necessarily set the delay accurately. If you configure vboxgetty with 
+30 rings, vboxgetty will wait about 5 rings before it picks up the line.
+
+
+
+<sect1> audio: My vbox 1.1 does not work together with HiSax.
+<p>
+Use HiSax =1.2. This version includes correct alerting.
+
+
+<sect1> audio: If vboxgetty has recorded a message in a format which can not be played
+using &dquot;cat xxx/dev/audio&dquot; how can I still hear the message?
+<p>
+Vboxgetty can play all formats. You could also copy the message as the
+standard message (standard.msg in the messages directory) and call
+yourself, the message will be played then. (Don't forget to copy back the
+original message when you are done :-) ).
+
+<sect1> audio: At the beginning of a message recorded by vboxgetty, there's often a
+part of my own announcement?
+<p>
+This is a known bug that occurs when switching between the playing of
+the announcement and recording the message. Up to now there is no
+known workaround.
+
+
+
+<sect> chargeint: Chargeint
+
+<!-- Feature Chargeint
+-->
+
+<sect1> chargeint_whatis: What does Chargeint?
+<p>
+The chargeint always hangs up two seconds before the end of the charge
+unit. isdnlog sets the length of the charge unit (i.e. Charge Interval)
+according to the time of day and the date. The additional parameter for
+<tt>&dquot;-h&dquot;</tt> for isdnlog will reduce this length of time by the
+given value. This additional parameter should not be used with chargeint,
+otherwise chargeint will end the connection too early. This error increases
+with the number of charge units. Therefore: <tt>&dquot;-h0&dquot;</tt> to avoid
+this problem.
+<code>
+/sbin/isdnctrl huptimeout ippp0 80
+</code>
+The huptimeout can be much shorter; for example, 5 (seconds). Then I can use the
+last charge unit up the last 7 seconds (huptimeout + 2 seconds chargeint
+reserve).
+
+<sect1> chargeint_whennot: When does it not make sense to use the chargeint patch?
+<p>
+<enum>
+<item>You can only use Chargeint when isdnlog works for your card (see
+isdnlog).
+<item>Using Chargeint only makes sense when your connections are charged per units,
+rather than per second.
+<item>There are problems when the IP is assigned dynamically. A broken connection
+cannot simply be restarted (since the IP address has changed). The interrupted
+FTP, telnet or WWW connection must then be newly established.
+</enum>
+
+<sect1> chargeint_config: How does the chargeint patch work?
+<p>
+With the isdnctrl parameter &dquot;chargeset&dquot; you can set the length of a charge
+unit, so that it can hang up at the correct time. However, since the length
+of a charge unit depends on the time of day, day of week, holiday, etc., it
+makes no sense to use a set value. Here's where isdnlog comes in. It
+notices when a connection is established and calculates the length of a
+charge unit depending on the time of day, day of week, holiday. This is
+then given to isdnctrl, so it can hang up at the right time. isdnlog
+&dquot;tunes&dquot; isdnctrl at each connection, and also during a connection (when
+isdnlog is run with the &dquot;-w x&dquot; parameter). isdnlog allows isdnctrl exactly
+2 seconds before the next charge unit to hang up, as long as the time
+entered with &dquot;huptimeout&dquot; has elapsed with no data being transferred. The
+transmission of a charge unit impulse is not necessary, since the times are
+calculated closely enough. The charge unit impulse is sent a varying
+intervals, so it cannot be relied upon
+
+<sect1> chargeint_time: How can I be sure that the chargeint patch is using the correct time?
+<p>
+It's best to synchronize the clock in your own computer with that of
+the switching station with &dquot;isdnlog -t2&dquot;. For setting the clock, see the
+&dquot;Miscellaneous&dquot; section, the question: &dquot;How can I set the
+clock of my computer with ISDN?&dquot;
+
+<sect1> The connection doesn't end with timeout. Possible reason: my service
+provider uses a Cisco router which sends a &dquot;keep alive&dquot; packet
+every ten seconds.
+<p>
+If the Cisco doesn't get an answer for its keep alive packets then it will
+stop routing. This normally happens after the 4. or 5. keep alive packet.
+The best solution is to tell the provider not to use keep alive packets
+(<tt>&dquot;no keepalive&dquot;</tt> in the Cisco configuration).
+
+<sect1> ipppd doesn't hang up.
+<p>
+It could be that it's not the LCP packets that are keeping the 
+connection open, but rather OSPF routing updates. The sending of these
+updates can only be switched off on the Cisco. You can configure
+&dquot;snapshot server&dquot; on the BRI interface. That means it will
+send out routing updates only when they are received through
+this interface.
+
+
+<sect> dialin: Configuration of a Dial-In Server
+
+<!-- Config Dialin Server
+-->
+
+<sect1> dialin: How can I enable others to login via ISDN?
+<p>
+The same way as via a normal serial port. Start a getty (mgetty from Gert
+Doering is highly recommended) on one of the ISDN devices with modem 
+emulation (/dev/ttyI*). The entry in /etc/inittab looks like this:
+<code>
+I0:56:respawn:/usr/local/sbin/mgetty ttyI0
+I1:56:respawn:/usr/local/sbin/mgetty ttyI1
+</code>
+The init string needs to be entered in the <tt>mgetty.config</tt>, since
+mgetty needs to know which MSN or EAZ to listen to. For example:
+<code>
+port ttyI0
+modem-type data
+speed 38400
+init-chat &dquot;&dquot; ATZ OK AT&amp;E0 OK AT&amp;B512 OK
+</code>
+The example sets the EAZ (with 1TR6-ISDN) to 0. For Euro ISDN, the MSN
+(without area code) would be given instead of the 0 in &dquot;AT&amp;E0&dquot;. 
+For X.75 the block size was set to 512 bytes.
+Alternatively you can enter the entire configuration onto a single line
+in /etc/inittab (here printed on two lines!):
+<code>
+i0:45:respawn:/sbin/mgetty -D -m '&dquot;&dquot; ATZ OK AT&amp;E0 OK AT&amp;B512 OK'
+-s 38400 ttyI0
+</code>
+The most elegant way is to use iprofd. This daemon takes advantage of
+the <tt>AT&amp;W0</tt> command in the i4l modem emulation. You start iprofd
+with a path as parameter, e.g. &dquot;iprofd /etc/i4lprofile&dquot;
+Then with minicom or another terminal program, open an ISDN tty
+device and enter the necessary AT commander by hand. 
+When finished, enter the command AT&amp;W0, then the kernel notifies iprofd 
+to write the current configuration to the file. From now on it is enough
+to start iprofd in you isdn init script, and to initialize the appropriate
+ISDN tty devices with ATZ
+
+<sect1> dialin: How can I allow several people to call in to me at the same time?
+<p>
+You have to configure exactly as many gettys or network interfaces as the
+number of people allowed to call in at one time. These gettys or network
+interfaces can be set to the same MSN, since several people can be 
+connected to a MSN at the same time (as long as there are B channels free).
+However, not more than one getty can be assigned to a single ttyI* device. 
+
+<sect1> dialin: Someone would like to dial in to my mgetty with HDLC. Is ttyI1 correct,
+or do I have to start with ttyI0?  
+<p>
+No, it doesn't matter. It also has nothing to do with the number of the
+B channel (0 or 1). You just have to activate HDLC in the init string 
+(ATS14=3).
+
+
+<sect1> dialin: Is it possible with mgetty to automatically start pppd when LCP frames
+are received?
+<p>
+Yes, it is. This feature is called `AutoPPP'. See the configuration for
+mgetty.
+
+<sect1> dialin: How can I have (i)pppd check passwords from /etc/passwd instead of
+/etc/ppp/pap-secrets when someone dials in?
+<p>
+ipppd needs to be started with the options &dquot;login&dquot; and
+&dquot;auth&dquot;. In /etc/ppp/pap-secrets, each user must have the
+following line to allow only certain users:
+<code>
+login-name * &dquot;&dquot; *
+</code>
+To allow all users simply:
+<code>
+* * &dquot;&dquot; *
+</code>
+The latter can also be achieved when the file pap-secrets does not
+exist.
+
+
+<sect> leased: Leased lines 
+
+<!-- Config Leased line/D64S
+-->
+
+<sect1> leased: How does establishing and ending a connection work with D64S 
+without signaling?
+<p>
+The data are simply sent out! If you at the end of the D64S or 2MB
+line, you tell your router that the line itself is &dquot;up&dquot;. You have -
+other than with ping etc. - NO possibility to recognize whether the
+connection is there or not.  (with ISPA for example, the outgoing
+wheels turn...)  The only thing that you can measure on your site
+is the loop to the next switching station. If you used Bchan2
+instead of Bchan1 and send out data, they have to come back. Then
+you can take your statistics. The assumes that the Telekom has the
+unused Bchan setup this way at the switching station. This way we
+once proved to the Telekom the line itself had a broken cable...
+What can happen, if you don't automatically assume that the line
+is there, that no data will flow if the other side is not yet
+&dquot;up&dquot;. With ISPA, for example, the pseudo numbers 1tap or 2tap are
+first called with the first data packets and the protocol is
+started. Incoming packets are simply ignored, among other reasons
+because of the missing signaling. Only S01 or S02 lines have a D
+channel and have something to use with signaling, however the best
+known solutions also use this 16kb for data transfers to get 144kb
+instead of 128kb.  So just try it by sending out the data, assuming
+that line is there :-). In this case the data end up in Nirvana...
+
+
+<sect1> leased: With i4l, how can I successfully  use the Teles card on a D64 leased line?
+<p>
+A later version of the new HiSax driver will support D64 (more about this
+driver above). Configuration is normal with the following specialities.
+HiSax has to be run in leased mode:
+<code>
+/sbin/telesctrl HiSax 5 0
+</code>
+in case HiSax was loaded with &dquot;id=HiSax&dquot;. Additionally to the normal
+configuration, the following commands are important:
+<code>
+&num; bind interface on first BChannel (,1 for 2nd)
+/sbin/isdnctrl bind HiSax,0
+/sbin/isdnctrl eaz isdn0 1
+/sbin/isdnctrl addphone isdn0 out 2
+/sbin/isdnctrl addphone isdn0 in  3
+</code>
+if &dquot;isdn0&dquot; was used as interface name. The interface has to be set to
+&dquot;up&dquot; and a route associated with it. There is a more exact introduction
+available which was postet a few time by Karsten Keil
+<tt><htmlurl url="mailto:keil@temic-ech.spacenet.de"
+name="keil@temic-ech.spacenet.de"></tt> in the mailing list.
+
+Marcus Graf <tt><htmlurl url="mailto:marcus@www.weinheim.de"
+name="marcus@www.weinheim.de"></tt> has made available his experience as a
+short info on <tt><url url="http://www.weinheim.de/isdn/index.html"></tt>
+
+<sect1> leased: Can I connect two computers with ICN cards over a D64s leased line?
+How? Where can I find documentation?
+<p>
+Torsten Hentschel <tt><htmlurl url="mailto:Torsten.Hentschel@DInet.de"
+name="Torsten.Hentschel@DInet.de"></tt> wrote on 2 Jan 1997:
+<quote>
+That surely works. We have it working here. It's also stable
+(kernel 2.0.26 is necessary, otherwise the router might come
+to a halt). Only, if you pull out the plug to the terminal 
+adapter and insert it again, or if the Telekom produces an error,
+then you have to have both sides hang up once (or twice) to 
+bring the connection backup. In emergency you have a &dquot;ping&dquot;
+and a &dquot;isdnctrl hangup&dquot; done with cron. I don't know of any
+other docs or source code, but I'd be happy to help with any
+further questions, since other helped me before
+There are several things to watch out for. LEASEDx is the
+incoming number on the device; an outgoing number is not
+necessary, since the kernel (or the firmware, I'm not sure)
+generates pseudo-incoming calls, as long as no one has &dquot;picked
+up&dquot;.  In LEASED x, the small &dquot;x&dquot; should be replaced by the
+number of the SO interface.
+In each of our routers we have four interfaces (numbered as
+0, 1, 2, 3), and I used the last interface as the LEASED line.
+That makes sense, since the other three interfaces are used for
+6 B channels for dialup lines, and the kernel always uses the
+first free line for outgoing calls. If the leased line were on 
+interface 0, then the second B channel of the leased line would
+appear (but only appear) to be free. The kernel doesn't notice
+(because of the active card) that there is no D channel for 
+dialing there, and will dial, and dial, and dial.
+For this reason, I've created an extra ISDN network interface
+and have bound it exclusively to the apparent B channel of the
+leased line, so that after 6 dialout lines are in use the
+kernel attempt to dial out on the leased line. 
+Another important stumbling block is that the first pseudo-
+incoming call must be answered (otherwise only the third, then
+the fifth will work, I don't know exactly why, but I suspect
+it's caused by the two B channels, for which calls are generated
+in turn, while a D64 has only one B channel).
+The immediate acceptance of the call is setup as follows:
+* Load the module for the ICN card and configure (load the firmware,
+bus reject, ...) BUT NOT YET icnctrl -d XXX leased&dquot; 
+* Generate the network interface for the kernel with innumber LEASEDx
+and all the other stuff you need (IP address, ...).
+Don't forget to bind to the appropriate S0 interface.
+* NOW: icnctrl -d XXX leased
+The network interface has to already be up when &dquot;icnctrl -d XXX leased&dquot;
+is called. Then this command starts the first call and can then be 
+immediately answered -  and pop, the connection is made.
+</quote>
+
+G. Richter <tt><htmlurl url="mailto:richter@ecos.de"
+name="richter@ecos.de"></tt> added on  3 Jan 1997:
+
+This has worked for use (with a CISCO router as partner) with no problems
+for nearly two months.
+
+Make sure the EAZ is set to 1 and the the line is set to leased with
+isdnctrl, the rest is just like a dialup line (except telephone number
+and timeouts)
+
+An example script is under
+<tt><url url="http://www.rosat.mpe-garching.mpg.de/&tilde;web/ISDN.html"></tt>
+
+
+<sect1> leased: With ISDN, can I use one channel as a leased line and 
+other as a dialup line?
+<p>
+Tomas Pospisek <tt><htmlurl url="mailto:tpo@spin.ch"
+name="tpo@spin.ch"></tt> wrote:
+<quote>
+Yes, you can (at least in Switzerland). You have to make sure you are
+on the correct channel ;)
+</quote>
+
+
+<!-- Config/Feature MPPP, raw bundling
+-->
+
+<sect> 2channel: Channel bundling (MPPP, raw bundling)
+
+<sect1> 2channel: What is channel bundling and how can I use it?
+<p>
+Channel bundling is currently supported by isdn4Linux in two variations:
+<itemize>
+<item><bf>Raw Bundling</bf> (configuration of so-called slave channels)
+<item><bf>MPPP</bf> (based on syncPPP)
+</itemize>
+Both variations have their own advantages and disadvantages. See the following
+questions.
+
+<sect1> 2channel: What is raw bundling?
+<p>
+Raw bundling works similarly to raw IP, only with several channels.
+Therefore, it has the theoretical advantages and disadvantages of 
+raw IP. Raw bundling requires a network interface for each channel 
+that is used. One network interface, the so-called master interface,
+controls the establishment and breaking of connections. For each 
+further channel, an additional so-called slave interface is configured, 
+that is automatically switched on by the master interface.
+
+<sect1> 2channel: How do I use raw bundling?
+<p>
+The master interface is created as usual with 
+<code>
+isdnctrl addif master interface
+</code>
+and configured. For all required slave channels, slave interfaces 
+are created with the command:
+<code>
+isdnctrl addslave master interface slave interface
+</code>
+and configured as usual (e.g. &dquot;isdnctrl sdelay slave interface delay&dquot;).
+
+<sect1> 2channel: What are the advantages and disadvantages of raw bundling?
+<p>
+Raw bundling has all the advantages and disadvantages of raw IP.
+Compared to MPPP, raw bundling has the advantage that isdn4linux
+itself can open and close the needed slave channels. Unfortunately
+raw bundling still has problems with transfer rates. See the further
+questions below.
+
+<sect1> 2channel: What is MPPP?
+<p>
+MPPP or MP or MPP (Warning: MP is also an acronym for 'Multi Processor')
+stands for Multi Point to Point and means bundling of several channels to
+one logical stream. It's a variation of the normal syncPPP. Accordingly, it
+inherits all its advantages and disadvantages. Just for your information: ipppd
+does MPPP according to RFC 1717, instead of the newer RFC 1990 (MLP).
+
+In contrast to raw bundling only one net interface is needed as interface
+to the ipppd, since the ipppd handles all its channels by itself. Incoming
+data is distributed round-robin by the ipppd on all available channels.
+These channels do not necessarily have to be ISDN channels. In theory,
+modem connections could be mixed with ISDN channels. However, here we only
+cover ISDN channels.
+
+<sect1> 2channel: How do I use MPPP?
+<p>
+First you define a (normal) interface for ipppd (e.g. &dquot;isdnctrl addif
+ippp0&dquot;, etc). To enable MPPP negotiation you must call the ipppd with
+the &dquot;+mp&dquot; option. You must also configure a slave device for every
+additional channel (see the i4l manual for more). To use channel bundling
+you must first activate the 'master' or initial call. Now you can add the
+slave channels with the command:
+<code>
+isdnctrl addlink device
+</code>
+and close them with the command:
+<code>
+isdnctrl removelink ippp0
+</code>
+This is different to other encapsulations of isdn4linux!
+
+With syncPPP, there is no automatic activation of slave devices, they have to
+be added and removed. However, there is the program <tt>ibod</tt> available,
+which can do this automatically. Have a look at:
+<url url="http://www.compound.se/ibod.html">
+
+In the file etc/rc.isdn.syncppp.MPPP in the isdn4k-utils package you
+may find a sample script (unfortunately missing in some i4l version).
+
+<sect1> 2channel: What are the advantages and disadvantages of MPPP?
+<p>
+A disadvantage is that the slave channel has to be activated 
+&dquot;manually&dquot;. ipppd cannot by itself turn the slave channel on and
+off as it needs to. The normal automatic functions of ipppd are 
+either unreliable (auto hangup) don't work at all (auto dial).
+This is not true for the other encapsulations. The transfers
+rates are very good (ca. 30 KB/s with 4 channels).
+
+<sect1> 2channel: I tried MPPP but it doesn't work. The ipppd writes in the debug log
+something like:
+&dquot; ...  rcvd (0)(proto=0x3d) c0 00 00 00 80 fd 01 01 00 0a ...
+sent (0)(LCP ProtRej id=0x2 00 3d c0 00 00 00 80 fd 01 ...&dquot;
+<p>
+You forgot to compile MPPP/RFC1717 support into the ISDN Subsystem.
+Recompile with this option enabled.
+
+
+
+<sect> trouble: Troubleshooting
+
+<sect1> trouble: General
+
+<!-- Troubleshooting Strategy
+-->
+
+<sect1> trouble: My isdn4linux doesn't work! How do I best go about finding the problem?
+<p>
+The following steps are recommended:
+<enum>
+<item>Check everything is working when booting.
+Are there unusual error messages in /var/log/messages?
+Are all programs active that should be started at boot (check with
+ps, or fuser /dev/xxx)? HiSax won't start if something isn't right.
+The old Teles driver, on the other hand, will appear to start even if
+it is not working. See the questions under Troubleshooting Teles.
+<item>Try calling with a telephone. The number should be shown in
+/var/log/messages. Otherwise, perhaps the driver was incorrectly 
+started?!
+<item>As a next step we´ll try to get the telephone or fax to ring by dialing
+ourself using a ttyI device with minicom. First we have to change the service
+recognition with the <tt>ATS18=1</tt> command to audio. Now you can get the
+telephone to ring by dialing <tt>ATDxxxxxx</tt>, where xxxxxx is your own MSN.
+<item>Next we try to transmit data via ISDN. Open 2 different consoles as root,
+and on each run &dquot;minicom -s&dquot;... in the first set &dquot;Serial Port
+Setup Serial Device&dquot; to <tt>/dev/ttyI0</tt>, and the other to
+<tt>/dev/ttyI1</tt>. Then choose &dquot;Exit&dquot; and start the modem
+emulation with &dquot;ATZ&dquot; and &dquot;AT&amp;Exxxxxx&dquot; (where xxxxxx
+is your own MSN without the area code). Then you can start. On the first
+console you can dial your own number with ATDxxxxxx. On the second console you
+should now see &dquot;CALLER NUMBER: xxxxxxx&dquot; and
+&dquot;RING&dquot;. Accept the call on the second console with
+&dquot;ATA&dquot;, and you should then see the message &dquot;CONNECT
+64000/X.75&dquot; on both consoles. You can then send characters to the other
+console by typing (to see the characters on your own console, turn on local echo).
+<item>Next, try calling a known ISDN BBS. If you don't know of any, try 
+Gernot (see &dquot;Are there sites that offer guest access where I can test my
+isdn4linux setup?&dquot;). If you have problems with the modem emulation, see
+&dquot;Troubleshooting Modem Emulation&dquot;
+<item>Fifth, try configuring the network interface or ipppd. Experience shows 
+that they cause beginners (and not only beginners!) the most problems.
+To make things easier and you're happy with asyncPPP (to see what 
+asyncPPP means, see the question &dquot;pppd, ipppd, syncPPP, asyncPPP - 
+what is that? What should I use?&dquot;), you can use the normal pppd with
+modem emulation (i.e. /dev/ttyI*). 
+</enum>      
+Otherwise, it is highly recommended that use an example script form
+the HowTo (see the question &dquot;Where can I find scripts and other
+information on configuring i4l?&dquot;). For testing you can try your own
+provider or of the guest accounts (see &dquot;Are there sites that offer
+guest access where I can test my isdn4linux setup?&dquot;).  The latter
+have the advantage of being able to see the log files as well as a
+stable, working configuration. For example, if accessing via ipppd
+doesn't work, you can log in via modem or modem emulation to find
+out what happened on the other side. Not all providers are so
+cooperative.... :-)
+
+<sect1> trouble: Neither my telephone nor my fax machine ring when I call 
+them with isdn4linux?
+<p>
+Isdn4linux sets &dquot;digital data&dquot; as it's own service when it calls out.
+The switching station will not route such calls to analog devices like
+a telephone or a fax machine.
+
+<sect1> trouble: Are there sites that offer guest access where I can test my 
+isdn4linux setup?
+<label id="config_general_guestaccess">
+<p>
+Yes, the following sites offer guest access for modem emulation or IP:
+<itemize>
+<item>Eberhard Moenkeberg <tt><htmlurl url="mailto:emoenke@gwdg.de"
+name="emoenke@gwdg.de"></tt>:
+<itemize>
+<item>Welcome to Linux at eberhard.moenkeberg.de (LAN, 192.168.99.1).
+Under ++49-551-7704103, ISDN NetCalls (HDLC-trans-rawip)
+for 192.168.99.1 get accepted. You should come as 192.168.*.*
+because sometimes my &dquot;default&dquot; route is not your way.
+/ftp is exported for NFS; try &dquot;showmount -e&dquot;.
+You can login as &dquot;guest&dquot; without password.
+FTP as &dquot;gast&dquot; with password &dquot;gast&dquot; avoids the
+restricted shell.
+<item>Under ++49-551-7704102, a 28800 bps modem and a Creatix ISDN 
+card (HDLC only, not X.75) are listening for logins.
+<item>With the net setup from
+<tt><url url="ftp://ftp.gwdg.de/pub/linux/isdn/isdn4linux-gwdg/rc.isdn-Beispiel"></tt>
+you can test NetCall at 551-7704103 (works as is within Germany,
+from outside Germany you just have to change the number).
+</itemize>
+
+<item>Gernot Zander <tt><htmlurl url="mailto:hifi@scorpio.in-berlin.de"
+name="hifi@scorpio.in-berlin.de"></tt>:
+<quote>
+There's a &dquot;gast&dquot; at +49 30 67 19 81 01 (X.75, mgetty). There's the 
+stones-html-page with pics in postscript to test downloading. Whoever
+needs a target to call can use it. At ...81 03 there's a getty with
+HDLC. As guest you enter a kind of BBS and can read some news.
+</quote>
+</itemize>
+
+
+<!-- Trouble Authentication
+-->
+<sect1> trouble: My pppd or ipppd has problems with PAP/CHAP authentication.
+<p>
+See question <ref id="trouble_pap">.
+
+<!-- Trouble Unload
+-->
+
+<sect1> trouble: I closed all ISDN applications. Why can't I unload my ISDN modules
+(&dquot;isdn: Device or resource busy&dquot;)?
+<p>
+In this case &dquot;fuser -v /dev/isdn* /dev/ippp* /dev/cui* /dev/ttyI*&dquot;
+is very helpful. This helpful program shows, which processes are using those
+devices.
+<itemize>
+<item>Is some program still using an ISDN device?
+<item>Did you remove all getty's? (They may have restarted automatically)
+<item>Are isdnlog, imon, iprofd, etc., still running?
+<item>Maybe there is still a route on your net interface and it's not yet
+deleted with &dquot;route del xxx&dquot;?
+<item>Maybe the net interface wasn't put down. This can easily happen when
+killing ipppd. It does not react to signal 15 and has to be killed with
+&dquot;kill -9 ipppd pid&dquot;. Then the net interface is left
+&dquot;up&dquot;.
+</itemize>
+Sporadic errors of this type can be fixed by inserting sleep commands
+between the unloading commands.
+As a very, very last resort, there are two secret telesctrl commands to adjust
+the module counter:
+<code>
+telesctrl id 3 1  --- dec module_count
+telesctrl id 4 1  --- inc module_count
+</code>
+Please use with appropriate caution and on your own risk!
+
+
+
+<!-- Trouble PBX
+-->
+
+<sect1> trouble: i4l is working on the internal bus of a PBX. Any problem?
+<p>
+Many PBX run non-standard ISDN protocolls on their internal bus. This may cause
+i4l to print warnings when it encounters unexpected frames (some old versions
+even crash). Also, they may run 1TR6 protocoll by default, instead of Euro ISDN
+on their internal bus. You have to configure i4l (or the PBX) accordingly, best
+is you try both on the same or similar protocolls.
+
+Also the MSN may be different than you expect. Check several versions, one
+digit, or two digits, or whole MSN. Best is you call some device (e.g. ISDN
+telephone) on the internal bus and check what i4l writes into the log file.
+
+<sect1> trouble: I get messages like &dquot;HSCX RME out of buffers&dquot;,
+&dquot;HSCX RFP out of buffers&dquot;, &dquot;HSCX B EXIR 10&dquot; in the
+syslog?
+<p>
+These errors happen when i4l is not able to process its buffers fast
+enough. They are often caused by bad sound cards or their drivers when
+they disable the interrupts too long! It may also happen on old hardware
+(happened to the author of this FAQ when using <tt/vbox/ on an old 386-25 with
+only 4MB RAM). You may be able to work around it by increasing the number and
+size of the buffers. Check the source code header files for definitions like:
+<code>
+&num;define HSCX_RBUF_ORDER 1 
+&num;define HSCX_RBUF_BPPS 2 
+&num;define HSCX_RBUF_MAXPAGES 3 
+</code>
+The first two influence the size, the last one the maximum number of buffers.
+
+<!-- Trouble locate crash
+-->
+<sect1> trouble: My isdn driver crashes my machine! Since I've configured it as a module,
+the addresses change each time it's loaded. How can I find out where the
+driver is crashing?
+<p>
+The driver should be loaded with the command &dquot;insmod -m&dquot;. The output
+has to be transformed somewhat to be a form similar to System.map.
+
+Fritz Elfert <tt><htmlurl url="mailto:fritz@wuemaus.franken.de"
+name="fritz@wuemaus.franken.de"></tt> wrote on 17 Oct 1996:
+<code>
+insmod -m isdn.o | sort | sed -e 's/   / T /g' |
+egrep '.* T (a-z,A-Z,_)+'  /etc/isdn/isdn.map
+cat /System.map /etc/isdn/isdn.map  /iSystem.map
+</code>
+(The lines ending with &dquot;|&dquot; have to have the following text on
+the same line!) iSystem.map should then be used instead of System.map for
+finding the error.
+
+
+<!-- Trouble/Config Finetuning
+-->
+<sect1> trouble: My hard disk becomes very active when isdn4linux run. How can
+I turn this off?
+<p>
+Check whether the reason for the hard disk activity is caused by the amount of
+messages written into the logfile. If this is the case, you can reduce the
+output by:
+<code>isdnctrl verbose 0
+</code>
+and/or by removing the &dquot;debug&dquot; option for ipppd.
+
+
+<!-- Trouble Reset
+-->
+
+<sect1> trouble: After a reset, my card does not initialize correctly.
+<p>
+Andreas M. Kirchwitz <tt><htmlurl url="mailto:isdn4linux-mlist@zikzak.snafu.de"
+name="isdn4linux-mlist@zikzak.snafu.de"></tt> wrote:
+<quote>
+Instead of a &dquot;reboot&dquot; command or pressing &dquot;Ctrl-Alt-Del&dquot;
+try a &dquot;Hard Reset&dquot; with the reset button.
+With some motherboards (which is not necessarily the motherboard's 
+fault) the cards are not completely reset with a &dquot;Soft Reset&dquot; so that
+some drivers will have problems finding the cards.
+</quote>
+Of course, before the hard reset you have to bring the system down
+correctly (&dquot;reboot&dquot; command or press &dquot;Ctrl-Alt-Del&dquot;)! Only then
+can you hit the reset button. 
+
+
+<!-- Trouble Boot
+-->
+
+<sect1> trouble: How can I tell whether my ISDN card has been corrected recognized by
+the HiSax driver?
+<p>
+When booting, a message like this will appear in the log file:
+<verb>
+HiSax: Teles 16.3 found,irq:5 isac:a80 cfg:e80
+HiSax: hscx A:280 hscx B:680
+Teles3: HSCX version A: V2.1 B: V2.1
+</verb>
+HiSax is loaded if the hardware
+can be found and the appropriate interrupts can be generated. If
+not, the module is not loaded. That doesn't mean that everything
+will then work (e.g. twisted cables, broken cables, terminators),
+but that card is installed correctly in the computer and there
+are no hardware conflicts.
+
+<sect1> trouble: On bootup I get &dquot;HSCX version A:5 B:5&dquot; but I still have the impression that
+my card is not used correctly. What else can I check?
+<p>
+Wilhelm Schulte <tt><htmlurl url="mailto:schulte@wrds1.urz.uni-wuppertal.de"
+name="schulte@wrds1.urz.uni-wuppertal.de"></tt> wrote about this:
+<quote>
+Best is you check that the interrupt is registered correctly. Check it
+with &dquot;cat /proc/interrupts&dquot;. The following entry indicates an error:
+11:        0 + hisax
+The 11 is correct when the card is configured on interrupt 11.
+However, the 0 means that the card does not accept interrupts, so it
+does not work. That's the well known &dquot;busy bug&dquot;. Often it can be worked
+around by loading, unloading, and reloading the ISDN modules on bootup.
+The IRQ counter does have to be 0; low values also point to the same
+problem. You can test for it quite easily:
+1. cat /proc/interrupts, note the count
+2. Call the card with a telephone.
+3. Again cat /proc/interrupts, the count should be quite
+different from the first value.
+</quote> 
+See also &dquot;I always get BUSY when dialing into my ISDN mailbox&dquot;. You can also
+check the io ports with &dquot;cat /proc/ioports&dquot;.
+
+<!-- Hardware AVM
+-->
+<sect1> trouble: My ELSA Quickstep 1000 ISA card produces very many interrupts
+with the HiSax driver. Is this normal or a problem with the HiSax driver?
+<p>
+This is normal. The ELSA Quickstep 1000 ISA card has a hardware timer on the
+card which can not be disabled by software. You have to modify the card
+hardware to get rid of it. Check with Karsten Keil for this:
+<tt><htmlurl url="mailto:keil@isdn4linux.de" name="keil@isdn4linux.de"></tt>
+
+<!-- Hardware Teles
+-->
+<sect1> trouble: The PNP tools done work with my Teles 16.3 PNP card!
+<p>
+It's probably not a Plug 'n Play card at all - even though Teles
+now prints PNP on all their card and packaging. The difference is easy
+to recognize: a real Teles PNP card no longer has the (tiny) Dip switches
+on the card to set the IO addresses.
+
+<!-- Trouble ttyI
+-->
+
+<sect> trouble: ttyI* devices (´Modem emulation´)
+
+<sect1> trouble: When I dial with &dquot;ATD.....&dquot; I always get a &dquot;NO CARRIER&dquot;.
+<p>
+Before dialing, you have to enter &dquot;AT&amp;E123456&dquot; (if 123456 is your
+own MSN; with 1TR6 give the one-digit EAZ).
+
+
+<sect1> trouble: My modem emulation/pppd does not recognize an incoming call.
+<p>
+Probably you did not tell the modem emulation with &dquot;AT&amp;E&dquot; which MSN to use.
+For example, use &dquot;AT&amp;E123456&dquot; if your MSN is 123456.
+
+
+<sect1> trouble: Why can't I dial my telephone or fax with the modem emulation?
+<p>
+ISDN differentiates different services. All outgoing calls with the 
+modem emulation use the service &dquot;Digital Data&dquot;, which is incompatible
+with telephone or fax, so the call never gets through.
+
+<!-- Trouble ttyI mailbox
+-->
+
+<sect1> trouble: I can't get a connection to my ISDN mailbox/BBS.
+<p>
+There are several possible protocol parameters. There is HDLC, there is
+X.75 and there are several possible block sizes with X.75. You can tell
+the modem emulation about the block size with &dquot;AT&amp;B&dquot;. Mostly
+used is a block size of 2048 byte: &dquot;AT&amp;B2048&dquot;.
+
+<sect1> trouble: My modem emulation hangs. How can I force my card to hang up?
+<p>
+If there is really no process using your modem emulation any more, try:
+<code>
+cu -l /dev/ttyI0 dir
++++
+ath0
+&tilde;.
+</code>
+Before and after &dquot;+++&dquot; you have to wait for a second, otherwise the
+modem emulation won't recognize it as the escape sequence (like a normal modem).
+Watch out for processes that (with &dquot;ps -ax&dquot;) have something like
+&dquot;I0&dquot; or &dquot;I1&dquot; in the second column, they have an ISDN
+terminal as their controlling terminal. You may have to kill them with kill.
+
+<sect1> trouble: During a tty connection, I get a message from the kernel
+&dquot;teles_writebuf: channel not open&dquot;. Then no more input is accepted
+for this connection.
+<p>
+Can happen when the partner cannot handle the large frames from i4l and simply
+closes the B channel during the transfer. Try making the frames smaller with
+AT&amp;B512.
+
+<sect1> trouble: When I use UUCP with X.75, I always get transfer errors!
+<p>
+Andreas Gutzwiller <tt><htmlurl url="mailto:andy@hippo.proxyon.imp.com"
+name="andy@hippo.proxyon.imp.com"></tt> wrote on 5 Dec 1996:
+<quote>
+I had to use the following settings, otherwise I only had errors.
+&num; Prot
+protocol-parameter g packet-size 512
+protocol-parameter g short-packets y
+protocol-parameter g window 7
+protocol-parameter g remote-window 7
+protocol-parameter v packet-size 512
+Now with large packets I can get ca 7300 cps.
+</quote>
+Holger Burbach <tt><htmlurl url="mailto:holly@cthulhu.pfalz.de"
+name="holly@cthulhu.pfalz.de"></tt> on 5 Feb 1997 had another
+solution:
+<quote>
+I have several XP users who poll without any problems. I did
+the following: First I set the send packet size for ttyI?
+to 1024 (&dquot;AT&amp;B1024&dquot;) and then set the packet size for the
+g protocol in UUCP:
+protocol-parameter g packet-size 2048
+protocol-parameter g remote-packet-size 0
+As I said, it works fine..
+</quote>
+
+
+<sect> trouble: Sync PPP
+
+<!-- Trouble ipppd Search
+-->
+
+<sect1> trouble: How can I get a log for ipppd?
+<p>
+For debugging purposes you can redirect the PPP log into a separate file.
+Just edit /etc/syslog.conf and add the following line (caution: do NOT use
+blanks or tabs):
+<code>
+daemon.*                      /var/log/ppp-log
+</code>
+then every information from PPP demon will be logged to /var/log/ppp-log.
+Emil Stephan <tt><htmlurl url="mailto:ste@esqhen.su.eunet.de"
+name="ste@esqhen.su.eunet.de"></tt> also wrote:
+<verb>
+Remove the comment sign in front of this line in /etc/syslog.conf:
+&num;*.=debug                       /tmp/debug
+After changing this file you can restart syslogd with &dquot;kill -1 pid of
+syslogd&dquot;.
+The output in /tmp/debug can be used to optimize the handshaking of
+PPP options.
+</verb>
+
+<sect1> trouble: Starting ipppd I get the error message &dquot;this systems lacks ppp support&dquot;.
+<p>
+Check whether the device &dquot;ippp0&dquot; exists (i.e. with the program &dquot;ifconfig&dquot;).
+The ipppd *needs* this device with exactly *that* name. If it doesn't exist
+one has to define it:
+<code>
+isdnctrl addif ippp0
+isdnctrl encap ippp0 syncppp
+... (see i4l documentation for more information) ...
+</code>
+Maybe you compiled ipppd with the source of another kernel that you are not
+using...
+See also the question &dquot;How should I name my network interface?&dquot;
+under &dquot;Sync PPP&dquot; in the &dquot;Configuration&dquot; section.
+
+
+<sect1> trouble: When I start ipppd, I only get error messages from the i4l driver.
+<p>
+When ipppd is started, it calls functions that can trigger a network
+packet (e.g. gethostbyname()). Without ipppd (since at this time, ipppd
+it has not been fully started), this network access cannot be processed,
+You should try to put the needed hostnames in the local /etc/hosts or
+in some way define the name so that it can be resolved without having
+the access the ISDN/ippp interface. 
+
+
+<sect1> trouble: When I try to start ipppd it says &dquot;Can't find usable
+ippp device&dquot;
+<p>
+This message occurs when the linklevel interface is told to dial out, but ipppd
+is not running, or not available.
+
+<sect1> trouble: I can't get a connect. How can I find out where the problem is?
+<p>
+The output of ipppd is very helpful...
+<itemize>
+<item>Check whether you can find a few &dquot;LCP-conf-req SENT&dquot; messages
+(less than ten) and then a &dquot;TERM-REF&dquot;.
+<item>Check whether the ISDN card was configured properly. It seems the
+computer doesn't dial (IRQ, IO, protocol wrong?)
+<item>At least a few &dquot;RECV&dquot; messages: good! The card is dialing and
+your dialin computer tries to communicate. Maybe the pap/chap authentication
+doesn't work (see question <ref id="trouble_pap">). Check the ipppd
+configuration!
+<item>The message that ipppd was exited for some reason: not so good!
+Check /var/log/messages and /var/adm/daemon. Could be a bug in ipppd.
+<item>The error/cause E0010 is <bf/NOT/ an error! It is just the informal
+message that the call has ended.
+</itemize>
+
+
+<sect1> trouble: I get the message &dquot;IP frames delayed&dquot; - and I don't get a connection.
+<p>
+See last question:
+You may have forgotten to use &dquot;isdnctrl dial ippp*&dquot; before using a net
+command like telnet, ping, or the like.
+
+
+<sect1> trouble: I cannot dial out with &dquot;isdnctrl dial ippp0&dquot;. It seems as if the route to
+ipppd is missing although I *did* set it (&dquot;network unreachable&dquot;). With my
+old kernel  2.0 everything works fine!
+<p>
+In the newer kernels you have to place &dquot;route&dquot; as the very last command
+before the dialout command. Otherwise the kernel will delete the route.
+
+
+<sect1> trouble: After ipppd dials out my default route is gone.
+<p>
+It's the kernel's fault. Newer kernels (= 2.0) have some changes in the
+routing. Workaround: install a script /etc/ppp/ip-up like this:
+<code>
+&num;!/bin/sh
+/sbin/route add default ippp*
+</code>
+If you make your connections manually, can use something like this script:
+<code>
+/sbin/isdn
+&num;! /bin/sh
+case &dollar;1 in
+on)
+/sbin/isdnctrl dial ippp0       &num;  build up connection
+sleep 5                         &num;  wait until line open
+/sbin/route add default ippp0   &num;  set route
+;;
+off)
+/sbin/isdnctrl hangup ippp0     &num;  hangup connection
+/sbin/route del default         &num;  and delete route again
+;;
+*)
+echo -e &dquot;\a Usage: 'isdn on' or 'isdn off'&dquot;
+;;
+esac
+</code>
+
+<sect1> trouble: When dialing out, I get the message &dquot;pppd: peer
+authentication required but no authentication files accessible.&dquot;
+What does this mean?
+<p>
+Most likely the option &dquot;auth&dquot; was set by mistake. Then the
+<em>other</em> side is required to be authorized.
+
+<sect1> trouble: I cannot establish a connection -  it's rejected by the other side.
+In the log file I find a message that's something like: &dquot;sent (0)
+(LCP ConfReq id=0x1 mru 1500 auth pap magic 0xcd12e9c4&dquot;
+<p>
+Like in the last question, an option was been set that requires the
+<em>other</em> side to be authorized. These options shouldn't be set.
+Possible candidates are: &dquot;+pap&dquot; as well as &dquot;+chap&dquot;.
+
+<sect1> trouble_pap: I cannot establish a connection -  it's rejected by the
+other side. In the log file I find a message that's something like:
+&dquot;sent (0) (LCP ConfRej id=0x1 auth pap&dquot;
+<label id="trouble_pap">
+<p>
+Your computer is refusing to identify itself with user name (e.g. XXX) 
+and password (e.g. YYY). That only works with the authorization options
+&dquot;user XXX&dquot; and &dquot;remotename YYY&dquot; together with a correct (!)
+/etc/ppp/pap-secrets. With a password of ZZZ it should ideally look
+like this:
+<code>
+XXX YYY ZZZ *
+</code>
+If that doesn't work, you can use wild cards, something like:
+<code>
+* * ZZZ *
+</code>
+Then <em>every</em> partner has the password ZZZ. If chap is required
+for authorization, then /etc/ppp/chap-secrets must be set up correctly.
+Important : the format is different from that of pap-secrets!
+Make sure to consult the README's, or check out:
+<tt><url url="http://www.lrz-muenchen.de/&tilde;ui161ab/www/isdn/"></tt>
+Also have a look at the next question: <ref id="trouble_pap2">.
+
+<sect1> trouble_pap2: I have problems with PAP or CHAP authentication. It does not
+work although I'm sure I entered passwords etc. correctly.
+<label id="trouble_pap2">
+<p>
+Stefan A. Muehlenweg <tt><htmlurl url="mailto:Stefan.A.Muehlenweg@samhh.Hanse.DE"
+name="Stefan.A.Muehlenweg@samhh.Hanse.DE"></tt> wrote on
+4 Oct 1996:
+<quote>
+I had exactly the same problem/the same error message. The cause for it
+was that I had three entries in chap-secrets/pap-secrets (for client,
+server, secret), but not a fourth one (IP addresses). BUT: after the third
+entry were some BLANKs. After removing the trailing BLANKs and/or TABs
+(i)pppd is now very satisfied with my auth-files.
+</quote>
+A further source of problems can be the password itself. If it contains
+the &dquot;&num;&dquot; character, then everything after than is understood as a
+comment. Spaces or tabs can cause similar problems. Solution: put
+the password in quotes!
+
+<sect1> trouble: I often get the error message &dquot;hscx_empty_fifo: incoming
+packet too large&dquot;
+<p>
+Probably one of the compressions is activated (i4l can't handle those very
+well). See also next question.
+Another possible reason could be an IRQ problem - see question &dquot;Why should
+I avoid IRQ 12 and 15 for my ISDN card?&dquot;.
+Another problem can be `&num;' characters in your pap-secrets file. In this
+case you have to surround user name and/or password with quotation marks
+(depending on which one is affected).
+
+<sect1> trouble: The connection with ipppd seems to work, but eventually it
+crashes or is very slow.
+<p>
+It could be that some compression is activated (that i4l can't
+handle properly). Common error: &dquot;-vj&dquot; has to be used *additionally*
+to &dquot;-vjccomp&dquot; (to completely switch off the VJ compression) - the
+example scripts coming with ipppd don't have that option included already.
+Other compression modes (bsd, pccomp) can cause trouble, too. Therefore, you
+should switch off all compression options (see also question
+<ref id="cfg_general_compression">). Also giving the option &dquot;noccp&dquot;
+can help.
+
+<sect1> trouble: I only have problems with ipppd when the connection is being heavily 
+burdened. Then everything stops. What could be causing this?
+<p>
+Sven Engelhardt <tt><htmlurl url="mailto:sven@sik.de"
+name="sven@sik.de"></tt> wrote on 12 Dec 1996:
+<quote>
+We are an ISP here in Dresden and use Linux (among other systems)
+for our access (with I4L as well as with external terminal adapters).
+We have this problem mostly with Windows 95 and NT customers who
+are using the &dquot;included&dquot; (modem network) software. It doesn't make
+any difference whether the customer is dialing with async or sync PPP.
+It also doesn't matter which modem emulation he is using on his side.
+What they have in common is that the connection is made with Microsoft
+modem adapter + Microsoft PPP (although a colleague recently told me
+about a similar problem with a Macintosh customer).
+Since it doesn't matter to PPP who is the server and who is the
+client, ask your ISP what kind of hardware you are dialing into (we
+have had no problems with Linux customers and Trumpet Winsock
+users, therefore I suspect a bug in MS-PPP).
+The following workaround usually works for us: (it's not a cure,
+but helps to reduce the pain...)
+* Reduce the Max MTU to 576 or even (296)
+* Reduce the  DefaultRcvWindow to 2144
+On the Windows 95 side these are 2 Registry entries; on the Linux
+side you can set &dquot;mtu 576&dquot; and &dquot;mru 576&dquot; in the PPP options.
+(see also:
+</quote>
+<tt><url url="http://www.windows95.com/connect/trouble.html"></tt>)
+Erik Corry <tt><htmlurl url="mailto:ec@sign-tronic.dk"
+name="ec@sign-tronic.dk"></tt> added on 16 Dec 1996:
+<quote>
+For me, neither PPP compression option nor mru/mtu 296 helped.
+What did help was the AT command:
+AT&amp;B512
+that limits the sent packets to 512 bytes.
+</quote>
+
+<sect1> trouble: My ipppd works, but I keep getting the message pppd(104): 
+ioctl(SIOCSIFMTU): Invalid argument&dquot;?
+<p>
+If mtu is not set, then a default value is assumed - possibly &dquot;0&dquot;
+(which of course cannot be correct). Add <tt>&dquot;mtu 1024&dquot;</tt> to
+your ipppd options (1500 could also be ok). 
+
+<sect1> trouble: The first IP packet gets lost on automatic dialout with dynamic IP address allocation.
+<p>
+There are some dialout problems in connection with syncPPP and dynamic IP
+address allocation. In this case your IP address will change while packets
+are waiting to be sent. All packets that should be sent before the change
+in IP address have the wrong response ip address and will therefore never
+receive an answer. Possible solutions:
+<itemize>
+<item>Dial out manually with &dquot;isdnctrl dial ippp*&dquot;
+<item>Use diald to control when the connection goes up or down.
+<item>Get a permanent IP address
+<item>May be fixed in newer kernels.
+</itemize>
+
+<sect1> trouble: What does the message &dquot;No phone number, packet
+dropped&dquot; mean?
+<p>
+Michael Engert <tt><htmlurl url="mailto:michi@bello.wor.de"
+name="michi@bello.wor.de"></tt> wrote in Nov/Dec 1996:
+
+That means that your computer has an IP packet from somewhat who was
+logged on a few seconds before, but has since broken the connection.
+Your computer tries to send this packet on and finds an appropriate 
+route. But the interface isdn(0|1|...) can't reach the other computer,
+since it has no telephone number to dial.
+
+<sect1> trouble_leadingzero: Why does my ipppd dial one too many zeros
+(<tt>&dquot;ippp0: dialing 0 089XXXXXX...&dquot;</tt>)? I don't have any
+extensions!
+<p>
+The first zero is not dialed. It only shows which channel is used for
+dialing.
+
+<sect1> trouble: My ISDN device is shown with HWaddr and IRQ=0 and base address = 0 when I
+list it with ifconfig
+<p>
+The ISDN device fakes an Ethernet device. It ignores IRQ and baseaddr and
+just needs the HWaddr for the Ethernet encapsulation.
+
+
+<sect1> trouble: xosview doesn't show any network activity since installing i4l.
+<p>
+Peter Hettkamp <tt><htmlurl url="mailto:Peter.Hettkamp@kassel.netsurf.de"
+name="Peter.Hettkamp@kassel.netsurf.de"></tt> wrote:
+<quote>
+xosview reacts, at least for me with version 1.4, to the IP accounting
+in the kernel. So, configure, if necessary build a new kernel, then 
+couple with:
+ipfwadm -A -a -S your-ip-address-here -D 0.0.0.0/0
+ipfwadm -A -a -D your-ip-address-here -S 0.0.0.0/0
+(I don't know who it works with variable IP addresses. I have a fixed
+address.)
+</quote>
+
+<sect1> trouble: When I for example from a W95 box call up a page with Netscape,
+I only get the answer &dquot;unknown host&dquot;.
+<p>
+What is entered on the &dquot;Win95 box&dquot; for the name server? As long as the 
+router has no name server of its own, then the provider's name server 
+of course has to be entered on all computers on the LAN.
+
+<sect1> trouble: Addresses are now found, but now I get &dquot;no route to host&dquot;.
+<p>
+Please check:
+<itemize>
+<item>Is the Linux computer entered as the gateway? (Some 'operating systems'
+have to be restarted before changes to the networking take effect)?
+<item>Does the router have a default route to the prepared interface to the
+provide (e.g. ippp0 with syncPPP or sl0 for diald (even when the real
+connection is over ppp0, diald uses a slip interface as a &dquot;doorknob&dquot;)
+<item>Does the provider require the use of proxies? Then the addresses  
+of the proxies have to the entered in the appropriate clients on the LAN
+computers
+</itemize>
+
+<sect1> trouble: After booting, my local network can no longer be reached. I use the
+network interface ippp0 with ifconfig 0.0.0.0; the default route 
+points to ippp0.
+<p>
+Wolfgang Barth wrote on 5 Jan 1997:
+<quote>
+I've noticed that after the first connection via ippp0 that the local
+network can again be reached. Then the address 0.0.0.0 is no longer
+listed in ifconfig for ippp0, but instead the address assigned from
+the pool by the PPP partner. 
+This was already discussed in de.comp.os.linux.networking, along
+this possible solution: 
+Simply set ippp0 to a dummy IP number from the pool. Then the 
+local network will have problems after booting, even with the 
+default route, and the IP number in ifconfig will be overwritten
+anyway.
+</quote>
+
+
+<!-- Isdnlog
+-->
+
+<sect> Isdnlog
+
+<sect1> Isdnlog (=2.52) shows for a caller <em>two</em> telephone numbers!
+Which one is correct?
+<p>
+The caller has most likely activated the (costly) feature CLIP
+(= Calling Line Identification Presentation, no screening), which means 
+any telephone number can be transmitted. See the question &dquot;I've heard
+that actually two Caller IDs are transmitted?&dquot;.
+
+Andreas Kool <tt><htmlurl url="mailto:akool@Kool.f.EUnet.de"
+name="akool@Kool.f.EUnet.de"></tt> wrote on 26 Jan 1997:
+
+In any case, you can only fool software/PBXs that do not evaluate
+the screening indicator - isdnlog with version 2.52 shows both the
+correct *and* the faked telephone number.
+
+...CLIP, no screening was actually designed for transmitting internal
+company numbers in the public network.
+
+
+<sect1> I've set up a script to play sound per cat on /dev/sound or some
+other device. When several events occur, then there is an error:
+&dquot;Can't open output file '/dev/sound': Device or resource busy&dquot;
+<p>
+Only one process at a time can access the sound device. You need an upper
+instance that coordinates access to the sound device. NAS (network audio
+system), and rplay can be used for this.
+
+<sect1> Isdnlog should call a program with redirected output (e.g.
+&dquot;play anruf.au 2/dev/null&dquot; ). Why does ISDN tell me &dquot;Can't
+start '/usr/local/bin/play anruf.au 2/dev/null' with execvp()&dquot;?
+<p>
+Andreas Kool <tt><htmlurl url="mailto:akool@Kool.f.EUnet.de"
+name="akool@Kool.f.EUnet.de"></tt> wrote on 6 Nov 1996:
+
+Because isdnlog is not a (Bourne) shell ;-) isdnlog can only start
+&dquot;real&dquot; programs.
+
+Short and sweet: this example has to be saved as an executable
+(- chmod +x) file in the following way:
+<code>
+&num;!/bin/sh
+/usr/local/bin/play anruf.au 2/dev/null
+</code>
+
+<sect1> When dialing out, the screen goes momentarily black?
+<p>
+This may happen when you start isdnlog with the options <tt>&dquot;-t
+1&dquot;</tt> or <tt>&dquot;-t 2&dquot;</tt>, then the time is synchronized
+with the  digital switching station. The screen saver thinks that more than x
+minutes have passed, which causes a short blackout of the screen. 
+
+
+<sect> dod: Unwanted dialout on demand
+<label id="dod">
+
+<sect1> What can cause a charge unit disaster?
+<p>
+There are several possibilities.
+
+1. &dquot;Bridging&dquot; was compiled into the kernel (see the appropriate question
+below).
+
+2. Broadcasts from the interfaces ware being forwarded by ISDN (see 
+the appropriate question below).
+
+3. If IP connections are still open with the line is disconnected and
+IP addresses are dynamically assigned, then the disaster is inevitable.
+Then a new connection is started to bring down the open IP connections,
+which fails because the IP address is now different. The line is hung up,
+but the IP connections are still open, the line is dialed again, and
+so on... (see the appropriate question below).
+
+<sect1> Ever since I installed a new kernel, my computer constantly open ISDN
+connections without transferring any data (expensive!).
+<p>
+Maybe the kernel option &dquot;bridging&dquot; was mistakenly activated?
+
+<sect1> My router wants to constantly dial out (and does it too) but <em>NO</em>
+data is transferred, neither ipfwadm -A! nor tcpdump -i isdn0 show
+anything.
+<p>
+Michael Pieper <tt><htmlurl url="mailto:michael@nexus1.tng.oche.de"
+name="michael@nexus1.tng.oche.de"></tt> wrote on 10 Nov 1996:
+
+ARP requests or broadcasts? You should run ifconfig with the options
+-arp and -broadcast to keep from opening connections in this way.
+
+<sect1> After closing the line, I discover with &dquot;netstat -nt&dquot; that IP connections
+are still open. How can I close these manually?
+<p>
+Gernot Zander <tt><htmlurl url="mailto:hifi@scorpio.in-berlin.de"
+name="hifi@scorpio.in-berlin.de"></tt> wrote on 18 Jan 1997:
+
+You can bring the interface &dquot;down&dquot; then back &dquot;up&dquot;. When you do this, it
+will try to dial out. But if you have removed the outgoing telephone
+number, then &dquot;no outgoing number...&dquot; appears in the syslog, and as soon
+as the interface is &dquot;up&dquot;, all connections will be closed.
+
+<sect1> How can I safely turn off dialout on demand?
+<p>
+Gernot Zander <tt><htmlurl url="mailto:hifi@scorpio.in-berlin.de"
+name="hifi@scorpio.in-berlin.de"></tt> wrote on 10 Jan 1997:
+
+I delete the telephone number of the interface (or set an invalid one - Ed.)
+Then I can see right away from the complaints in the syslog whether a 
+process wants to send packets out to the world.
+
+Sascha Ottolski <tt><htmlurl url="mailto:sascha@alzhimer.isdn.cs.tu-berlin.de"
+name="sascha@alzhimer.isdn.cs.tu-berlin.de"></tt> added on
+28 Oct 1996:
+
+For me, what is happening is what you want: the ISDN system is 
+&dquot;down&dquot;, Netscape immediately shows an error message a la: &dquot;the Server 
+doesn't have a DNS entry&dquot; or something similar. You probably have to
+delete the route so that this will happen. I do it like this:
+<code>
+/sbin/route del default
+/sbin/isdnctrl system off
+/sbin/ifconfig ippp0 down
+</code>
+An to get things running again:
+<code>
+/sbin/isdnctrl system on
+/sbin/ifconfig ippp0 up 
+/sbin/route add &dollar;GATE-IP dev ippp0
+/sbin/route add default ippp0
+</code>
+The latter method has the disadvantage that dialin is then no longer 
+possible. Alternatively you can use the dialmode feature.
+
+<sect1> How else can I prevent the charge unit disaster?
+<p>
+In the next version of isdnlog (2.52) it will be able to work as a
+watchdog and prevent such dialouts (with a reboot, if necessary).
+
+<sect1> Is it possible that even with a crashed computer a ISDN connection
+remains open (and the charge units accumulate)?
+<p>
+Karsten Keil <tt><htmlurl url="mailto:keil@temic-ech.spacenet.de"
+name="keil@temic-ech.spacenet.de"></tt> wrote on 11 Feb 1997:
+I'm guessing, that with the status enquiry (in Switzerland - Ed.) you
+simply want to make sure that when the user side has crashed, the connection
+is broken. This is in addition to the Layer 2 monitoring and is not
+totally senseless, since with many cards/end devices the ISAC is run in 
+auto mode and therefore a crash would keep the connection open.
+
+However, i4l runs the ISAC in nonauto mode, meaning that when interrupts
+are no longer being process, the connection is broken after a maximum
+of about 1/2 a minute. This is not the reason for using nonauto mode, but
+this is a safety feature ;-), but doesn't mean that the charge unit 
+disaster is impossible.
+
+<sect1> How can I track down unexplainable dialouts?
+<p>
+Dirk Lutzebaeck <tt><htmlurl url="mailto:lutzeb@wadk-berlin.de"
+name="lutzeb@wadk-berlin.de"></tt> wrote on 5 Nov 1996:
+<quote>
+Unfortunately, I don't know of any syncPPP encapsulation patch for
+tcpdump. If you use ipppd, then your only chance is to turn off
+one daemon after the other and see if things have finally quieted
+down. Likely candidates are named, sendmail, and also smbd (Samba)
+that are likely to open connections.
+</quote>
+(On tcpdump see the appropriate question under &dquot;General&dquot; in the 
+&dquot;Configuration&dquot; section. On named and sendmail see the following
+questions - Ed.)
+Christoph Trautwein <tt><htmlurl url="mailto:trautw@fzi.de"
+name="trautw@fzi.de"></tt> added on 5 Nov 1996:
+<quote>
+I too was only able to find this out by killing suspicious processes.
+More information on the search for these processes and how to make
+them quit can be found at:
+<tt><url url="http://www.fzi.de/sim/people/trautw/i4l/index.html"></tt>
+</quote>
+Herbert Rosmanith <tt><htmlurl url="mailto:herp@wildsau.idv.uni-linz.ac.at"
+name="herp@wildsau.idv.uni-linz.ac.at"></tt> added on 24 Nov 1996:
+<quote>
+Try to find out which lookup triggers the connection with
+&dquot;isdnctrl verbose 3&dquot;. Then a message should appear in
+the kernel message queue (visible with &dquot;dmesg&dquot;) a'la:
+OPEN: 141.76.60.54 - 193.171.67.253 TCP, port: 1686 - 540
+In this example, our computer is trying to pick up mail on
+port 540 (UUCP over TCP/IP over ISDN).
+</quote>
+(only the triggering packet will be logged - Ed.)
+
+Stefan Luethje <tt><htmlurl url="mailto:luethje@sl-gw.lake.de"
+name="luethje@sl-gw.lake.de"></tt> wrote further on 27 Nov 1996:
+<quote>
+Another tip. There are a lot of daemons on the Linux side that
+broadcasts on all interfaces. This leads to frequent autodials. 
+In this case you can redirected the broadcast address to the
+dummy0 interface. It's not clean, but it works.
+</quote>
+See all the last question in this section.
+
+<sect1> Can it be that the Win95 machine on my LAN is causing automatic
+dialouts?
+<p>
+Stefan Luethje <tt><htmlurl url="mailto:luethje@sl-gw.lake.de"
+name="luethje@sl-gw.lake.de"></tt> wrote on 27 Nov 1996:
+<quote>
+If in Wintel the name server of your provider is given, and
+Windows 3.11/95 is started, then it has to talk to the name
+server (only Bill Gates knows why).
+</quote>
+
+<sect1> I have set up a local DNS name server. Why does it cause unwanted 
+dialouts? How can I find the cause?
+<p>
+Jens Ey <tt><htmlurl url="mailto:jens@jeyhh.shnet.org"
+name="jens@jeyhh.shnet.org"></tt> wrote on 29 Nov 1996:
+
+Turn on debug level 1 in named and look at the logfile
+in /var/tmp.
+
+In my case, I found regular DNS requests from Windows machines. The
+problem was that names like WORKGROUP.domain.de were requested,
+i.e. names that the DNS could not know. I'm assuming that the Windows
+machine was looking for its master browser or a domain controller.
+
+This was causing me so many problems for my Internet connection with
+Linux in a LAN that I installed an external terminal adapter, set up
+a proxy server, and set up diald that only DNS requests from the Linux
+machine were allowed to be carried out. Then the connections are 
+established only when they are actually needed. The (caching) local DNS
+is only used after the connection has been established. 
+
+<sect1> How can I turn off the DNS requests for WORKGROUP.xxx from my
+Win95 machine?
+<p>
+Eike Stepper <tt><htmlurl url="mailto:isdn@esc-net.de"
+name="isdn@esc-net.de"></tt> wrote on 30 Nov 1996:
+<quote>
+Why not simply set the &dquot;Use DNS for Windows Names Resolution&dquot;   
+(or similar) to No? Then it should be quiet, at least it
+is for me.
+</quote>
+
+<sect1> How can I get sendmail to not initiate any connections without local
+mail being left undelivered?
+<p>
+First you have to get sendmail to no long open any DNS connections.
+You need to activate the following features: &dquot;nodns&dquot;, &dquot;nocanonify&dquot;.
+
+If you have a smarthost, you need to make sure that this name does not
+call the name server. You can either set it directly as an IP address,
+or add the name to /etc/hosts (/etc/host.conf should then contain
+&dquot;order hosts bind&dquot;)
+
+You should set all non-local mailers as &dquot;expensive&dquot;
+(&dquot;define(SMTP_MAILER_FLAGS, e)&dquot;), and then forbid sendmail with
+&dquot;define(`confCON_EXPENSIVE', `True')&dquot; from automatically connection
+to expensive mailers. The call to sendmail should no longer include
+a time for the &dquot;-q&dquot; option (e.g. only &dquot;-bd -os -q&dquot;). &dquot;-os&dquot; means that
+all mail will be queued (which won't prevent local mail from being
+delivered immediately). The only catch is that when booting, mail that
+might still be in the queue will be sent by sendmail, even though the
+network is not yet up. Therefore, when booting you should remove 
+all mail from /var/mqueue before starting sendmail, and then return it 
+once sendmail has been started.
+
+Mail to expensive mailers will now only be send with the explicit
+call &dquot;sendmail -q&dquot;.
+
+<sect1> The samba package always triggers dialouts for me. How can I prevent
+this?
+<p>
+Andreas Glahn <tt><htmlurl url="mailto:andreas@tao.westfalen.de"
+name="andreas@tao.westfalen.de"></tt> wrote on 31 Jan 1997:
+I had this problems too. Then when starting the samba daemon I gave
+it the internal IP address I use here at home. Since then a samba
+request is no longer sent to default, but stays here.
+
+Take a look at the configuration with netstat and tcpdump. With tcpdump
+you can quickly find out to which IP address samba is trying to
+connect.
+
+My internal Linux computer has, e.g.: 192.168.99.99
+
+My Win95 computer:        n           192.168.99.88
+
+On the Linux computer I started samba with:
+<code>
+nmdb -S -B 192.168.99.255 -I 192.168.99.99
+</code>
+See also the above question:  se -broadcast and possibly -arp 
+when defining the interfaces!
+
+<sect1> How can I get Netscape to quit initiating dialouts when starting?
+<p>
+Most likely in the preferences a non-local home page has been listed.
+Only a home page that Netscape is able to load immediately (e.g.
+&dquot;file://localhost/xxx&dquot;) won't cause an immediate dialout. Alternatively
+you can also set up a cache daemon that saves pages that are often needed.
+
+A proxy should not cause a dial out, even when the complete name is 
+entered. Only when a new proxy is given does Netscape do a DNS
+lookup (and in this special case cause a dialout.
+However, on 17 Mar 97 Steffan Henke <tt><htmlurl url="mailto:henker@Informatik.Uni-Bremen.DE"
+name="henker@Informatik.Uni-Bremen.DE"></tt>
+wrote:
+<quote>
+Unfortunately reality has caught up with us. I've heard that
+Netscape now in version.4.02 really does establish a
+connection...
+</quote>
+
+
+<sect1> trouble_tcpdump: Why does my tcpdump not work for ip packets going over
+ISDN? How can I get a tcpdump patched for ISDN?
+<p>
+Michael Stiller <tt><htmlurl url="mailto:michael@toyland.ping.de"
+name="michael@toyland.ping.de"></tt> wrote on 23 Oct 1996:
+
+Tip for ftp:
+
+<tt><url url="ftp://ftp.gwdg.de/pub/misc/isdn/linux/isdn4linux-gwdg"></tt>
+
+There is the patch: &dquot;tcpdump-3.0.4-1-isdn.dif.gz&dquot;
+
+and the rest is at:
+
+/pub/linux/mirrors/funet/PEOPLE/Linus/net-source/tools/tcpdump-3.0.4-1.tar.gz
+
+You might need to hack some, depending on the name of your ISDN interface
+(mine is bri0). By default, it recognizes only isdn* and isdnY* as 
+interface names.
+
+Henning Schmiedehausen <tt><htmlurl url="mailto:henning@pong.iconsult.com"
+name="henning@pong.iconsult.com"></tt> further wrote on
+30 Oct 1996:
+<quote>
+After finding the patch from Eberhard Moenkeberg at ftp.gwdg.de cannot
+dump cisco HDLC, I made my own patch for tcpdump-3.0.4 that asks the
+interface which encapsulation it used and sets itself accordingly. The
+patch is against a tcpdump-3.0.4-1.tar.gz distribution, for example at
+</quote>
+<tt><url url="ftp://ftp.funet.fi/pub/Linux/PEOPLE/Linus/tools"></tt> 
+<quote>
+This patch recognizes rawIP, ISDN-IP and CISCO-HDLC and can
+dump these packets.
+</quote>
+(The patch was attached to the message  - it should be easy to find in the 
+mailing list archive - Ed.)
+
+Sascha Ottolski <tt><htmlurl url="mailto:sascha@alzhimer.isdn.cs.tu-berlin.de"
+name="sascha@alzhimer.isdn.cs.tu-berlin.de"></tt> gave the following
+tip on 5 Nov 1996:
+<quote>
+This is a isdn4k-utils-2.0/tcpdump-3.0.3-isdn.diff ! It work,
+if one makes some changes:
+In the file tcpdump-3.0.3-isdn/libpcap-0.0/pcap-linux.c after patching
+you find the following:
+else if (strncmp(&dquot;ppp&dquot;, device, 3) == 0)
+Either you name your ppp devices pppX instead of ipppX, or
+change this line, e.g.
+else if (strncmp(&dquot;ippp&dquot;, device, 4) == 0)
+^^^^          ^^
+Then tcpdump will also recognize syncPPP. At least it does for me.
+</quote>
+
+
+<sect> Dialin
+
+<sect1> I keep getting the message &dquot;isdn_tty: call from XXX - YYY
+ignored&dquot;. Why does isdn4linux (syncPPP) ignore this dialin attempt?
+<p>
+There are two possible explanations. Either your own MSN (here: YYY)
+is not correctly set with &dquot;isdnctrl eaz interface YYY&dquot;. Or 
+&dquot;isdnctrl secure interface on&dquot; was set, without allowing calls from
+the incoming number (here: XXX) with &dquot;isdnctrl addphone interface in XXX&dquot;.
+
+
+<sect1> With &dquot;isdnctl pppbind&dquot; I've established an exclusive connection.
+But this is removed with an incoming call.
+<p>
+G. Richter <tt><htmlurl url="mailto:richter@ecos.de"
+name="richter@ecos.de"></tt> wrote to Michael Hipp
+<tt><htmlurl url="mailto:Michael.Hipp@student.uni-tuebingen.de"
+name="Michael.Hipp@student.uni-tuebingen.de"></tt> on  2 Nov 1996:
+<quote>
+... I've looked through the code an found
+a possible error triggered by incoming calls. 
+Is this the case for your scenario? If so,
+try removing: (isdn_net.c, around line 1730)
+p-local.pppbind = -1;
+in the function isdn_net_find_icall().
+I took out this line and now it works.
+</quote>
+
+<sect1> A SunISDN tries to dial into my i4l system.
+<p>
+The Sun tries to communicate with asyncPPP. ipppd can't handle
+this, you have to use the ttyI* devices and the standard pppd.
+
+
+<!-- Callback
+-->
+
+<sect> Callback
+
+<sect1> An incoming call is rejected by i4l. i4l then calls back. The
+reject is not recognized by the other side which keeps on dialing
+to i4l.
+<p>
+Most problems with callback can be solved by adjusting the callback
+delay with &dquot;isdnctrl cbdelay&dquot;. One second has been successful in
+many cases.
+
+<sect1> Callback isn't working. How many ippp* devices do I need (at a
+minimum)?
+<p>
+Manfred Dill <tt><htmlurl url="mailto:manfred.dill@bmw.de"
+name="manfred.dill@bmw.de"></tt> wrote on 18 Dec 1996:
+
+You should use a second device ippp1 for which callback can be used.
+Because of an error in i4l, the first device is used for callback
+and is not released. When the connection is ended, the third device
+(if it exists) is opened and the circle is complete.
+
+For devices, see the appropriate questions under &dquot;Dial-in&dquot;.
+
+<sect1> Somehow i4l can not callback a Cisco?
+<p>
+Torsten Hentschel <tt><htmlurl url="mailto:Torsten.Hentschel@DInet.de"
+name="Torsten.Hentschel@DInet.de"></tt> wrote on 3 Oct 1996:
+<quote>
+A Cisco may dial so heavily that the ipppd has no chance to callback.
+That's how they are programmed (firm statement of a Cisco developer):
+If a Cisco receives a packet that should be routed through a &dquot;dial on
+demand&dquot; telephone connection, and there is a D-channel available for
+dialing out, it dials out immediately.
+If in such a situation (which has be the case with Delta Internet for half
+a year now) a Cisco with 8 D-channels is on the other side and somebody
+does a simple &dquot;ping RemoteIP&dquot; then the Cisco will use (worst case) all
+8 D-channels to dial out. Of course it can't dial the same telephone
+number with two D-channels in parallel (would be immediately busy). Its
+programming is not so stupid, but it sets up the next D-channel for
+dialout before it assumes the previous D-channel as failed. Such a Cisco
+works like a machine gun in respect to dialout. And i4l won't get a free
+D-channel for dialin if the Cisco doesn't want.
+The bad thing: a Cisco always expects (even when configured on &dquot;callback
+client&dquot; = i4l dials back) that the other side unhooks the line, then both
+hang up and then comes the callback. Username and password always have to
+be exchanged before the callback is allowed when using PPP, to be sure
+that the person requesting callback is allowed to do so. (Cisco seems to
+obey the rules of the (German) Telekom that no information are to be ex-
+changed without a B-channel connection. A callback request just by caller
+id could in doubt be considered as a transmission of information).
+</quote>
+Torsten Hentschel <tt><htmlurl url="mailto:Torsten.Hentschel@DInet.de"
+name="Torsten.Hentschel@DInet.de"></tt> additionally wrote on
+20. Nov 1996:
+<quote>
+I've often tried callback over PPP with two CISCOs. From my experience,
+trials in the combination CISCO - Linux will not be successful.
+A CISCO always handshakes a callback request via PPP. To do this, the
+other side has to first unhook and then do all the handshaking
+(authentication,...). Then both hang up and the callback is placed.
+isdnctrl commands of Linux influence only the kernels net devices
+and have no or hardly any influence on how the ipppd handles callbacks.
+He does not recognize that he is supposed to expect that the remote
+side calls back.
+Accordingly he rejects the offer of the CISCO via PPP, that the CISCO
+is ready to call back. Then the CISCO assumes that it should not call
+back (it wants to see an explicit callback request during the PPP
+handshaking).
+The CISCO will confirm this when you log onto it and check with these
+commands:
+deb ppp chap
+deb ppp negotiotion
+deb ppp error
+term mon
+its debug messages about the dial in trials of your Linux computer.
+You have to do this via telnet instead of on the console - otherwise
+the CISCO won't be able to handle the logging via the serial interface.
+</quote>
+
+<sect1> Callback from an Ascend works only when I set &dquot;Active=Yes&dquot; in the
+Ascend menu; but then the Ascend keeps calling me, even when my
+machine is off.
+<p>
+Ulrich Klein <tt><htmlurl url="mailto:ulik@hprc.tandem.com"
+name="ulik@hprc.tandem.com"></tt> wrote on 14 Dec 1996:
+
+Somewhere in the Ascend menus you can set &dquot;dial broadcast&dquot; to &dquot;no&dquot;
+or &dquot;off&dquot;. Otherwise the thing will dial with every broadcast. At
+least that helped me. In case anyone from the network on which the
+Ascend is attached really wants to establish a connection, then you
+have to use the strange filters. I believe there's one that will
+dial out only for callback.
+
+<sect1> How can I callback a Banzai!? 
+<p>
+Jan-Olaf Droese <tt><htmlurl url="mailto:jano@layla.RoBIN.de"
+name="jano@layla.RoBIN.de"></tt> wrote on 31 Jan 1997:
+
+On the Banzai side, a  `c' should be added to the outgoing number,
+so it will be ready for the return call. Just to be safe, you can
+the dialout attempts on the Banzai to 1, so there won't be any
+call collisions.
+On the i4l I've set the following:
+<code>
+isdnctrl callback isdn0 in
+isdnctrl cbdelay isdn0 1
+</code>
+
+
+<sect> Supported Countries
+<label id="countries">
+<!-- Countries and further features
+-->
+
+<sect1> In which countries does isdn4linux work?
+<p>
+We are aware of at least the following countries:
+<itemize>
+<item>Austria
+<item>Australia
+<item>Belgium
+<item>Denmark
+<item>Finland
+<item>France
+<item>Germany
+<item>Israel
+<item>Italy
+<item>Norway
+<item>Peru
+<item>Portugal
+<item>Singapore
+<item>Spain
+<item>Sweden
+<item>Switzerland
+<item>The Netherlands
+<item>United Kingdom
+<item>USA
+</itemize>
+If your country is not on this list does not mean it is not supported. It just
+means we have not seen a confirmation about its usage there. Check the mailing
+list for other users from your country.
+
+<sect1> country_certified: Is isdn4linux approved for use by the
+telecommunications authorities?
+<label id="country_certified">
+<p>
+<descrip>
+<tag/Germany/
+That depends on the driver used. For active cards, the approval 
+covers the entire card including its firmware. Thus the approval 
+also covers the use of these cards with isdn4linux. The Elsa Quickstep 1000 PCI
+driver is currently certified in Germany (and hence in most european
+countries). This applies to the 2.0.36 kernel version.
+<tag/Other countries/
+Besides those countries that accept a german certification,
+we don't have any information... does anyone know more?
+</descrip>
+
+<p>
+(Translator's note: Here are some notes we've received that are
+not yet in the main FAQ:
+
+
+
+-Elie Milgrom  <tt><htmlurl url="mailto:em@info.ucl.ac.be"
+name="em@info.ucl.ac.be"></tt> reports that in Belgium the MSN is 
+&dquot;Nothing special: a MSN is just a 'regular' phone number here.&dquot;
+
+
+
+-Sunny Marueli <tt><htmlurl url="mailto:sunnym@netvision.net.il"
+name="sunnym@netvision.net.il"></tt> reports that &dquot;isdn4linux
+works in Israel as well (with Teles PnP).&dquot;
+
+
+
+-Jerome Lefranc <tt><htmlurl url="mailto:decision@calva.net"
+name="decision@calva.net"></tt> reports for France that:
+&dquot;(1) if you don't have MSN, you need to specify
+as local number only the last 4 digits of you phone 
+number.
+ex: 01 41 33 67 87, local phone number is 6787;
+
+(2) you can use sub-address number (not MSN).
+ex: 01 41 33 67 87   (phone number), 02 (sub-address),
+then the local phone will be 6787.02 with the HiSax driver.&dquot;
+
+
+
+-Niall  O Broin <tt><htmlurl url="mailto:nobroin@esoc.esa.de"
+name="nobroin@esoc.esa.de"></tt> reports that in Ireland he's
+had success during some limited testing on a Telecom Eireann line
+(the only provider of end-user ISDN lines in Ireland). He wrote:
+
+&dquot;Not what you'd call comprehensively tested, but a machine with
+an AVM Fritz ISA card
+
+1) Call itself using TTY emulation
+2) Call the test numbers mentioned in the FAQ using TTY emulation
+3) Initiate a synchronous PPP connection
+4) Receive a synchronous PPP connection
+
+Apart from the above, no other testing was carried out but the above
+functions all worked just fine.&dquot;
+
+
+
+
+-I'm not sure how to set up an EAZ/MSN in the UK, but Paul
+Slootman <tt><htmlurl url="mailto:paul@isdn4linux.de"
+name="paul@isdn4linux.de"></tt> wrote:
+
+&dquot;I have information that in the UK, there are no &dquot;normal&dquot; MSNs. Each
+MSN is actually a single digit, 0 - 9, corresponding to the last digit
+of the actual phone number. Apparently in the UK you either have *no*
+MSNs, or 10 MSNs; you then always get a block of 10 sequential
+numbers. I've also heard that from middle October, BT is going to
+offer &dquot;normal&dquot; EuroISDN, which they will call ISDN-2e (their current
+offering is ISDN-2). This will also have facilities such as call
+forwarding etc.  Look somewhere on www.andrews-arnold.co.uk/isdn/ for
+more info.&dquot;)
+
+
+<sect1> German Pecularities (1TR6)
+
+<sect1> Which EAZ should I use for i4l?
+<p>
+You can use all available EAZ. However, two EAZ have a special meaning and
+can cause problems:
+<verb>
+EAZ 0: global call (all telephones ring)
+EAZ 9: global call (no telephone rings)
+</verb>
+Gernot Zander <tt><htmlurl url="mailto:hifi@scorpio.in-berlin.de"
+name="hifi@scorpio.in-berlin.de"></tt> wrote about this on 6. Jan 1997:
+<quote>
+I would not use 0, for my taste it is too likely that i4l will steal
+all voice connections.
+</quote>
+
+<sect1> I use 1TR6 on an extension - the extension number has more than one
+digit (e.g. 206). What is my EAZ?
+<p>
+Jens Ey <tt><htmlurl url="mailto:jens@jeyhh.shnet.org"
+name="jens@jeyhh.shnet.org"></tt> wrote on 10 Jan 1997:
+
+The EAZ for extensions is usually the last digit of the extension number.
+As EAZ for the Linux computer you should then enter a '6'.
+
+<sect1> What is a SPV?
+<p>
+SPV stands for &dquot;semipermanente Verbindung&dquot; (semipermanent connection)
+and is a (soon to be obsolete) specialty of the German Telekom. Like
+a leased line, the calling partner is fixed, however the connection
+is only established as needed (which occurs very quickly, much quicker
+that a dial connection). Since the Telekom can use the line for other 
+things when it's not needed, the SPV is cheaper than a leased line.
+
+This SPV is not to be confused with the Austrian understanding of SPV. The
+Austrian `SPV' has one channel leased line, and one channel for dialing.
+
+<sect1> How long will there still be SPVs?
+<p>
+Steffen Sledz <tt><htmlurl url="mailto:sledz@dgroup.de"
+name="sledz@dgroup.de"></tt> wrote on 5 Dec 1996:
+<quote>
+Due to a couple of lawsuits against the Telekom before the 
+European Court of Justice, most likely until the end of
+1997. This will be posted in the appropriate newsgroups
+and probably also at
+</quote>
+<tt><url url="http://www.birch.de"></tt> (who is suing).
+
+<sect1> Does isdn4linux support SPVs? How?
+<p>
+To switch on the support for SPVs, add an &dquot;S&dquot; before the number
+to be dialed. This works (quite well) for modem emulations as well
+as for defined network interfaces.
+
+
+<sect> Other countries
+
+
+<sect1> Italy: What does our MSN look like?
+<p>
+isdn4linux also works in Italy (ICN card). The MSN must be the phone number
+with the Italian area code  but without the leading 0. For example, if my phone
+number is 72004681 and my area code is 045, my MSN is 4572004681.
+Now with the setting AT&amp;E4572004681 isdn4linux works fine.
+
+
+<sect1> Netherlands: What does our MSN look like?
+<p>
+In The Netherlands the MSN includes (as opposed to the German 
+Telekom) <em>also the area code</em> - but without the leading zero. 
+
+
+<sect1> Austria: We have neither an MSN nor an EAZ, only a normal plain
+telephone number. What do we have to use for i4l?
+<p>
+In Austria ISDN lines are by standard installed <em>without</em> MSN (which is
+different from Germany). That means when somebody calls the installed ISDN
+number the called party gets signalled a &dquot;global call&dquot;. i4l then says
+&dquot;incoming call without CPN&dquot; - &dquot;CPN&dquot; means called party number.
+Solution: Set the incoming &dquot;MSN&dquot; (in reality: none) to &dquot;0&dquot;, then i4l
+responds to the global call. Otherwise it waits for the signalling of the
+number you told i4l, and that won't happen (happens only for *additional*
+MSN). The same applies to the setup of your getty.
+
+On the other hand you should set the outgoing MSN correctly (without area
+code) -- however, a wrong MSN will be replaced with the correct one by your
+telecommunications provider.
+
+
+<sect1> Switzerland: We have neither an MSN nor an EAZ, just a plain telephone
+number. What do we have to use for i4l?
+<p>
+In Switzerland you have to use the <em>last digit</em> of your telephone
+number as your MSN/EAZ (&dquot;6&dquot; if you have the telephone number &dquot;123456&dquot;).
+
+
+
+<sect1> Portugal: What should we use as MSN?
+<p>
+As long as only one telephone number or MSN was applied for, the telephone
+company sends no caller ID. Therefore the MSN should be set to &dquot;0&dquot;.
+If more than one MSNs was applied for, then these should be set as usual.
+
+
+<sect1> North America: Can we use isdn4linux in North America?
+<p>
+Unfortunately, European ISDN cards can not be used in North America.
+In Europe, the telephone company normally makes the network terminator
+(NTBA) available. In North America <em>the customer</em> has to supply such
+a device(NT-1) himself! Therefore, most ISDN cards offer an 
+integrated NT-1.
+
+There are also other differences; e.g. in Europe a PRI (Primary
+Rate Interface) has 30 B channels, in North America only 23. Also the
+C channel protocol NI-1 is used. NI-1 is related to DSS1 (both are Q.931
+Protocols), but both have totally different groups of functions and are
+therefore not compatible to one other.    
+
+However, the firm &dquot;Spellcaster&dquot; has written an isdn4linux driver
+for its own cards. More information is available from:
+<verb>
+Ian James
+Customer Service Manager
+SpellCaster Telecommunications Inc.
+73 Laird Drive, Suite 206
+Toronto, Ontario
+Canada M4G 3T4
+Phone: 1 (800) 238-0547
+Fax: (416) 425-0854
+</verb>
+E-mail:  <tt><htmlurl url="mailto:ipj@spellcast.com"
+name="ipj@spellcast.com"></tt> or <tt><htmlurl url="mailto:sales@spellcast.com"
+name="sales@spellcast.com"></tt>
+<tt><url url="http://www.spellcast.com"></tt>
+
+
+
+<sect> Miscellaneous
+
+<sect1> Where can I find information on the dip switches of my NTBA?
+<p>
+<tt><url url="ftp://novix.oih.rwth-aachen.de/pub/ntba.zip"></tt> (ca. 170kB)
+
+<sect1> Can I connect two ISDN devices directly with a kind of &dquot;null modem cable&dquot;?
+<p>
+No, that's not possible. The concept of ISDN doesn't allow it. A NTBA or a
+PBX with an internal bus is required.
+
+<sect1> Can isdn4linux run in parallel to UISDN?
+<p>
+Yes. Both ISDN packages load the module isdn.o, otherwise the naming conventions
+are different. Tip: rename Urlichs isdn.o to uisdn.o, and change
+lib/modules/modules.isdn (or whatever the file is called that lists the modules
+and is read by the script) accordingly. Happily the default names of the ISDN
+devices are also different.
+
+
+
+<!-- Glossary
+-->
+
+<sect> Glossary
+<p>
+<descrip>
+<tag/AOC-D/
+&dquot;Advice Of Charge During the Call&dquot;.
+
+<tag/AOC-E/
+&dquot;Advice of Charge at the End of the Call&dquot;. In Germany, this
+service	is included in the &dquot;Komfort&dquot; connection.
+
+<tag/CLIR/
+CLIR (Calling Line Identification Restriction) can be offered by
+the ISDN provider: one can (from call to call) restrict the
+identification of one's own caller ID to the other party. In Germany,
+this must be applied for but is without charge (however call by call
+transmission of the caller ID costs extra).
+
+<tag/COLP/
+COLP (Connected Line Identification Presentation) can also be offered
+by the ISDN provider. If you've applied for COLP, you get an extended
+dialing protocol. You will receive feedback from your telecommunication
+company who picked up your outgoing call.
+In Germany, it must be applied for, and costs extra. More information
+than COLP can be obtained with the help of a reverse-connected ISDN
+card.
+
+<tag/CVS Tree/
+The i4l developers have formed a team. The tool CVS allows the
+members to easily make patches. The history of the project is also
+thereby documented, and it is also not difficult to reproduce older
+versions.
+
+<tag/HDLC/
+A widely used low-level protocol.
+
+<tag/HSCX/
+A Siemens chip which is, similar to ISAC, on many passive cards.
+It takes over the serial bus from ISAC and demultiplexes when 
+receiving or multiplexes (i.e. inserts the bits in the correct
+position) the B channels.
+
+<tag/ISAC/
+A Siemens chip which is, similar to HSCX, on many passive cards.
+It is responsible for Level 1, so it sits (almost) directly on
+the line. It handles the D channel protocol and sends the
+S0 data to a special serial bus (IOM). When sending it does the
+opposite.
+
+<tag/TEI/
+TEI stands for Terminal End Identifier. The local switching station, or
+with an internal S0 the PBX, automatically or permanently assigns each
+end device a TEI. This simply allows the addressing of the D
+channels. TEIs have the following values:
+0- 63   permanent TEIs (e.g. 0 is used for point to point connections)
+64-126   automatically assigned
+127   broadcast to all devices (e.g. an incoming call)
+
+<tag/PBX/
+A PBX (Private Branch eXchange) is used to connect different internal
+devices to the ISDN network. This is usually for analog devices that
+cannot be directly connected to an ISDN network. The PBX can also make
+an internal digital S0 bus available, on which ISDN devices can be
+connected. This allows for local calls without using the switching
+station (thereby avoiding the charges from your telephone company).
+
+<tag/MSN/
+Unlike a normal telephone connection, an ISDN connection can have more
+than one telephone number - each of these is called an MSN (Multiple
+Subscriber Number).
+
+<tag/EAZ/
+This is a German name for an MSN. In Germany, EAZ and MSN are used
+as synonyms, though in theory one ought to differentiate according
+to the protocol used. That which is called MSN in the Euro-ISDN
+protocol was called EAZ in the German 1TR6-ISDN protocol (a German
+predecessor to Euro-ISDN).
+</descrip>
+
+
+</article>
+
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
