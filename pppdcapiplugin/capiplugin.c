@@ -26,7 +26,7 @@
 #include <linux/if.h>
 #include <linux/in.h>
 
-static char *revision = "$Revision: 1.19 $";
+static char *revision = "$Revision: 1.20 $";
 
 /* -------------------------------------------------------------------- */
 
@@ -49,6 +49,10 @@ char pppd_version[] = VERSION;
 #else
 #define _script_setenv(a,b) script_setenv(a,b)
 #endif
+
+/* -------------------------------------------------------------------- */
+
+static int exiting = 0;
 
 /* -------------------------------------------------------------------- */
 
@@ -1262,8 +1266,9 @@ void put_message(unsigned appid, unsigned char *msg)
 {
 	unsigned err;
 	err = capi20_put_message (appid, msg);
-	if (err)
-		fatal("capiplugin: putmessage(appid=%d) = 0x%x", appid, err);
+	if (err && !exiting)
+		fatal("capiplugin: putmessage(appid=%d) - %s 0x%x",
+			      appid, capi_info2str(err), err);
 }
 
 /* -------------------------------------------------------------------- */
@@ -1694,6 +1699,7 @@ static void phase_notify_func(void *p, int phase)
 
 static void exit_notify_func(void *p, int phase)
 {
+        exiting = 1;
 	plugin_exit();
 }
 #endif
