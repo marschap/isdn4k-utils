@@ -2,21 +2,25 @@
 #
 # (c) 1995-97 Volker Götz
 #
-# $Id: Makefile,v 1.3 1998/09/26 18:28:06 akool Exp $
+# $Id: Makefile,v 1.4 1998/12/28 16:36:03 paul Exp $
 
 ifeq (../.config,$(wildcard ../.config))
 	#
 	# Automatic config with isdn4k-utils
 	#
 	include ../.config
-	MAN8PATH        := $(CONFIG_MANDIR)/man8
+	MAN8DIR         := $(CONFIG_MANDIR)/man8
 else
 	#
 	# Manual config standalone
 	#
 	CONFIG_SBINDRIR := /sbin
-	MAN8PATH        := /usr/man/man8
+	MAN8DIR         := /usr/man/man8
 endif
+
+INSTALL=install
+INSTALL_MAN=$(INSTALL) -o 0 -g 0 -m 0644
+MANPAGE=imontty.8
 
 CCFLAGS=-O2
 #CCFLAGS=-I$(ISDN_INCLUDE) -g
@@ -37,7 +41,18 @@ rootperm:
 		exit 1; \
 	fi
 
-install: $(PROGS) rootperm
+imontty.8: imontty.8.in
+	MANDATE=`grep CHECKIN $< | awk '{print $4}'`
+	sed \
+	   -e "s#\@MANDATE\@#${MANDATE}#g" \
+	   -e "s#\@I4LVERSION\@#${I4LVERSION}#g" \
+	   < $< > $@
+
+install-man: $(MANPAGE)
+	mkdir -p $(DESTDIR)$(MAN8DIR)
+	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
+
+install: $(PROGS) rootperm install-man
 	install -s -o 0 -g 0 -m 0755 $(PROGS) $(DESTDIR)$(CONFIG_SBINDIR)
 
 uninstall: rootperm
@@ -47,6 +62,7 @@ clean:
 	rm -f *.o $(PROGS) *~
 
 distclean: clean
+	rm -f $(MANPAGE)
 
 #
 # dummy for isdn4k-utils package
