@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.99 2000/02/11 10:41:52 akool Exp $
+/* $Id: processor.c,v 1.100 2000/02/11 15:16:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.100  2000/02/11 15:16:33  akool
+ * zred.dtag.bz2 added binary
+ * 01040:GTS Weekend 0,039/Min
+ *
  * Revision 1.99  2000/02/11 10:41:52  akool
  * isdnlog-4.10
  *  - Set CHARGEINT to 11 if < 11
@@ -4890,17 +4894,17 @@ static void processlcr(char *p)
 
   normalizeNumber(dst + trimo, &destnum, TN_ALL);
 
-  sprintf(s, "ABC_LCR: Request for number %s\n", formatNumber("%l via %p", &destnum));
+  sprintf(s, "ABC_LCR: Request for number %s", formatNumber("%l via %p", &destnum));
   info(chan, PRT_SHOWNUMBERS, STATE_RING, s);
 
   if (!abclcr) {
-    sprintf(s, "ABC_LCR: *Disabled* -- no action --\n");
+    sprintf(s, "ABC_LCR: *Disabled* -- no action --");
     abort = 1;
     goto action;
   } /* if */
 
   if (!*destnum.msn /* && ((abclcr & 1) == 1) */) { /* Future expansion, Sonderrufnummer? */
-    sprintf(s, "ABC_LCR: \"%s\" is a Sonderrufnummer -- no action --\n", destnum.area);
+    sprintf(s, "ABC_LCR: \"%s\" is a Sonderrufnummer -- no action --", destnum.area);
     abort = 1;
     goto action;
   } /* if */
@@ -4938,7 +4942,7 @@ static void processlcr(char *p)
 
     if (strcmp(myarea, destnum.area) == 0 && own_country) {
       if ((abclcr & 2) == 2) {
-        sprintf(s, "ABC_LCR: \"%s\" is a local number -- no action\n", destnum.msn);
+        sprintf(s, "ABC_LCR: \"%s\" is a local number -- no action", destnum.msn);
     	abort = 1;
     	goto action;
       } /* if */
@@ -4953,12 +4957,12 @@ static void processlcr(char *p)
         res, prov, getProvider(prefix));
     }
     else {
-      sprintf(s, "ABC_LCR: Resulting new number \"%s\" too long -- aborting\n", res);
+      sprintf(s, "ABC_LCR: Resulting new number \"%s\" too long -- aborting", res);
       abort = 1;
     } /* else */
   }
   else {
-    sprintf(s, "ABC_LCR: Can't find cheaper provider\n");
+    sprintf(s, "ABC_LCR: Can't find cheaper provider");
     abort = 1;
   } /* else */
 

@@ -1,4 +1,4 @@
-V:1.10-Germany [09-Feb-2000 00:15:50]
+V:1.10-Germany [11-Feb-2000 14:51:45]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999, 2000 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.78 2000/02/11 10:41:51 akool Exp $
+# $Id: rate-de.dat,v 1.79 2000/02/11 15:16:31 akool Exp $
 #
 #
 # Das "A:" Tag muß folgendermaßen gefüllt werden:
@@ -12531,6 +12531,7 @@ A:112
 T:*/*=0
 Z:1-4 Deutschland
 A:+49
+T:[12.02.2000-14.02.2000]*/*=0.039/60 Sonderangebot
 T:W/07-19=0.15/60 Standard
 T:W/19-22=0.09/60 Abend
 T:W/22-07=0.05/60 Nacht
@@ -15115,7 +15116,7 @@ A:AL
 T:*/*=0.53/60
 Z:201 Argentinien
 A:AR
-T:*/*=0.67/60
+T:*/*=0.63/60
 Z:202 Australien
 A:AU
 T:*/*=0.19/60
@@ -15130,7 +15131,7 @@ A:BR
 T:*/*=0.47/60
 Z:206 Chile
 A:CL
-T:*/*=0.35/60
+T:*/*=0.31/60
 Z:207 China
 A:CN
 T:*/*=0.61/60
@@ -15151,7 +15152,7 @@ A:HK
 T:*/*=0.18/60
 Z:213 Italien
 A:IT
-T:*/*=0.21/60
+T:*/*=0.18/60
 Z:214 Irland
 A:IE
 T:*/*=0.19/60
@@ -15160,7 +15161,7 @@ A:IS
 T:*/*=0.27/60
 Z:216 Israel
 A:IL
-T:*/*=0.30/60
+T:*/*=0.28/60
 Z:217 Japan (Festnetz)
 A:JP
 T:*/*=0.21/60
@@ -15190,7 +15191,7 @@ A:MOW
 T:*/*=0.34/60
 Z:227 Neuseeland (Festnetz)
 A:NZ
-T:*/*=0.19/60
+T:*/*=0.17/60
 Z:228 Niederlande
 A:NL
 T:*/*=0.13/60
@@ -15223,7 +15224,7 @@ A:SI
 T:*/*=0.49/60
 Z:238 Spanien
 A:ES
-T:*/*=0.24/60
+T:*/*=0.22/60
 Z:239 Südafrika
 A:ZA
 T:*/*=0.66/60
@@ -15241,7 +15242,7 @@ A:_USTF
 T:*/*=0.15/60
 Z:244 Venezuela
 A:VE
-T:*/*=0.66/60
+T:*/*=0.62/60
 Z:245 St. Petersburg (Festnetz:007812)
 A:LED
 T:*/*=0.34/60
@@ -15287,7 +15288,13 @@ T:*/*=0.52/60
 Z:259 Indonesien (Festnetz)
 A:ID
 T:*/*=0.69/60
-Z:260 impossible
+Z:260 Mazedonien (Festnetz)
+A:MK
+T:*/*=0.68/60
+Z:261 Tunesien (Festnetz)
+A:TN
+T:*/*=0.72/60
+Z:262 impossible
 A:_ARMF
 A:_AUMF
 A:_BEMF
@@ -15327,6 +15334,8 @@ A:_PHMF
 # A:Ukraine Mobilfunk
 A:_EEMF
 # A:Indonesien Mobilfunk
+# A:Mazedonien Mobilfunk
+# A:Tunesien Mobilfunk
 T:*/*=99.99/60
 #####################################################################
 #
