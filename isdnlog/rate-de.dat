@@ -1,4 +1,4 @@
-V:1.02-Germany [02-Jul-1999 20:29:21]
+V:1.02-Germany [02-Jul-1999 21:27:20]
 
 # Währungsformat
 U:%.3f DM
@@ -8,7 +8,7 @@ U:%.3f DM
 #
 # (C) Copyright 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.26 1999/07/02 18:20:25 akool Exp $
+# $Id: rate-de.dat,v 1.27 1999/07/02 19:17:10 akool Exp $
 #
 # Zonenzuordnung für Deutschland
 #
@@ -3565,8 +3565,9 @@ C:Preise:   http://www.debitel.de/popups/pop_festnetz_tarife_directcall_free.htm
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
-G:02.04.1999
+G:07-Jun-1999
 Z:2-4 Inland
+A:+49
 T:*/06-20=0.15/60 Hauptzeit
 T:*/20-06=0.15/120 Nebenzeit
 Z:10 Mobilfunknetze
@@ -3576,7 +3577,7 @@ A:+49170,+49171		# D1
 A:+49172,+49173		# D2
 A:+49177,+49178		# Eplus
 A:+49176,+49179		# E2
-T:*/*=0.69/60
+T:*/*=0.45/60
 #####################################################################
 #
 #
@@ -3590,7 +3591,8 @@ C:Service AG, Dieskaustraße 246, 04249 Leipzig 01017
 #####################################################################
 #
 #
-P:18 debitel DirectLine Privat-Tarif Minuten
+P:18 debitel
+# DirectLine Privat-Tarif Minuten
 C:Kommunikationstechnik GmbH & Co KG, Schelmenwasenstr. 37 - 39, 70567 Stuttgart 01018
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
@@ -9876,7 +9878,8 @@ T:*/*=0.02/0,0.17/60
 #####################################################################
 #
 #
-P:40 Esprit Call by Night
+P:40 Esprit
+# Call by Night
 C:beim RegTP eingetragen als:
 C:PLUSNET
 C:Gesellschaft für Netzwerk Services mbH, August-Thyssen-Straße 1, 40211 Düsseldorf 01040
@@ -11500,17 +11503,23 @@ C:PS PhoneServices GmbH, Adenauer Damm 1, 25337 Elmshorn 01050
 C:Homepage: http://www.null1050.de
 C:Hotline:  01802/2002
 C:Faxabruf: 01802/2001
-P:50,1 Talkline Call-By-Call
+P:50,1 Talkline CbC
 D:dtag
 F:E
 Z:2-4 Fern
+A:+49
 T:W/07-19=0.15/60
 T:W/19-22=0.08/60
 T:W/22-07=0.039/60
 T:E,H/07-22=0.11/60
 T:E,H/22-07=0.039/60
-A:+49
 Z:10-15 Mobil
+A:+491618		# T-C-Tel Voice Mail
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+A:+49170,+49171		# D1
+A:+49172,+49173		# D2
+A:+49177,+49178		# Eplus
+A:+49176,+49179		# E2
 T:*/*=0.69/60
 Z:100 Talknet by call
 A:019251 # Proxy: proxy.tli.de:8080; DNS: 195.252.128.53 und 195.252.128.54; User: talknet; Passwort: talknet
@@ -14509,6 +14518,14 @@ A:+49
 T:W/08-21=0.11/60,0.11(60)/15
 T:W/21-08=0.07/60,0.07(60)/15
 T:E/*=0.07/60,0.07(60)/15
+Z:10 impossible
+A:+491618	# T-C-Tel Voice Mail
+A:+491610,+491611,+491612,+491613,+491614,+491615,+491616,+491617,+491619 # C
+A:+49170,+49171		# D1
+A:+49172,+49173		# D2
+A:+49177,+49178		# Eplus
+A:+49176,+49179		# E2
+T:*/*=99.99/60
 #####################################################################
 #
 #

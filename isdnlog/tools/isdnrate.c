@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.6 1999/07/02 18:20:50 akool Exp $
+/* $Id: isdnrate.c,v 1.7 1999/07/02 19:18:00 akool Exp $
  *
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.7  1999/07/02 19:18:00  akool
+ * rate-de.dat V:1.02-Germany [02-Jul-1999 21:27:20]
+ *
  * Revision 1.6  1999/07/02 18:20:50  akool
  * rate-de.dat V:1.02-Germany [02-Jul-1999 20:29:21]
  * country-de.dat V:1.02-Germany [02-Jul-1999 19:13:54]
@@ -44,14 +47,14 @@
 
 #include "isdnlog.h"
 
-#define WIDTH   13
+#define WIDTH   19
 #define MAXLAST	 5
 
 static char *myname, *myshortname;
-static char  options[] = "Vvd:hb:s:t";
+static char  options[] = "Vvd:hb:s:tx";
 static char  usage[]   = "%s: usage: %s [ -%s ] Destination ...\n";
 
-static int    verbose = 0, header = 0, best = MAXPROVIDER, table = 0;
+static int    verbose = 0, header = 0, best = MAXPROVIDER, table = 0, explain = 0;
 static int    duration = LCR_DURATION;
 static time_t start;
 static int    day, month, year, hour, min;
@@ -176,6 +179,9 @@ static int opts(int argc, char *argv[])
                  break;
 
       case 't' : table++;
+      	       	 break;
+
+      case 'x' : explain++;
       	       	 break;
 
       case '?' : print_msg(PRT_ERR, usage, myshortname, myshortname, options);
@@ -330,6 +336,7 @@ static int compute()
 {
   register int  i, n = 0;
   auto 	   RATE Rate;
+  auto	   char s[BUFSIZ];
 
 
   for (i = 0; i < MAXPROVIDER; i++) {
@@ -352,7 +359,13 @@ static int compute()
     if (!getRate(&Rate, NULL) && (Rate.Price != 99.99)) {
       sort[n].prefix = Rate.prefix;
       sort[n].rate = Rate.Charge;
-      sort[n].explain = strdup(printrate(Rate));
+
+      if (explain) {
+        sprintf(s, " (%s)", printrate(Rate));
+        sort[n].explain = strdup(s);
+      }
+      else
+        sort[n].explain = strdup("");
 
       n++;
     } /* if */
@@ -362,6 +375,29 @@ static int compute()
 
   return(n);
 } /* compute */
+
+
+static char *Provider(int prefix)
+{
+  register char *p;
+  register int   l;
+  static   char  s[BUFSIZ];
+
+
+  if (prefix == UNKNOWN)
+    return("?");
+
+  p = getProvider(prefix);
+
+  l = max(WIDTH, strlen(p)) - strlen(p);
+
+  if (prefix < 100)
+    sprintf(s, "%s%02d:%s%*s", vbn, prefix, p, l, "");
+  else
+    sprintf(s, "%s%03d:%s%*s", vbn, prefix - 100, p, l - 1, "");
+
+  return(s);
+} /* Provider */
 
 
 static void result(char *target, int n)
@@ -381,7 +417,8 @@ static void result(char *target, int n)
     n = best;
 
   for (i = 0; i < n; i++)
-    print_msg(PRT_NORMAL, "%s%02d %s %8.3f (%s)\n", vbn, sort[i].prefix, currency, sort[i].rate, sort[i].explain);
+    print_msg(PRT_NORMAL, "%s %s %8.3f%s\n",
+      Provider(sort[i].prefix), currency, sort[i].rate, sort[i].explain);
 } /* result */
 
 
@@ -391,7 +428,8 @@ static void purge(int n)
 
 
   for (i = 0; i < n; i++)
-    free(sort[i].explain);
+    if (sort[i].explain)
+      free(sort[i].explain);
 } /* purge */
 
 
@@ -409,7 +447,6 @@ static void purge(int n)
 static void printTable()
 {
   register int        n, d, i, lasthour;
-  register char      *px;
   auto 	   struct tm *tm;
   auto	   SORT	      last[MAXLAST];
   auto 	   int        used[MAXPROVIDER];
@@ -464,21 +501,17 @@ static void printTable()
 
       if (sort[0].prefix != last[0].prefix) {
         for (i = 0; i < MAXLAST; i++) {
-          if (last[i].prefix == UNKNOWN)
-            px = "";
-          else
-            px = getProvider(last[i].prefix);
 
           if (!i)
-            print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s = %s %s (%s)\n",
-              lasthour, hour - 1, vbn, last[i].prefix, px,
-              max(WIDTH, strlen(px)) - strlen(px), "", currency,
+            print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s = %s %s%s\n",
+              lasthour, hour - 1, Provider(last[i].prefix),
+              currency,
               double2str(last[i].rate, 5, 3, DEB),
               last[i].explain);
           else
-            print_msg(PRT_NORMAL, "                   %s%02d:%s%*s = %s %s (%s)\n",
-              vbn, last[i].prefix, px,
-              max(WIDTH, strlen(px)) - strlen(px), "", currency,
+            print_msg(PRT_NORMAL, "                   %s = %s %s%s\n",
+              Provider(last[i].prefix),
+              currency,
               double2str(last[i].rate, 5, 3, DEB),
               last[i].explain);
         } /* for */
@@ -510,29 +543,25 @@ static void printTable()
     } /* while */
 
     for (i = 0; i < MAXLAST; i++) {
-      if (last[i].prefix == UNKNOWN)
-        px = "";
-      else
-        px = getProvider(last[i].prefix);
 
       if (!i) {
         if ((lasthour == 7) && (hour == 7))
-          print_msg(PRT_NORMAL, "    immer          %s%02d:%s%*s = %s %s (%s)\n",
-            vbn, last[i].prefix, px,
-            max(WIDTH, strlen(px)) - strlen(px), "", currency,
+          print_msg(PRT_NORMAL, "    immer          %s = %s %s%s\n",
+            Provider(last[i].prefix),
+            currency,
             double2str(last[i].rate, 5, 3, DEB),
             last[i].explain);
         else
-          print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s%02d:%s%*s = %s %s (%s)\n",
-            lasthour, hour - 1, vbn, last[i].prefix, px,
-            max(WIDTH, strlen(px)) - strlen(px), "", currency,
+          print_msg(PRT_NORMAL, "    %02d:00 .. %02d:59 %s = %s %s%s\n",
+            lasthour, hour - 1, Provider(last[i].prefix),
+            currency,
             double2str(last[i].rate, 5, 3, DEB),
             last[i].explain);
       }
       else
-        print_msg(PRT_NORMAL, "                   %s%02d:%s%*s = %s %s (%s)\n",
-          vbn, last[i].prefix, px,
-          max(WIDTH, strlen(px)) - strlen(px), "", currency,
+        print_msg(PRT_NORMAL, "                   %s = %s %s%s\n",
+          Provider(last[i].prefix),
+          currency,
           double2str(last[i].rate, 5, 3, DEB),
           last[i].explain);
     } /* for */
