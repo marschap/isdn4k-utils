@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.3 1998/08/30 09:57:14 calle Exp $
+ * $Id: capi20.c,v 1.4 1998/11/18 17:05:44 paul Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.4  1998/11/18 17:05:44  paul
+ * fixed a (harmless) warning
+ *
  * Revision 1.3  1998/08/30 09:57:14  calle
  * I hope it is know readable for everybody.
  *
@@ -44,7 +47,7 @@ unsigned capi20_isinstalled (void)
 static struct capi_applidmap {
     int used;
     int fd;
-} capi_applidmap[CAPI_MAXAPPL] = {0};
+} capi_applidmap[CAPI_MAXAPPL] = {{0,0}};
 
 static inline _cword allocapplid(int fd)
 {
