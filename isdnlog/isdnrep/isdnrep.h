@@ -1,4 +1,4 @@
-/* $Id: isdnrep.h,v 1.16 1999/07/18 08:40:37 akool Exp $
+/* $Id: isdnrep.h,v 1.17 1999/12/17 22:51:54 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,17 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.h,v $
+ * Revision 1.17  1999/12/17 22:51:54  akool
+ * isdnlog-3.79
+ *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg
+ *  - isdnlog/isdnrep/rep_main.c
+ *  - isdnlog/isdnrep/isdnrep.1.in
+ *  - isdnlog/tools/rate.c  ... dupl entry in rate.conf
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/isdnrate.c
+ *  - isdnlog/tools/dest/configure{,.in}
+ *  - isdnlog/tools/zone/configure{,.in}
+ *
  * Revision 1.16  1999/07/18 08:40:37  akool
  * fix from Michael
  *
@@ -146,10 +157,10 @@ _EXTERN int     print_msg(int Level, const char *, ...);
 _EXTERN int     incomingonly    _SET_0;
 _EXTERN int     outgoingonly    _SET_0;
 _EXTERN int     verbose         _SET_0;
+_EXTERN int     print_failed    _SET_0;
 _EXTERN int	bill		_SET_0;
 _EXTERN int     timearea        _SET_0;
 _EXTERN int     phonenumberonly _SET_0;
-_EXTERN int     compute         _SET_0;
 _EXTERN int     delentries      _SET_0;
 _EXTERN int     numbers         _SET_0;
 _EXTERN int     html         		_SET_0;
@@ -159,7 +170,9 @@ _EXTERN char	  timestring[256] _SET_EMPTY;
 _EXTERN char	  *lineformat     _SET_NULL;
 _EXTERN time_t  begintime       _SET_0;
 _EXTERN time_t  endtime         _SET_0;
+#if 0 /* fixme remove */
 _EXTERN int     preselect	_SET_33;
+#endif
 
 
 #undef _SET_NULL

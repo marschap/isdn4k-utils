@@ -1,4 +1,4 @@
-/* $Id: rep_main.c,v 1.10 1999/07/18 08:40:57 akool Exp $
+/* $Id: rep_main.c,v 1.11 1999/12/17 22:51:55 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,17 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rep_main.c,v $
+ * Revision 1.11  1999/12/17 22:51:55  akool
+ * isdnlog-3.79
+ *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg
+ *  - isdnlog/isdnrep/rep_main.c
+ *  - isdnlog/isdnrep/isdnrep.1.in
+ *  - isdnlog/tools/rate.c  ... dupl entry in rate.conf
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/isdnrate.c
+ *  - isdnlog/tools/dest/configure{,.in}
+ *  - isdnlog/tools/zone/configure{,.in}
+ *
  * Revision 1.10  1999/07/18 08:40:57  akool
  * fix from Michael
  *
@@ -192,7 +203,7 @@ int main(int argc, char *argv[], char *envp[])
 	auto char  fnbuff[512] = "";
 	auto char  usage[]     = "%s: usage: %s [ -%s ]\n";
 	auto char  wrongdate[] = "unknown date: %s\n";
-	auto char  options[]   = "ac:d:f:hinop:s:t:uvw:NVF:M:R:b";
+	auto char  options[]   = "ad:f:hinop:s:t:uvw:NVF:M:R:bE";
 	auto char *myname      = basename(argv[0]);
 	auto char *ptr         = NULL;
 	auto char *linefmt     = "";
@@ -210,9 +221,6 @@ int main(int argc, char *argv[], char *envp[])
       case 'a' : timearea++;
                  begintime = 0;
 			           time(&endtime);
-      	       	 break;
-
-      case 'c' : compute = strtol(optarg, NIL, 0);
       	       	 break;
 
       case 'i' : incomingonly++;
@@ -242,6 +250,9 @@ int main(int argc, char *argv[], char *envp[])
       	       	 break;
 
       case 'v' : verbose++;
+      	       	 break;
+
+      case 'E' : print_failed++;
       	       	 break;
 
       case 'f' : strcpy(fnbuff, optarg);
@@ -327,27 +338,22 @@ int main(int argc, char *argv[], char *envp[])
 }
 
 /*****************************************************************************/
-
-int print_msg(int Level, const char *fmt, ...)
+int     print_msg(int Level, const char *fmt,...)
 {
-	auto va_list ap;
-	auto char    String[LONG_STRING_SIZE];
+  auto va_list ap;
+  auto char String[BUFSIZ * 3];
 
+  if ((Level > PRT_ERR && !verbose) || (Level > PRT_WARN && verbose < 2))
+    return (1);
 
-	va_start(ap, fmt);
-	vsnprintf(String, LONG_STRING_SIZE, fmt, ap);
-	va_end(ap);
+  va_start(ap, fmt);
+  (void) vsnprintf(String, BUFSIZ * 3, fmt, ap);
+  va_end(ap);
 
-  	if (Level == PRT_ERR)
-    	  return(1);
+  fprintf(stderr, "%s", String);
 
-	if (Level & PRT_ERR)
-		fprintf(stderr, "%s", String);
-	else
-		fprintf(stdout, "%s", String);
-
-	return 0;
-}
+  return (0);
+}				/* print_msg */
 
 /*****************************************************************************/
 

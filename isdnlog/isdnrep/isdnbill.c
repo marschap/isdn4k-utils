@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.9 1999/12/16 23:08:28 akool Exp $
+/* $Id: isdnbill.c,v 1.10 1999/12/17 22:51:54 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -138,7 +138,7 @@ typedef struct {
   int    si1;
 } PARTNER;
 
-static char  options[]   = "nv:VioeaN:";
+static char  options[]   = "nv:VioeaN:mf";
 static char  usage[]     = "%s: usage: %s [ -%s ]\n";
 
 
@@ -156,11 +156,16 @@ static int      nunknown[2] = { 0, 0 };
 
 int verbose = 0;
 
-static int      onlynumbers = 0;      /* -n */
-static int      showincoming = 0;     /* -i */
-static int      showoutgoing = 0;     /* -o */
-static int      showerrors = 0;       /* -e */
-static char     onlythis[32] = { 0 }; /* -N */
+static int      onlynumbers = 0;      /* -n    -> _nicht_ anstelle Rufnummern Alias-Bezeichnungen anzeigen */
+static int      showincoming = 0;     /* -i    -> reinkommende Verbindungen anzeigen */
+static int      showoutgoing = 0;     /* -o    -> rausgehende Verbindungen anzeigen */
+static int      showerrors = 0;       /* -e    -> nichtzustandegekommene Verbindungen anzeigen */
+static int	netto = 0;   	      /* -m    -> ohne MwSt anzeigen */
+static int	force = 0;   	      /* -f    -> Verbindungsentgeld _immer_ neu berechnen */
+static char     onlythis[32] = { 0 }; /* -Nnnn -> nur Verbindungen mit _dieser_ Rufnummer anzeigen */
+       			       	      /* -vn   -> Verbose Level */
+                                      /* -V    -> Version anzeigen */
+                                      /* -a    -> alle Verbindungen anzeigen i.e. "-ioe"  */
 
 
 int print_msg(int Level, const char *fmt, ...)
@@ -782,6 +787,8 @@ int main(int argc, char *argv[], char *envp[])
   auto     char    *version;
   auto     char    *myname = basename(argv[0]);
   auto     int      opt;
+  auto	   time_t   now;
+  auto 	   struct   tm *tm;
 
 
   if (f != (FILE *)NULL) {
@@ -811,6 +818,12 @@ int main(int argc, char *argv[], char *envp[])
 
         case 'N' : strcpy(onlythis, optarg);
                    break;
+
+        case 'm' : netto++;
+             	   break;
+
+        case 'f' : force++;
+             	   break;
 
         case '?' : printf(usage, argv[0], argv[0], options);
                    return(1);
@@ -850,6 +863,10 @@ int main(int argc, char *argv[], char *envp[])
       partner[0] = (PARTNER *)calloc(knowns, sizeof(PARTNER));
       partner[1] = (PARTNER *)calloc(knowns, sizeof(PARTNER));
 
+      time(&now);
+      tm = localtime(&now);
+      tm->tm_sec = tm->tm_min = tm->tm_hour = 0;
+      now = mktime(tm);
 
       while (fgets(s, BUFSIZ, f)) {
         pl = s;
@@ -953,7 +970,8 @@ int main(int argc, char *argv[], char *envp[])
         if (*c.num[CALLING] && *c.num[CALLED] &&
             ((c.dialout && showoutgoing) || (!c.dialout && showincoming)) &&
             (c.duration || showerrors) &&
-            (!onlythis || strstr(c.num[CALLING], onlythis) || strstr(c.num[CALLED], onlythis))) {
+            (!onlythis || strstr(c.num[CALLING], onlythis) || strstr(c.num[CALLED], onlythis)) &&
+            (c.connect >= now)) {
 
           when(s, &day, &month);
 
@@ -1027,11 +1045,13 @@ int main(int argc, char *argv[], char *envp[])
                 c.computed++;
               } /* if */
 
-              if (c.compute && fabs(c.pay - c.compute) > 1.00) {
+              if (force || fabs(c.pay - c.compute) > 1.00) {
                 c.pay = c.compute;
                 c.computed++;
               } /* if */
 
+              if (netto)
+                c.pay = c.pay * 100.0 / 116.0;
 
               if (c.pay)
                 printf("%s%9.4f%s ", c.currency, c.pay, c.computed ? "*" : " ");

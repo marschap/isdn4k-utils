@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.84 1999/11/28 19:32:41 akool Exp $
+/* $Id: isdnrep.c,v 1.85 1999/12/17 22:51:54 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,17 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.85  1999/12/17 22:51:54  akool
+ * isdnlog-3.79
+ *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg
+ *  - isdnlog/isdnrep/rep_main.c
+ *  - isdnlog/isdnrep/isdnrep.1.in
+ *  - isdnlog/tools/rate.c  ... dupl entry in rate.conf
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/isdnrate.c
+ *  - isdnlog/tools/dest/configure{,.in}
+ *  - isdnlog/tools/zone/configure{,.in}
+ *
  * Revision 1.84  1999/11/28 19:32:41  akool
  * isdnlog-3.71
  *
@@ -903,8 +914,8 @@ int send_html_request(char *myname, char *option)
 					         break;
 					case 6 : filetype = H_APP_ULAW;
 					         break;
-					default: print_msg(PRT_NORMAL, "Content-Type: %s\n\n",H_APP_TEXT);
-				           print_msg(PRT_NORMAL, "%s: unsupported compression type of vbox file :`%d'\n",myname,compression);
+					default: printf( "Content-Type: %s\n\n",H_APP_TEXT);
+				           printf( "%s: unsupported compression type of vbox file :`%d'\n",myname,compression);
                                            return(UNKNOWN);
 					         break;
 				}
@@ -912,8 +923,8 @@ int send_html_request(char *myname, char *option)
 		}
 		else
 		{
-			print_msg(PRT_NORMAL, "Content-Type: %s\n\n",H_APP_TEXT);
-			print_msg(PRT_NORMAL, "%s: unsupported version of vbox `%c'\n",myname,option[0]);
+			printf( "Content-Type: %s\n\n",H_APP_TEXT);
+			printf( "%s: unsupported version of vbox `%c'\n",myname,option[0]);
                         return(UNKNOWN);
 		}
 	}
@@ -931,15 +942,15 @@ int send_html_request(char *myname, char *option)
 		}
 		else
 		{
-			print_msg(PRT_NORMAL, "Content-Type: %s\n\n",H_APP_TEXT);
-			print_msg(PRT_NORMAL, "%s:unsupported version of fax `%c%c'\n",myname,option[0]);
+			printf( "Content-Type: %s\n\n",H_APP_TEXT);
+			printf( "%s:unsupported version of fax `%c%c'\n",myname,option[0],option[1]);
                         return(UNKNOWN);
 		}
 	}
 	else
 	{
-		print_msg(PRT_NORMAL, "Content-Type: %s\n\n",H_APP_TEXT);
-		print_msg(PRT_NORMAL, "%s:invalid option string `%c%c'\n",myname,option[0],option[1]);
+		printf( "Content-Type: %s\n\n",H_APP_TEXT);
+		printf( "%s:invalid option string `%c%c'\n",myname,option[0],option[1]);
                 return(UNKNOWN);
 	}
 
@@ -951,7 +962,7 @@ int send_html_request(char *myname, char *option)
 		system(precmd);
 		sprintf(precmd, "echo");
 		system(precmd);
-	//	print_msg(PRT_NORMAL, "Content-Type: %s\n\n",filetype);
+	//	printf( "Content-Type: %s\n\n",filetype);
 	}
 
 	sprintf(commandline,"%s %s",command?command:"cat",file);
@@ -1100,7 +1111,7 @@ int read_logfile(char *myname)
 			}
 		}
 
-		if (!verbose && cur_call.duration == 0)
+		if (!print_failed && cur_call.duration == 0)
 			continue;
 
 		if (phonenumberonly)
@@ -1237,7 +1248,7 @@ static int print_bottom(double unit, char *start, char *stop)
 			print_sum_calls(&tmp_sum,0);
 		}
 		else
-			print_msg(PRT_NORMAL,"\n");
+			printf("\n");
 	} /* if */
 
 	add_sum_calls(&all_sum,&day_sum);
@@ -1260,7 +1271,7 @@ static int print_bottom(double unit, char *start, char *stop)
 		print_sum_calls(&tmp_sum,0);
 	}
 	else
-		print_msg(PRT_NORMAL,"\n");
+		printf("\n");
 
 	print_line2(F_BODY_BOTTOM2,"");
 
@@ -1320,7 +1331,7 @@ static int print_bottom(double unit, char *start, char *stop)
 
 #if DEBUG
                 if (zones_usage[UNKNOWNZONE])
-                  print_msg(PRT_NORMAL, "(%s)\n", unknownzones);
+                  printf( "(%s)\n", unknownzones);
 #endif
 
 		print_line2(F_BODY_BOTTOM2,"");
@@ -1386,20 +1397,20 @@ static int print_bottom(double unit, char *start, char *stop)
 	print_line2(F_BODY_BOTTOM2,"");
 
 	if (seeunknowns && unknowns) {
-		print_msg(PRT_NORMAL,"\n\nUnknown caller(s)\n");
+		printf("\n\nUnknown caller(s)\n");
 		strich(3);
 
 		for (i = 0; i < unknowns; i++) {
 #if 0
-			print_msg(PRT_NORMAL,"%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
+			printf("%s %-14s ", unknown[i].called ? "called by" : "  calling", unknown[i].num);
 #else
                   if ((unknown[i].cause != 1) &&  /* Unallocated (unassigned) number */
                       (unknown[i].cause != 3) &&  /* No route to destination */
                       (unknown[i].cause != 28)) { /* Invalid number format (address incomplete) */
 
-                       print_msg(PRT_NORMAL,"%s ", unknown[i].called ? "Called by" : "  Calling");
+                       printf("%s ", unknown[i].called ? "Called by" : "  Calling");
 
-                       print_msg(PRT_NORMAL,"??? %s\n\t\t\t ", unknown[i].num);
+                       printf("??? %s\n\t\t\t ", unknown[i].num);
                   } /* if */
 #endif
 			for (k = 0; k < unknown[i].connects; k++) {
@@ -1411,13 +1422,13 @@ static int print_bottom(double unit, char *start, char *stop)
 				*(string + 19) = 0;
 
 				if (k && (k + 1) % 2) {
-					print_msg(PRT_NORMAL,"\n\t\t\t ");
+					printf("\n\t\t\t ");
 				} /* if */
 
-				print_msg(PRT_NORMAL,"%s%s", k & 1 ? ", " : "", string + 4);
+				printf("%s%s", k & 1 ? ", " : "", string + 4);
 			} /* for */
 
-			print_msg(PRT_NORMAL,"\n");
+			printf("\n");
 		} /* for */
 	} /* if */
 
@@ -1501,21 +1512,21 @@ static int print_line2(int status, const char *fmt, ...)
 	switch (status)
 	{
 		case F_COUNT_ONLY  : break;
-		case F_1ST_LINE    : print_msg(PRT_NORMAL,H_1ST_LINE,string);
+		case F_1ST_LINE    : printf(H_1ST_LINE,string);
 		                     break;
-		case F_TEXT_LINE    : print_msg(PRT_NORMAL,H_TEXT_LINE,string);
+		case F_TEXT_LINE    : printf(H_TEXT_LINE,string);
 		                     break;
 		case F_BODY_BOTTOM1:
-		case F_BODY_LINE   : print_msg(PRT_NORMAL,H_BODY_LINE,string);
+		case F_BODY_LINE   : printf(H_BODY_LINE,string);
 		                     break;
-		case F_BODY_HEADER : print_msg(PRT_NORMAL,H_BODY_HEADER1,h_percent,h_table_color,get_format_size());
+		case F_BODY_HEADER : printf(H_BODY_HEADER1,h_percent,h_table_color);
 		                     set_col_size();
 		                     break;
-		case F_BODY_HEADERL: print_msg(PRT_NORMAL,H_BODY_HEADER3,get_format_size(),string);
+		case F_BODY_HEADERL: printf(H_BODY_HEADER3,get_format_size(),string);
 		                     break;
-		case F_BODY_BOTTOM2: print_msg(PRT_NORMAL,H_BODY_BOTTOM2,string);
+		case F_BODY_BOTTOM2: printf(H_BODY_BOTTOM2);
 		                     break;
-		default            : print_msg(PRT_NORMAL,"%s\n",string);
+		default            : printf("%s\n",string);
 		                     break;
 	}
 
@@ -1865,23 +1876,23 @@ static void bprint(one_call *call)
     else
       sprintf(target, "%s", p);
 
-    print_msg(PRT_NORMAL, "%s %s %-16s  ",
+    printf( "%s %s %-16s  ",
       get_time_value(0,NULL, GET_TIME),
       double2clock(call->duration),
       target);
 
     if (call->duration) {
-      print_msg(PRT_NORMAL, "%s %-15s",
+      printf( "%s %-15s",
       print_currency(call->pay * 100.0 / 116.0, 0), getProvider(call->provider));
 
       strcpy(s, call->num[CALLED]);
 
       number.nprovider=call->provider;
       normalizeNumber(s, &number, TN_NO_PROVIDER);
-      print_msg(PRT_NORMAL, "%s\n", formatNumber("%A", &number));
+      printf( "%s\n", formatNumber("%A", &number));
     }
     else
-      print_msg(PRT_NORMAL, "%*s** %s\n", 30, "", qmsg(TYPE_CAUSE, VERSION_EDSS1, call->cause));
+      printf( "%*s** %s\n", 30, "", qmsg(TYPE_CAUSE, VERSION_EDSS1, call->cause));
   } /* if */
 } /* bprint */
 
@@ -2046,7 +2057,7 @@ static int set_col_size(void)
 
         while(colsize[i] != UNKNOWN)
 		if (html)
-			print_msg(PRT_NORMAL,H_BODY_HEADER2,colsize[i++]);
+			printf(H_BODY_HEADER2,colsize[i++]);
 		else
 			size += colsize[i++];
 
@@ -2397,7 +2408,7 @@ static int print_header(int lday)
 			print_sum_calls(&tmp_sum,0);
 		}
 		else
-			print_msg(PRT_NORMAL,"\n\n");
+			printf("\n\n");
 
 		add_sum_calls(&all_sum,&day_sum);
 		clear_sum(&day_sum);
@@ -2744,7 +2755,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 #if DEBUG
       sprintf(yy, "\nWARNING: Wrong duration! dur1=%f, dur2=%f, durdiff=%f\n",
         dur1, dur2, dur1 - dur2);
-      print_msg(PRT_NORMAL, yy);
+      printf( yy);
 #endif
       cur_call->duration = dur1;
     }
@@ -3065,7 +3076,7 @@ static int print_sum_calls(sum_calls *s, int computed)
 
 
   if (bill)
-    print_msg(PRT_NORMAL, "%*s%s\n", 36, "", print_currency(s->pay, 0));
+    printf( "%*s%s\n", 36, "", print_currency(s->pay, 0));
   else {
 	if ((tmp_call = (one_call*) calloc(1,sizeof(one_call))) == NULL)
 	{
@@ -3156,9 +3167,9 @@ static void strich(int type)
 	{
 		switch (type) {
 			case 3 :
-			case 1 : print_msg(PRT_NORMAL,H_LINE,get_format_size(),1);
+			case 1 : printf(H_LINE,get_format_size(),1);
 			         break;
-			case 2 : print_msg(PRT_NORMAL,H_LINE,get_format_size(),3);
+			case 2 : printf(H_LINE,get_format_size(),3);
 			         break;
 			default: print_msg(PRT_ERR,"Internal error: Invalid line flag!\n");
 			         break;
@@ -3178,7 +3189,7 @@ static void strich(int type)
 		while (size>0)
 			string[--size] = type==2?'=':'-';
 
-		print_msg(PRT_NORMAL,"%s\n",string);
+		printf("%s\n",string);
 
 		free(string);
   }
@@ -3221,9 +3232,9 @@ static int n_match(char *Pattern, char* Number, char* version)
 
 static int html_header(void)
 {
-	print_msg(PRT_NORMAL,"Content-Type: text/html\n\n");
-	print_msg(PRT_NORMAL,"<HTML>\n");
-	print_msg(PRT_NORMAL,"<BODY bgcolor=%s>\n",H_BG_COLOR);
+	printf("Content-Type: text/html\n\n");
+	printf("<HTML>\n");
+	printf("<BODY bgcolor=%s>\n",H_BG_COLOR);
 
 	return 0;
 }
@@ -3242,9 +3253,9 @@ static int html_bottom(char *_progname, char *start, char *stop)
 		*ptr = '\0';
 
 /*
-	print_msg(PRT_NORMAL,H_FORM_ON,_myname);
-	print_msg(PRT_NORMAL,H_FORM_DAY,"Date:","-t",40,10);
-	print_msg(PRT_NORMAL,H_FORM_OFF);
+	printf(H_FORM_ON,_myname);
+	printf(H_FORM_DAY,"Date:","-t",40,10);
+	printf(H_FORM_OFF);
 */
 
 	if (!incomingonly)
@@ -3254,7 +3265,7 @@ static int html_bottom(char *_progname, char *start, char *stop)
 		incomingonly++;
 		outgoingonly = 0;
 		if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
-			print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"incoming only");
+			printf(H_LINK_DAY,_myname,ptr,"incoming only");
 		incomingonly = value;
 		outgoingonly = value2;
 	}
@@ -3266,7 +3277,7 @@ static int html_bottom(char *_progname, char *start, char *stop)
 		incomingonly = 0;
 		outgoingonly++;
 		if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
-			print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"outgoing only");
+			printf(H_LINK_DAY,_myname,ptr,"outgoing only");
 		incomingonly = value;
 		outgoingonly = value2;
 	}
@@ -3277,34 +3288,34 @@ static int html_bottom(char *_progname, char *start, char *stop)
 		value2 = outgoingonly;
 		incomingonly = outgoingonly = 0;
 		if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
-			print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"all calls");
+			printf(H_LINK_DAY,_myname,ptr,"all calls");
 		incomingonly = value;
 		outgoingonly = value2;
 	}
 
-	value = verbose;
-	verbose = !verbose;
+	value = print_failed;
+	print_failed = !print_failed;
 	if ((ptr = get_time_string(_begintime,endtime,0,0)) != NULL)
-		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,value?"verbose off":"verbose on");
-	verbose = value;
+		printf(H_LINK_DAY,_myname,ptr,value?"print_failed off":"print_failed on");
+	print_failed = value;
 
 	if ((ptr = get_time_string(_begintime,endtime,0,-1)) != NULL)
-		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"previous month");
+		printf(H_LINK_DAY,_myname,ptr,"previous month");
 
 	if ((ptr = get_time_string(_begintime,endtime,-1,0)) != NULL)
-		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"previous day");
+		printf(H_LINK_DAY,_myname,ptr,"previous day");
 
 	if ((ptr = get_time_string(_begintime,endtime,1,0)) != NULL)
-		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"next day");
+		printf(H_LINK_DAY,_myname,ptr,"next day");
 
 	if ((ptr = get_time_string(_begintime,endtime,0,1)) != NULL)
-		print_msg(PRT_NORMAL,H_LINK_DAY,_myname,ptr,"next month");
+		printf(H_LINK_DAY,_myname,ptr,"next month");
 
-	print_msg(PRT_NORMAL,"\n<BR><H6>%s %s  %s</H6>\n",progname,VERSION,__DATE__);
-	print_msg(PRT_NORMAL,"\n</BODY>\n");
-	print_msg(PRT_NORMAL,"<HEAD><TITLE>%s %s\n",progname,print_diff_date(start,stop));
-	print_msg(PRT_NORMAL,"</TITLE>\n");
-	print_msg(PRT_NORMAL,"</HTML>\n");
+	printf("\n<BR><H6>%s %s  %s</H6>\n",progname,VERSION,__DATE__);
+	printf("\n</BODY>\n");
+	printf("<HEAD><TITLE>%s %s\n",progname,print_diff_date(start,stop));
+	printf("</TITLE>\n");
+	printf("</HTML>\n");
 
 	free(progname);
 	return 0;
@@ -3793,7 +3804,7 @@ static char *get_default_html_params(void)
 	sprintf(string,"-w%d%s%s%s",
 	                        html-1,
 	/*                         ^^---sehr gefaehrlich, da eine UND-Verknuepfung!!! */
-	                        verbose?"+-v":"",
+	                        print_failed?"+-E":"",
 	                        outgoingonly?"+-o":"",
 	                        incomingonly?"+-i":"");
 	return string;

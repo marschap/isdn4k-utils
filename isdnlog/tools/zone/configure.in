@@ -9,7 +9,10 @@ CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
-AC_CHECK_PROGS(BZIP2, bzip2, bzip2-not-found-or-installed)
+AC_CHECK_PROGS(BZIP2, bzip2, bzip2_not_found_or_installed)
+if test "$BZIP2" == "bzip2_not_found_or_installed"  ; then
+	AC_MSG_ERROR(bzip2 not found please install it.)
+fi
 
 dnl Checks for libraries.
 dnl Berkeley DB appends RDBEXT

@@ -1,4 +1,17 @@
 NEWS for tools: (rate, isdnrate, isdnrep)
+
+1999.12.17
+  all:
+  renabled warnings to get clearer messages/responses from users
+  to disable them do in
+    isdnlog set logoptions, last nibble to 1 e.g. 0xf1
+    isdnrate/rep don't start with -v (verbose)
+
+  isdnrep:
+    old option -v (print connections with errors) is now -E,
+    -v is verbose now
+    obsolete option -c removed
+
 1999.12.14
   isdnrate:
     new option -O socket-file-name

@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.28 1999/12/16 23:08:28 akool Exp $
+/* $Id: isdnrate.c,v 1.29 1999/12/17 22:51:55 akool Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,17 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.29  1999/12/17 22:51:55  akool
+ * isdnlog-3.79
+ *  - isdnlog/isdnrep/isdnrep.{c,h} ... error -handling, print_msg
+ *  - isdnlog/isdnrep/rep_main.c
+ *  - isdnlog/isdnrep/isdnrep.1.in
+ *  - isdnlog/tools/rate.c  ... dupl entry in rate.conf
+ *  - isdnlog/tools/NEWS
+ *  - isdnlog/tools/isdnrate.c
+ *  - isdnlog/tools/dest/configure{,.in}
+ *  - isdnlog/tools/zone/configure{,.in}
+ *
  * Revision 1.28  1999/12/16 23:08:28  akool
  * isdnlog-3.78
  *  - isdnlog/tools/isdnrate.c ... new sOcket option
@@ -235,14 +246,14 @@ int     print_msg(int Level, const char *fmt,...)
   auto va_list ap;
   auto char String[BUFSIZ * 3];
 
-  if ((Level > 1 && !verbose) || (Level > 2 && verbose < 2))
+  if ((Level > PRT_ERR && !verbose) || (Level > PRT_WARN && verbose < 2))
     return (1);
 
   va_start(ap, fmt);
   (void) vsnprintf(String, BUFSIZ * 3, fmt, ap);
   va_end(ap);
 
-  fprintf(Level == PRT_NORMAL ? stdout : stderr, "%s", String);
+  fprintf(stderr, "%s", String);
 
   return (0);
 }				/* print_msg */
