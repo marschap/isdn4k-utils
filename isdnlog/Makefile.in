@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.204 2002/07/25 18:16:05 akool Exp $
+## $Id: Makefile.in,v 1.205 2002/07/26 22:14:19 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.205  2002/07/26 22:14:19  akool
+## isdnlog-4.61:
+##   - Support for mysql-4.0alpha -- many thanks to Jochen Erwied (jochen@erwied.de)!
+##
 ## Revision 1.204  2002/07/25 18:16:05  akool
 ## isdnlog-2.60:
 ##   - new provider "01081" (1,5 EuroCent/minute)
@@ -1544,7 +1548,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.60
+VERSION     = 4.61
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
