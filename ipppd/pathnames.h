@@ -1,8 +1,10 @@
 /*
  * define path names
  *
- * $Id: pathnames.h,v 1.1 1997/03/07 16:01:36 hipp Exp $
+ * $Id: pathnames.h,v 1.2 1997/03/24 01:18:01 fritz Exp $
  */
+
+#include "config.h"
 
 #ifdef HAVE_PATHS_H
 # include <paths.h>

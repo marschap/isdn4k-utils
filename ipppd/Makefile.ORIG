@@ -1,6 +1,6 @@
 #
 # pppd makefile for Linux
-# $Id: Makefile.linux,v 1.1 1997/03/07 16:01:01 hipp Exp $
+# $Id: Makefile.ORIG,v 1.1 1997/03/24 01:17:55 fritz Exp $
 #
 
 # These are set from the main Makefile

@@ -37,7 +37,7 @@
  */
 
 #ifndef lint
-static char rcsid[] = "$Id: auth.c,v 1.1 1997/03/07 16:01:07 hipp Exp $";
+static char rcsid[] = "$Id: auth.c,v 1.2 1997/03/24 01:17:57 fritz Exp $";
 #endif
 
 #include <stdio.h>
@@ -54,7 +54,8 @@ static char rcsid[] = "$Id: auth.c,v 1.1 1997/03/07 16:01:07 hipp Exp $";
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#ifdef HAS_SHADOW
+#include "config.h"
+#ifdef HAVE_SHADOW_H
 #include <shadow.h>
 #ifndef PW_PPP
 #define PW_PPP PW_LOGIN
@@ -645,7 +646,7 @@ static int login(char *user,char *passwd,char **msg,int *msglen,int unit)
     char *epasswd;
     char *tty;
 
-#ifdef HAS_SHADOW
+#ifdef HAVE_SHADOW_H
     struct spwd *spwd;
     extern int isexpired (struct passwd *, struct spwd *);
 #endif
@@ -654,7 +655,7 @@ static int login(char *user,char *passwd,char **msg,int *msglen,int unit)
         return (UPAP_AUTHNAK);
      }
 
- #ifdef HAS_SHADOW
+ #ifdef HAVE_SHADOW_H
     /* try to deal with shadow */
     spwd = getspnam(user);
     if (spwd) {

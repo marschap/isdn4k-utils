@@ -1,0 +1,4 @@
+mainmenu_option next_comment
+comment 'Options for ipppd'
+bool 'Support for MS chap secrets' CONFIG_IPPD_MSCHAP
+endmenu
