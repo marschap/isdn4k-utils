@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.88 1999/06/21 19:32:08 akool Exp $
+## $Id: Makefile.in,v 1.89 1999/06/26 10:11:06 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.89  1999/06/26 10:11:06  akool
+## isdnlog Version 3.36
+##  - EGCS 1.1.2 bug correction from Nima <nima_ghasseminejad@public.uni-hamburg.de>
+##  - zone-1.11
+##
 ## Revision 1.88  1999/06/21 19:32:08  akool
 ## isdnlog Version 3.35
 ##   zone data for .nl (many thanks to Paul!)
@@ -692,7 +697,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 3.35
+VERSION     = 3.36
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \

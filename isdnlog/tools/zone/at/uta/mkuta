@@ -14,7 +14,9 @@ foreach $a (@a) {
   $nb = substr($nb,1);
    if (($bla eq $blb) || 
    	($bla eq 'W' && $blb =~ /^N/) ||
-	($blb eq 'W' && $bla =~ /^N/)) {
+	($blb eq 'W' && $bla =~ /^N/) ||
+   	($na =~ /^5/ && $nb =~ /^5/) # Tirol=Vorarlb
+	) {
 		print OUT "$na $nb 1\n";
 	}
 	else {	

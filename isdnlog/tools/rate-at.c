@@ -253,7 +253,7 @@ void rate_1002(void) {
 		     { "Welt 5", "Afghanistan, Amerikanisch-Samoa, Antigua & Barbuda, Ascension, Bangladesch, Burkina Faso, Cook-Inseln, Diego Garcia, El Salvador, Eritrea, Falklandinseln, Guam, Guantanamo, Guatemala, Haiti, Kamerun, Kongo, Madagaskar, Honduras, Jemen, Kambodscha, Kamerun, Kap Verde, Kongo, Madagaskar, Mali, Marshallinseln, Midway-Inseln, Mikronesien, Montserrat, Pakistan, Palau, Salomonen, Senegal, Seychellen, Somalia, Tokelau, Tschad, Tuvalu, Vietnam, Wake-Inseln, Wallis- und Futuna-Inseln, Zaire" }};
   
   double Tarif[][2] = {{  1.00,  0.88 },
-		       {  2.50,  1.00 },
+		       {  1.50,  1.00 },
 		       {  1.80,  0.88 },
 		       {  4.20,  2.88 },
 		       {  1.00,  1.00 },
@@ -274,7 +274,8 @@ void rate_1002(void) {
   
   printf ("\n");
   rprintf ("UTA", "P:02");
-  rprintf ("Bundesland-Verzonung nicht implementiert", "C:Fixme:");
+  rprintf ("Bundesland-Verzonung (angrenzende) nicht implementiert", "C:Fixme:");
+  rprintf ("# Verzonung", "D:uta");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     rprintf ("Geschäftszeit", "T:1-5/8-18=%.2f(60)/1", Tarif[z][0]);
@@ -288,8 +289,8 @@ void rate_1003(void) {
 
   char *Zone[][2] = {{ "Regionalzone", "" }, 
 		     { "Fernzone 1", "" },
-		     { "5 Freunde", "" },
 		     { "Fernzone 2", "Österreich" },
+		     { "5 Freunde", "" }, 
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Deutschland spezial", "Deutschland" },
 		     { "Europa spezial", "Belgien, Frankreich, Großbritannien" },
@@ -306,8 +307,8 @@ void rate_1003(void) {
   
   double Tarif[][2] = {{ 1.0,  1.0},
 		       { 1.0,  1.0},
-		       { 1.0,  1.0},
 		       { 2.0,  2.0},
+		       { 1.0,  1.0},
 		       { 3.0,  3.0},
 		       { 3.0,  3.0},
 		       { 4.0,  4.0},
@@ -326,6 +327,8 @@ void rate_1003(void) {
   
   printf ("\n");
   rprintf ("Multikom", "P:03");
+  rprintf ("Verify Verzonung", "C:Fixme:");
+  rprintf ("# Verzonung", "D:pta");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1])
@@ -432,6 +435,8 @@ void rate_1007(void) {
   for (t=0; t<2; t++) {
     printf ("\n");
     rprintf ("European Telecom", "P:07,%d", t+1);
+    rprintf ("Verify Verzonung", "C:Fixme:");
+    rprintf ("# Verzonung", "D:1007");
     rprintf (Name[t], "C:Tarif:");
     for (z=0; z<COUNT(Zone); z++) {
       rprintf (Zone[z][0], "Z:%d", z+1);
@@ -509,6 +514,7 @@ void rate_1011(void) {
   
   printf ("\n");
   rprintf ("RSL COM", "P:11");
+  rprintf ("# Verzonung", "D:1012");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1]) {
@@ -580,7 +586,7 @@ void rate_1024(void) {
   
   double Tarif[][2] = {{ 0.98, 0.88},
 		       { 1.28, 1.18},
-		       { 2.48, 1.48},
+		       { 1.98, 1.18},
 		       { 3.98, 3.98},
 		       { 3.48, 3.48},
 		       { 3.98, 3.98},
@@ -595,6 +601,7 @@ void rate_1024(void) {
   printf ("\n");
   rprintf ("Telepassport", "P:24");
   rprintf ("International D: Zentral- und Südamerika nicht implementiert", "C:Fixme:");
+  rprintf ("# Verzonung", "D:1024");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1]) {
@@ -690,8 +697,8 @@ void rate_1044(void) {
 		     { "Mobilfunk", "+43663,+43664,+43676,+43699" },
 		     { "Ausland", "+" }};
   
-  double Tarif[][2] = {{ 1.20, 1.20 },
-		       { 2.16, 2.70 },
+  double Tarif[][2] = {{ 0.72, 0.72 },
+		       { 1.44, 0.72 },
 		       { 4.20, 4.20 },
 		       { 0.00, 0.00 }};
   
@@ -699,6 +706,7 @@ void rate_1044(void) {
   
   printf ("\n");
   rprintf ("Citykom", "P:44");
+  rprintf ("# Verzonung", "D:1012");
   rprintf ("internationale Zonen nicht implementiert", "C:Fixme:");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
@@ -801,6 +809,8 @@ void rate_1066(void) {
   
   printf ("\n");
   rprintf ("MIT 1066", "P:66");
+  rprintf ("# Verzonung", "D:1066");
+  rprintf ("Verzonung -50/+50 verifizieren", "C:Fixme");
   for (z=0; z<COUNT(Zone); z++) {
     rprintf (Zone[z][0], "Z:%d", z+1);
     if (Tarif[z][0]==Tarif[z][1]) {
@@ -846,7 +856,7 @@ void rate_1069(void) {
 }    
 
 
-void main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
   printf ("# created by rate-at.c\n\n");
   printf ("# The information herein was machine-generated,\n");
@@ -856,7 +866,7 @@ void main (int argc, char *argv[])
   printf ("# Many thanks to Daniela Bruder <dbruder@sime.com>\n");
   printf ("# for collecting and preparing most of the call charges.\n\n\n");
 
-  printf ("V:1.60-Austria [22-Jun-1999]\n\n");
+  printf ("V:1.61-Austria [23-Jun-1999]\n\n");
   printf ("U:%%.3f öS\n");
 
 #if 0
@@ -875,5 +885,5 @@ void main (int argc, char *argv[])
   rate_1066();
   rate_1069();
 #endif
-
+  return(EXIT_SUCCESS);	
 }

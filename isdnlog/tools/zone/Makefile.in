@@ -1,5 +1,5 @@
 #
-# Makefile for mkzonedb (borrowed from iMON)
+# Makefile for mkzonedb (parts borrowed from iMON)
 #
 # (C) 1999 l.toetsch <lt@toetsch.at>
 #
@@ -10,6 +10,7 @@ INCLUDES		=
 LDFLAGS			= @DBMLIB@
 DBEXT			= @DBEXT@
 RDBEXT			= @RDBEXT@
+BIGENDIAN		= @WORDS_BIGENDIAN@
 PROGRAM			= mkzonedb
 MODULES			= $(PROGRAM).o
 MANPAGE			= $(PROGRAM).8
@@ -18,19 +19,25 @@ MANDIR			= @CONFIG_MANDIR@
 SBINDIR			= @CONFIG_SBINDIR@
 MAN8DIR			= $(MANDIR)/man8
 INSTALL			= @INSTALL@
-INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
+INSTALL_PROGRAM		= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-CC				= @CC@
+CC			= @CC@
+ifeq ($(BIGENDIAN), yes)
+ZONEFILES=zonefiles
+endif
 
 .SUFFIXES:
 .SUFFIXES: .c .o
 
+.PHONY: all config zonefiles AT DE NL distclean dist test install uninstall
+
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
-all: $(PROGRAM) zone
+# $(ZONEFILES) should propably go to pre-install
+all: $(PROGRAM) zone $(ZONEFILES)
 
 config:
 	@./configure
@@ -50,7 +57,7 @@ $(PROGRAM):	$(MODULES)
 	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
 
 zone: ../zone.c $(HEADERS) Makefile
-	$(CC) -DSTANDALONE -g ../zone.c $(LDFLAGS) -o $@
+	$(CC) -DSTANDALONE -DZONETEST $(CFLAGS) ../zone.c $(LDFLAGS) -o $@
 
 install-man: $(PROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)
@@ -72,10 +79,11 @@ distclean: clean
 	rm -f config.h config.status config.cache config.log *.man Makefile configure
 
 test:
-	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -a43 -v
 	$(BZIP2) -d at/pta/zred.pta.bz2
 	$(BZIP2) -d at/pta/zoneall.pta.bz2
+	./$(PROGRAM) -d zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -a43 -v
 	./zone -d zone-at-pta$(RDBEXT)  -z at/pta/zoneall.pta -v
+	./zone -d zone-at-pta$(RDBEXT)  -c at/code -v
 	$(BZIP2) -9 at/pta/zred.pta
 	$(BZIP2) -9 at/pta/zoneall.pta
 
@@ -85,21 +93,45 @@ test:
 #	
 zonefiles:	AT DE NL
 
-AT:
-	./$(PROGRAM) -d ../../zone-at-1012$(DBEXT) -r at/1012/zred-at-1012 -c at/code -v -l4
-	$(BZIP2) -d at/uta/zred.uta.bz2
-	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta  -c at/code -v
-	$(BZIP2) -9 at/uta/zred.uta
+AT: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066
+.PHONY: AT-pta AT-1002 AT-1007 AT-1012 AT-1024 AT-1066
+
+AT-pta:
 	$(BZIP2) -d at/pta/zred.pta.bz2
 	./$(PROGRAM) -d ../../zone-at-pta$(DBEXT) -r at/pta/zred.pta -c at/code -a43 -v
 	$(BZIP2) -9 at/pta/zred.pta
 
-DE:	
+AT-1002:	
+	$(BZIP2) -d at/uta/zred.uta.bz2
+	./$(PROGRAM) -d ../../zone-at-uta$(DBEXT) -r at/uta/zred.uta  -c at/code -v
+	$(BZIP2) -9 at/uta/zred.uta
+AT-1007:	
+	$(BZIP2) -d at/1007/zred.bz2
+	./$(PROGRAM) -d ../../zone-at-1007$(DBEXT) -r at/1007/zred -c at/code -v
+	$(BZIP2) -9 at/1007/zred
+AT-1012:	
+	./$(PROGRAM) -d ../../zone-at-1012$(DBEXT) -r at/1012/zred-at-1012 -c at/code -v -l4
+AT-1024:	
+	$(BZIP2) -d at/1024/zred.bz2
+	./$(PROGRAM) -d ../../zone-at-1024$(DBEXT) -r at/1024/zred -c at/code -v -l4
+	$(BZIP2) -9 at/1024/zred
+AT-1066:	
+	$(BZIP2) -d at/1066/zred.bz2
+	./$(PROGRAM) -d ../../zone-at-1066$(DBEXT) -r at/1066/zred -c at/code -v
+	$(BZIP2) -9 at/1066/zred
+
+DE:	DE-dtag
+.PHONY: DE-dtag
+
+DE-dtag:	
 	$(BZIP2) -d de/01033/zred.dtag.bz2
 	./$(PROGRAM) -d ../../zone-de-dtag$(DBEXT) -r de/01033/zred.dtag -c de/code -a49 -v
 	$(BZIP2) -9 de/01033/zred.dtag
 
-NL:
+NL:	NL-kpn
+.PHONY: NL-kpn
+
+NL-kpn:
 	$(BZIP2) -d nl/kpn/zred.bz2
 	./$(PROGRAM) -d ../../zone-nl-kpn$(DBEXT) -r nl/kpn/zred -c nl/code -a31 -v -o3
 	$(BZIP2) -9 nl/kpn/zred

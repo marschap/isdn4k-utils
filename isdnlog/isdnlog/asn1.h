@@ -1,4 +1,4 @@
-/* $Id: asn1.h,v 1.3 1999/05/04 19:32:32 akool Exp $
+/* $Id: asn1.h,v 1.4 1999/06/26 10:12:02 akool Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1.h,v $
+ * Revision 1.4  1999/06/26 10:12:02  akool
+ * isdnlog Version 3.36
+ *  - EGCS 1.1.2 bug correction from Nima <nima_ghasseminejad@public.uni-hamburg.de>
+ *  - zone-1.11
+ *
  * Revision 1.3  1999/05/04 19:32:32  akool
  * isdnlog Version 3.24
  *
@@ -260,7 +265,7 @@ ELEMENT_1(ParseRESInterrogateServedUserNumbers, char, );
 #define CHECK_TAG(a) \
   int elnr = 0; \
   \
-  elnr = elnr; // makes lint happy \
+  elnr = elnr; /* makes lint happy */ \
   if (tag == ASN1_NOT_TAGGED) { \
     if ((el.tag &~ 0x20) != (a)) { \
       print_msg(PRT_DEBUG_DECODE, " DEBUG> native tag %2x not found, %2x instead\n", \

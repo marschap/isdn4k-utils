@@ -1335,16 +1335,109 @@ cat >> confdefs.h <<EOF
 EOF
 
 
+echo $ac_n "checking whether byte ordering is bigendian""... $ac_c" 1>&6
+echo "configure:1340: checking whether byte ordering is bigendian" >&5
+if eval "test \"`echo '$''{'ac_cv_c_bigendian'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_cv_c_bigendian=unknown
+# See if sys/param.h defines the BYTE_ORDER macro.
+cat > conftest.$ac_ext <<EOF
+#line 1347 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <sys/param.h>
+int main() {
+
+#if !BYTE_ORDER || !BIG_ENDIAN || !LITTLE_ENDIAN
+ bogus endian macros
+#endif
+; return 0; }
+EOF
+if { (eval echo configure:1358: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  # It does; now see whether it defined to BIG_ENDIAN or not.
+cat > conftest.$ac_ext <<EOF
+#line 1362 "configure"
+#include "confdefs.h"
+#include <sys/types.h>
+#include <sys/param.h>
+int main() {
+
+#if BYTE_ORDER != BIG_ENDIAN
+ not big endian
+#endif
+; return 0; }
+EOF
+if { (eval echo configure:1373: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  ac_cv_c_bigendian=yes
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  ac_cv_c_bigendian=no
+fi
+rm -f conftest*
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+if test $ac_cv_c_bigendian = unknown; then
+if test "$cross_compiling" = yes; then
+    { echo "configure: error: can not run test program while cross compiling" 1>&2; exit 1; }
+else
+  cat > conftest.$ac_ext <<EOF
+#line 1393 "configure"
+#include "confdefs.h"
+main () {
+  /* Are we little or big endian?  From Harbison&Steele.  */
+  union
+  {
+    long l;
+    char c[sizeof (long)];
+  } u;
+  u.l = 1;
+  exit (u.c[sizeof (long) - 1] == 1);
+}
+EOF
+if { (eval echo configure:1406: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+then
+  ac_cv_c_bigendian=no
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  ac_cv_c_bigendian=yes
+fi
+rm -fr conftest*
+fi
+
+fi
+fi
+
+echo "$ac_t""$ac_cv_c_bigendian" 1>&6
+if test $ac_cv_c_bigendian = yes; then
+  cat >> confdefs.h <<\EOF
+#define WORDS_BIGENDIAN 1
+EOF
+
+fi
+
+if test $ac_cv_c_bigendian = yes; then
+	WORDS_BIGENDIAN=yes
+fi	
 
 for ac_func in strdup strtoul
 do
 echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
-echo "configure:1343: checking for $ac_func" >&5
+echo "configure:1436: checking for $ac_func" >&5
 if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1348 "configure"
+#line 1441 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -1367,7 +1460,7 @@ $ac_func();
 
 ; return 0; }
 EOF
-if { (eval echo configure:1371: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1464: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_func_$ac_func=yes"
 else
@@ -1542,6 +1635,7 @@ s%@RDBEXT@%$RDBEXT%g
 s%@INSTALL@%$INSTALL%g
 s%@CONFIG_SBINDIR@%$CONFIG_SBINDIR%g
 s%@CONFIG_MANDIR@%$CONFIG_MANDIR%g
+s%@WORDS_BIGENDIAN@%$WORDS_BIGENDIAN%g
 
 CEOF
 EOF

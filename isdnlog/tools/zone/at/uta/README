@@ -7,7 +7,7 @@ erzeugt zoneall.uta
 # ../../redzone -z zoneall.uta -r zred.uta -n
 generiert die reduzierte Verzonung
 
-# ../../mkzonedb -r zred.uta -d ../../../../zone-at-uta.gdbm
+# ../../mkzonedb -r zred.uta -d ../../../../zone-at-uta.gdbm -c ../code 
 die Datenbank.
 
 leo

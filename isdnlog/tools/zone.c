@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.7 1999/06/22 19:41:28 akool Exp $
+/* $Id: zone.c,v 1.8 1999/06/26 10:12:14 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.8  1999/06/26 10:12:14  akool
+ * isdnlog Version 3.36
+ *  - EGCS 1.1.2 bug correction from Nima <nima_ghasseminejad@public.uni-hamburg.de>
+ *  - zone-1.11
+ *
  * Revision 1.7  1999/06/22 19:41:28  akool
  * zone-1.1 fixes
  *
@@ -97,7 +102,7 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.10";
+static char version[] = "1.11";
 static bool area_read = false;
 
 #define LINK 127
@@ -197,20 +202,20 @@ int initZone(int provider, char *path, char **msg)
 		file = path;
 	}
 	else {
-	if ((dir = strdup(path)) == 0) {
-		if (msg)
-			snprintf (message, LENGTH,
-				"Zone V%s: Error: Out of mem 10", version);
-		return res;
-	}
-	p = strrchr(dir, '/');
-	if ((file = strdup(p+1)) == 0) {
-		if (msg)
-			snprintf (message, LENGTH,
-				"Zone V%s: Error: Out of mem 11", version);
-		return res;
-	}
-	p[1] = '\0';
+		if ((dir = strdup(path)) == 0) {
+			if (msg)
+				snprintf (message, LENGTH,
+					"Zone V%s: Error: Out of mem 10", version);
+			return res;
+		}
+		p = strrchr(dir, '/');
+		if ((file = strdup(p+1)) == 0) {
+			if (msg)
+				snprintf (message, LENGTH,
+					"Zone V%s: Error: Out of mem 11", version);
+			return res;
+		}
+		p[1] = '\0';
 	}	
 	if ((dp = opendir(dir)) == 0) {
 		if (msg)
@@ -233,8 +238,8 @@ int initZone(int provider, char *path, char **msg)
 	}
 	closedir(dp);
 	if ((p = strrchr(path, '/')) != 0) {
-	free(dir);
-	free(file);
+		free(dir);
+		free(file);
 	}	
 	if (msg && strlen(message) < LENGTH-5) {
 		strcat(message, " - ");
@@ -269,6 +274,7 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 			if (msg)
 				snprintf (message, LENGTH,
 					"Zone V%s: Error: Out of mem 0", version);
+			count--;		
 			return -1;
 		}
 	}
@@ -286,6 +292,7 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 				if (msg)
 					snprintf (message, LENGTH,
 						"Zone V%s: Error: Out of mem 1", version);
+				count--;		
 				return -1;
 			}
 			sthp = newsthp;
@@ -334,6 +341,7 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 				snprintf (message, LENGTH,
 					"Zone V%s: Error: gdbm_open '%s': '%s'",
 					version, path, GET_ERR);
+			count--;		
 			return -1;
 		}
 		/* read info */
@@ -415,7 +423,7 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 		if (area_only) {
 			if (sthp[ocount].cc == 0)		
 				_exitZone(provider); /* discard this one */
-			return;	
+			return 0;	
 		}		
 		/* alloc & read table */
 		if ( (sthp[ocount].table = calloc(csize > 256 ? 256 : csize,
@@ -550,7 +558,6 @@ static int _getAreacode(struct sth *sthp, char *from, char **text) {
 	_DB fh = sthp->fh;
 	datum key, value;
 	static char newfrom[LENGTH];
-	bool found = false;
 	int len;
 	strncpy(newfrom, from, sthp->numlen);
 	newfrom[sthp->numlen] = '\0';
@@ -558,7 +565,7 @@ static int _getAreacode(struct sth *sthp, char *from, char **text) {
 		UL lifrom = (UL) atol(newfrom); /* keys could be long */
 		US ifrom = (US) lifrom;	
 		if (sthp->pack_key == 2) {
-			if (lifrom >= 0x10000) { /* can't be, so cut a dig */
+			if (lifrom >= 0x10000) {  /* can't be, so cut a dig */
 				newfrom[strlen(newfrom)-1] = '\0';
 				continue;
 			}	
@@ -611,16 +618,31 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 	int z, ret=0;
 	char from[10];
 	char to[10];
+	int cc;
 	if (initZone(1, df, &msg)) {
 		fprintf(stderr,"%s\n", msg);
 		exit(1);
 	}
+	cc = sthp[0].cc;
 	if(verbose)
 		printf("%s\n", msg);
 	if (num1 && num2) {
+		char *ort1, *ort2;
 		snprintf(from, 9, "%d",num1);
 		snprintf(to, 9, "%d",num2);
 		ret = getZone(1, from, to);
+		if (cc) {
+			if (getAreacode(cc, from, &ort1) >0 &&
+				getAreacode(cc, to, &ort2) >0) {
+				printf("%s(%s) %s(%s) = %d\n", from, ort1, to, ort2, ret);
+				free(ort1);
+				free(ort2);
+			}
+			else
+				goto no_ort;	
+		}
+		else	
+no_ort:		
 			printf("%s %s = %d\n", from, to, ret);
 	}
 	else {
@@ -639,7 +661,8 @@ static int checkZone(char *zf, char* df,int num1,int num2, bool verbose)
 				fprintf(stderr,"%d\r",n);
 				fflush(stderr);
 			}
-			fgets(line, 39, fp);
+			if (!fgets(line, 39, fp))
+				break;
 			p=line;
 			q=from;
 			if (!isdigit(*p))
@@ -693,23 +716,89 @@ static int checkArea(char *df, int cc, char *from, int verbose) {
 	exitZone(1);
 	return ret;
 }
+static int checkAllArea(char *df, char *cf, int cc, int verbose) {
+	char *msg;
+	int ret=0;
+	FILE *fp;
+	char line[BUFSIZ];
+	char from[20];
+	char *ort;
+	char *p, *q;
+	int i, n, len, olen;
+	int ifrom;
+
+	if (initZone(1, df, &msg)) {
+		fprintf(stderr,"%s\n", msg);
+		exit(1);
+	}
+	if(verbose)
+		printf("%s\n", msg);
+	if ((fp = fopen(cf, "r")) == 0) {
+		fprintf(stderr, "Can't read %s\n", cf);
+		exitZone(1);
+		exit(1);
+	}
+	n=0;
+	while (!feof(fp)) {
+		if (!fgets(line, BUFSIZ, fp))
+			break;
+		line[strlen(line)-1] = '\0';
+		p=line;
+		q=from;
+		if (!isdigit(*p))
+			continue;
+		i=0;
+		while (isdigit(*p) && ++i<9) {
+			*q++ = *p++;
+		}
+		*q = '\0';
+		/* append some randoms */
+		olen = strlen(from);
+		p++;
+		ifrom=atol(from);
+		for (i=0; i< 20; i++) {
+			sprintf(from, "%d%d%d", ifrom, i, rand() % 999999);
+			if((++n % 1000) == 0 && verbose) {
+				fprintf(stderr,"%d\r",n);
+				fflush(stderr);
+			}
+			len = getAreacode(cc, from, &ort);
+			if (olen != len || strcmp(ort, p)) {
+				fprintf(stderr, "Err: %s:%s not %s Len %d\n", from, p, ort, len);
+				free(ort);
+				ret = 1;
+				break;
+			}	
+			free(ort);
+		}	
+	}
+	fclose(fp);
+	exitZone(1);			
+	if (verbose)
+		printf("'%s' verified %s.\n", df, ret==0? "Ok": "NoNo");
+	free(cf);
+	free(df);
+	return ret;
+}
 
 int main (int argc, char *argv[])
 {
 	int verbose=false;
 	char *df=0;
 	char *zf=0;
+	char *cf=0;
 	int c;
 	int num1=0, num2=0;
 	int cc=0;
 	char snum1[LENGTH];
-	while ( (c=getopt(argc, argv, "vVd:z:a:")) != EOF) {
+	while ( (c=getopt(argc, argv, "vVd:z:a:c:")) != EOF) {
 		switch (c) {
 			case 'v' : verbose = true; break;
 			case 'V' : printf("%s: V%s\n", basename(argv[0]), version); exit(1);
 			case 'd' : df = strdup(optarg); break;
 			case 'z' : zf = strdup(optarg); break;
 			case 'a' : cc = atoi(optarg); break;
+			case 'c' : cf = strdup(optarg); break;
 		}
 	}
 	while (optind < argc) {
@@ -730,8 +819,11 @@ int main (int argc, char *argv[])
 		return checkZone(zf, df, num1, num2, verbose);
 	if (df && num1 && cc)
 		return checkArea(df, cc, snum1, verbose);	
+	if (df && cf && cc)
+		return checkAllArea(df, cf, cc, verbose);	
 	fprintf(stderr, "Usage:\n%s -d DBfile -v -V { -z Zonefile | num1 num2 | -a cc num}\n", basename(argv[0]));
-	fprintf(stderr, "\t-d DBfile -v -V num1\n");
+	fprintf(stderr, "\t-d DBfile -v -V -a CC num1 \n");
+	fprintf(stderr, "\t-d DBfile -c Codefile -a CC -v -V\n");
 	return 0;
 }
 #endif

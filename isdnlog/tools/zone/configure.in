@@ -30,6 +30,10 @@ AC_CHECK_SIZEOF(char,1)
 AC_CHECK_SIZEOF(short,2)
 AC_CHECK_SIZEOF(long,4)
 AC_CHECK_SIZEOF(int,4)
+AC_C_BIGENDIAN
+if test $ac_cv_c_bigendian = yes; then
+	WORDS_BIGENDIAN=yes
+fi	
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS(strdup strtoul)
@@ -41,5 +45,5 @@ AC_SUBST(CC)
 AC_SUBST(INSTALL)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
-
+AC_SUBST(WORDS_BIGENDIAN)
 AC_OUTPUT(Makefile)

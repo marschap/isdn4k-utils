@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.25 1999/06/22 19:41:23 akool Exp $
+/* $Id: rate.c,v 1.26 1999/06/26 10:12:12 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.26  1999/06/26 10:12:12  akool
+ * isdnlog Version 3.36
+ *  - EGCS 1.1.2 bug correction from Nima <nima_ghasseminejad@public.uni-hamburg.de>
+ *  - zone-1.11
+ *
  * Revision 1.25  1999/06/22 19:41:23  akool
  * zone-1.1 fixes
  *
@@ -594,7 +599,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
       break;
 
     case 'P': /* P:nn[,v] Bezeichnung */
-      if (prefix!=UNKNOWN && !ignore && !domestic)
+      if (zone!=UNKNOWN && !ignore && !domestic)
 	warning (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
       v = UNKNOWN;
       zone = UNKNOWN;
@@ -1060,7 +1065,7 @@ int initRate(char *conf, char *dat, char *dom, char **msg)
   }
   fclose(stream);
 
-  if (prefix!=UNKNOWN && !domestic)
+  if (zone!=UNKNOWN && !domestic)
     warning (dat, "Provider %d has no default domestic zone (missing 'A:%s')", prefix, mycountry);
 
   if (!*Format) {

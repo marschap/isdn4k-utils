@@ -10,7 +10,7 @@
 # for collecting and preparing most of the call charges.
 
 
-V:1.60-Austria [22-Jun-1999]
+V:1.61-Austria [23-Jun-1999]
 
 U:%.3f öS
 
@@ -919,13 +919,14 @@ T:E,H/*=0.936/15                   Sparzeit
 A:+43717
 
 P:02                               UTA
-C:Fixme:                           Bundesland-Verzonung nicht implementiert
+C:Fixme:                           Bundesland-Verzonung (angrenzende) nicht implementiert
+D:uta                              # Verzonung
 Z:1                                Bundeslandzone
 T:1-5/8-18=1.00(60)/1              Geschäftszeit
 T:1-5/18-8=0.88(60)/1              Freizeit
 T:E,H/*=0.88(60)/1                 Freizeit
 Z:2                                Österreichzone
-T:1-5/8-18=2.50(60)/1              Geschäftszeit
+T:1-5/8-18=1.50(60)/1              Geschäftszeit
 T:1-5/18-8=1.00(60)/1              Freizeit
 T:E,H/*=1.00(60)/1                 Freizeit
 A:Österreich
@@ -1035,15 +1036,17 @@ A:Pakistan, Palau, Salomonen, Senegal, Seychellen, Somalia, Tokelau, Tschad
 A:Tuvalu, Vietnam, Wake-Inseln, Wallis- und Futuna-Inseln, Zaire
 
 P:03                               Multikom
+C:Fixme:                           Verify Verzonung
+D:pta                              # Verzonung
 Z:1                                Regionalzone
 T:*/*=1.00(60)/60/1                rund um die Uhr
 Z:2                                Fernzone 1
 T:*/*=1.00(60)/60/1                rund um die Uhr
-Z:3                                5 Freunde
-T:*/*=1.00(60)/60/1                rund um die Uhr
-Z:4                                Fernzone 2
+Z:3                                Fernzone 2
 T:*/*=2.00(60)/60/1                rund um die Uhr
 A:Österreich
+Z:4                                5 Freunde
+T:*/*=1.00(60)/60/1                rund um die Uhr
 Z:5                                Mobilfunk
 T:*/*=3.00(60)/60/1                rund um die Uhr
 A:+43663, +43664, +43676, +43699
@@ -1148,6 +1151,8 @@ T:*/*=19.00(60)/60/1               rund um die Uhr
 A:+                                alle übrigen Länder
 
 P:07,1                             European Telecom
+C:Fixme:                           Verify Verzonung
+D:1007                             # Verzonung
 C:Tarif:                           1 Jahr feste Bindung
 Z:1                                Fernzone 1
 T:1-5/08-12=2.376(60)/1            Tageszeit 1
@@ -1278,6 +1283,8 @@ T:1-5/18-8=1.980(60)/1             Sparzeit
 T:E,H/*=1.980(60)/1                Sparzeit
 
 P:07,2                             European Telecom
+C:Fixme:                           Verify Verzonung
+D:1007                             # Verzonung
 C:Tarif:                           14-tägig kündbar
 Z:1                                Fernzone 1
 T:1-5/08-12=2.532(60)/1            Tageszeit 1
@@ -1408,6 +1415,7 @@ T:1-5/18-8=2.112(60)/1             Sparzeit
 T:E,H/*=2.112(60)/1                Sparzeit
 
 P:11                               RSL COM
+D:1012                             # Verzonung
 Z:1                                Bundesland
 T:1-5/8-18=1.00(60)/1              Tag
 T:1-5/18-8=0.88(60)/1              Nacht
@@ -1550,6 +1558,7 @@ A:+                                alle übrigen Länder
 
 P:24                               Telepassport
 C:Fixme:                           International D: Zentral- und Südamerika nicht implementiert
+D:1024                             # Verzonung
 Z:1                                Regionalzone
 T:1-5/8-18=0.98(60)/1              Tag
 T:1-5/18-8=0.88(60)/1              Nacht
@@ -1559,9 +1568,9 @@ T:1-5/8-18=1.28(60)/1              Tag
 T:1-5/18-8=1.18(60)/1              Nacht
 T:E,H/*=1.18(60)/1                 Weekend
 Z:3                                Österreich
-T:1-5/8-18=2.48(60)/1              Tag
-T:1-5/18-8=1.48(60)/1              Nacht
-T:E,H/*=1.48(60)/1                 Weekend
+T:1-5/8-18=1.98(60)/1              Tag
+T:1-5/18-8=1.18(60)/1              Nacht
+T:E,H/*=1.18(60)/1                 Weekend
 A:Österreich
 Z:4                                Deutschland, Schweiz
 T:*/*=3.98(60)/1                   rund um die Uhr
@@ -1685,13 +1694,14 @@ Z:9                                International
 A:+                                alle übrigen Länder
 
 P:44                               Citykom
+D:1012                             # Verzonung
 C:Fixme:                           internationale Zonen nicht implementiert
 Z:1                                Regional
-T:*/*=1.20(60)/1                   rund um die Uhr
+T:*/*=0.72(60)/1                   rund um die Uhr
 Z:2                                Österreich
-T:1-5/8-18=2.16(60)/1              Tag
-T:1-5/18-8=2.70(60)/1              Nacht
-T:E,H/*=2.70(60)/1                 Weekend
+T:1-5/8-18=1.44(60)/1              Tag
+T:1-5/18-8=0.72(60)/1              Nacht
+T:E,H/*=0.72(60)/1                 Weekend
 A:Österreich
 Z:3                                Mobilfunk
 T:*/*=4.20(60)/1                   rund um die Uhr
@@ -1700,6 +1710,8 @@ Z:4                                Ausland
 A:+                                alle übrigen Länder
 
 P:66                               MIT 1066
+D:1066                             # Verzonung
+C:Fixme                            Verzonung -50/+50 verifizieren
 Z:1                                Regionalzone
 T:1-5/8-18=0.96(60)/18.75/1        Tag
 T:1-5/18-8=0.80(60)/22.50/1        Nacht
