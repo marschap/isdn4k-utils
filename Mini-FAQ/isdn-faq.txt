@@ -5,6 +5,8 @@
 
 See below for English!
 
+germantoc
+
 1.   Wo gibt es die FAQ?
 
      http://www.mhessler.de/i4lfaq.html Leider noch nicht in Deutsch übersetzt.
@@ -80,7 +82,7 @@ See below for English!
      Deja News mit den Stichwörtern "isdn4linux" und
      "wiedeinekartegenauheisst".
 
-10.  Wo gibt es die neusten ISDN4Linux Software.
+10.  Wo gibt es die neusten ISDN4Linux Software?
 
      Die Utils von ftp://ftp.isdn4linux.de/pub/isdn4linux/utils/testing
      Den Kernel-Treiber aus dem neusten offiziellen Kernel von www.kernel.org
@@ -89,7 +91,7 @@ See below for English!
      ftp://ftp.de.kernel.org/pub/linux/kernel/people/alan/
 
      Siehe auch den Web-Server deines Distributions, und deine lokale
-     RPM-Repository, z.B.  http://SunSITE.auc.dk/linux/rpmrepository.html
+     RPM-Repository, z.B.  http://SunSITE.auc.dk/linux/RPM/
 
 11.  Seitdem ich Kernel-2.0.36 verwende geht ISDN4Linux nicht mehr.
 
@@ -133,7 +135,7 @@ See below for English!
      sent ConfAck ... Dein Rechner stimmte etwas zu
      rcvd ...         Was die Gegenseite dazu gesagt hat
 
-15.  Was bedeuten diese komischen 'Cause'-Nummern.
+15.  Was bedeuten diese komischen 'Cause'-Nummern?
 
      Siehe 'man isdn_cause'
 
@@ -207,8 +209,9 @@ Kommentare wilkommen, bitte direkt an mich, Erik Corry <erik@arbat.com>.
 
                 English mini-FAQ for ISDN4Linux
 
+englishtoc
 
-0.   Why is everyone speaking German here.
+0.   Why is everyone speaking German here?
 
      That's because they are mostly German.  If you start an English thread it
      will be continued in English.  If you have trouble getting this group
@@ -221,7 +224,7 @@ Kommentare wilkommen, bitte direkt an mich, Erik Corry <erik@arbat.com>.
 
      http://www.mhessler.de/i4lfaq.html
 
-2.   Where can I find a simple guide to using ISDN4Linux
+2.   Where can I find a simple guide to using ISDN4Linux?
 
      See http://www.wurtel.demon.nl/ (also available in Dutch).  There is
      a different HOWTO in German on http://www.franken.de/users/klaus/  There
@@ -257,7 +260,7 @@ Kommentare wilkommen, bitte direkt an mich, Erik Corry <erik@arbat.com>.
      http://www.suse.de/Support/sdb_e/dynippatch.html
 
 7.   ISDN4Linux keeps redialling, especially if I do a hard hangup (without
-     waiting for timeout)
+     waiting for timeout).
 
      This can be alleviated with RST-provoking.  Activate this as in question
      6 and see also http://www.suse.de/sdb/en/html/katlist.ISDN.html  If you
@@ -296,9 +299,9 @@ Kommentare wilkommen, bitte direkt an mich, Erik Corry <erik@arbat.com>.
      ftp://ftp.us.kernel.org/pub/linux/kernel/people/alan/
 
      See also the web/ftp server of your distribution and your local RPM
-     repository, eg.  http://SunSITE.auc.dk/linux/rpmrepository.html
+     repository, eg.  http://SunSITE.auc.dk/linux/RPM/
 
-11.  ISDN4Linux doesn't work any more since I updated to kernel 2.0.36
+11.  ISDN4Linux doesn't work any more since I updated to kernel 2.0.36.
 
      You need the newest isdn4k-utils, 3.0beta1 or newer.  See above.  In
      particular you need the new 'dialmode' command isdnctrl.  Note: the
@@ -310,7 +313,7 @@ Kommentare wilkommen, bitte direkt an mich, Erik Corry <erik@arbat.com>.
      real 2.0.36 kernel from www.kernel.org or an update for the kernel
      driver, see question 10.
 
-12.  ISDN4Linux doesn't work any more since I updated to kernel 2.2.x
+12.  ISDN4Linux doesn't work any more since I updated to kernel 2.2.x.
 
      Unfortunately, the version of ISDN4Linux in early releases of kernel 2.2
      was quite buggy.  Since 2.2.11 and 2.3.16, the ISDN-Driver in the official
