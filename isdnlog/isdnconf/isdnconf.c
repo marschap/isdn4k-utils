@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.3 1997/04/03 22:36:23 luethje Exp $
+/* $Id: isdnconf.c,v 1.4 1997/04/06 21:06:08 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.4  1997/04/06 21:06:08  luethje
+ * problem with empty/not existing file resolved.
+ *
  * Revision 1.3  1997/04/03 22:36:23  luethje
  * splitt the file isdn.conf into callerid.conf and ~/.isdn (for editing).
  *
@@ -513,7 +516,10 @@ int main(int argc, char *argv[], char *envp[])
 	if (add || del)
 	{
 		if ((conf_dat = read_file(NULL, conffile, C_NOT_UNIQUE)) == NULL)
+		{
+			print_msg(PRT_ERR,"Error while reading file `%s': no rights on file, syntax error\nor emtpy (delete it first)!\n",conffile);
 			exit(2);
+		}
 
 		if (Set_Codes(conf_dat) != 0)
 		{
@@ -533,18 +539,33 @@ int main(int argc, char *argv[], char *envp[])
 			}
 			else
 			{
-				if ((fp = fopen(expand_file(callerfile),"w")) == NULL)
+				if (add)
 				{
-					print_msg(PRT_ERR,"Error: Can not open file `%s' (%s)!\n",expand_file(callerfile),strerror(errno));
+					if ((fp = fopen(expand_file(callerfile),"w")) == NULL)
+					{
+						print_msg(PRT_ERR,"Error: Can not open file `%s' (%s)!\n",expand_file(callerfile),strerror(errno));
+						exit(6);
+					}
+					else
+						print_msg(PRT_ERR,"Create file `%s'!\n",expand_file(callerfile),strerror(errno));
+
+					fclose(fp);
+				}
+				else
+				{
+					print_msg(PRT_ERR,"File `%s' doesn't exist!\n",expand_file(callerfile));
 					exit(6);
 				}
-
-				fclose(fp);
 			}
 		}
 		else
+		{
 			if ((conf_dat = read_file(NULL, expand_file(callerfile), C_NOT_UNIQUE)) == NULL)
+			{
+				print_msg(PRT_ERR,"Error while reading file `%s': no rights on file, syntax error\nor emtpy (delete it first)!\n",expand_file(callerfile));
 				exit(2);
+			}
+		}
 	}
 	else
 	{
@@ -574,7 +595,7 @@ int main(int argc, char *argv[], char *envp[])
 			strcpy(alias, argv[optind]);
 		else
 		{
-			print_msg(PRT_ERR,"Can not set two strings for alias!\n");
+			print_msg(PRT_ERR,"Error: Can not set two strings for alias!\n");
 			exit(3);
 		}
 	}
@@ -598,13 +619,13 @@ int main(int argc, char *argv[], char *envp[])
 
 	if (add && del)
 	{
-		print_msg(PRT_ERR,"Can not do add and delete together!\n");
+		print_msg(PRT_ERR,"Error: Can not do add and delete together!\n");
 		exit(1);
 	}
 
 	if (short_out && long_out)
 	{
-		print_msg(PRT_ERR,"Can not do long and short output together!\n");
+		print_msg(PRT_ERR,"Error: Can not do long and short output together!\n");
 		exit(1);
 	}
 
@@ -614,11 +635,21 @@ int main(int argc, char *argv[], char *envp[])
 		Cnt = look_data(&conf_dat);
 
 	if ((add || del) && Cnt > 0)
+	{
+		if (conf_dat == NULL)
+		{
+			if (unlink(expand_file(callerfile)))
+				print_msg(PRT_ERR,"Error: Can not delete file `%s' (%s)!\n",expand_file(callerfile),strerror(errno));
+			else
+				print_msg(PRT_ERR,"Warning: File `%s' is empty. It is deleted now!\n", expand_file(callerfile));
+		}
+		else
 		if (write_file(conf_dat,expand_file(callerfile),myname,VERSION) == NULL)
 			exit(5);
+	}
 
 	if (del && !Cnt)
-		print_msg(PRT_ERR, "No entry deleted!\n");
+		print_msg(PRT_ERR, "Warning: No entry deleted!\n");
 
 	free_section(conf_dat);
 
