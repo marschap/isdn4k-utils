@@ -1,4 +1,4 @@
-/* $Id: zone.c,v 1.10 1999/06/29 20:11:45 akool Exp $
+/* $Id: zone.c,v 1.11 1999/07/01 20:44:07 akool Exp $
  *
  * Zonenberechnung
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: zone.c,v $
+ * Revision 1.11  1999/07/01 20:44:07  akool
+ * zone-1.12
+ *
  * Revision 1.10  1999/06/29 20:11:45  akool
  * now compiles with ndbm
  * (many thanks to Nima <nima_ghasseminejad@public.uni-hamburg.de>)
@@ -113,7 +116,7 @@ struct sth {
 
 static struct sth *sthp;
 static int count;
-static char version[] = "1.11";
+static char version[] = "1.12";
 static bool area_read = false;
 
 #define LINK 127
@@ -410,7 +413,8 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 				break;
 			}
 		} /* for */
-		free (value.dptr);
+		if (*dbv == 'G')
+			free (value.dptr);
 		/* check it */
 		if (strlen(dversion) == 0 ||
 			sthp[ocount].pack_key == '\x0' ||
@@ -461,7 +465,8 @@ static int _initZone(int provider, char *path, char **msg, bool area_only)
 				sthp[ocount].pack_table == 1 ? (int)(UC)*((UC*)p)++ :
 				sthp[ocount].pack_table == 2 ? (int)(US)*((US*)p)++ :
 				(int)(UL)*((UL*)p)++;
-		free(value.dptr);
+		if (*dbv == 'G')
+			free(value.dptr);
 		if (msg) {
 			snprintf (message, LENGTH,
 				"Zone V%s: Provider %d File '%s' opened fine - "
@@ -533,7 +538,8 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 					ito = sthp->table[ito];
 				if (z == LINK) {
 					sprintf(newfrom, "%d", ito);
-					free(value.dptr);
+					if (*dbv == 'G')
+						free(value.dptr);
 					return _getZ(sthp, newfrom, sto);
 				}
 				else {
@@ -544,7 +550,8 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 					}
 				}
 			}
-			free(value.dptr);
+			if (*dbv == 'G')
+				free(value.dptr);
 			if (found)
 				return z;
 		} /* if dptr */
