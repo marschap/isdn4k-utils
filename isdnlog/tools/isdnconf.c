@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.22 1999/02/28 19:33:39 akool Exp $
+/* $Id: isdnconf.c,v 1.23 1999/03/15 21:28:44 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.23  1999/03/15 21:28:44  akool
+ * - isdnlog Version 3.06
+ * - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
+ * - isdnconf: added a small LCR-feature - simply try "isdnconf -c 069"
+ * - isdnlog: dont change CHARGEINT, if rate is't known!
+ * - sonderrufnummern 1.02 [15-Mar-99] :: added WorldCom
+ * - tarif.dat 1.09 [15-Mar-99] :: added WorldCom
+ * - isdnlog now correctly handles the new "Ortstarif-Zugang" of UUnet
+ *
  * Revision 1.22  1999/02/28 19:33:39  akool
  * Fixed a typo in isdnconf.c from Andreas Jaeger <aj@arthur.rhein-neckar.de>
  * CHARGEMAX fix from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
@@ -890,7 +899,7 @@ void setDefaults()
 #elif defined(ISDN_AT)
     currency_factor = 1.056;
 #else
-    currency_factor = 0.121;
+    currency_factor = 0.12;
 #endif
 
   } /* if */
@@ -1235,7 +1244,7 @@ static int Set_Globals(section *SPtr)
 					_print_msg("%s: ERROR: Can't allocate memory!\n", Myname);
 					return 0;
 				}
-				
+
 				lineformats[++cnt] = NULL;
 	  	}
 

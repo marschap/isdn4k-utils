@@ -1,4 +1,4 @@
-/* $Id: isdnconf.c,v 1.13 1999/03/07 18:18:42 akool Exp $
+/* $Id: isdnconf.c,v 1.14 1999/03/15 21:27:48 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnconf.c,v $
+ * Revision 1.14  1999/03/15 21:27:48  akool
+ * - isdnlog Version 3.06
+ * - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
+ * - isdnconf: added a small LCR-feature - simply try "isdnconf -c 069"
+ * - isdnlog: dont change CHARGEINT, if rate is't known!
+ * - sonderrufnummern 1.02 [15-Mar-99] :: added WorldCom
+ * - tarif.dat 1.09 [15-Mar-99] :: added WorldCom
+ * - isdnlog now correctly handles the new "Ortstarif-Zugang" of UUnet
+ *
  * Revision 1.13  1999/03/07 18:18:42  akool
  * - new 01805 tarif of DTAG
  * - new March 1999 tarife
@@ -308,7 +317,7 @@ int find_data(char *_alias, char *_number, section *conf_dat)
 
 				ptr = (CEPtr = Get_Entry(SPtr->entries,CONF_ENT_PROG))?(CEPtr->value?CEPtr->value:""):"";
 				print_msg(PRT_NORMAL,"%s:\t%s\n",make_word(CONF_ENT_PROG),ptr);
-	
+
 				ptr = (CEPtr = Get_Entry(SPtr->entries,CONF_ENT_USER))?(CEPtr->value?CEPtr->value:""):"";
 				print_msg(PRT_NORMAL,"%s:\t%s\n",make_word(CONF_ENT_USER),ptr);
 
@@ -668,19 +677,58 @@ int main(int argc, char *argv[], char *envp[])
 
 	if (areacode[0] != '\0')
 	{
-		char *ptr;
-		int len;
-		
+		char *ptr, msg[BUFSIZ];
+		int len, i, zone;
+
+
+	    	(void)initSondernummern(msg);
+	    	/* print_msg(PRT_NORMAL, "%s\n", msg); */
+            	initTarife(msg);
+	    	/* print_msg(PRT_NORMAL, "%s\n", msg); */
+
 		if ((ptr = get_areacode(areacode,&len,quiet?C_NO_ERROR|C_NO_WARN:0)) != NULL)
 		{
 			if (!isdnmon)
 			{
-				const char *area = area_diff_string(NULL,areacode);
+				const char *area;
 
-				print_msg(PRT_NORMAL,"%s%s%s\n",ptr,area[0] != '\0'?" / ":"", area[0] != '\0'?area:"");
+
+				if ((i = is_sondernummer(areacode, DTAG)) > -1) {
+				  print_msg(PRT_NORMAL, "%s\n", SN[i].info);
+
+  				  if (!memcmp(areacode, "01610", 5) ||
+           			      !memcmp(areacode, "01617", 5) ||
+           			      !memcmp(areacode, "01619", 5))
+  				    zone = C_NETZ;
+  				  else if (!memcmp(areacode, "01618", 5))
+  				    zone = C_MOBILBOX;
+  				  else if (!memcmp(areacode, "0170", 4) ||
+           			           !memcmp(areacode, "0171", 4))
+  				    zone = D1_NETZ;
+  				  else if (!memcmp(areacode, "0172", 4) ||
+           			           !memcmp(areacode, "0173", 4))
+  				    zone = D2_NETZ;
+  				  else if (!memcmp(areacode, "0177", 4) ||
+           			           !memcmp(areacode, "0178", 4))
+  				    zone = E_PLUS_NETZ;
+  				  else if (!memcmp(areacode, "0176", 4) ||
+           			           !memcmp(areacode, "0179", 4))
+  				    zone = E2_NETZ;
+  				  else
+                                    zone = GLOBALCALL;
+				}
+				else {
+				  area = area_diff_string(NULL,areacode);
+    				  zone = area_diff(NULL, areacode);
+
+				  print_msg(PRT_NORMAL,"%s%s%s\n",ptr,area[0] != '\0'?" / ":"", area[0] != '\0'?area:"");
+                                } /* else */
+
+                                showcheapest(zone, 181);
+
 				exit(0);
 			}
-			
+
 			print_msg(PRT_NORMAL,"%s\t%d\t",ptr,len);
 		}
 		else

@@ -1,4 +1,4 @@
-# $Id: sonderrufnummern.dat,v 1.6 1999/03/14 14:26:18 akool Exp $
+# $Id: sonderrufnummern.dat,v 1.7 1999/03/15 21:27:38 akool Exp $
 #
 # Sonderrufnummerndatenbank
 #
@@ -19,6 +19,15 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 # $Log: sonderrufnummern.dat,v $
+# Revision 1.7  1999/03/15 21:27:38  akool
+# - isdnlog Version 3.06
+# - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
+# - isdnconf: added a small LCR-feature - simply try "isdnconf -c 069"
+# - isdnlog: dont change CHARGEINT, if rate is't known!
+# - sonderrufnummern 1.02 [15-Mar-99] :: added WorldCom
+# - tarif.dat 1.09 [15-Mar-99] :: added WorldCom
+# - isdnlog now correctly handles the new "Ortstarif-Zugang" of UUnet
+#
 # Revision 1.6  1999/03/14 14:26:18  akool
 # - isdnlog Version 3.05
 # - new Option "-u1" (or "ignoreRR=1")
@@ -45,7 +54,7 @@
 #
 # Stand: 1/99
 #
-V:1.01 [14-Mar-99]
+V:1.02 [15-Mar-99]
 33|0010    |free|  |     |     |     |Operator Service
 33|0031800 |free|  |     |     |     |Plus Freephone Service (Niederl.)
 33|0041800 |free|  |     |     |     |Plus Freephone Service (Schweiz)
@@ -510,3 +519,4 @@ V:1.01 [14-Mar-99]
 70|01172   |free|  |     |     |     |DTAG-Störungsannahme
 70|01174   |free|  |     |     |     |DTAG-Störungsannahme
 70|2000    |?   |  |     |     |     |EXPO-Hotline
+88|0191999 |City|  |     |     |     |UUnet PPP-Zugang

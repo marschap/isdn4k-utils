@@ -1,4 +1,4 @@
-/* $Id: takt_de.c,v 1.12 1999/03/14 14:27:12 akool Exp $
+/* $Id: takt_de.c,v 1.13 1999/03/15 21:28:04 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,15 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: takt_de.c,v $
+ * Revision 1.13  1999/03/15 21:28:04  akool
+ * - isdnlog Version 3.06
+ * - README: explain some terms about LCR, corrected "-c" Option of "isdnconf"
+ * - isdnconf: added a small LCR-feature - simply try "isdnconf -c 069"
+ * - isdnlog: dont change CHARGEINT, if rate is't known!
+ * - sonderrufnummern 1.02 [15-Mar-99] :: added WorldCom
+ * - tarif.dat 1.09 [15-Mar-99] :: added WorldCom
+ * - isdnlog now correctly handles the new "Ortstarif-Zugang" of UUnet
+ *
  * Revision 1.12  1999/03/14 14:27:12  akool
  * - isdnlog Version 3.05
  * - new Option "-u1" (or "ignoreRR=1")
@@ -95,6 +104,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <errno.h>
 #define MAXZONES     19
 #define UNKNOWN         -1
 #define SONDERNUMMER -2 /* FIXME: set by readconfig(), but unused by now */
@@ -118,7 +128,8 @@
 #define INTERNET     17
 #define GLOBALCALL   18
 #define DTAG         33
-#define I4LCONFDIR "/etc/isdn"
+#define I4LCONFDIR   "/etc/isdn"
+#define DATADIR      "/usr/lib/isdn"
 #else
 #include "isdnlog.h"
 #endif
@@ -220,14 +231,14 @@ char *zonen[MAXZONES] = { "Intern", "CityCall", "RegioCall", "GermanCall",
 static TARIF t[MAXPROVIDER];
 static int   line = 0;
 static int   use[MAXPROVIDER];
-#ifdef STANDALONE
+
 typedef struct {
   int    prefix;
   double tarif;
 } SORT;
 
 static SORT sort[MAXPROVIDER];
-#endif
+
 
 static void warning(char *s)
 {
@@ -541,7 +552,7 @@ int taktlaenge(int chan, char *why)
   *why = 0;
 
   if (!t[call[chan].provider].used) {
-    strcpy(why, "NO CHARGE INFOS FOR THIS PROVIDER");
+    sprintf(why, "No charge infos for provider %d", call[chan].provider);
     return(UNKNOWN);
   } /* if */
 
@@ -594,8 +605,7 @@ void preparecint(int chan, char *msg, char *hint, int viarep)
   provider = ((call[chan].provider == UNKNOWN) ? preselect : call[chan].provider);
 
   if ((call[chan].sondernummer[CALLED] != UNKNOWN) &&      /* Sonderrufnummer, Abrechnung zum CityCall-Tarif */
-      (SN[call[chan].sondernummer[CALLED]].tarif == SO_CITYCALL) &&
-      (provider == DTAG))
+      (SN[call[chan].sondernummer[CALLED]].tarif == SO_CITYCALL))
     zone = CITYCALL;
   else if ((call[chan].sondernummer[CALLED] != UNKNOWN) && /* Sonderrufnummer, kostenlos */
       (SN[call[chan].sondernummer[CALLED]].tarif == SO_FREE) &&
@@ -629,7 +639,7 @@ void preparecint(int chan, char *msg, char *hint, int viarep)
     if ((i = call[chan].confentry[OTHER]) > UNKNOWN)
       zone = known[i]->zone;
     if (zone == UNKNOWN)
-    zone = area_diff(NULL, call[chan].num[CALLED]);
+      zone = area_diff(NULL, call[chan].num[CALLED]);
 
     if ((zone == AREA_ERROR) || (zone == AREA_UNKNOWN))
       zone = UNKNOWN;
@@ -770,7 +780,7 @@ void price(int chan, char *hint, int viarep)
         onesec = call[chan].pay / duration;
         pay2 = (duration - 600) * onesec * 0.30;
 
-        sprintf(sx, "10plus %s %s - %s %s = %s %s\n",
+        sprintf(sx, "10plus %s %s - %s %s = %s %s",
           WAEHRUNG,
           double2str(call[chan].pay, 6, 2, DEB),
           WAEHRUNG,
@@ -1181,129 +1191,90 @@ void exitTarife()
 } /* exitTarife */
 
 
-#if V1
-void initSondernummern()
-{
-  register char  *p1, *p2, *p3;
-  register int    tarif;
-  auto 	   FILE  *f;
-  auto	   char   s[BUFSIZ], msn[128], sinfo[256], linfo[256], fn[BUFSIZ];
-  auto	   double grund1, grund2, takt1, takt2;
-
-
-  sprintf(fn, "%s/sonderrufnummern.dat", DATADIR);
-
-  if ((f = fopen(fn, "r")) != (FILE *)NULL) {
-    while ((p1 = fgets(s, BUFSIZ, f))) {
-      if (*p1 != '#') {
-        if ((p2 = strchr(p1, '|'))) {
-          *p2 = 0;
-
-          p3 = p2 - 1;
-          while (*p3 == ' ')
-            *p3-- = 0;
-
-          strcpy(msn, p1);
-          p1 = p2 + 1;
-          if ((p2 = strchr(p1, '|'))) {
-            *p2 = 0;
-
-            if (!strcmp(p1, "City"))
-              tarif = 1;
-            else if (!strcmp(p1, "free"))
-              tarif = 0;
-            else
-              tarif = UNKNOWN;
-
-            p1 = p2 + 1;
-            if ((p2 = strchr(p1, '|'))) {
-              *p2 = 0;
-              grund1 = atof(p1);
-              p1 = p2 + 1;
-              if ((p2 = strchr(p1, '|'))) {
-                *p2 = 0;
-                grund2 = atof(p1);
-                p1 = p2 + 1;
-                if ((p2 = strchr(p1, '|'))) {
-                  *p2 = 0;
-                  takt1 = atof(p1);
-                  p1 = p2 + 1;
-                  if ((p2 = strchr(p1, '|'))) {
-                    *p2 = 0;
-              	    takt2 = atof(p1);
-              	    p1 = p2 + 1;
-              	    if ((p2 = strchr(p1, '|'))) {
-                      *p2 = 0;
-
-        	      p3 = p2 - 1;
-        	      while (*p3 == ' ')
-          	        *p3-- = 0;
-
-        	      while (*p1 == ' ')
-                        p1++;
-
-        	      strcpy(sinfo, p1);
-                      p1 = p2 + 1;
-                      if ((p2 = strchr(p1, '\n'))) {
-                        *p2 = 0;
-
-        	        p3 = p2 - 1;
-        	        while (*p3 == ' ')
-          	          *p3-- = 0;
-
-        	        while (*p1 == ' ')
-                          p1++;
-
-                        strcpy(linfo, p1);
-
-		        nSN++;
-                        SN = realloc(SN, sizeof(SonderNummern) * nSN);
-                        SN[nSN - 1].msn = strdup(msn);
-                        SN[nSN - 1].sinfo = strdup(sinfo);
-        	        SN[nSN - 1].tarif = tarif;
-                        SN[nSN - 1].grund1 = grund1;
-                        SN[nSN - 1].grund2 = grund2;
-                        SN[nSN - 1].takt1  = takt1;
-                        SN[nSN - 1].takt2  = takt2;
-                      } /* if */
-              	    } /* if */
-                  } /* if */
-                } /* if */
-              } /* if */
-            } /* if */
-          } /* if */
-        } /* if */
-      } /* if */
-    } /* while */
-
-    fclose(f);
-  } /* if */
-} /* initSondernummern */
-
-
-int is_sondernummer(char *num)
-{
-  register int i;
-
-
-  if ((strlen(num) >= interns0) && ((*num == '0') || (*num == '1')))
-    for (i = 0; i < nSN; i++)
-      if (!strncmp(num, SN[i].msn, strlen(SN[i].msn)))
-        return(i);
-
-  return(-1);
-} /* sondernummer */
-#endif /* V1 */
-
-
-#ifdef STANDALONE
-
-int compare(const SORT *s1, const SORT *s2)
+static int compare(const SORT *s1, const SORT *s2)
 {
   return(s1->tarif > s2->tarif);
 } /* compare */
 
 
+void showcheapest(int zone, int duration)
+{
+  register int        prefix, n = 0, n1, tz, cheapest = UNKNOWN;
+  auto     char       why[BUFSIZ], s[BUFSIZ];
+  auto	   double     cheaptarif, providertarif, tarif;
+  auto	   time_t     cur_time;
+  auto 	   struct tm *tm;
+
+
+  time(&cur_time);
+  tm = localtime(&cur_time);
+  tz = tarifzeit(tm, why, 0);
+  print_msg(PRT_NORMAL, "%s\n", why);
+
+
+  if (!preselect) {
+    preselect = DTAG;
+
+    /* print_msg(PRT_NORMAL, "ASSUMING PRESELECT IS 010%d:%s\n", preselect, t[preselect].Provider); */
+  } /* if */
+
+  cheaptarif = 99999.9;
+
+  if (duration == -1)
+    duration = TEST;
+
+  for (prefix = 0; prefix < MAXPROVIDER; prefix++) {
+    if (t[prefix].used) {
+
+      tz = tarifzeit(tm, why, ((prefix == DTAG) && CityWeekend));
+      tarif = tpreis(prefix, zone, tz, tm->tm_hour, duration);
+
+      if (prefix == preselect)
+        providertarif = tarif;
+
+      if ((tarif > 0.0) && (tarif < cheaptarif)) {
+        cheaptarif = tarif;
+        cheapest = prefix;
+      } /* if */
+
+      sort[n].prefix = prefix;
+      sort[n].tarif = tarif;
+      n++;
+
+    } /* if */
+  } /* for */
+
+  if (cheapest != UNKNOWN) {
+    tarif = t[cheapest].tarif[zone][tz][tm->tm_hour];
+
+    if (t[cheapest].takt1[zone] == UNKNOWN)
+      sprintf(s, "DM %5.3f/%7.3fs", t[cheapest].taktpreis[zone], tarif);
+    else
+      sprintf(s, "DM %5.3f/Min, Takt %d/%d", tarif, t[cheapest].takt1[zone], t[cheapest].takt2[zone]);
+
+    print_msg(PRT_NORMAL, "\nUse 010%02d:%s, %s, costs DM %7.3f/%ds",
+      cheapest, t[cheapest].Provider, s,
+      cheaptarif, duration);
+
+    if (cheapest != preselect) {
+      print_msg(PRT_NORMAL, "\n\tsaving DM %7.3f/%ds vs. preselect (010%02d:%s)",
+        providertarif - cheaptarif, duration,
+        preselect, t[preselect].Provider);
+    } /* if */
+
+    print_msg(PRT_NORMAL, "\n\n");
+  } /* if */
+
+  qsort(sort, n, sizeof(SORT), compare);
+
+  for (n1 = 0; n1 < n; n1++)
+    if (sort[n1].tarif != -1)
+      print_msg(PRT_NORMAL, "010%02d:%s%*sDM %5.3f\n", sort[n1].prefix,
+        t[sort[n1].prefix].Provider, 15 - strlen(t[sort[n1].prefix].Provider), "", sort[n1].tarif);
+} /* showcheapest */
+
+
+#ifdef STANDALONE
 int main(int argc, char *argv[], char *envp[])
 {
   register int    prefix, z, d, h, n = 0, n1, cheapest = UNKNOWN;

@@ -1,8 +1,8 @@
-# @(#)tarif.dat  1.08  14-Mar-99  11:35
+# @(#)tarif.dat  1.09  15-Mar-99  20:00
 #
 # Copyright 1995, 1999 by Andreas Kool (akool@isdn4linux.de)
 #
-V:1.08 [14-Mar-99]
+V:1.09 [15-Mar-99]
 #
 # P: Provider
 # G: tt.mm.jjjj Tarif gltig ab
@@ -168,6 +168,7 @@ C:		   pro Monat 2 Stunden Nutzungsentgelt frei
 C:                 monatliche Grundgebhr DM 8,00
 C:ISDN-Tarif
 C:FIXME: Tarife überprüfen! 04-Mar-99
+C:FORMEL: 7,2 / Minutenpreis => Taktlaenge
 C:Quelle: http://www.telekom.de/untern/tarife/mobil/index.htm
 I:0191011
 Z:1,0.12
@@ -325,6 +326,21 @@ T:W09-21=0.74
 T:W21-09=0.60
 T:E09-21=0.74
 T:E21-09=0.60
+################################################################
+P:88=WorldCom
+C:Dies sind *nicht* die korrekten Tarife von WorldCom, da WorldCom
+C:keine Tarifdaten veroeffentlicht!
+C:Vielmehr handelt es sich hier nur um die Tarife fuer den
+C:UUnet Ortstarif-Zugang!
+I:0191999
+Z:1,0.12
+T:W02-05=240  # Nacht
+T:W05-09=150  # Spar
+T:W09-18=90   # Standard
+T:W18-21=150  # Spar
+T:W21-02=240  # Mondschein
+T:E05-21=150  # Spar
+T:E21-05=240  # Mondschein
 ################################################################
 P:90=Viag Intercom
 G:01.01.1999

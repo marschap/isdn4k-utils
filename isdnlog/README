@@ -1,4 +1,4 @@
-ISDNLOG - Version 3.05 -  				14-Mar-99  14:11
+ISDNLOG - Version 3.06 -  				15-Mar-99  22:05
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
@@ -118,11 +118,12 @@ Inhalt:
 16.1.   Postgres95
 16.2.   MySQL
 17.	Tarifdatenbank
-18.    	Probleme?
-19.     Verwendete Dateien
-20.     Verwendete Environment-Variablen
-21.     Verwendete Abkuerzungen
-22.     Danksagung
+18.	LCR (Least cost router)
+19.    	Probleme?
+20.     Verwendete Dateien
+21.     Verwendete Environment-Variablen
+22.     Verwendete Abkuerzungen
+23.     Danksagung
 
 
 Vorwort
@@ -3237,8 +3238,18 @@ Kommentare werden geloescht.
   -t 'SI'               Zeigt alle Eintraege mit Service-Indicator 'SI' an.
                         Gilt nicht fuer den Befehl -A.
 
-  -c 'Code'   "code"    Ermittelt die Vorzahl zu der Telefonnummer und gibt
-                        diese dann aus. Gilt nicht fuer -A und -D.
+  -c 'Code'   "code"    Ermittelt die Ortsbezeichnung sowie die Gebuehrenzone
+     	      		(relativ zum eigenen Standort, d.h. dem Eintrag
+     	      		AREACODE in der "callerid.conf") zu der Telefonnummer
+                        "code".
+                        Daneben wird ausgegeben, ueber welchen Provider
+                        jetzt gerade eine (181 Sekunden lange) Verbindung
+                        zu dieser Nummer am guenstigsten waere.
+                        Gilt nicht fuer -A und -D.
+                        (181 Sekunden als gedachte Dauer der Verbindung
+                         wurde gewaehlt, weil durch diese "krumme" Zahl
+                         alle Provider, die im Sekunden-Takt abrechnen
+                         massiv im Vorteil sind - was gewuenscht ist!)
 
   -i          "ignore"  Es wird dann bei den Optionen -n und -a die
                         Gross/Kleinschreibung ignoriert.
@@ -3951,7 +3962,196 @@ die Kennzahl "98" den Tarif der Fa. Mox Telecom AG meint.
 :  - Sonderbehandlung von 24. Dezember bis 31. Dezember (Telekom)
 
 
-18. Probleme?
+18. LCR (Least cost router)
+---------------------------
+
+Seit dem 1.1.1998 duerfen in Deutschland ganz offiziell (im kommerziellen
+Umfeld war das schon laenger gang und gebe) auch andere Firmen
+(neben der DTAG = Deutsche Telekom) Telefondienste anbieten.
+
+Dazu wurde die RegTP - Regulierungsbehoerde fuer Telekomunikation und Post
+(http://www.regtp.de) ins Leben gerufen, die seitdem (u.a.) die
+Verbindungsnetzbetreiberauswahlkennziffern vergibt.
+
+Ueber diese Nummern kann nun jeder selbst entscheiden, ueber welchen
+Provider (== Telefongesellschaft) er fuer das folgende Telefonat telefonieren
+moechte.
+
+Daher taucht im Bereich der Telekomunikation ein neuer - bislang primaer
+in den USA gelaeufiger Begriff auf: das LCR, Least cost routing, d.h. die
+Auswahl des guenstigsten Providers fuer eine gleich entstehende Verbindung.
+
+
+Dazu muá folgendermaáen gewaehlt werden:
+
+
+  010 xxx 49 69 123456
+   ^-------------------------- Verbindungsnetzbetreiberauswahl
+       ^---------------------- Nummer des gewuenschten Providers
+           ^------------------ Landesvorwahl
+              ^--------------- Ortsvorwahl
+                  ^----------- Rufnummer
+
+Endet der Ruf im eigenen Land, kann die Landesvorwahl entfallen.
+Endet der Ruf im eigenen Ortsnetz, kann die Ortsvorwahl (bis auf weiteres)
+entfallen.
+
+Mittels "xxx" wird der gewuenschte Provider selektiert, wobei die RegTP
+zuerst alle 99 2-stelligen Nummern vergeben hat, und danach dazu ueber ging,
+dreistellige Nummern, bislang i.d.F, 0xx zu vergeben.
+
+Um ein konkretes Beispiel zu machen: Wenn man beabsichtigt, von Muenchen
+nach Frankfurt ein Telefonat mit der Nummer 4711 zu fuehren, und dazu
+den Provider VIAG Intercom verwenden moechte, waehlt man folgende Nummer:
+
+   010 90 069 4711
+    ^---------------- Verbindungsnetzbetreiberauswahl
+       ^------------- VIAG Intercom
+           ^--------- Frankfurt
+              ^------ Rufnummer
+
+
+Ein grundlegendes Problem wurde jedoch bislang nicht geloest: Sobald man
+ueber einen alternativen Carrier (also irgend eine Telefongesellschaft
+jenseits der DTAG) eine Verbindung aufbaut, werden keinerlei Gebuehren-
+informationen mehr uebertragen - weder waehrend, noch am Ende der
+Verbindung.
+D.h. die schoenen "Leistungsmerkmale" AOCD sowie AOCE funktionieren _nicht_
+mehr.
+
+Daher macht es per heute (1999) wirklich absolut keinen Sinn mehr, einen
+ISDN-Komfort-Anschluá zu beantragen! Das dort enthaltene "Leitungsmerkmal"
+Gebuehreninformationen waehrend der Verbindung wird sowieso nur noch bei
+Verbindungen ueber die DTAG erbracht (da die DTAG meistens die teuerste
+Gesellschaft ist, kommt das also praktisch nie mehr vor ...)
+Wer den isdnlog (und eine up-to-date "tarif.dat") verwendet, bekommt jedoch
+bei *allen* Gesellschaften - incl. der DTAG - Gebuehreninformationen geliefert,
+in Bezug auf AOCD (waehrend der Verbindung) sogar genauer, als die
+von der DTAG!
+
+
+Was kann nun isdnlog (ab der Version 3.x) mit dieser neuen Situation anstellen?
+
+1. isdnlog erkennt eine evtl. vorgewaehlte Verbindungsnetzbetreiberauswahl,
+   und dekodiert den entsprechenden Provider heraus.
+
+   Dazu greift isdnlog auf drei Quellen zurueck:
+     - zum ersten besitzt isdnlog ... bislang hardcoded ... die Namen
+       aller bislang bei der RegTP angemeldeten Provider. Von den bis zum
+       11.Maerz 1999 angemeldeten 126 Telefongesellschaften bieten allerdings
+       noch bei weitem nicht alle wirklich Telefondienste an.
+
+     - zum zweiten besitzt isdnlog eine Tarif-Datenbank, die Datei
+       "/usr/lib/isdn/tarif.dat"
+       Dort sind die Tarife der diversen Telefongesellschaften hinterlegt.
+
+       Da sich die Tarife haeufig sogar taeglich aendern, kann diese
+       Datei im Moment nur als Anhaltspunkt angesehen werden. Zu welchem
+       Zeitpunkt die dort hinterlegten Tarife mit Sicherheit gueltig waren,
+       kann dem Eintrag "V:" am Anfang der Datei entnommen werden.
+       Sollte mir irgend jemand verbesserte Tarifinformationen zuschicken
+       (an akool@isdn4linux.de), bitte ich darum, immer auch diese
+       Versionsnummer zu incrementieren!
+
+     - diverse Telefongesellschaften arbeiten mittlerweile mit sog.
+       Resellern - Firmen, die unter derselben Verbindungsnetzbetreiberauswahl
+       zu unterschiedlichen Tarifen Telefondienste anbieten. Hierzu muá man
+       sich bei einem der Reseller zuerst anmelden - meistens kostenlos.
+
+       Zum Beispiel hat die Firma Star Telecom die
+       Verbindungsnetzbetreiberauswahl 01098 erhalten, bietet jedoch an
+       Privatkunden praktisch gar keine Telefondienste an.
+
+       Stattdessen verkauft Star ihre Dienste weiter an die Firmen
+
+         Nikoma, Mox sowie C@llas
+
+       Ist man gewillt, ueber eine dieser drei Firmen zu telefonieren,
+       muá man sich zuerst dort anmelden. Erschwerend kommt hinzu, dass alle
+       diese Firmen noch unterschiedliche Tarif-Varianten anbieten:
+
+         - Abrechnung im Minutentakt
+         - Abrechnung im Sekundentakt, dafuer etwas teurer
+         - besondere Abrechnung, wenn man in einer sog. Superregion, d.h.
+           einer Groástadt wie Frankfurt, Muenchen, Hamburg, Stuttgart usw.
+           wohnt.
+
+       Da jedoch alles oben genannte ueber ein und dieselbe
+       Verbindungsnetzbetreiberauswahlkennziffer, im Beispiel also
+       01098 laeuft, ist isdnlog absolut ausser Stande zu entscheiden,
+       was nun gemeint ist, wenn eine Verbindung mit der Nummer "01098"
+       beginnt.
+
+       Daher sieht isdnlog in der Datei "/etc/isdn/tarif.conf" nach,
+       welcher konkrete Provider sowie welche konkrete Tarifvariante
+       gemeint ist, wenn z.b. die Nummer 01098 auftaucht.
+       Diese Datei muá dementspechend jeder entsprechend seiner eigenen
+       Situation fuellen.
+
+2. Anhand des ermittelten Providers kann isdnlog nun berechnen, was dieser
+   Provider fuer eine Verbindung verlangt, und wie lang bei diesem Provider
+   ein "Gebuehrentakt" dauert.
+
+   Mit diesen Informationen macht isdnlog per heute folgendes:
+
+     1. Er ist in der Lange, am Ende einer Verbindung auszugeben, was die
+     	gerade beendete Verbindung gekostet hat.
+
+     2. Er ist in der Lage, den CHARGEINT von isdn4linux neu zu setzen,
+     	d.h. die Steuerung, wann eine ISDN-Data-Verbindung auflegen soll,
+        um genau in einen Gebuehrentakt hineinzupassen.
+
+     3. Er ist in der Lage, den Gebuehrentakt (-> AOCD) zu "erfinden", und
+     	auszugeben. Dieser dazuerfundene Gebuehrentakt wurde CI (fuer
+        ChargeInt) getauft.
+
+     4. Da isdnlog von (fast) allen aktiven Providern die Tarifinformationen
+     	besitzt, macht er zu Beginn einer Verbindung evtl. den Vorschlag,
+        einen anderen - guenstigeren - Provider zu waehlen.
+
+       	Das ist (leider) nur fast das, was ein sog. LCR (least-cost-router)
+        erbringt. Ein echter LCR sagt nicht, welchen Provider man haette
+        benutzten sollen, sondern benutzt genau diesen automatisch.
+        Dies ist aber per heute leider aufgrund der Physik einer
+	handelsueblichen ISDN-Karte nicht moeglich.
+        (Ich persoenlich benutze seit dem 1.1.1998 eine Tk-Anlage mit
+         internem S0-Bus, an dem alle ISDN-Telefone angeschlossen sind)
+
+3. Praktisch alle neuen Provider kaempfen mit einem ueblen Problem: Sie
+   besitzen (in Relation zur DTAG) nur eine sehr begrenzte Anzahl freier
+   Leitungen. Besonders Provider, die mit extrem guenstigen Angeboten
+   locken, sind erst nach 10 .. 20 maligem Versuchen verfuegbar.
+   (Das beste Beispiel z.Zt. (Maerz 1999) ist sicherlich die Firma
+    01079:Viatel, die zwar extrem guenstige Tarife anbietet, aber praktisch
+    nie verfuegbar ist)
+   Dieses Problem kann natuerlich auch isdnlog nicht aus der Welt schaffen,
+   jedoch bringt isdnrep eine Statistik
+   (in der Rubrik "Outgoing calls ordered by Provider") mit der
+   prozentualen Verfuegbarkeit jedes benutzen Providers.
+   Diese Verfuegbarkeitsrate bezieht sich natuerlich nur auf die jeweils
+   eigenen Daten.
+
+
+4. Zum echten LCR gehoert aber noch etwas anderes! Bei den normalen
+   Telefonnummern ist es einfach (naja, ich habe ueber 3 Jahre gebraucht,
+   bis isdnlog das konnte), anhand einer Vorzonungstabelle zu berechnen,
+   was eine Verbindung zwischen A und B kostet. Leider gibt es jedoch in
+   Deutschland ca. 210 sog. Sonderrufnummern, die sich nicht dem ueblichen
+   Schema unterziehen. Ein sehr bekanntes Beispiel fuer eine Sonderrufnummer
+   iat die Telefonnummer "112 -> Feuerwehr"
+   Die Telefonnummer 112 kostet nichts, was aber beileibe nicht fuer alle
+   Sonderrufnummern gilt. Ganz im Gegenteil: Es gibt viele Sonderrufnummern,
+   die weit mehr kosten, als die Fernzone! Bekannt sind hier sicherlich
+   alle Rufnummern, die mit 0180 oder 0190 beginnen, oder die div.
+   Telefonauskunften 118xx
+   Dummerweise kosten diese Sondernummern bei jedem Provider etwas anderes,
+   oder werden Fallweise von dem einen oder anderen Provider gar nicht
+   unterstuetzt. Daher besitzt isdnlog die Datei
+   "/usr/lib/isdn/sonderrufnummern.dat", die diese Besonderheiten - so
+   weit bekannt, enthaelt.
+
+
+19. Probleme?
 -------------
 
 Sollte isdnlog nicht wie beschrieben arbeiten, muessen folgende Punkte
@@ -4077,7 +4277,7 @@ gdb bin/isdnlog
 Den _gesamten_ Output an die oben angegebene Adresse senden.
 
 
-19. Verwendete Dateien
+20. Verwendete Dateien
 ----------------------
 
 Folgende Files werden von diesem System verwendet:
@@ -4099,6 +4299,7 @@ Folgende Files werden von diesem System verwendet:
   /usr/lib/isdn/areacodes    	       - Neues Vorwahl-Verzeichnis
   /usr/lib/isdn/sonderrufnummern.dat   - Verzeichnis aller Sonderrufnummern (110, 112 ...)
   /usr/lib/isdn/vorwahl.dat	       - Verzonungstabelle
+  /usr/lib/isdn/tarif.dat	       - Tarifdatenbank
   /var/log/isdn.log	     - Das Logbuch
   /var/run/isdnlog.pid	     - Enthaelt die PID des laufenden isdnlog
   /dev/isdnctrl0	     - Gibt das Q.931 Protokoll des HiSax-Treibers aus
@@ -4107,7 +4308,7 @@ Folgende Files werden von diesem System verwendet:
   /usr/X11R6/lib/X11/app-defaults/Isdn - Resourcefile fuer xisdn
 
 
-20. Verwendete Environment-Variablen
+21. Verwendete Environment-Variablen
 ------------------------------------
 
 Folgende Environment-Variablen werden von diesem System verwendet:
@@ -4119,7 +4320,7 @@ Folgende Environment-Variablen werden von diesem System verwendet:
   		  X-Client "xisdn"
 
 
-21. Verwendete Abkuerzungen
+22. Verwendete Abkuerzungen
 ---------------------------
 
   VSt     = Vermittlungsstelle (das Amt)
@@ -4161,7 +4362,7 @@ Folgende Environment-Variablen werden von diesem System verwendet:
   PRI	  = Primary rate interface (30 B-Kanaele)
 
 
-22. Danksagung
+23. Danksagung
 --------------
 
 Bedanken moechte ich mich vor allem bei
