@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.70 1999/06/22 19:40:46 akool Exp $
+/* $Id: processor.c,v 1.71 1999/06/26 12:25:29 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.71  1999/06/26 12:25:29  akool
+ * isdnlog Version 3.37
+ *   fixed some warnings
+ *
  * Revision 1.70  1999/06/22 19:40:46  akool
  * zone-1.1 fixes
  *
@@ -728,6 +732,7 @@
 #include "isdnlog.h"
 #include "sys/times.h"
 #include "asn1.h"
+#include "zone.h"
 
 static int    HiSax = 0, hexSeen = 0, uid = UNKNOWN, lfd = 0;
 static char  *asnp, *asnm;
@@ -963,7 +968,7 @@ void buildnumber(char *num, int oc3, int oc3a, char *result, int version,
       Q931dump(TYPE_STRING, -1, s, version);
     } /* if */
   } /* if */
-  
+
   if (!*intern) {
     if (*provider == UNKNOWN)
       *provider = preselect;
@@ -3478,7 +3483,7 @@ void processRate(int chan)
 {
   call[chan].Rate.start  = call[chan].connect;
   call[chan].Rate.now    = call[chan].disconnect = cur_time;
-  
+
   if (getRate(&call[chan].Rate, NULL) == UNKNOWN) {
     call[chan].tarifknown = 0;
   } else {
@@ -3560,7 +3565,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
 
   if (msg)
     *(*msg = message) = '\0';
-  
+
   if (tip)
     *(*tip = lcrhint) = '\0';
 
@@ -3586,7 +3591,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     auto   int	l;
 
 
-    l = getAreacode(DTAG, call[chan].num[CALLING] + 3, &text);
+    l = getAreacode(49, call[chan].num[CALLING] + 3, &text);
     print_msg(PRT_NORMAL, "getAreacode(49,%s,\"%s\")=%d\n", call[chan].num[CALLING] + 3, text, l);
 
     if ((get_areacode(call[chan].num[CALLING], &l, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)))
@@ -3601,7 +3606,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
     static char dst[BUFSIZ], *text;
     auto   int	l;
 
-    l = getAreacode(DTAG, call[chan].num[CALLED] + 3, &text);
+    l = getAreacode(49, call[chan].num[CALLED] + 3, &text);
     print_msg(PRT_NORMAL, "getAreacode(49,%s,\"%s\")=%d\n", call[chan].num[CALLED] + 3, text, l);
     if ((get_areacode(call[chan].num[CALLED], &l, C_NO_WARN | C_NO_EXPAND | C_NO_ERROR)))
       Strncpy(dst, call[chan].num[CALLED], l + 1);
@@ -3634,7 +3639,7 @@ static void prepareRate(int chan, char **msg, char **tip, int viarep)
   if (msg && call[chan].tarifknown) {
     showRates(message);
   } /* if */
-  
+
   lcRate = call[chan].Rate;
 
   if ((call[chan].hint = getLeastCost(&lcRate, UNKNOWN)) != UNKNOWN) {
