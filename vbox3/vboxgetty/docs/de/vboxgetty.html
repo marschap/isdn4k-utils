@@ -1,20 +1,194 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML>
 <HEAD>
-<TITLE>VBOX</TITLE>
+<TITLE>vboxgetty</TITLE>
 
 
 </HEAD>
 <BODY>
-<H1>VBOX</H1>
+<H1>vboxgetty</H1>
 
-<H2>Michael Herold, <CODE>michael@abadonna.mayn.de</CODE></H2>v3.0, 12. Juni 1998
+<H2>Michael Herold, <CODE>
+<A HREF="mailto:michael@isdn4linux.de">michael@isdn4linux.de</A></CODE></H2>v3.0, 6. Juli 1998
 <P><HR>
-<EM>This document is a brief example using the Linuxdoc-SGML DTD.</EM>
+<EM>Die Dokumentation beschreibt die Installation und Konfiguration von
+<EM>vboxgetty</EM>. <EM>vboxgetty</EM> ist Teil des <EM>vbox</EM> Paketes - einem
+Anrufbeantworter f&uuml;r <EM>
+<A HREF="http://www.isdn4linux.de/">isdn4linux</A></EM>.</EM>
 <HR>
-<H2><A NAME="id-setup"></A> <A NAME="s1">1. Konfigurationsdateien</A></H2>
+<H2><A NAME="s1">1. Copyright</A></H2>
 
-<H2><A NAME="id-setup-users"></A> 1.1 vboxgetty.user</H2>
+<P>xxx
+<H2><A NAME="s2">2. Vorwort</A></H2>
+
+<P>xxx
+<H2>2.1 Was kann vbox?</H2>
+
+<P>xxx
+<H2>2.2 Was kann vbox nicht?</H2>
+
+<P>xxx
+<H2>2.3 Was wird zum Betrieb ben&ouml;tigt?</H2>
+
+<P>xxx
+<H2><A NAME="id-news"></A> <A NAME="s3">3. Neuerungen</A></H2>
+
+<P>Hier eine kurze Aufstellung der Neuerungen und &Auml;nderungen seit der
+Ver&ouml;ffentlichung von <EM>vbox</EM> Version 2.0.0B4/5.
+<P>Bitte lesen Sie sich die folgenden Abschnitte vor der Installation
+aufmerksam durch, um Unklarheiten und Fehler zu vermeiden!
+<H2><A NAME="id-news-audioformat"></A> 3.1 Format der Audiodateien</H2>
+
+<P>Als Format f&uuml;r die Audiodateien wird nur noch <EM>ulaw</EM>
+unterst&uuml;tzt. Die Formate <EM>alaw</EM>, <EM>adpcm-2</EM>, <EM>adpcm-3</EM> und
+<EM>adpcm-4</EM> sind zwar noch in <EM>isdn4linux</EM> enthalten, finden aber
+in <EM>vboxgetty</EM> keine Verwendung mehr.
+<P>Das hat mehrere Gr&uuml;nde:
+<UL>
+<LI>Im neu unterst&uuml;tzten <EM>Full Duplex Modus</EM> (siehe 
+<A HREF="#id-news-fullduplex">Full Duplex Modus</A>) ist ein wechseln
+des Formates nicht m&ouml;glich.</LI>
+<LI>Das Format <EM>ulaw</EM> bietet die beste Klangqualit&auml;t da die Daten nicht
+komprimiert werden.</LI>
+<LI>Nachrichten k&ouml;nnen mit einfachen Kommandos wie ``<CODE>cat name
+&gt;/dev/audio</CODE>'' ausgegeben werden.</LI>
+<LI>Die Verwirrung beim Umwandeln der einzelnen Formate entf&auml;llt ;-)</LI>
+</UL>
+<P>Nachteilig sei hier zu erw&auml;hnen, da&szlig; dieses Format keine Komprimierung
+macht, die Dateien also u.U. gro&szlig; werden k&ouml;nnen.
+<P>Es besteht allerdings die M&ouml;glichkeit, diese Dateien mit externen
+Programmen komprimieren zu lassen. Das Abspielen von solchen
+komprimierten Dateien wird von <EM>vboxgetty</EM> aber zur Zeit noch nicht
+unterst&uuml;tzt, da&szlig; hei&szlig;t alle Ansagetexte, die von <EM>vboxgetty</EM>
+gespielt, werden m&uuml;ssen in unkomprimierter Form vorliegen!
+<P>Der Header der von fr&uuml;heren <EM>vbox</EM> Versionen vor jede Audiodatei
+geh&auml;ngt wurde entf&auml;llt ab Version 3 komplett. Es werden nur noch die
+Audiodaten selbst gespeichert. Alle weiteren Informationen (wie
+z.B. der Name) werden in einer eigenen Datei abgelegt. Diese Dateien -
+die normalerweise von <EM>vboxgetty</EM> erzeugt und von <EM>vbox</EM> gelesen
+werden - enden mit dem K&uuml;rzel ``<CODE>.vbox</CODE>''.
+<P>Wenn Sie Ihre alten Ansagetexte von <EM>vbox</EM> Version 2 beibehalten
+m&ouml;chten, m&uuml;ssen Sie diese zuerst mit dem
+<EM>vbox</EM>-Konvertierungsprogramm in <EM>ulaw</EM> umwandeln und danach den
+Header entfernen lassen!
+<H2><A NAME="id-news-fullduplex"></A> 3.2 Full Duplex Modus</H2>
+
+<P>Ab Version 3 arbeitet <EM>vboxgetty</EM> nur noch im sogenannten <EM>Full
+Duplex Modus</EM>, der ein gleichzeitiges Abspielen und Aufzeichnen von
+Nachrichten zul&auml;&szlig;t.
+<P>In diesem Modus ist es dann zum Beispiel m&ouml;glich, bereits w&auml;hrend dem
+Abspielen des Ansagetextes die Nachricht aufzeichnen zu lassen.
+<H2><A NAME="id-news-touchtones"></A> 3.3 Touchtones</H2>
+
+<P>Touchtones die nur aus einzelnen Zahlen bestehen m&uuml;ssen nicht mehr mit
+``<CODE>#</CODE>'' und ``<CODE>*</CODE>'' eingegrenze werden.
+<P>Die Touchtones werden von den <EM>tcl</EM>-Funktionen jetzt genauso
+zur&uuml;ckgegeben wie sie eingegeben wurden, d.h. einzelne Touchtones als
+einzelne Zahlen und eine Touchtonesequenz in ``<CODE>#*</CODE>'' eingefasst.
+<H2><A NAME="id-news-numberwatching"></A> 3.4 Mehrere Nummern &uuml;berwachen</H2>
+
+<P>Dank des neuen <CODE>AT&amp;L</CODE>-Kommandos in <EM>isdn4linux</EM> ist es jetzt
+m&ouml;glich mit einem <EM>vboxgetty</EM> mehr als eine Nummer anzugeben (mit
+Wildcards).
+<P>Die Zuweisung welche Nummer f&uuml;r welchen lokalen Benutzer bestimmt ist
+erfolgt &uuml;ber eine seperate Konfigurationsdatei (siehe 
+<A HREF="#id-config-vboxgetty-user">vboxgetty.user</A>). Dort kann jedem
+lokalen Benutzer eine (oder mehrere) Nummer zugewiesen
+werden. Eingehende Anrufe zu dieser Nummer werden dann in den
+Verzeichnissen des entsprechenden Benutzers gepeichert.
+<P>Das in fr&uuml;heren Versionen verwendete Kommando <CODE>AT&amp;E</CODE>
+funktioniert auch weiterhin, es kann aber nur eine Nummer angegeben
+werden!
+<H2><A NAME="id-install"></A> <A NAME="s4">4. Installation</A></H2>
+
+<P>Vor der Installation m&uuml;ssen die zu installierenden Programme zuerst
+&uuml;bersetzt und einige Skripte vorbereitet werden.
+<P>Dazu starten Sie als erstes im Hauptverzeichnis das Skript
+``<EM>configure</EM>'', welches Ihr System untersucht und
+&uuml;berpr&uuml;ft ob alle n&ouml;tigen Teile zur &Uuml;bersetzung vorhanden sind.
+<P>&Uuml;ber verschiedene Parameter k&ouml;nnen Sie Voreinstellungen dieses Skripts
+&auml;ndern. Eine genaue Auflistung aller m&ouml;glichen Parameter erhalten Sie, wenn
+Sie in der Shell folgenden Befehl eingeben:
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+./configure --help
+</PRE>
+</CODE></BLOCKQUOTE>
+<P>Hier eine Beschreibung der wichtigsten Parameter:
+<P>
+<DL>
+<P>
+<DT><B>--sbindir=DIR</B><DD><P><CODE>DIR</CODE> legt das Verzeichnis fest, in das <EM>vboxgetty</EM> (und alle weiteren
+Programme die nur vom Benutzer <EM>root</EM> gestartet werden k&ouml;nnen) installiert
+werden soll. Voreinstellung ist ``<CODE>/usr/local/sbin</CODE>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <B>&lt;sbindir&gt;</B>
+beschrieben.
+<P>
+<DT><B>--bindir=DIR</B><DD><P><CODE>DIR</CODE> legt das Verzeichnis fest, in das <EM>vbox</EM> (und alle weiteren
+Proframme die von jedem Benutzer gestartet werden k&ouml;nnen) installiert werden
+soll. Voreinstellung ist ``<CODE>/usr/local/bin</CODE>''. Dieses Verzeichnis
+wird in der weiteren Dokumentation mit <B>&lt;bindir&gt;</B> beschrieben.
+<P>
+<DT><B>--datadir=DIR</B><DD><P><CODE>DIR</CODE> gibt das Verzeichnis an, in dem die Tcl-Skripte von <EM>vboxgetty</EM>
+installiert werden sollen. Dort wird automatisch das Unterverzeichnis
+``<CODE>vbox</CODE>'' erzeugt. Voreinstellung ist ``<CODE>/usr/local/share</CODE>''.
+Dieses Verzeichnis wird in der weiteren Dokumentation mit
+<B>&lt;pkgdatadir&gt;</B> beschrieben.
+<P>
+<DT><B>--sysconfdir=DIR</B><DD><P><CODE>DIR</CODE> legt das Verzeichnis fest, in welches die Konfigurationsdateien
+installiert werden sollen. Voreinstellung ist ``<CODE>/usr/local/etc</CODE>''.
+Dieses Verzeichnis wird in der weiteren Dokumentation mit
+<B>&lt;sysconfdir&gt;</B> beschrieben.
+<P>
+<DT><B>--with-logdir=DIR</B><DD><P><CODE>DIR</CODE> gibt das Verzeichnis an, in welches die Logdateien der Programme
+geschrieben werden sollen. Voreinstellung ist ``<CODE>/var/log</CODE>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <B>&lt;logdir&gt;</B>
+beschrieben.
+<P>
+<DT><B>--with-lockdir=DIR</B><DD><P><CODE>DIR</CODE> gibt das Verzeichnis an, in welches die Lockdateien der Programme
+erzeugt werden sollen. Voreinstellung ist ``<CODE>/var/lock</CODE>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <B>&lt;lockdir&gt;</B>
+beschrieben.
+<P>
+<DT><B>--with-piddir=DIR</B><DD><P><CODE>DIR</CODE> gibt das Verzeichnis an, in welches die Proze&szlig;dateien der Programme
+erzeugt werden sollen. Voreinstellung ist ``<CODE>/var/run</CODE>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <B>&lt;piddir&gt;</B>
+beschrieben.
+<P>
+</DL>
+<P>Nachdem ``<EM>configure</EM>'' Ihr System untersucht und einige
+Dateien angepa&szlig;t hat, k&ouml;nnen Sie die Programme mit
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+make
+</PRE>
+</CODE></BLOCKQUOTE>
+<P>&uuml;bersetzen. Nach einer fehlerfreien &Uuml;bersetzung installiert ein
+<P>
+<BLOCKQUOTE><CODE>
+<PRE>
+make install
+</PRE>
+</CODE></BLOCKQUOTE>
+<P>alle Programme in die daf&uuml;r vorgesehenen Verzeichnisse.
+<P>Wenn nicht alle Programe installiert werden sollen, k&ouml;nnen Sie die letzten
+beiden Schritte auch in einem der Programmunterverzeichnisse ausf&uuml;hren - es
+wird dann nur das jeweilige Programm &uuml;bersetzt und installiert.
+<P><B>Achtung:</B> Bei der Installation k&ouml;nnen fr&uuml;here <EM>vbox</EM> Installationen
+&uuml;berschrieben werden! Sichern Sie sich also zuvor alle &auml;lteren
+Versionen, falls Sie diese evtl. weiterverwenden m&ouml;chten!
+<P>
+<P>
+<P>
+<P>
+<P>
+<P>
+<P>
+<H2><A NAME="id-config"></A> <A NAME="s5">5. Konfigurationsdateien</A></H2>
+
+<H2><A NAME="id-config-vboxgetty-user"></A> 5.1 vboxgetty.user</H2>
 
 <P>
 <P>Ab Version 3 von <EM>vbox</EM> kann ein <EM>vboxgetty</EM> mehrere Nummern

@@ -1,46 +1,376 @@
-  VBOX
-  Michael Herold, michael@abadonna.mayn.de
-  v3.0, 12. Juni 1998
+  vboxgetty
+  Michael Herold, michael@isdn4linux.de
+  v3.0, 6. Juli 1998
 
-  This document is a brief example using the Linuxdoc-SGML DTD.
+  Die Dokumentation beschreibt die Installation und Konfiguration von
+  _v_b_o_x_g_e_t_t_y. _v_b_o_x_g_e_t_t_y ist Teil des _v_b_o_x Paketes - einem Anrufbeant­
+  worter für _i_s_d_n_4_l_i_n_u_x.
   ______________________________________________________________________
 
   Inhaltsverzeichnis
 
 
-  1. AID CDATA id-setup
+  1. Copyright
 
-     1.1 vboxgetty.conf
-     1.2 vboxgetty.user
+  2. Vorwort
+
+     2.1 Was kann vbox?
+     2.2 Was kann vbox nicht?
+     2.3 Was wird zum Betrieb benötigt?
+
+  3. Neuerungen
+
+     3.1 Format der Audiodateien
+     3.2 Full Duplex Modus
+     3.3 Touchtones
+     3.4 Mehrere Nummern überwachen
+
+  4. Installation
+
+  5. Konfigurationsdateien
+
+     5.1 vboxgetty.user
 
 
   ______________________________________________________________________
 
-  11..  KKoonnffiigguurraattiioonnssddaatteeiieenn
+  11..  CCooppyyrriigghhtt
 
-  11..11..  vvbbooxxggeettttyy..ccoonnff
+  xxx
 
-  Das ist ein Test!
+  22..  VVoorrwwoorrtt
+
+  xxx
+
+  22..11..  WWaass kkaannnn vvbbooxx??
+
+  xxx
+
+  22..22..  WWaass kkaannnn vvbbooxx nniicchhtt??
+
+  xxx
+
+  22..33..  WWaass wwiirrdd zzuumm BBeettrriieebb bbeennööttiiggtt??
+
+  xxx
+
+  33..  NNeeuueerruunnggeenn
+
+  Hier eine kurze Aufstellung der Neuerungen und Änderungen seit der
+  Veröffentlichung von _v_b_o_x Version 2.0.0B4/5.
+
+  Bitte lesen Sie sich die folgenden Abschnitte vor der Installation
+  aufmerksam durch, um Unklarheiten und Fehler zu vermeiden!
+
+
+
+  33..11..  FFoorrmmaatt ddeerr AAuuddiiooddaatteeiieenn
+
+  Als Format für die Audiodateien wird nur noch _u_l_a_w unterstützt. Die
+  Formate _a_l_a_w, _a_d_p_c_m_-_2, _a_d_p_c_m_-_3 und _a_d_p_c_m_-_4 sind zwar noch in
+  _i_s_d_n_4_l_i_n_u_x enthalten, finden aber in _v_b_o_x_g_e_t_t_y keine Verwendung mehr.
+
+  Das hat mehrere Gründe:
+
+  ·  Im neu unterstützten _F_u_l_l _D_u_p_l_e_x _M_o_d_u_s (siehe ``Full Duplex
+     Modus'') ist ein wechseln des Formates nicht möglich.
+
+  ·  Das Format _u_l_a_w bietet die beste Klangqualität da die Daten nicht
+     komprimiert werden.
+
+  ·  Nachrichten können mit einfachen Kommandos wie ``cat name
+     >/dev/audio'' ausgegeben werden.
+
+  ·  Die Verwirrung beim Umwandeln der einzelnen Formate entfällt ;-)
+
+  Nachteilig sei hier zu erwähnen, daß dieses Format keine Komprimierung
+  macht, die Dateien also u.U. groß werden können.
+
+  Es besteht allerdings die Möglichkeit, diese Dateien mit externen
+  Programmen komprimieren zu lassen. Das Abspielen von solchen
+  komprimierten Dateien wird von _v_b_o_x_g_e_t_t_y aber zur Zeit noch nicht
+  unterstützt, daß heißt alle Ansagetexte, die von _v_b_o_x_g_e_t_t_y gespielt,
+  werden müssen in unkomprimierter Form vorliegen!
+
+  Der Header der von früheren _v_b_o_x Versionen vor jede Audiodatei gehängt
+  wurde entfällt ab Version 3 komplett. Es werden nur noch die
+  Audiodaten selbst gespeichert. Alle weiteren Informationen (wie z.B.
+  der Name) werden in einer eigenen Datei abgelegt. Diese Dateien - die
+  normalerweise von _v_b_o_x_g_e_t_t_y erzeugt und von _v_b_o_x gelesen werden -
+  enden mit dem Kürzel ``.vbox''.
+
+  Wenn Sie Ihre alten Ansagetexte von _v_b_o_x Version 2 beibehalten
+  möchten, müssen Sie diese zuerst mit dem _v_b_o_x-Konvertierungsprogramm
+  in _u_l_a_w umwandeln und danach den Header entfernen lassen!
+
+  33..22..  FFuullll DDuupplleexx MMoodduuss
+
+  Ab Version 3 arbeitet _v_b_o_x_g_e_t_t_y nur noch im sogenannten _F_u_l_l _D_u_p_l_e_x
+  _M_o_d_u_s, der ein gleichzeitiges Abspielen und Aufzeichnen von
+  Nachrichten zuläßt.
+
+  In diesem Modus ist es dann zum Beispiel möglich, bereits während dem
+  Abspielen des Ansagetextes die Nachricht aufzeichnen zu lassen.
+
+  33..33..  TToouucchhttoonneess
+
+  Touchtones die nur aus einzelnen Zahlen bestehen müssen nicht mehr mit
+  ``#'' und ``*'' eingegrenze werden.
+
+  Die Touchtones werden von den _t_c_l-Funktionen jetzt genauso
+  zurückgegeben wie sie eingegeben wurden, d.h. einzelne Touchtones als
+  einzelne Zahlen und eine Touchtonesequenz in ``#*'' eingefasst.
+
+  33..44..  MMeehhrreerree NNuummmmeerrnn üübbeerrwwaacchheenn
+
+  Dank des neuen AT&L-Kommandos in _i_s_d_n_4_l_i_n_u_x ist es jetzt möglich mit
+  einem _v_b_o_x_g_e_t_t_y mehr als eine Nummer anzugeben (mit Wildcards).
+
+  Die Zuweisung welche Nummer für welchen lokalen Benutzer bestimmt ist
+  erfolgt über eine seperate Konfigurationsdatei (siehe
+  ``vboxgetty.user''). Dort kann jedem lokalen Benutzer eine (oder
+  mehrere) Nummer zugewiesen werden. Eingehende Anrufe zu dieser Nummer
+  werden dann in den Verzeichnissen des entsprechenden Benutzers
+  gepeichert.
+
+  Das in früheren Versionen verwendete Kommando AT&E funktioniert auch
+  weiterhin, es kann aber nur eine Nummer angegeben werden!
+
+  44..  IInnssttaallllaattiioonn
+
+  Vor der Installation müssen die zu installierenden Programme zuerst
+  übersetzt und einige Skripte vorbereitet werden.
+
+  Dazu starten Sie als erstes im Hauptverzeichnis das Skript
+  ``_c_o_n_f_i_g_u_r_e'', welches Ihr System untersucht und überprüft ob alle
+  nötigen Teile zur Übersetzung vorhanden sind.
+
+  Über verschiedene Parameter können Sie Voreinstellungen dieses Skripts
+  ändern. Eine genaue Auflistung aller möglichen Parameter erhalten Sie,
+  wenn Sie in der Shell folgenden Befehl eingeben:
+
+
+
+       ./configure --help
 
 
 
 
-  11..22..  vvbbooxxggeettttyy..uusseerr
+  Hier eine Beschreibung der wichtigsten Parameter:
+
+
+
+     ----ssbbiinnddiirr==DDIIRR
+        DIR legt das Verzeichnis fest, in das _v_b_o_x_g_e_t_t_y (und alle
+        weiteren Programme die nur vom Benutzer _r_o_o_t gestartet werden
+        können) installiert werden soll. Voreinstellung ist
+        ``/usr/local/sbin''. Dieses Verzeichnis wird in der weiteren
+        Dokumentation mit <<ssbbiinnddiirr>> beschrieben.
+
+
+     ----bbiinnddiirr==DDIIRR
+        DIR legt das Verzeichnis fest, in das _v_b_o_x (und alle weiteren
+        Proframme die von jedem Benutzer gestartet werden können)
+        installiert werden soll. Voreinstellung ist ``/usr/local/bin''.
+        Dieses Verzeichnis wird in der weiteren Dokumentation mit
+        <<bbiinnddiirr>> beschrieben.
+
+
+     ----ddaattaaddiirr==DDIIRR
+        DIR gibt das Verzeichnis an, in dem die Tcl-Skripte von
+        _v_b_o_x_g_e_t_t_y installiert werden sollen. Dort wird automatisch das
+        Unterverzeichnis ``vbox'' erzeugt. Voreinstellung ist
+        ``/usr/local/share''.  Dieses Verzeichnis wird in der weiteren
+        Dokumentation mit <<ppkkggddaattaaddiirr>> beschrieben.
+
+
+     ----ssyyssccoonnffddiirr==DDIIRR
+        DIR legt das Verzeichnis fest, in welches die
+        Konfigurationsdateien installiert werden sollen. Voreinstellung
+        ist ``/usr/local/etc''.  Dieses Verzeichnis wird in der weiteren
+        Dokumentation mit <<ssyyssccoonnffddiirr>> beschrieben.
+
+
+     ----wwiitthh--llooggddiirr==DDIIRR
+        DIR gibt das Verzeichnis an, in welches die Logdateien der
+        Programme geschrieben werden sollen. Voreinstellung ist
+        ``/var/log''. Dieses Verzeichnis wird in der weiteren
+        Dokumentation mit <<llooggddiirr>> beschrieben.
+     ----wwiitthh--lloocckkddiirr==DDIIRR
+        DIR gibt das Verzeichnis an, in welches die Lockdateien der
+        Programme erzeugt werden sollen. Voreinstellung ist
+        ``/var/lock''. Dieses Verzeichnis wird in der weiteren
+        Dokumentation mit <<lloocckkddiirr>> beschrieben.
+
+
+     ----wwiitthh--ppiiddddiirr==DDIIRR
+        DIR gibt das Verzeichnis an, in welches die Prozeßdateien der
+        Programme erzeugt werden sollen. Voreinstellung ist
+        ``/var/run''. Dieses Verzeichnis wird in der weiteren
+        Dokumentation mit <<ppiiddddiirr>> beschrieben.
+
+
+  Nachdem ``_c_o_n_f_i_g_u_r_e'' Ihr System untersucht und einige Dateien
+  angepaßt hat, können Sie die Programme mit
+
+
+
+       make
+
+
+
+
+  übersetzen. Nach einer fehlerfreien Übersetzung installiert ein
+
+
+
+       make install
+
+
+
+
+  alle Programme in die dafür vorgesehenen Verzeichnisse.
+
+  Wenn nicht alle Programe installiert werden sollen, können Sie die
+  letzten beiden Schritte auch in einem der Programmunterverzeichnisse
+  ausführen - es wird dann nur das jeweilige Programm übersetzt und
+  installiert.
+
+  AAcchhttuunngg:: Bei der Installation können frühere _v_b_o_x Installationen
+  überschrieben werden! Sichern Sie sich also zuvor alle älteren
+  Versionen, falls Sie diese evtl. weiterverwenden möchten!
+
+
+
+
+
+
+
+
+  55..  KKoonnffiigguurraattiioonnssddaatteeiieenn
+
+  55..11..  vvbbooxxggeettttyy..uusseerr
 
 
   Ab Version 3 von _v_b_o_x kann ein _v_b_o_x_g_e_t_t_y mehrere Nummern überwachen.
   Über die Datei ``_v_b_o_x_g_e_t_t_y_._u_s_e_r'' wird festgelegt, welche
-  Telefonnummer welchem lokalen Benutzer zugeordnet ist.
+  Telefonnummer welchem lokalen Benutzer zugeordnet ist. Voreingestellt
+  liegt diese Datei in ``_/_u_s_r_/_l_o_c_a_l_/_e_t_c_/''.
 
-  Voreingestellt liegt diese Datei in ``_/_u_s_r_/_l_o_c_a_l_/_e_t_c_/''.
+  Bei einem eingehenden Anruf wird die angerufene Nummer in dieser Datei
+  gesucht und der Anruf einem lokalen Benutzer zugeordnet. Danach werden
+  die Rechte des _v_b_o_x_g_e_t_t_y auf diesen Benutzer gesetzt und alle weiteren
+  Operationen werden unter diesen Rechten vorgenommen.
 
   Jede Zuordnung beginnt in einer neuen Zeile und hat folgendes Format:
 
 
 
-       ______________________________________________________________________
        number:user:group:umask:space
-       ______________________________________________________________________
+
+
+
+
+  Kommentare (mit dem Zeichen ``#'' eingeleitet) und leere Zeilen werden
+  überlesen. Eine einzelne Zeile darf nicht länger als 200 Zeichen
+  werden!
+
+
+
+     nnuummbbeerr
+        Hier wird die Telefonnummer definiert, die einem Benutzer
+        zugeordnet werden soll. Wenn _r_e_g_e_x auf dem System installiert
+        ist, können hier die üblichen Muster angegeben werden. Eine
+        Angabe von ``*'' gilt für aallllee Nummern. Das Feld mmuußß angegeben
+        werden!
+
+
+     uusseerr
+        Lokaler Benutzer dem die Nummer zugeordnet werden soll. Der
+        Benutzer kann namentlich oder als UID (eingeleitet mit einem
+        ``#'') angegeben werden.  Bei einer namentlichen Angabe muß der
+        entsprechende Benutzer in ``_/_e_t_c_/_p_a_s_s_w_d'' eingetragen sein! Das
+        Feld mmuußß angegeben werden!
+
+
+     ggrroouupp
+        Gruppe die für den Benutzer gesetzt werden soll. Die Gruppe kann
+        namentlich oder als GID (eingeleitet mit einem ``#'') angegeben
+        werden. Bei einer namentlichen Angabe muß die entsprechende
+        Gruppe in ``_/_e_t_c_/_g_r_o_u_p_s'' eingetragen sein! Bei einem leeren
+        Feld oder ``-'' wird keine Gruppe gesetzt. Das Feld ist optional
+        und muß nicht angegeben werden.
+
+
+     uummaasskk
+        Die Maske die zum anlegen von neuen Dateien oder Verzeichnissen
+        benutzt werden soll. Bei einem leeren Feld oder ``-'' wird die
+        Maske (umask) nicht gesetzt. Das Feld ist optional und muß nicht
+        angegeben werden.
+
+
+     ssppaaccee
+        Freier Platz in Bytes, der auf der Partition auf der sich das
+        Spoolverzeichnis des Benutzers befindet frei sein muß, damit der
+        Anruf angenommen wird. Bei einem leeren Feld, ``0'' oder ``-''
+        wird keine Überprüfung des freien Platzes gemacht. Das Feld ist
+        optional und muß nicht angegeben werden.
+
+
+  Ein eingehender Anruf wird nniicchhtt angenommen, wenn die Datei nicht
+  existiert oder der angerufenen Nummer kein Benutzer zugeordnet werden
+  konnte!
+
+  BBeeiissppiieell ddeerr DDaatteeii ````_v_b_o_x_g_e_t_t_y_._u_s_e_r''''::
+
+
+
+
+
+
+  # Number to user mapping. Please read the documentation to learn how this
+  # configuration file work!
+  #
+  # The fields "number" and "user" *must* be set - all others are optional!
+  #
+  # Format: number:user:group:umask:freespace
+
+  7850012:nicole::077:2000000
+  *:#100:#500:077:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,24 +1,192 @@
 <!doctype linuxdoc system>
 
+<!-- ***************************************************************** -->
+<!-- Beim übersetzen der Datei ist zu beachten, daß *keine* Leerzeilen -->
+<!-- enthalten sein dürfen! Beim Umwandeln in Text entstehen sonst un- -->
+<!-- schöne Absätze :-(                                                -->
+<!-- ***************************************************************** -->
+
 <article>
 
-<title>VBOX
-<author>Michael Herold, <tt/michael@abadonna.mayn.de/
-<date>v3.0, 12. Juni 1998
+<title>vboxgetty
+<author>Michael Herold, <tt><htmlurl url="mailto:michael@isdn4linux.de" name="michael@isdn4linux.de"></tt>
+<date>v3.0, 6. Juli 1998
 <abstract>
-This document is a brief example using the Linuxdoc-SGML DTD.
+Die Dokumentation beschreibt die Installation und Konfiguration von
+<em/vboxgetty/. <em/vboxgetty/ ist Teil des <em/vbox/ Paketes - einem
+Anrufbeantworter für <em><htmlurl url="http://www.isdn4linux.de/"
+name="isdn4linux"></em>.
 </abstract>
 
-<!-- *********************************************************************
-     **                                                                 **
-     **                        C O P Y R I G H T                        **
-     **                                                                 **
-     ********************************************************************* -->
-
+<!-- ********************************************************************* -->
+<!-- **                                                                 ** -->
+<!-- **                        C O P Y R I G H T                        ** -->
+<!-- **                                                                 ** -->
+<!-- ********************************************************************* -->
 <toc>
+<!-- ********************************************************************* -->
+<!-- **                                                                 ** -->
+<!-- **                        C O P Y R I G H T                        ** -->
+<!-- **                                                                 ** -->
+<!-- ********************************************************************* -->
+<sect>Copyright
+<p>xxx</p>
+<!-- ********************************************************************* -->
+<!-- **                                                                 ** -->
+<!-- **                        C O P Y R I G H T                        ** -->
+<!-- **                                                                 ** -->
+<!-- ********************************************************************* -->
 
+<sect>Vorwort
+<p>xxx</p>
+<sect1>Was kann vbox?
+<p>xxx</p>
+<sect1>Was kann vbox nicht?
+<p>xxx</p>
+<sect1>Was wird zum Betrieb benötigt?
+<p>xxx</p>
 
+<!-- ********************************************************************* -->
+<!-- **                                                                 ** -->
+<!-- **                             N E W S                             ** -->
+<!-- **                                                                 ** -->
+<!-- ********************************************************************* -->
 
+<sect>Neuerungen<label id="id-news">
+
+<p>
+Hier eine kurze Aufstellung der Neuerungen und Änderungen seit der
+Veröffentlichung von <em/vbox/ Version 2.0.0B4/5.
+</p>
+
+<p>
+Bitte lesen Sie sich die folgenden Abschnitte vor der Installation
+aufmerksam durch, um Unklarheiten und Fehler zu vermeiden!
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                            AUDIO FORMAT                           # -->
+<!-- #===================================================================# -->
+
+<sect1>Format der Audiodateien<label id="id-news-audioformat">
+
+<p>
+Als Format für die Audiodateien wird nur noch <em/ulaw/
+unterstützt. Die Formate <em/alaw/, <em/adpcm-2/, <em/adpcm-3/ und
+<em/adpcm-4/ sind zwar noch in <em/isdn4linux/ enthalten, finden aber
+in <em/vboxgetty/ keine Verwendung mehr.
+</p>
+
+<p>
+Das hat mehrere Gründe:
+<itemize>
+<item>Im neu unterstützten <em/Full Duplex Modus/ (siehe <ref
+id="id-news-fullduplex" name="Full Duplex Modus">) ist ein wechseln
+des Formates nicht möglich.
+</item>
+<item>
+Das Format <em/ulaw/ bietet die beste Klangqualität da die Daten nicht
+komprimiert werden.
+</item>
+<item>
+Nachrichten können mit einfachen Kommandos wie ``<tt>cat name
+&gt;/dev/audio</tt>'' ausgegeben werden.
+</item>
+<item>
+Die Verwirrung beim Umwandeln der einzelnen Formate entfällt ;-)
+</item>
+</itemize>
+</p>
+
+<p>
+Nachteilig sei hier zu erwähnen, daß dieses Format keine Komprimierung
+macht, die Dateien also u.U. groß werden können.
+</p>
+
+<p>
+Es besteht allerdings die Möglichkeit, diese Dateien mit externen
+Programmen komprimieren zu lassen. Das Abspielen von solchen
+komprimierten Dateien wird von <em/vboxgetty/ aber zur Zeit noch nicht
+unterstützt, daß heißt alle Ansagetexte, die von <em/vboxgetty/
+gespielt, werden müssen in unkomprimierter Form vorliegen!
+</p>
+
+<p>
+Der Header der von früheren <em/vbox/ Versionen vor jede Audiodatei
+gehängt wurde entfällt ab Version 3 komplett. Es werden nur noch die
+Audiodaten selbst gespeichert. Alle weiteren Informationen (wie
+z.B. der Name) werden in einer eigenen Datei abgelegt. Diese Dateien -
+die normalerweise von <em/vboxgetty/ erzeugt und von <em/vbox/ gelesen
+werden - enden mit dem Kürzel ``<tt>.vbox</tt>''.
+</p>
+
+<p>
+Wenn Sie Ihre alten Ansagetexte von <em/vbox/ Version 2 beibehalten
+möchten, müssen Sie diese zuerst mit dem
+<em/vbox/-Konvertierungsprogramm in <em/ulaw/ umwandeln und danach den
+Header entfernen lassen!
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                        FULL DUPLEX MODE                           # -->
+<!-- #===================================================================# -->
+
+<sect1>Full Duplex Modus<label id="id-news-fullduplex">
+
+<p>
+Ab Version 3 arbeitet <em/vboxgetty/ nur noch im sogenannten <em/Full
+Duplex Modus/, der ein gleichzeitiges Abspielen und Aufzeichnen von
+Nachrichten zuläßt.
+</p>
+
+<p>
+In diesem Modus ist es dann zum Beispiel möglich, bereits während dem
+Abspielen des Ansagetextes die Nachricht aufzeichnen zu lassen.
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                           TOUCHTONES                              # -->
+<!-- #===================================================================# -->
+
+<sect1>Touchtones<label id="id-news-touchtones">
+
+<p>
+Touchtones die nur aus einzelnen Zahlen bestehen müssen nicht mehr mit
+``<tt/#/'' und ``<tt/*/'' eingegrenze werden.
+</p>
+
+<p>
+Die Touchtones werden von den <em/tcl/-Funktionen jetzt genauso
+zurückgegeben wie sie eingegeben wurden, d.h. einzelne Touchtones als
+einzelne Zahlen und eine Touchtonesequenz in ``<tt/#*/'' eingefasst.
+</p>
+
+<!-- #===================================================================# -->
+<!-- #                         NUMBER WATCHING                           # -->
+<!-- #===================================================================# -->
+
+<sect1>Mehrere Nummern überwachen<label id="id-news-numberwatching">
+
+<p>
+Dank des neuen <tt/AT&amp;L/-Kommandos in <em/isdn4linux/ ist es jetzt
+möglich mit einem <em/vboxgetty/ mehr als eine Nummer anzugeben (mit
+Wildcards).
+</p>
+
+<p>
+Die Zuweisung welche Nummer für welchen lokalen Benutzer bestimmt ist
+erfolgt über eine seperate Konfigurationsdatei (siehe <ref
+id="id-config-vboxgetty-user" name="vboxgetty.user">). Dort kann jedem
+lokalen Benutzer eine (oder mehrere) Nummer zugewiesen
+werden. Eingehende Anrufe zu dieser Nummer werden dann in den
+Verzeichnissen des entsprechenden Benutzers gepeichert.
+</p>
+
+<p>
+Das in früheren Versionen verwendete Kommando <tt/AT&amp;E/
+funktioniert auch weiterhin, es kann aber nur eine Nummer angegeben
+werden!
+</p>
 
 
 
@@ -29,10 +197,101 @@ This document is a brief example using the Linuxdoc-SGML DTD.
 
 <!-- *********************************************************************
      **                                                                 **
-     **                        C O P Y R I G H T                        **
+     **                     I N S T A L L A T I O N                     **
      **                                                                 **
      ********************************************************************* -->
 
+<sect>Installation<label id="id-install">
+
+<p>
+Vor der Installation müssen die zu installierenden Programme zuerst
+übersetzt und einige Skripte vorbereitet werden.
+
+Dazu starten Sie als erstes im Hauptverzeichnis das Skript
+``<em><file>configure</file></em>'', welches Ihr System untersucht und
+überprüft ob alle nötigen Teile zur Übersetzung vorhanden sind.
+
+Über verschiedene Parameter können Sie Voreinstellungen dieses Skripts
+ändern. Eine genaue Auflistung aller möglichen Parameter erhalten Sie, wenn
+Sie in der Shell folgenden Befehl eingeben:
+
+<tscreen><verb>
+./configure --help
+</verb></tscreen>
+
+Hier eine Beschreibung der wichtigsten Parameter:
+
+<descrip>
+
+<tag/--sbindir=DIR/
+<tt/DIR/ legt das Verzeichnis fest, in das <em/vboxgetty/ (und alle weiteren
+Programme die nur vom Benutzer <em/root/ gestartet werden können) installiert
+werden soll. Voreinstellung ist ``<tt>/usr/local/sbin</tt>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <bf/&lt;sbindir&gt;/
+beschrieben.
+
+<tag/--bindir=DIR/
+
+<tt/DIR/ legt das Verzeichnis fest, in das <em/vbox/ (und alle weiteren
+Proframme die von jedem Benutzer gestartet werden können) installiert werden
+soll. Voreinstellung ist ``<tt>/usr/local/bin</tt>''. Dieses Verzeichnis
+wird in der weiteren Dokumentation mit <bf/&lt;bindir&gt;/ beschrieben.
+
+<tag/--datadir=DIR/
+<tt/DIR/ gibt das Verzeichnis an, in dem die Tcl-Skripte von <em/vboxgetty/
+installiert werden sollen. Dort wird automatisch das Unterverzeichnis
+``<tt/vbox/'' erzeugt. Voreinstellung ist ``<tt>/usr/local/share</tt>''.
+Dieses Verzeichnis wird in der weiteren Dokumentation mit
+<bf/&lt;pkgdatadir&gt;/ beschrieben.
+
+<tag/--sysconfdir=DIR/
+<tt/DIR/ legt das Verzeichnis fest, in welches die Konfigurationsdateien
+installiert werden sollen. Voreinstellung ist ``<tt>/usr/local/etc</tt>''.
+Dieses Verzeichnis wird in der weiteren Dokumentation mit
+<bf/&lt;sysconfdir&gt;/ beschrieben.
+
+<tag/--with-logdir=DIR/
+<tt/DIR/ gibt das Verzeichnis an, in welches die Logdateien der Programme
+geschrieben werden sollen. Voreinstellung ist ``<tt>/var/log</tt>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <bf/&lt;logdir&gt;/
+beschrieben.
+
+<tag/--with-lockdir=DIR/
+<tt/DIR/ gibt das Verzeichnis an, in welches die Lockdateien der Programme
+erzeugt werden sollen. Voreinstellung ist ``<tt>/var/lock</tt>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <bf/&lt;lockdir&gt;/
+beschrieben.
+
+<tag/--with-piddir=DIR/
+<tt/DIR/ gibt das Verzeichnis an, in welches die Prozeßdateien der Programme
+erzeugt werden sollen. Voreinstellung ist ``<tt>/var/run</tt>''. Dieses
+Verzeichnis wird in der weiteren Dokumentation mit <bf/&lt;piddir&gt;/
+beschrieben.
+
+</descrip>
+
+Nachdem ``<em><file>configure</file></em>'' Ihr System untersucht und einige
+Dateien angepaßt hat, können Sie die Programme mit
+
+<tscreen><verb>
+make
+</verb></tscreen>
+
+übersetzen. Nach einer fehlerfreien Übersetzung installiert ein
+
+<tscreen><verb>
+make install
+</verb></tscreen>
+
+alle Programme in die dafür vorgesehenen Verzeichnisse.
+
+Wenn nicht alle Programe installiert werden sollen, können Sie die letzten
+beiden Schritte auch in einem der Programmunterverzeichnisse ausführen - es
+wird dann nur das jeweilige Programm übersetzt und installiert.
+
+<bf/Achtung:/ Bei der Installation können frühere <em/vbox/ Installationen
+überschrieben werden! Sichern Sie sich also zuvor alle älteren
+Versionen, falls Sie diese evtl. weiterverwenden möchten!
 
 <!-- *********************************************************************
      **                                                                 **
@@ -40,13 +299,28 @@ This document is a brief example using the Linuxdoc-SGML DTD.
      **                                                                 **
      ********************************************************************* -->
 
-<sect>Konfigurationsdateien<label id="id-setup">
+<!-- *********************************************************************
+     **                                                                 **
+     **                        C O P Y R I G H T                        **
+     **                                                                 **
+     ********************************************************************* -->
+
+<!-- *********************************************************************
+     **                                                                 **
+     **                        C O P Y R I G H T                        **
+     **                                                                 **
+     ********************************************************************* -->
+
+
+
+
+<sect>Konfigurationsdateien<label id="id-config">
 
 <!-- #===================================================================#
      #                                                                   #
      #===================================================================# -->
 
-<sect1>vboxgetty.user<label id="id-setup-users">
+<sect1>vboxgetty.user<label id="id-config-vboxgetty-user">
 
 <p>
 
