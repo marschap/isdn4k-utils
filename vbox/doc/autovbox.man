@@ -1,10 +1,10 @@
-.\" $Id: autovbox.man,v 1.4 2002/10/15 14:40:49 paul Exp $
-.\" CHECKIN $Date: 2002/10/15 14:40:49 $
+.\" $Id: autovbox.man,v 1.5 2002/10/15 14:47:11 paul Exp $
+.\" CHECKIN $Date: 2002/10/15 14:47:11 $
 .TH autovbox 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
 autovbox \- ISDN voice box (sound converter)
 .SH SYNOPSIS
-autovbxox [-2 | -3 | -4 | -h | -v] [-n name] [-p phone] [-l location]
+autovbox [-2 | -3 | -4 | -h | -v] [-n name] [-p phone] [-l location]
 .SH "DESCRIPTION"
 Convert .au files (Sun audio format) on standard input into vbox files
 (vbox audio header) on standard output. autovbox is a link to vboxcnvt(1).
