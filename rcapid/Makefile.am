@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.1 1999/10/20 16:43:19 calle Exp $
+## $Id: Makefile.am,v 1.2 1999/10/25 12:26:14 keil Exp $
 ##
 
 AUTOMAKE_OPTIONS	= foreign
@@ -12,6 +12,6 @@ CFLAGS = -Wall -O2
 LDFLAGS = -L../capi20/.libs -L../capi20 $(all_libraries)
 LDADD = -lcapi20
 
-bin_PROGRAMS = rcapid
+sbin_PROGRAMS = rcapid
 
 rcapid_SOURCES = rcapid.c
