@@ -1,0 +1,7 @@
+config.cache
+config.log
+config.status
+dest
+dest.cdb
+dest.gdbm
+Makefile
