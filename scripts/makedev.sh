@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: makedev.sh,v 1.3 1998/11/23 10:02:34 fritz Exp $
+# $Id: makedev.sh,v 1.4 1999/01/09 13:21:10 paul Exp $
 #
 # This script creates all ISDN devices under /dev .
 # Many/most distributions don't include these devices.
@@ -21,7 +21,7 @@ MAJ=45
 MIN=0
 rm -f $DEV/isdnctrl* $DEV/ippp*
 while [ $MIN -lt 64 ] ; do
-#	mknod -m 600 $DEV/isdn$MIN c $MAJ $MIN
+	mknod -m 600 $DEV/isdn$MIN c $MAJ $MIN
 	mknod -m 660 $DEV/isdnctrl$MIN c $MAJ `expr $MIN + 64`
 	mknod -m 600 $DEV/ippp$MIN c $MAJ `expr $MIN + 128`
 	MIN=`expr $MIN + 1`
