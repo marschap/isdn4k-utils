@@ -1,5 +1,5 @@
 .\" manual page [] for ipppd 2.0
-.\" $Id: ipppd.man.in,v 1.1 1997/10/26 23:06:14 fritz Exp $
+.\" $Id: ipppd.man.in,v 1.2 1998/10/12 11:54:42 paul Exp $
 .\" SH section heading
 .\" SS subsection heading
 .\" LP paragraph
@@ -38,8 +38,8 @@ provides the basic LCP, authentication support, and an
 NCP for establishing and configuring the Internet Protocol (IP)
 (called the IP Control Protocol, IPCP).
 .SH NOTES for (ISDN) IPPPD
-This special PPP daemon provides synchron PPP for ISDN connections.
-If you need asynchron PPP over ISDN lines use the normal pppd
+This special PPP daemon provides synchronous PPP for ISDN connections.
+If you need asynchronous PPP over ISDN lines use the normal pppd
 instead with the ISDN character devices, see
 .BR ttyI (4).
 .PP
@@ -48,18 +48,18 @@ link several connections together to one bundle.
 Also, you only start the ipppd once. It now opens the devices
 and waits for connections. 
 If you (or the remote side) closes the connection the ipppd
-reopens the device automatically. (the device .. not the link
-to the remote)
+reopens the device automatically (the device, that is ... not the link
+to the remote).
 So you shouldn't kill the ipppd to close a link. Instead, trigger
 a hangup on the netdevice layer.
 (with isdn4linux: isdnctrl hangup <device>')
 .PP
 I disabled the facility to configure the daemon via
-the /dev/ppp/ioptions.<devname> file. It's not necessary.
+the /etc/ppp/ioptions.<devname> file. It's not necessary.
 Use the 'file' option or the command line for individual
 configuration.
 .PP
-Better don't set the permissions of the programm to 'setuid to root 
+It's best not to set the permissions of the program to 'setuid to root 
 on execution'. Call the daemon as root instead.
 No common user must call the daemon!
 .SH OPTIONS FOR (ISDN) IPPPD
@@ -878,7 +878,7 @@ security considerations apply, since it is executed with the same
 effective and real user-IDs as \fIipppd\fR.
 .TP
 .B /etc/ppp/auth-up
-This program or script is executed after successfull authentication with
+This program or script is executed after successful authentication with
 the following parameters:
 .I interface name,
 .I authentication user name,
@@ -963,7 +963,7 @@ decompression error.  With the BSD Compress scheme, fatal
 decompression errors generally indicate a bug in one or other
 implementation.
 .SH BUGS
-This manpage is not complet rewritten for the ISDN.
+This manpage is not completely rewritten for the ISDN version.
 .SH AUTHORS
 Drew Perkins,
 Brad Clements,
