@@ -2451,26 +2451,26 @@ angegeben werden.
      und waehlt dann ueber diesen, und nicht den Default-, Preselected- oder
      angegebenen Provider die gegebene Zielrufnummer an.
 
-     Dazu muá bei der Kernel-Generierung isdn4linux mit der Option
+     Dazu muss bei der Kernel-Generierung isdn4linux mit der Option
        CONFIG_ISDN_WITH_ABC_LCR_SUPPORT=y
      erstellt worden sein!
 
-     Mit "x" können folgende Manipulationen vorgenommen werden:
+     Mit "x" koennen folgende Manipulationen vorgenommen werden:
        (Der Parameter "x" wird bitweise ausgewertet).
-       ACHTUNG: Änderung des Parameters ab isdnlog 4.16
+       ACHTUNG: Aenderung des Parameters ab isdnlog 4.16
 
        -d0 = LCR abschalten, isdnlog fuehrt _kein_ LCR durch
-       -d1 = LCR einschalten für Ferngespräche
-       -d2 = LCR einschalten, auch für Ortsrufnummern
-       -d4 = LCR einschalten für Sonderrufnummern
-       -d5 = LCR für Fern- und Sondernummern
+       -d1 = LCR einschalten fuer Ferngespraeche
+       -d2 = LCR einschalten, auch fuer Ortsrufnummern
+       -d4 = LCR einschalten fuer Sonderrufnummern
+       -d5 = LCR fuer Fern- und Sondernummern
        ...
        -d7 = LCR ein, alle Nummern
 
       Hinweis:
       - Call-by-Call im Ortsnetz ist in Deutschland (noch) nicht moeglich.
 
-   Um nun für aktives LCR zu verschiedenen IS-Provider das Routing und die
+   Um nun fuer aktives LCR zu verschiedenen IS-Provider das Routing und die
    Namensauflöscung anzupassen, kann isdnlog eine Script aufrufen.
 
    (providerchange="path_top_script")

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.105 2000/04/25 20:12:20 akool Exp $
+/* $Id: processor.c,v 1.106 2000/06/02 12:14:27 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.106  2000/06/02 12:14:27  akool
+ * isdnlog-4.28
+ *  - isdnlog/tools/rate.c ... patch by Hans Klein, unknown provider
+ *  - fixed RR on HFC-cards
+ *
  * Revision 1.105  2000/04/25 20:12:20  akool
  * isdnlog-4.19
  *   isdnlog/isdnlog/processor.c ... abclcr (-d0) turn off
@@ -5106,7 +5111,6 @@ action:
 int morectrl(int card)
 {
   register char      *p, *p1, *p2, *p3;
-  register int	      go;
   static   char       s[MAXCARDS][BIGBUFSIZ * 2];
   static   char      *ps[MAXCARDS] = { s[0], s[1] };
   auto     int        n = 0;
@@ -5176,22 +5180,25 @@ retry:
         else
 #endif
         {
-          go = 1;
-
-          if (((ignoreRR & 1) == 1) && (strlen(p1) < 17))
-            go = 0;
-
-          if (((ignoreRR & 2) == 2) && !memcmp(p1 + 14, "AA", 2))
-            go = 0;
-
-          if (go) {
+          if ((((ignoreRR & 1) == 1) && (strlen(p1) < 17)) ||
+              (((ignoreRR & 2) == 2) && !memcmp(p1 + 14, "AA", 2)))
+            ;
+          else {
             if (!memcmp(p1, "ECHO:", 5)) { /* Echo-channel from HFC card */
-	      memcpy(p1 + 1, "HEX", 3);
-              processctrl(card + 1, p1 + 1);
+              if (((ignoreRR & 2) == 2) && !memcmp(p1 + 12, "01", 2))
+                ;
+              else {
+	        memcpy(p1 + 1, "HEX", 3);
+              	processctrl(card + 1, p1 + 1);
+              } /* else */
             }
-            else
-              processctrl(card, p1);
-          } /* if */
+            else {
+              if (((ignoreRR & 2) == 2) && !memcmp(p1 + 11, "01", 2))
+                ;
+              else
+                processctrl(card, p1);
+            } /* else */
+          } /* else */
         } /* else */
       } /* else */
 

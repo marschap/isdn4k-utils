@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.77 2000/05/16 16:24:02 akool Exp $
+/* $Id: rate.c,v 1.78 2000/06/02 12:14:28 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.78  2000/06/02 12:14:28  akool
+ * isdnlog-4.28
+ *  - isdnlog/tools/rate.c ... patch by Hans Klein, unknown provider
+ *  - fixed RR on HFC-cards
+ *
  * Revision 1.77  2000/05/16 16:24:02  akool
  * isdnlog-4.24
  * - isdnlog/tools/rate.c ... bugfix for eXceptions w/o z-entry
@@ -1001,6 +1006,8 @@ int pnum2prefix(int pnum, time_t when) {
 }
 
 inline int prefix2pnum(int prefix) {
+  if(prefix == UNKNOWN)
+    return prefix;
   return Provider[prefix]._provider._prefix;
 }
 

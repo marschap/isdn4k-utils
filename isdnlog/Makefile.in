@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.165 2000/05/27 22:13:05 akool Exp $
+## $Id: Makefile.in,v 1.166 2000/06/02 12:14:26 akool Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.166  2000/06/02 12:14:26  akool
+## isdnlog-4.28
+##  - isdnlog/tools/rate.c ... patch by Hans Klein, unknown provider
+##  - fixed RR on HFC-cards
+##
 ## Revision 1.165  2000/05/27 22:13:05  akool
 ## isdnlog-4.26
 ##  - isdnlog support for Switzerland added
@@ -1228,7 +1233,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 4.26
+VERSION     = 4.28
 
 MANPAGES    = isdnlog/callerid.conf.5 isdnlog/isdn.conf.5 \
 	      isdnlog/isdnformat.5 isdnlog/isdnlog.5 isdnlog/isdnlog.8 \
