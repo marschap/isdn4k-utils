@@ -25,15 +25,14 @@
  * OR MODIFICATIONS.
  */
 
-char ccp_rcsid[] = "$Id: ccp.c,v 1.13 1999/09/20 09:05:10 hipp Exp $";
+char ccp_rcsid[] = "$Id: ccp.c,v 1.14 1999/11/03 16:06:35 paul Exp $";
 
 #include <string.h>
 #include <syslog.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
-#if 0
-#include </usr/include/net/ppp_defs.h>
-#endif
+/* dummy decl for struct referenced but not defined in linux/ppp-comp.h */
+struct compstat;
 #include <linux/ppp-comp.h>
 
 #include "fsm.h"
