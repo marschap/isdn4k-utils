@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.28 1997/05/28 21:23:03 luethje Exp $
+/* $Id: isdnrep.c,v 1.29 1997/06/15 23:49:45 luethje Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.29  1997/06/15 23:49:45  luethje
+ * Some new variables for the isdnlog
+ * isdnlog starts programs noe with the file system rights
+ * bugfixes
+ *
  * Revision 1.28  1997/05/28 21:23:03  luethje
  * isdnlog option -b is working again ;-)
  * isdnlog has new \$x variables
@@ -3053,6 +3058,14 @@ static char *create_vbox_file(char *file, int *compression)
 		}
 
 		close(fdout);
+
+		if (len < 0)
+		{
+			print_msg(PRT_ERR,"Can not read from file `%s': %s!\n",file, strerror(errno));
+			close(fdin);
+			unlink(fileout);
+			return NULL;
+		}
 	}
 	
 	close(fdin);

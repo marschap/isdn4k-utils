@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.28 1997/05/25 19:40:43 luethje Exp $
+## $Id: Makefile.in,v 1.29 1997/06/15 23:49:28 luethje Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,11 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.29  1997/06/15 23:49:28  luethje
+## Some new variables for the isdnlog
+## isdnlog starts programs noe with the file system rights
+## bugfixes
+##
 ## Revision 1.28  1997/05/25 19:40:43  luethje
 ## isdnlog:  close all files and open again after kill -HUP
 ## isdnrep:  support vbox version 2.0
@@ -232,7 +237,7 @@ SERVICEFILE = /etc/services
 # DON'T EDIT BELOW THIS LINE
 ######################################################################
 
-VERSION     = 2.99.21
+VERSION     = 2.99.23
 
 ifeq ($(POSTGRES),1)
 DEFS       += -DPOSTGRES

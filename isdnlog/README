@@ -1364,7 +1364,20 @@ unterbunden ein Programm zu starten, wo ein Benutzer Leserechte besitzt
 und dieses als root gestartet wird. Dieses koennte sich als trojanisches Pferd
 verwenden lassen. Daher muessen Programme, die nicht root gehoeren oder
 die jeder (others) beschreiben kann mit dem Eintrag USER belegt werden.
-Der Eintrag hat folgende Syntax:
+
+Wenn die folgenden Eintraege nicht vorhanden sind und diese Dateien nicht
+dem User root gehoeren, dann setzt isdnlog die Rechte so, wie sie der
+Datei mitgegeben sind auf dem Dateisystem. Beispiel:
+
+luethje@bundy:bin$ ls -l 
+total 3
+-rwxr-xr-x   1 luethje  users         315 Mar  9 16:15 deloldmails*
+
+Die Datei "deloldmails" wird mit den Rechten luethje.users gestartet, wenn die
+folgenden Eintraege in der isdn.conf fehlen. Allerdings haben diese Eintraege
+hoehere Prioritaet.
+
+Der Eintrag in der isdn.conf hat folgende Syntax:
 
 USER=fred
 
@@ -1470,6 +1483,14 @@ Es gibt aber 10 zusaetzliche Variablen, die verwendet werden duerfen:
 \$10  : Die Output-Bytes pro Sekunde
 \$11  : Die Dienstekenung
 \$12  : Die Gebuehren
+\$13  : Gibt als String die Landesvorwahl des Anrufenden an.
+\$14  : Gibt als String die Landesvorwahl des Angerufenden an.
+\$15  : Gibt als String die Vorwahl des Anrufenden an.
+\$16  : Gibt als String die Vorwahl des Angerufenden an.
+\$17  : Gibt als String den Ort des Anrufenden an.
+\$18  : Gibt als String den Ort des Angerufenden an.
+\$19  : Gibt als String den Alias des Anrufenden an.
+\$20  : Gibt als String den Alias des Angerufenden an.
 
 Folgende Punkte sind zu beachten:
 

@@ -1,4 +1,4 @@
-/* $Id: start_prog.c,v 1.8 1997/05/28 22:03:10 luethje Exp $
+/* $Id: start_prog.c,v 1.9 1997/06/15 23:49:38 luethje Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: start_prog.c,v $
+ * Revision 1.9  1997/06/15 23:49:38  luethje
+ * Some new variables for the isdnlog
+ * isdnlog starts programs noe with the file system rights
+ * bugfixes
+ *
  * Revision 1.8  1997/05/28 22:03:10  luethje
  * some changes
  *
@@ -87,8 +92,8 @@ static interval *RootIntervall = NULL;
 static void		KillCommand(int);
 static int		GetArgs(char *, char *[], char *[], int);
 static interval *Next_Interval(void);
-static int set_user(char *User);
-static int set_group(char *Group);
+static int set_user(char *User, char *File);
+static int set_group(char *Group, char *File);
 static char *StrToArg(char* string);
 static char *Replace_Opts(char *String, char *Opts[], int MaxOpts);
 static char *ArgToChar(int type, void* Ptr);
@@ -96,9 +101,10 @@ char **Get_Opts(int chan, int event, int InOut);
 
 /****************************************************************************/
 
-static int set_user(char *User)
+static int set_user(char *User, char *File)
 {
 	struct passwd* Ptr = NULL;
+	struct stat   filestat;
 
 	if (User == NULL || User[0] == '\0')
 		return 0;
@@ -107,7 +113,7 @@ static int set_user(char *User)
 
 	while ((Ptr = getpwent()) != NULL)
 	{
-		if (!strcmp(Ptr->pw_name,User))
+		if (!strcmp(Ptr->pw_name,User) || atoi(User) == (int) Ptr->pw_uid)
 		{
 			endpwent();
 			return setuid(Ptr->pw_uid);
@@ -115,14 +121,19 @@ static int set_user(char *User)
 	}
 
 	endpwent();
+
+	if (!stat(File,&filestat))
+		return setuid(filestat.st_uid);
+
 	return 0;
 }
 
 /****************************************************************************/
 
-static int set_group(char *Group)
+static int set_group(char *Group, char *File)
 {
 	struct group* Ptr = NULL;
+	struct stat   filestat;
 
 
 	if (Group == NULL || Group[0] == '\0')
@@ -130,9 +141,10 @@ static int set_group(char *Group)
 
 	setgrent();
 
+
 	while ((Ptr = getgrent()) != NULL)
 	{
-		if (!strcmp(Ptr->gr_name,Group))
+		if (!strcmp(Ptr->gr_name,Group) || atoi(Group) == (int) Ptr->gr_gid)
 		{
 			endgrent();
 			return setgid(Ptr->gr_gid);
@@ -140,6 +152,10 @@ static int set_group(char *Group)
 	}
 
 	endgrent();
+
+	if (!stat(File,&filestat))
+		return setgid(filestat.st_gid);
+
 	return 0;
 }
 
@@ -188,13 +204,13 @@ int Ring(info_args *Cmd, char *Opts[], int Die, int Async)
 			case -1: print_msg(PRT_ERR, "%s\n", "Can't start fork()!");
 			         return 0;
 			         break;
-			case  0: if (set_group(Cmd->group) < 0)
+			case  0: if (set_group(Cmd->group, Args[0]) < 0)
 			         {
 			           print_msg(PRT_ERR, "Can not set group %s: %s\n",Cmd->group,strerror(errno));
 			           exit(-1);
 			         }
 
-			         if (set_user(Cmd->user) < 0)
+			         if (set_user(Cmd->user, Args[0]) < 0)
 			         {
 			           print_msg(PRT_ERR, "Can not set user %s: %s\n",Cmd->user,strerror(errno));
 			           exit(-1);
@@ -952,7 +968,7 @@ static char *ArgToChar(int type, void* Ptr)
 
 char **Get_Opts(int chan, int event, int InOut)
 {
-	static char *Opts[13];
+	static char *Opts[21];
 	static char Strings[2][30];
 
 	Opts[0] = (char*) Set_Ringer_Flags(event,InOut);
@@ -1013,7 +1029,16 @@ char **Get_Opts(int chan, int event, int InOut)
 	else
 		Opts[11] = "";
 
-	Opts[12] = NULL;
+	Opts[12] = call[chan].areacode[CALLING];
+	Opts[13] = call[chan].areacode[CALLED];
+	Opts[14] = call[chan].vorwahl[CALLING];
+	Opts[15] = call[chan].vorwahl[CALLED];
+	Opts[16] = call[chan].area[CALLING];
+	Opts[17] = call[chan].area[CALLED];
+	Opts[18] = call[chan].alias[CALLING];
+	Opts[19] = call[chan].alias[CALLED];
+
+	Opts[20] = NULL;
 	
 	return Opts;
 }
