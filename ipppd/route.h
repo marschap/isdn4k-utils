@@ -22,7 +22,9 @@
 #define RTF_NOFORWARD   0x1000          /* Forwarding inhibited         */
 #define RTF_THROW       0x2000          /* Go to next class             */
 #define RTF_NOPMTUDISC  0x4000          /* Do not send packets with DF  */
+#if 0
 #define RTF_MAGIC       0x8000          /* Route added/deleted authomatically,
                                          * when interface changes its state. */
+#endif
 
 #endif
