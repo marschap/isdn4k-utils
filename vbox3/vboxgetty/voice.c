@@ -1,5 +1,5 @@
 /*
-** $Id: voice.c,v 1.11 1998/11/10 18:36:39 michael Exp $
+** $Id: voice.c,v 1.12 2004/08/30 14:59:25 keil Exp $
 **
 ** Copyright 1996-1998 Michael 'Ghandi' Herold <michael@abadonna.mayn.de>
 */
@@ -21,6 +21,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
@@ -157,7 +158,38 @@ int voice_init(struct vboxuser *vboxuser, struct vboxcall *vboxcall)
 
 					voice_create_vboxcall();
 
+      {
+	int r, pid, wstat;
+	if ((pid =fork()) == -1) {
+	    log_line(LOG_E, "fork failed.\n");
+	    exit(1);
+	}
+	if (pid == 0) {
+	  if (seteuid(0) == -1) {
+	    log_line(LOG_E, "seteuid failed.\n");
+	    exit(1);
+	  }
+	  if (setgid(vboxuser->gid) == -1) {
+	    log_line(LOG_E, "setgid failed.\n");
+	    exit(1);
+	  }
+	  if (setuid(vboxuser->uid) == -1) {
+	    log_line(LOG_E, "setuid failed.\n");
+	    exit(1);
+	  }
+
 					rc = scr_execute(vboxcall->script, vboxuser);
+
+	  exit(rc);
+	}
+	do
+	  r =waitpid(pid, &wstat, 0);
+	while ((r == -1) && (errno == EINTR));
+	if (WIFEXITED(wstat) && (WEXITSTATUS(wstat) == 0))
+	  rc =0;
+	else
+	  rc =-1;
+      }
 
 					voice_remove_vboxcall();
 
