@@ -54,7 +54,7 @@ config.status: configure
 	./config.status --recheck
 
 dest: ../dest.c $(HEADERS) Makefile $(CDBEXTRALIBS)
-	$(CC) -DSTANDALONE -DDESTTEST $(DEFS) $(CFLAGS) ../dest.c $(LDFLAGS) -o $@  $(CDBEXTRALIBS)
+	$(CC) -DSTANDALONE -DDESTTEST $(DEFS) $(CFLAGS) ../dest.c $(CDBEXTRALIBS) $(LDFLAGS) -o $@
 
 #install-man: $(PROGRAM).man
 #	mkdir -p $(DESTDIR)$(MAN8DIR)
