@@ -35,7 +35,7 @@ fi
 #
 # Test whether isdnctrl and kernel support setting x25 encapsulation 
 #
-if isdnctrl addif x25_test > /dev/lull; then
+if isdnctrl addif x25_test > /dev/null; then
 #    current isdnctrl versions don't write to stdout if the kernel ioctl fails.
     result_string=`isdnctrl encap x25_test x25iface 2>&1`
     result_code="$?"
