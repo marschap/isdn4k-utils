@@ -1,0 +1,12 @@
+eine headerdatei fuer alle -DDefines
+Dokumentation von USER/GROUP-Eintraegen
+Dokumentation von neuer Syntax
+Dokumentation von conffile.c
+Vervollstaendigen der README
+isdnrep modulariseren und print_msg einbauen
+Fehler in start_proc lt. Mail beheben
+Vorschlaege von ak realisieren
+
+ - Bedingt durch den neuen logger()-Modus muss die "/var/log/isdn.log" 
+   (sowie die "/var/log/isdn.log.rep") nun existieren,
+   da isdnlog diese nicht mehr automatisch anlegt :-(

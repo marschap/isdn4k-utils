@@ -1,0 +1,189 @@
+ - 2.6.40 17-Feb-97 sl
+   * Bugfixes
+   * Erstellen einer Lib fuer vboxgetty
+   * Anpassen an die isdn4k-utils-Struktur
+
+ - 2.6.39 16-Feb-97 sl
+   * Aenderungen in vnum()/area2area()/get_areacode()
+   * Anpassung an die isdn4k-utils-Struktur
+   * Bugfixes
+
+ - 2.6.38 15-Feb-97 sl
+   * Anpassung an die isdn4k-utils-Struktur
+   * Anlegen der Datei policy.h
+   * Erweiterung der conffile.c
+   * Definition der Vorwahlen-Prefixes
+
+ - 2.6.35 8-Feb-97 sl
+   * isdnconf um einige Features erweitert.
+   * AREALIB in Section [GLOBAL] eingefuehrt.
+   * Funktionen vereinheitlicht.
+   * PID-Datei-Funktion sauber implementierert und dokumentiert.
+
+ - 2.6.33 4-Feb-97 sl
+   * Die Schalter Amtsholung, Q931, dual und CityWeekend in die Syntax fuer
+     die Parameterdateien aufgenommen (z.B. DUAL=2).
+   * Einheitliche Funktionen fuer die PID-Dateien in der Lib.
+   * Die Syntax der Config-Dateien um das Feature include(datei.xyz) erweitert.
+   * Die Datei ~/.isdn eingefuehrt.
+ 
+ - 2.6.32 30-Jan-97 sl
+   * isdnrep laueft wieder ;-)
+   * conffile-lib erweitert und fleissig debuggt
+
+ - 2.6.31 27-Jan-97 sl
+   * myarea in myconfig und myprefix in myarea umbenannt
+   * Syntax von der Fkt. {num_}match() dem gaengigen Standart angepasst.
+   * Aenderungen am Aufbau der isdn.conf vorgenommen
+   * conffile-lib erweitert
+
+ - 2.6.24 10-Jan-97 akool
+   * "-q" erweitert (Layer 2, I, S, U-Format)
+   * Library "prefix" wurde von Uz auf "areacode" umbenannt - uebernommen
+   * City Weekend Tarif implemented, new Cmd-Line-Switch "-F" enables that
+
+ - 2.6.22 07-Jan-97 akool
+   * neue Option "-q" implementiert
+   * Option "-R" entfernt, Option "-r" Auto-Erkennung auf "-R" Funktionalitaet
+   * neue Version "prefix" von Uz integriert
+   * Makefile optimiert, unnoetige Module (entsprechend Konfiguration)
+     werden nicht mehr mitgelinkt
+
+ - 2.6.20 5-Jan-96 sl
+   * RELOAD, STOPCMD und REBOOTCMD in die isdn.conf aufgenommen
+   * Erweiterung der Datei README um einen Teil der neuen Syntax
+   * Ausgabe bei ungueltigen User/Group bei Programmstart
+
+ - 2.6.18 4-Jan-96 sl
+   * Bugfix bei den Umgebungsvariablen
+   * Erweiterung der Datei README um den isdnconf
+
+ - 2.6.15 2-Jan-96 sl
+   * Bugfix in USER und GROUP
+   * neue Syntax um CONNECTMAX und BYTEMAX erweitert.
+
+ - 2.6.14 1-Jan-96 sl
+   * Erstellung des Programmes isdnconf
+   * Erweiterung der Datei isdn.conf um CHARGEMAX und MYAREA
+   * Erweiterung des Programm-Startes um User- und Group-Rechten
+
+ - 2.6.1 19-Oct-96 sl
+   * Neue Syntax vervollstaendigt (Datei isdn.conf)
+   * Automatische Generierung der isdn.conf aus isdnlog.conf
+   * README erweitert
+   * Bug-fixing in diversen Funktionen
+
+ - 2.60 05-Oct-96 akool
+   * mit S.Luethje in Beuern merge 2.4.2 / 2.52 -> 2.60 durchgefuehrt
+
+ - 2.50 01-Sep-96 akool
+   * Freigabe
+
+ - 2.40 am 20-Jun-96 freigegeben
+
+ - 2.3.30 29-May-96 sl
+   * Bug-Fix in strpbrk
+   * Weiterentwicklung von neuer Syntax von Config-Files
+   * printf's in tools.c durch print_msg ersetzt
+   * Option -f eingebaut
+   * SI in isdnlog.conf vorbereitet
+
+ - 2.3.29 09-May-96 sl
+   * isdnlog.c gesplittet
+   * #define -DSL auf Option -b gelegt
+   * Ausgabe von Programmen jetzt auf -x/l/m 4096
+   * Interval vor dem select() geaendert.
+   * Pfad von isdn.log von /var/adm auf /var/log umgesetzt.
+   * Pfad "/dev/tty" in Option -C weggelassen (akool).
+   * "Erstes Programm von -S wird nicht mehr beendet"-Bug fixed.
+   * "selecet()-Bug" fixed.
+   * Dienstekennung implementiert (akool)
+   * Teilsweise Umstellung der Config-Files auf die neue Syntax
+
+ - 2.3.24 03-May-96 sl
+   * Doku erweitert
+   * Blanks in den Flags erlaubt
+
+ - 2.3.21 27-Apr-96 sl
+   * Bug in Flag L und Intervall fixed
+   * Gequotete Zeichen ergaenzt
+
+ - 2.3.19 25-Apr-96 sl
+   * Soundfiles beigelegt
+   * kleinere Bug-fixes
+   * Option -C geaendert
+
+ - 2.3.16 23-Apr-96 sl
+   * Intervall ergaenzt
+   * Option -S umgebaut und um Loop erweitert
+   * Doku erweitert
+
+ - 2.3.14 23-Apr-96 sl
+   * Bug-Fixes in Option -S
+   * Bug-Fixes im xisdn (os,sl)
+
+ - 2.3.12 20-Apr-96 sl
+   * Ueberarbeitung und Erweiterung von Option -S
+   * Aenderung der Syntax der Datei "isdnlog.conf"
+   * Entfernen von Xmt aus dem "xisdn" (os)
+   * Dokumentation im SGML-Format ('Ghandi')
+   * Bug im C/S fixed
+   * Bug im discardconfig/readconfig fixed
+
+ - 2.3.11 13-Apr-96 sl
+   * Bug in angzeigten Zeit (xisdn) fixed
+   * Wiederaktivierung von Adressbuch-Anfaengen
+   * kleinere Bugfixes
+
+ - 2.3.10 12-Apr-96 sl
+   * Bug im sscanf von user-access fixed
+   * Ausgabe von unbekannten Meldungen im xisdn ergaenzt (os)
+
+ - 2.3.9 11-Apr-96 sl
+   * Bugs im isdnlog-C/S fixed
+   * Bug im xisdn change_channel fixed
+
+ - 2.3.8 10-Apr-96 sl
+   * Doku ergaenzt
+   * Channel-States im Server geaendert
+   * change_channel im xisdn realisiert
+
+ - 2.3.6 08-Apr-96 akool
+   * xisdnload an neues isdn4linux angepasst (Fritz Elfert)
+
+ - 2.3.5 05-Apr-96 sl
+   * User_Get_Message fixed
+   * Probleme in User-Access behoben
+   * Defines ergaenzt
+   * kleinere Umstrukturierungen
+   * Doku ergaenzt
+
+ - 2.3.4 05-Apr-96 akool
+
+ - 2.3.3 04-Apr-96 sl
+   * Einfuehrung der Umgebungsvariable "ISDNLOG"
+   * Vervollstaendigung von User-Access
+
+ - 2.3.1 02-Apr-96 sl
+   * C/S-Protokoll-Version eingebaut
+   * User-Access-Datei fuer Client ergaenzt
+   * "malloc()"-Bug in del_socket() behoben
+   * Doku fuer User-Access-File ergaenzt
+
+ - 2.30 am 31-Mar-96 freigegeben akool
+
+ - 2.2.5 28-Mar-96 akool
+   * Exit() fixed (sl)
+   * 1TR6 fixed
+   * Pipe fixed
+
+ - 2.2.4 24-Mar-96 akool
+   * Speicherleck im Server beseitigt (sl)
+   * neues Versionsnummernschema begonnen, 2.23 -> 2.2.4
+   * Pipe-Funktionalitaet reaktiviert (lasagne@garfield.ping.de)
+   * Alle Console-Ausgaben wieder mit "\r"
+   * Gebuehrenauswertung fuer 1TR6 implementiert (Wim Bonis (bonis@kiss.de))
+   * Unterscheidung von 1TR6/EDSS1 Frames implementiert
+   * 1TR6 Causes implementiert
+
+ - 2.23 am 17-Mar-96 freigegeben akool
