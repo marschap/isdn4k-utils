@@ -1,4 +1,4 @@
-$Id: README,v 1.5 1999/10/11 21:22:23 he Exp $
+$Id: README,v 1.6 1999/10/24 21:35:42 he Exp $
 
 README file for eftp4linux
 ==========================
@@ -256,15 +256,13 @@ contain some documentation (and disclaimers :-).
 Remark on installing kernel image:
 ==================================
 
-As you are going to use beta test kernel kernels, it is recommended
-that you don't install the compiled kernel as your default kernel
-image until you are sure that everything works as expected.
-I boot the experimental kernels directly from the source tree
-(and I load the modules from there as well).
-
-I've just appended the following lines to my /etc/lilo.conf:
-(assume the experimental kernel source tree resides in
-/home/kernel/linux-ix25)
+If your Linux distribution does not support 2.2.x kernels,
+it is recommended that you don't install the compiled 2.2.x kernel
+as your default kernel image until you are sure that everything works
+as expected. You can add additional entries to the /etc/lilo.conf file
+in order to allow booting non-standard kernels from a different
+location. Please refer to the relevant lilo doc (man pages, doc files,
+HOWTOs,..) or refer to an older eftp4linux README file for examples.
 
 
 Thanks

@@ -64,8 +64,12 @@ make modules_install
 
 "make modules_install" is recommended after compilation.
 
-You can additionally do a `make install', but be aware that this might
-possibly overwrite your old 2.0.36+ kernel. Without `make install' you will
+If your Linux-Distribution comes with a 2.2.x kernel pre-installed, you can
+additionally do a `make install'. If not, not, you still could do so,
+but be aware that this might possibly overwrite your old 2.0.36+
+kernel which might cause some problems with other parts of your
+Linux distribution. Therefor, with an old linux distribution, it
+recommended to omit `make install' for the first tests. You will
 need to add an additional entry to your /etc/lilo.conf file for
 booting your 2.2.x kernel as an alternative to 2.0.x. 
 
