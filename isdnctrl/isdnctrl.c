@@ -1,4 +1,4 @@
-/* $Id: isdnctrl.c,v 1.40 2000/01/27 15:08:09 paul Exp $
+/* $Id: isdnctrl.c,v 1.41 2000/04/12 21:49:40 detabc Exp $
  * ISDN driver for Linux. (Control-Utility)
  *
  * Copyright 1994,95 by Fritz Elfert (fritz@isdn4linux.de)
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnctrl.c,v $
+ * Revision 1.41  2000/04/12 21:49:40  detabc
+ * add test for maybe undefined IIOCNETDWRSET define
+ *
  * Revision 1.40  2000/01/27 15:08:09  paul
  * Error messages from addlink/removelink are now userfriendly.
  *
@@ -794,12 +797,18 @@ int exec_args(int fd, int argc, char **argv)
 		switch (i) {
 #ifdef I4L_DWABC_UDPINFO
 			case ABCCLEAR:
+#ifdef IIOCNETDWRSET
 			        if ((result = ioctl(fd, IIOCNETDWRSET, id)) < 0) {
 			        	perror(id);
 			        	return -1;
 			        }
 			        printf("ABC secure-counter for %s now clear\n", id);
 					break;
+#else
+					fprintf(stderr,
+			"OOPS: IOCTL IIOCNETDWRSET not in kernel ! (Please install)\n");
+					return -1;
+#endif
 #endif
 			case ADDIF:
 			        strcpy(s, args?id:"");
