@@ -1,4 +1,4 @@
-/* $Id: rate.c,v 1.17 1999/05/13 11:40:03 akool Exp $
+/* $Id: rate.c,v 1.18 1999/05/22 10:19:28 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.18  1999/05/22 10:19:28  akool
+ * isdnlog Version 3.29
+ *
+ *  - processing of "sonderrufnummern" much more faster
+ *  - detection for sonderrufnummern of other provider's implemented
+ *    (like 01929:FreeNet)
+ *  - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - Patch from Markus Schoepflin <schoepflin@ginit.de>
+ *  - easter computing corrected
+ *  - rate-de.dat 1.02-Germany [22-May-1999 11:37:33] (from rate-CVS)
+ *  - countries-de.dat 1.02-Germany [22-May-1999 11:37:47] (from rate-CVS)
+ *  - new option "-B" added (see README)
+ *    (using "isdnlog -B16 ..." isdnlog now works in the Netherlands!)
+ *
  * Revision 1.17  1999/05/13 11:40:03  akool
  * isdnlog Version 3.28
  *
@@ -229,11 +243,13 @@ extern const char *basename (const char *name);
 #define UNKNOWN -1
 #endif
 
+#if 0
 #define  WMAX    64
 #define  P        1
 #define  Q        1
 #define  R        1
 #define  DISTANCE 2
+#endif
 
 typedef struct _STACK {
   int data;
@@ -288,6 +304,8 @@ static COUNTRY *Country = (COUNTRY *)NULL;
 static int      nProvider=0;
 static int      line=0;
 static int      nCountry = 0;
+static char     sonderrufnummern[8192];
+
 
 static void warning (char *file, char *fmt, ...)
 {
@@ -305,16 +323,51 @@ static void warning (char *file, char *fmt, ...)
 }
 
 
-static void down(register char *p)
+int is_sonderrufnummer(char *num)
 {
-  while (*p) {
-    *p = tolower(*p);
+  register char *p1, *p2 = sonderrufnummern;
+  register int   l;
 
-    if ((*p < 'a') || (*p > 'z'))
-      *p = ' ';
 
-    p++;
+  while ((p1 = strchr(p2, ':'))) {
+    *p1 = 0;
+
+    l = strlen(p2);
+
+    if (!strncmp(p2, num, l)) {
+      *p1 = ':';
+
+      return(l);
+    } /* if */
+
+    *p1 = ':';
+
+    p2 = p1 + 1;
   } /* while */
+
+  return(UNKNOWN);
+} /* is_sonderrufnummer */
+
+
+static void down(char *p)
+{
+  auto     char  s[BUFSIZ];
+  register char *p1 = s, *p2 = p;
+
+
+  while (*p2) {
+    *p2 = tolower(*p2);
+
+    if ((*p2 < 'a') || (*p2 > 'z'))
+      ;
+    else
+      *p1++ = *p2;
+
+    p2++;
+  } /* while */
+
+  *p1 = 0;
+  strcpy(p, s);
 } /* down */
 
 
@@ -372,6 +425,7 @@ static void initCountry(char *fn, char *version)
 } /* initCountry */
 
 
+#if 0
 static int min3(register int x, register int y, register int z)
 {
   if (x < y)
@@ -405,6 +459,7 @@ static int wld(register char *nadel, register char *heuhaufen) /* weighted Leven
 
   return(dw[l1][l2]);
 } /* wld */
+#endif
 
 
 static int countrymatch(char *name, char *num)
@@ -417,21 +472,25 @@ static int countrymatch(char *name, char *num)
   down(k);
 
   for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && !strncmp(Country[i].match, k, strlen(Country[i].match)))
-      return(nCountry);
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) &&
+      !strncmp(Country[i].match, k, strlen(Country[i].match)))
+      return(i);
 
   for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && strstr(Country[i].match, k))
-      return(nCountry);
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) &&
+      strstr(Country[i].match, k))
+      return(i);
 
   for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && strstr(Country[i].hints, k))
-      return(nCountry);
-
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) &&
+      strstr(Country[i].hints, k))
+      return(i);
+#if 0
   for (i = 0; i < nCountry; i++)
-    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) && (wld(k, Country[i].match) <= DISTANCE))
-      return(nCountry);
-
+    if ((test || !strncmp(Country[i].prefix, num, strlen(Country[i].prefix))) &&
+      (wld(k, Country[i].match) <= DISTANCE))
+      return(i);
+#endif
   return(0);
 } /* countymatch */
 
@@ -595,10 +654,12 @@ static void empty (STACK **stack)
   }
 }
 
+#if 0
 static int byArea(const void *a, const void *b)
 {
   return strcmp (((AREA*)a)->Code, ((AREA*)b)->Code);
 }
+#endif
 
 void exitRate(void)
 {
@@ -640,7 +701,10 @@ int initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg)
   int      Providers=0, Areas=0, Zones=0, Hours=0;
   int      ignore=0, prefix=UNKNOWN;
   int      zone1, zone2, day1, day2, hour1, hour2, delay;
-  int      i, t, u, v, z;
+  int      i, t, u, v, z, ns = 0;
+
+
+  *sonderrufnummern = 0;
 
   if (msg)
     *(*msg=message)='\0';
@@ -879,6 +943,23 @@ int initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg)
 
             if (isalpha(*c) && !countrymatch(c, NULL))
 	      warning(dat, "Unknown country \"%s\"", c);
+            else if ((*c != '+') &&
+                     (!zones->data ||
+                     ((zones->data > 19) && (zones->data < 100)))) {
+/* ^MICHI:
+    Anstelle dieser wuesten Abfrage auf die Zonen [0,5..10,20..99]
+    benoetige ich das besprochene neue Flag in der "rate-xx.dat"!
+*/
+              auto char sx[100];
+
+              sprintf(sx, "%s:", c);
+
+              if (strstr(sonderrufnummern, sx) == NULL) {
+                strcat(sonderrufnummern, c);
+              	strcat(sonderrufnummern, ":");
+              	ns++;
+              } /* if */
+            } /* else */
 
 	    Provider[prefix].Area[Provider[prefix].nArea].Code=strdup(c);
 	    Provider[prefix].Area[Provider[prefix].nArea].Zone=zones->data; /* ugly: use first zone */
@@ -1131,17 +1212,20 @@ int initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg)
   fclose(stream);
   empty(&zones);
 
+#if 0 /* why the hell? */
   for (i=0; i<nProvider; i++) {
     if (Provider[i].used) {
       qsort(Provider[i].Area, Provider[i].nArea, sizeof(AREA), byArea);
     }
   }
+#endif
 
-  if (msg) snprintf (message, LENGTH, "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Rates from %s]",
-		     Version, Providers, Zones, Areas, Hours, dat);
+  if (msg) snprintf (message, LENGTH, "Rates   Version %s loaded [%d Providers, %d Zones, %d Areas, %d Rates, %d Sonderrufnummern from %s]",
+		     Version, Providers, Zones, Areas, Hours, ns, dat);
 
   if (cmsg) snprintf(cmessage, LENGTH, "Country Version %s loaded [%d prefixes from %s]",
 		     cversion, nCountry, countries);
+
   return 0;
 }
 
@@ -1327,7 +1411,7 @@ char *explainRate (RATE *Rate)
   if (Rate->Provider && *Rate->Provider)
     strncpy (p, Rate->Provider, BUFSIZ);
   else
-    snprintf (p, BUFSIZ, "010%02d", Rate->prefix);
+    snprintf (p, BUFSIZ, "%s%02d", vbn, Rate->prefix);
 
   if (Rate->Zone && *Rate->Zone)
     snprintf (z, BUFSIZ, ", %s", Rate->Zone);

@@ -1,4 +1,4 @@
- /* $Id: holiday.c,v 1.11 1999/05/09 18:24:18 akool Exp $
+ /* $Id: holiday.c,v 1.12 1999/05/22 10:19:21 akool Exp $
  *
  * Feiertagsberechnung
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: holiday.c,v $
+ * Revision 1.12  1999/05/22 10:19:21  akool
+ * isdnlog Version 3.29
+ *
+ *  - processing of "sonderrufnummern" much more faster
+ *  - detection for sonderrufnummern of other provider's implemented
+ *    (like 01929:FreeNet)
+ *  - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - Patch from Markus Schoepflin <schoepflin@ginit.de>
+ *  - easter computing corrected
+ *  - rate-de.dat 1.02-Germany [22-May-1999 11:37:33] (from rate-CVS)
+ *  - countries-de.dat 1.02-Germany [22-May-1999 11:37:47] (from rate-CVS)
+ *  - new option "-B" added (see README)
+ *    (using "isdnlog -B16 ..." isdnlog now works in the Netherlands!)
+ *
  * Revision 1.11  1999/05/09 18:24:18  akool
  * isdnlog Version 3.25
  *
@@ -168,7 +182,7 @@ typedef struct {
 
 static char *defaultWeekday[] = { "", 
 				  "Monday",
-				  "Thuesday",
+				  "Tuesday",
 				  "Wednesday",
 				  "Thursday",
 				  "Friday",
@@ -409,31 +423,46 @@ int isDay(struct tm *tm, bitfield mask, char **name)
   julian day;
   char *s;
   static char buffer[BUFSIZ];
+  int holiday;
+  
+  holiday = isHoliday(tm, &s);
 
-  if ((mask & (1<<HOLIDAY)) && isHoliday(tm, &s)) {
+  if ((mask & (1<<HOLIDAY)) && holiday) {
     if (name) sprintf (*name=buffer, "%s (%s)", Weekday[HOLIDAY], s); 
     return HOLIDAY;
   }
 
   day=(date2julian(tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday)-6)%7+1;
 
-  if ((mask & (1<<WEEKEND)) && day>5) {
+  if ((mask & (1<<WEEKEND)) && day>5 && !holiday) {
     if (name) sprintf (*name=buffer, "%s (%s)", Weekday[WEEKEND], Weekday[day]);
     return WEEKEND;
   }
   
-  if ((mask & (1<<WORKDAY)) && day<6) {
+  if ((mask & (1<<WORKDAY)) && day<6 && !holiday) {
     if (name) sprintf (*name=buffer, "%s (%s)", Weekday[WORKDAY], Weekday[day]);
     return WORKDAY;
   }
   
   if (mask & (1<<EVERYDAY)) {
-    if (name) *(*name=buffer)='\0';
+    if(name)
+    {
+      if(holiday) 
+        sprintf(*name=buffer, "%s (%s)", Weekday[day], s);
+      else
+        sprintf(*name=buffer, "%s", Weekday[day]);
+    }
     return day;
   }
 
   if (mask & (1<<day)) {
-    if (name) sprintf (*name=buffer, "%s", Weekday[day]);
+    if(name)
+    {
+      if(holiday) 
+        sprintf(*name=buffer, "%s (%s)", Weekday[day], s);
+      else
+        sprintf(*name=buffer, "%s", Weekday[day]);
+    }
     return day;
   }
   
@@ -448,7 +477,7 @@ void main (int argc, char *argv[])
   struct tm tm;
 
 
-  initHoliday("../holiday-at.dat", &msg);
+  initHoliday("../holiday-de.dat", &msg);
   printf ("%s\n", msg);
 
   for (i=1; i < argc; i++) {

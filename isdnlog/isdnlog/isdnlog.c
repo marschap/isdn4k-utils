@@ -1,4 +1,4 @@
-/* $Id: isdnlog.c,v 1.42 1999/05/13 11:39:18 akool Exp $
+/* $Id: isdnlog.c,v 1.43 1999/05/22 10:18:28 akool Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,20 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: isdnlog.c,v $
+ * Revision 1.43  1999/05/22 10:18:28  akool
+ * isdnlog Version 3.29
+ *
+ *  - processing of "sonderrufnummern" much more faster
+ *  - detection for sonderrufnummern of other provider's implemented
+ *    (like 01929:FreeNet)
+ *  - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - Patch from Markus Schoepflin <schoepflin@ginit.de>
+ *  - easter computing corrected
+ *  - rate-de.dat 1.02-Germany [22-May-1999 11:37:33] (from rate-CVS)
+ *  - countries-de.dat 1.02-Germany [22-May-1999 11:37:47] (from rate-CVS)
+ *  - new option "-B" added (see README)
+ *    (using "isdnlog -B16 ..." isdnlog now works in the Netherlands!)
+ *
  * Revision 1.42  1999/05/13 11:39:18  akool
  * isdnlog Version 3.28
  *
@@ -337,9 +351,9 @@ static int read_param_file(char *FileName);
 
 static char     usage[]   = "%s: usage: %s [ -%s ] file\n";
 #ifdef Q931
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:ou:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NqFA:2:O:Ki:R:0:ou:B:";
 #else
-static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:";
+static char     options[] = "av:sp:x:m:l:rt:c:C:w:SVTDPMh:nW:H:f:bL:NFA:2:O:Ki:R:0:ou:B:";
 #endif
 static char     msg1[]    = "%s: Can't open %s (%s)\n";
 static char    *ptty = NULL;
@@ -587,7 +601,9 @@ static void init_variables(int argc, char* argv[])
   sprintf(mlabel, "%%s%s  %%s%%s", "%e.%b %T %I");
   amtsholung = NULL;
   dual = 0;
-  preselect = 33; /* Telekomik */
+
+  preselect = 33;      /* Telekomik */
+  vbn = strdup("010"); /* Germany */
 
   myname = argv[0];
   myshortname = basename(myname);
@@ -766,6 +782,10 @@ int set_options(int argc, char* argv[])
       	       	 break;
 
       case 'u' : ignoreRR = atoi(optarg);
+      	       	 break;
+
+      case 'B' : free(vbn);
+      	         vbn = strdup(optarg);
       	       	 break;
 
       case '?' : printf(usage, myshortname, myshortname, options);
@@ -960,6 +980,11 @@ static int read_param_file(char *FileName)
                                 else
                                 if (!strcmp(Ptr->name,CONF_ENT_IGNORERR))
 				        ignoreRR = (int)strtol(Ptr->value, NIL, 0);
+                                else
+                                if (!strcmp(Ptr->name,CONF_ENT_VBN)) {
+                                        free(vbn);
+				        vbn = strdup(Ptr->value);
+                                }
                                 else
 					print_msg(PRT_ERR,"Error: Invalid entry `%s'!\n",Ptr->name);
 

@@ -1,13 +1,16 @@
-V:1.02-Germany [13-May-1999 12:26:26]
+V:1.02-Germany [22-May-1999 12:01:41]
 
-# $Id: countries-de.dat,v 1.3 1999/05/13 11:38:52 akool Exp $
+# $Id: countries-de.dat,v 1.4 1999/05/22 10:17:59 akool Exp $
 #
++998:Usbekistan
++996:Kirgisien
 +995:Georgien
 +994:Aserbaidschan
 +993:Turkmenistan
-+98:Iran
++992:Tadschikistan
++98:Iran:Iran (Islamische Republik)
 +977:Nepal
-+976:Mongolei
++976:Mongolei:Mongolische VR
 +975:Bhutan
 +974:Katar
 +973:Bahrain
@@ -18,32 +21,32 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +97251:Israel Mobilfunk
 +97250:Israel Mobilfunk
 +972:Israel
-+971:Ver. Arabische Emirate:Vereinigte Arabische Emirate
-+969:Jemen, (Arab. Republik):Jemen (Arabische Republik)
++971:Ver. Arabische Emirate:Vereinigte Arabische Emirate:Ver.Arab. Emirate
++969:Jemen, (Arab. Republik):Jemen (Arabische Republik):Jemen:Jemen Arab. Rep.
 +968:Oman
-+967:Jemen, (Arab. Republik):Jemen (Arabische Republik)
-+966:Saudi Arabien
-+965:Kuwait
++967:Jemen, (Arab. Republik):Jemen (Arabische Republik):Jemen Arab. Rep.:Jemen
++966:Saudi Arabien:Saudi-Arabien
++965:Kuwait:Kuweit
 +964:Irak
-+963:Syrien
++963:Syrien:Syrien (Arabische Republik)
 +962:Jordanien
 +9613:Libanon Mobilfunk
 +961:Libanon
 +960:Malediven
-+95:Myanmar, Burma
++95:Myanmar, Burma:Myanmar (Birma):Burma:Birma:Myanmar
 +94:Sri Lanka
 +93:Afghanistan
 +92:Pakistan
 +91:Indien
 +905:Türkei Mobilfunk
-+90:Türkei:Türkei, Nordzypern:Zypern (türk.):Zypern (Nordzypern)
++90:Türkei:Türkei, Nordzypern:Zypern (türk.):Zypern (Nordzypern):Zypern (Türkisch)
 +8869:Taiwan Mobilfunk
-+886:China, (Taiwan):Taiwan
-+8817:Iridium 008817
-+8816:Iridium 008816
-+880:Bangladesch
++886:China, (Taiwan):Taiwan:China (Taiwan)
++8817:Iridium 008817:Iridium B:Iridium Iridium-Homed
++8816:Iridium 008816:Iridium A:Iridium GSM-Homed
++880:Bangladesch:Bangladesh
 +8748:Inmarsat A Daten/Fax
-+87476:Inmarsat Mini-M
++87476:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
 +8746:Inmarsat M
 +8745:Inmarsat Aero
 +87439:Inmarsat B HSD
@@ -51,7 +54,7 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +8741:Inmarsat A
 +874:Atlantischer Ozean (West)
 +8738:Inmarsat A Daten/Fax
-+87376:Inmarsat Mini-M
++87376:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
 +8736:Inmarsat M
 +8735:Inmarsat Aero
 +87339:Inmarsat B HSD
@@ -59,7 +62,7 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +8731:Inmarsat A
 +873:Indischer Ozean
 +8728:Inmarsat A Daten/Fax
-+87276:Inmarsat Mini-M
++87276:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
 +8726:Inmarsat M
 +8725:Inmarsat Aero
 +87239:Inmarsat B HSD
@@ -67,55 +70,56 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +8721:Inmarsat A
 +872:Pazifischer Ozean
 +8718:Inmarsat A Daten/Fax
-+87176:Inmarsat Mini-M
++87176:Inmarsat Mini-M:Inmarsat Phone (Mini-M)
 +8716:Inmarsat M
 +8715:Inmarsat Aero
 +87139:Inmarsat B HSD
 +8713:Inmarsat B
 +8711:Inmarsat A
 +871:Atlantischer Ozean (Ost)
++87076:Inmarsat Mini-M (Worldwide):Inmarsat Mini-M:Inmarsat Phone (Mini-M)
 +86886:China Mobilfunk
 +8613:China Mobilfunk
-+86:China, (Volksrepulik)
++86:China, (Volksrepublik):China (Volksrepublik):China
 +856:Laos
 +855:Kambodscha
-+853:Macao
++853:Macao:Macau
 +8529:Hong Kong Mobilfunk
 +8522:Hong Kong Mobilfunk
 +852:Hongkong:Hong Kong
-+850:Korea (Dem. Republik), Nordkorea:Korea (Demokratische Republik)
++850:Korea (Dem. Republik), Nordkorea:Korea (Demokratische Republik):Korea (North):Korea (DVR):Nordkorea:Nordkorea (DVR)
 +84:Vietnam
 +8227:Korea Rep. (South) Mobilfunk
 +821:Korea Rep. (South) Mobilfunk
-+82:Korea (Republik), Südkorea:Korea (Süd)
++82:Korea (Republik), Südkorea:Korea (Süd):Korea Rep. (South):Korea (Reublik):Südkorea:Südkorea (Republik)
 +8190:Japan Mobilfunk
 +8170:Japan Mobilfunk
 +813:Tokyo
 +81:Japan
 +800:international freephone
-+7902:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7901:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7863:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7862:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7861:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7820:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7817:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7816:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7815:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7814:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7812:St. Petersburg
-+7811:Russische Föderat. (westl.):GUS (Russische Föderation)
++7902:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7901:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7863:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7862:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7861:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7820:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7817:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7816:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7815:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7814:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7812:St. Petersburg:Rußland St. Petersburg:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7811:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
 +7590:Usbekistan
-+7543:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7517:Russische Föderat. (westl.):GUS (Russische Föderation)
-+751285:St. Petersburg
-+75112:Russische Föderat. (westl.):GUS (Russische Föderation)
-+75110:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7510:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7505:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7503:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7502:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7501:Russische Föderat. (westl.):GUS (Russische Föderation)
++7543:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7517:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++751285:St. Petersburg:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++75112:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++75110:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7510:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7505:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7503:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7502:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation):Rußland Moskau Overlay
++7501:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation):Rußland Moskau Overlay
 +7436:Usbekistan
 +7433:Tadschikistan
 +7431:Tadschikistan
@@ -137,15 +141,15 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +7364:Tadschikistan
 +7362:Usbekistan
 +7361:Usbekistan
-+7339:Kirgistan
++7339:Kirgistan:Kirgisistan
 +7336:Kasachstan
-+7335:Kirgistan
-+7334:Kirgistan
-+7333:Kirgistan
-+7332:Kirgistan
-+7331:Kirgistan
++7335:Kirgistan:Kirgisistan
++7334:Kirgistan:Kirgisistan
++7333:Kirgistan:Kirgisistan
++7332:Kirgistan:Kirgisistan
++7331:Kirgistan:Kirgisistan
 +7330:Kasachstan
-+733:Kirgistan
++733:Kirgistan:Kirgisistan
 +7329:Kasachstan
 +7328:Kasachstan
 +7327:Kasachstan
@@ -155,7 +159,7 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +7323:Kasachstan
 +7322:Kasachstan
 +7321:Kasachstan
-+7319:Kirgistan
++7319:Kirgistan:Kirgisistan
 +7318:Kasachstan
 +7317:Kasachstan
 +7316:Kasachstan
@@ -166,63 +170,65 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +7311:Kasachstan
 +7310:Kasachstan
 +73:Kasachstan
-+7096:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7096:Moskau
-+7095:Moskau
-+709246:Russische Föderat. (westl.):GUS (Russische Föderation)
-+709245:Russische Föderat. (westl.):GUS (Russische Föderation)
-+709244:Russische Föderat. (westl.):GUS (Russische Föderation)
-+709243:Russische Föderat. (westl.):GUS (Russische Föderation)
-+709237:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7091:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7087:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7086:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7085:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7084:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7083:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7082:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7081:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7074:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7073:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7072:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7071:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7011:Russische Föderat. (westl.):GUS (Russische Föderation)
-+7:Russische Förderation (östl.):GUS (Russische Föderation)
-+6998:Midway-Inseln
++7096:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7096:Moskau:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7095:Moskau:Rußland Moskau:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++709246:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++709245:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++709244:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++709243:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++709237:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7091:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7087:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7086:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7085:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7084:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7083:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7082:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7081:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7074:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7073:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7072:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7071:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7011:Russische Föderat. (westl.):Rußland (westl.):GUS (Russische Föderation)
++7:Russische Förderation (östl.):GUS (Russische Föderation):Rußland
++6998:Midway-Inseln:Midway Inseln
 +6996:Chatham-Inseln
 +6993:Wake Inseln
 +692:Marshallinseln
 +691:Mikronesien
-+690:Tokelan
++690:Tokelan:Tokelau:Tokelauinseln
 +689:Französisch-Polynesien
 +688:Tuvalu
 +687:Neukaledonien
 +686:Kiribati
-+685:Samoa (West)
-+684:Amerikanisch-Samoa
-+683:Niue-Inseln
-+682:Cookinseln
++685:Samoa (West):Western Samoa
++684:Amerikanisch-Samoa:Samoa (US)
++683:Niue-Inseln:Niue Islands:Niue
++682:Cookinseln:Cook Islands
 +681:Wallis und Futuna:Wallis und Futuna Inseln
-+680:Palau /Belau
++680:Palau /Belau:Palau (=Belau):Palau:Belau
 +679:Fidschi
 +678:Vanuatu
-+677:Salomonen:Solomon Inseln
++677:Salomonen:Solomon Inseln:Solomonen:Salomoninseln
 +676:Tonga
-+675:Papua-Neuguinea
++675:Papua-Neuguinea:Papua Neu Guinea
 +674:Nauru
-+673:Brunei:Brunei Darussalam
-+6724:Weihnachtsinsel (Australien)
-+6723:Norfolkinseln (Australien)
++673:Brunei:Brunei Darussalam:Brunei-Darussalam
++6724:Weihnachtsinsel (Australien):Weihnachtsinseln
++6723:Norfolkinseln (Australien):Norfolk Islands:Norfolk
 +6722:Kokosinseln (Australien)
 +6721:Antarktis:Davis (Antarktis):Mawson (Antarktis):Casey (Antarktis):Macquarrie Island (Antarktis)
++672:Antarktis
 +671:Guam
-+670:Marianen
++670:Marianen:Saipan
 +66:Thailand
 +65:Singapur
 +649:Pitcairn Inseln
 +64:Neuseeland
 +63:Philippinen
 +62:Indonesien
++6189162:Kokos-Inseln
 +61500:Australien Mobilfunk
 +6142:Australien Mobilfunk
 +6141:Australien Mobilfunk
@@ -241,9 +247,9 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +599:Niederl. Antillen:Niederländische Antillen
 +598:Uruguay
 +597:Suriname
-+596:Martinique / Franz. Antillen
++596:Martinique / Franz. Antillen:Martinique:Französische Antillen
 +595:Paraguay
-+594:Französisch-Guayana
++594:Französisch-Guayana:Französisch Guyana
 +5939:Ecuador Mobilfunk
 +593:Ecuador
 +592:Guyana
@@ -273,9 +279,10 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +54153:Argentinien Mobilfunk
 +5414:Argentinien Mobilfunk
 +54:Argentinien
++5399:Guantanamo Bay
 +5321:Guantanamo
 +53:Kuba
-+52:Mexiko
++52:Mexiko:Mexico
 +51946:Peru Mobilfunk
 +51846:Peru Mobilfunk
 +51746:Peru Mobilfunk
@@ -290,7 +297,7 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +5114:Peru Mobilfunk
 +51:Peru
 +509:Haiti
-+508:St. Pierre und Miquelon:Saint Pierre und Miquelon
++508:St. Pierre und Miquelon:Saint Pierre und Miquelon:St. Pierre and Miquelon
 +5076:Panama Mobilfunk
 +507:Panama
 +506:Costa Rica
@@ -413,15 +420,16 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +441426:Großbritannien Mobilfunk
 +44139:Großbritannien Mobilfunk
 +44131:Edinburgh
-+44:Großbritannien, Insel Man, Kanalinseln:Großbritannien und Nordirland:Insel Man (Großbritannien):Kanalinseln (Großbritannien)
++44:Großbritannien, Insel Man, Kanalinseln:Großbritannien und Nordirland:Insel Man (Großbritannien):Kanalinseln (Großbritannien):Großbritannien:Nordirland:Grossbritannien
 +43699:Österreich Mobilfunk
 +43676:Österreich Mobilfunk
 +43664:Österreich Mobilfunk
 +43663:Österreich Mobilfunk
 +431:Wien
 +43:Österreich
-+421:Slowakei, Slowakische Republik
-+420:Tschechien, Tschechische Republik
++423:Liechtenstein
++421:Slowakei, Slowakische Republik:Slowakische Rep.:Slowakei:Slowak. Rep.:Slowakische Republik
++420:Tschechien, Tschechische Republik:Tschechische Rep.:Tschechische Republik:Tschechien:Tschech. Rep.
 +4179:Schweiz Mobilfunk
 +4178:Schweiz Mobilfunk
 +4176:Schweiz Mobilfunk
@@ -450,21 +458,22 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +387:Bosnien-Herzegowina
 +386:Slowenien
 +385:Kroatien
-+381:Jugoslawien(Serbien/Montenegro):Jugoslawien Montenegro
++381:Jugoslawien(Serbien/Montenegro):Jugoslawien Montenegro:Jugoslawien:Serbien:Montenegro:Jugoslawien Serbien und Montenegro
 +380:Ukraine
++379:Vatican City:Vatikanstadt
 +378:San Marino
 +377:Monaco
 +376:Andorra
-+375:Weissrussland, Belarus:Belarus (Weißrußland):Weißrußland (Belarus)
++375:Weissrussland, Belarus:Belarus (Weißrußland):Weißrußland (Belarus):Weißrußland/Belarus:Belarus:Weißrußland
 +374:Armenien
-+373:Moldavien, Moldau (Republik):Moldau Republik
++373:Moldavien, Moldau (Republik):Moldau Republik:Moldavien:Moldawien:Moldau (Republik)
 +372:Estland
 +371:Lettland
 +370:Litauen
 +36:Ungarn
 +359:Bulgarien
-+358:Finnland
-+357:Zypern:Zypern (griech.)
++358:Finnland:Finland
++357:Zypern:Zypern (griech.):Zypern (Griechisch)
 +356:Malta
 +355:Albanien
 +354:Island
@@ -473,7 +482,7 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +35387:Irland Mobilfunk
 +35386:Irland Mobilfunk
 +353:Irland
-+352:Luxemburg
++352:Luxemburg:Luxembourg
 +35196:Azoren
 +35195:Azoren
 +35192:Azoren
@@ -535,9 +544,9 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +2897:Tristan da Cunha
 +27:Südafrika
 +2697:Komoren
-+269:Mayotte
++269:Mayotte:Komoren
 +268:Swasiland
-+267:Botsuana, Botswana
++267:Botsuana, Botswana:Botswana Republic:Botsuana
 +266:Lesotho
 +265:Malawi
 +264:Namibia
@@ -545,7 +554,7 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +262:Reunion
 +261:Madagaskar
 +260:Sambia
-+258:Mosambik
++258:Mosambik:Mozambik
 +257:Burundi
 +256:Uganda
 +255:Tansania, Sansiba
@@ -556,18 +565,18 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +250:Ruanda
 +249:Sudan
 +248:Seyschellen, Seychellen
-+247:Ascension
++247:Ascension:Ascension Inseln
 +246:Diego Garcia
 +245:Guinea-Bissau
 +244:Angola
-+243:Zaire
-+242:Kongo
++243:Zaire:Kongo (Demokratische Republik):Kongo (DR)
++242:Kongo:Kongo (Republik):Kongo (R)
 +241:Gabun
-+240:Äquatorial-Guinea
++240:Äquatorial-Guinea:Äquatorialguinea
 +239:Sao Tome und Principe
-+238:Cape Verde, Kap Verde
++238:Cape Verde, Kap Verde:Kap Verde:Cape Verde
 +237:Kamerun
-+236:Zentralafrikanische Reublik
++236:Zentralafrikanische Republik:Zentral Afrika (Rep.)
 +235:Tschad
 +234:Nigeria
 +233:Ghana
@@ -577,14 +586,14 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +229:Benin
 +228:Togo
 +227:Niger
-+226:Burkina Faso, Obervolta
-+225:Elfenbeinküste, Cote de Ivoire:Cote d'Ivoire (Elfenbeinküste)
++226:Burkina Faso, Obervolta:Obervolta:Burkina Faso:Burkina-Faso
++225:Elfenbeinküste, Cote de Ivoire:Cote d'Ivoire (Elfenbeinküste):Cote d'Ivoire:Elfenbeinküste
 +224:Guinea
 +223:Mali
 +222:Mauretanien
 +221:Senegal
 +220:Gambia
-+218:Libyen, Libysch-Arabische Dschamahirija
++218:Libyen, Libysch-Arabische Dschamahirija:Libyen:Libysch-Arabische Dschamahirija:Lybien
 +216:Tunesien
 +213:Algerien
 +212:Marokko
@@ -592,9 +601,9 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +1907:Alaska
 +1905:Kanada
 +1902:Kanada
-+1876:Jamaika
-+1869:St. Kitts und Nevis:St. Kitts & Nevis:Saint Kitts and Nevis
-+1868:Trinidad und Tobago:Trinidad & Tobago
++1876:Jamaika:Jamaica
++1869:St. Kitts und Nevis:St. Kitts & Nevis:Saint Kitts and Nevis:St Kitts:Nevis Islands
++1868:Trinidad und Tobago:Trinidad & Tobago:Trinidad and Tobago
 +1867:Kanada
 +184:Dominikanische Republik
 +1819:Kanada
@@ -678,14 +687,14 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +1809496:Britische Jungferninseln:Jungferninseln (GB)
 +1809495:Britische Jungferninseln:Jungferninseln (GB)
 +1809494:Britische Jungferninseln:Jungferninseln (GB)
-+1809493:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen
-+1809490:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen
-+1809485:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen
++1809493:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
++1809490:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
++1809485:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
 +1809481:Dominikanische Republik
 +180947:Dominikanische Republik
-+1809458:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen
-+1809457:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen
-+1809456:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen
++1809458:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
++1809457:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
++1809456:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
 +1809449:Dominica
 +1809448:Dominica
 +1809447:Dominica
@@ -750,19 +759,19 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +1809208:Dominikanische Republik
 +1809204:Dominikanische Republik
 +1809188:Dominikanische Republik
-+1809:Britische Jungferninseln:Jungferninseln (GB)
++1809:Britische Jungferninseln:Jungferninseln (GB):Dominikanische Rep.
 +1808:Hawaii
 +1807:Kanada
 +1787:Puerto Rico
-+1784:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen
++1784:St. Vincent und Grenadinen:St. Vincent and the Grenadines:Saint Vincent und die Grenadinen:St. Vincent and Grenadines:St. Vincent und die Grenadien:St. Vincent Und Die Grenadinen
 +1767:Dominica
 +1758:St. Lucia:Saint Lucia
 +1709:Kanada
 +1705:Kanada
-+1671:Marianen (Guam)
-+1670:Marianen (Saipan,Nord-)
++1671:Marianen (Guam):Guam
++1670:Marianen (Saipan,Nord-):Nördliche Marianen:Marianen
 +1664:Montserrat
-+1649:Turks- und Caicosinseln
++1649:Turks- und Caicosinseln:Turks and Caicos Islands
 +1613:Kanada
 +1604:Kanada
 +1600:Kanada
@@ -774,14 +783,14 @@ V:1.02-Germany [13-May-1999 12:26:26]
 +1418:Kanada
 +1416:Kanada
 +1403:Kanada
-+1345:Kaimaninseln:Cayman-Inseln
++1345:Kaimaninseln:Cayman-Inseln:Kaiman Inseln
 +1340:Amerikanische Jungferninseln:Jungferninseln (USA)
 +1306:Kanada
-+1284:Britische Jungferninseln:Jungferninseln (GB)
-+1268:Antigua und Barbuda
++1284:Britische Jungferninseln:Jungferninseln (GB):Brit. Jungferninseln
++1268:Antigua und Barbuda:Antigua & Barbuda:Antigua & Barbadu:Antigua Und Barbadu
 +1264:Anguilla
 +1250:Kanada
 +1246:Barbados
 +1242:Bahamas
 +1204:Kanada
-+1:USA:Vereinigte Staaten (USA)
++1:USA:Vereinigte Staaten (USA):Kanada

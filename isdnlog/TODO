@@ -22,6 +22,13 @@ Vorschlaege von ak realisieren
  - in tools/isdnconf.c Set_Globals() alle neueren conf-Entr„ge
    (AMT, INTERNS0, usw.) parsen!
 
+ - "gsm" Frames pruefen, Funk-Rufnummern werden falsch zerlegt:
+   +49 /17332, Germany ?
+
+ - countrymatch() haut manchmal daneben!
+   Aus der Telefonnummer "+353 147" wird bei 01078:3U -> Irland Mobilfunk
+   "Usbekistan" wird manchmal nicht gefunden?
+
  - "make install" muá noch den neuen Eintrag
    [ISDNLOG]
    COUNTRYFILE    = /usr/lib/isdn/countries-de.dat

@@ -19,6 +19,9 @@ P:42=99
 # Dont use ACC
 P:49=99
 
+# Dont use WOBCOM
+P:53=99
+
 # Kennzahl 70, moegliche Varianten:
 #   1=Arcor CbC
 #   2=Arcor Town to Town
@@ -44,4 +47,4 @@ P:150=99
 # my LCR
 P:11=99
 P:13=99
-P:55=99
+P:40=99

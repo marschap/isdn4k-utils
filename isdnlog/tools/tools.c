@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.26 1999/05/09 18:24:28 akool Exp $
+/* $Id: tools.c,v 1.27 1999/05/22 10:19:33 akool Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.27  1999/05/22 10:19:33  akool
+ * isdnlog Version 3.29
+ *
+ *  - processing of "sonderrufnummern" much more faster
+ *  - detection for sonderrufnummern of other provider's implemented
+ *    (like 01929:FreeNet)
+ *  - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - Patch from Markus Schoepflin <schoepflin@ginit.de>
+ *  - easter computing corrected
+ *  - rate-de.dat 1.02-Germany [22-May-1999 11:37:33] (from rate-CVS)
+ *  - countries-de.dat 1.02-Germany [22-May-1999 11:37:47] (from rate-CVS)
+ *  - new option "-B" added (see README)
+ *    (using "isdnlog -B16 ..." isdnlog now works in the Netherlands!)
+ *
  * Revision 1.26  1999/05/09 18:24:28  akool
  * isdnlog Version 3.25
  *
@@ -600,7 +614,7 @@ char *vnum(int chan, int who)
   register int    l = strlen(call[chan].num[who]), got = 0;
   register int    flag = C_NO_WARN | C_NO_EXPAND;
   auto     char  *ptr;
-  auto	   int    ll, lx;
+  auto	   int    ll, lx, l1;
   auto	   int 	  prefix = strlen(countryprefix);
   auto	   int 	  cc_len = 2;   /* country code length defaults to 2 */
 
@@ -637,14 +651,18 @@ char *vnum(int chan, int who)
     if (cnf > -1)
       strcpy(retstr[retnum], call[chan].alias[who]);
     else if (call[chan].sondernummer[who] != UNKNOWN) {
-#if 0 /* FIXME */
-      if ((l1 = strlen(sondernum(call[chan].sondernummer[who]))) < l)
-        sprintf(retstr[retnum], "%s - %s", sondernummername(call[chan].sondernummer[who]), call[chan].num[who] + l1);
+      if ((l1 = call[chan].sondernummer[who]) < l) {
+        register char *p = call[chan].num[who] + l1;
+        register char  c = *p;
+
+        *p = 0;
+
+        sprintf(retstr[retnum], "%s - %c%s", call[chan].num[who], c, p + 1);
+
+        *p = c;
+      }
       else
-        strcpy(retstr[retnum], sondernummername(call[chan].sondernummer[who]));
-#else
-      sprintf(retstr[retnum], "%s", call[chan].num[who]);
-#endif
+        sprintf(retstr[retnum], "%s", call[chan].num[who]);
     }
     else
       sprintf(retstr[retnum], "TN %s", call[chan].num[who]);
@@ -1015,9 +1033,9 @@ go:   	         if (!ndigit)
       	         if (call[chan].provider != -1) {
 
       		   if (call[chan].provider < 100)
-      	       	   sprintf(sx, "010%02d", call[chan].provider);
+      	       	     sprintf(sx, "%s%02d", vbn, call[chan].provider);
       		   else
-		     sprintf(sx, "010%03d", call[chan].provider - 100);
+		     sprintf(sx, "%s%03d", vbn, call[chan].provider - 100);
       	         }
       		 else
                    *sx = 0;

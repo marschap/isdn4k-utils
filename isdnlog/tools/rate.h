@@ -1,4 +1,4 @@
-/* $Id: rate.h,v 1.7 1999/05/13 11:40:07 akool Exp $
+/* $Id: rate.h,v 1.8 1999/05/22 10:19:30 akool Exp $
  *
  * Tarifdatenbank
  *
@@ -19,6 +19,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.h,v $
+ * Revision 1.8  1999/05/22 10:19:30  akool
+ * isdnlog Version 3.29
+ *
+ *  - processing of "sonderrufnummern" much more faster
+ *  - detection for sonderrufnummern of other provider's implemented
+ *    (like 01929:FreeNet)
+ *  - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - Patch from Markus Schoepflin <schoepflin@ginit.de>
+ *  - easter computing corrected
+ *  - rate-de.dat 1.02-Germany [22-May-1999 11:37:33] (from rate-CVS)
+ *  - countries-de.dat 1.02-Germany [22-May-1999 11:37:47] (from rate-CVS)
+ *  - new option "-B" added (see README)
+ *    (using "isdnlog -B16 ..." isdnlog now works in the Netherlands!)
+ *
  * Revision 1.7  1999/05/13 11:40:07  akool
  * isdnlog Version 3.28
  *
@@ -118,6 +132,7 @@ typedef struct {
   time_t     Rest;     /* bezahlte, aber noch nicht verbrauchte Zeit */
 } RATE;
 
+int   is_sonderrufnummer(char *num);
 int   abroad(char *key, char *result);
 void  exitRate(void);
 int   initRate(char *conf, char *dat, char *countries, char **msg, char **cmsg);

@@ -1,10 +1,10 @@
-ISDNLOG - Version 3.28 -  				12-May-99  21:20
+ISDNLOG - Version 3.29 -  				15-May-99  14:31
 
 
 isdnlog ist ein Utility zur Auswertung des D-Kanals eines
 ISDN-BRI Anschlusses.
 
-isdnlog-3.28 wurde ausgiebig mit Linux-2.0.36 getestet.
+isdnlog-3.29 wurde ausgiebig mit Linux-2.0.36 getestet.
 
 
 Fuer alle, die es nun ueberhaupt nicht mehr abwarten koennen, hier das
@@ -2215,7 +2215,7 @@ angegeben werden.
      OBACHT: Zwischen "-C" und dem Device _muss_ ein Leerzeichen stehen!!
      (console="path")
 
- -S  isdnlog soll bei diversen Event's die in der 5. Spalte der isdn.conf
+ -S  isdnlog soll bei diversen Event's die unter START
      angegebenen externen Programme starten
      (start={yes|no})
 
@@ -2357,21 +2357,28 @@ angegeben werden.
      internen Teilnehmernummern. sollte hier 3 angegeben werden.
      (interns0="value")
 
+ -Bx Angabe der Vorwahl, die eine Verbindungsnetzbetreiberauswahlnummer
+     einleitet. In Deutschland ist dies "010", in Holland hingegen
+     "16" oder "17". Gibt es (wie in Holland) mehrere, mÅssen diese
+     durch ein ":" getrennt angegeben werden, also
+     -B16:17
+     (vbn="value")
+
  -Rx Angabe der Verbindungsnetzbetreiberauswahlnummer der Telefongesellschaft,
      auf die man preselected ist. Hierbei ist 010 wegzulassen, d.h. z.b.
      bei Arcor ist -R70 anzugeben.
      Fehlt diese Angabe, wird 33, d.h. die Deutsche Telekom angenommen.
      (preselected="value")
 
- -0x Beliebiges Unterdruecken vorlaufender Nullen. Haengt isdnlog an dem
+ -0x Beliebiges Unterdruecken vorlaufender Zeichen. Haengt isdnlog an dem
      internen S0-Bus einer TK-Anlage, und ist es nicht moeglich, isdnlog
      mit seiner internen Logik sowie der "-A" Option dazu zu ueberreden,
      Deutschland und Ausland auseinanderzuhalten, kann hiermit die
      gesamte interne Logik uebersteuert werden.
 
      Der Option "-0" sind zwei, durch ein ":" getrennte Ziffern zu
-     uebergeben. Diese geben an, wieviele vorlaufende "0" von der TK-
-     Anlage isdnlog bei rein- sowie rausgehenden Gespraechen entfernen
+     uebergeben. Diese geben an, wieviele vorlaufende Zeichen von der
+     Tk-Anlage isdnlog bei rein- sowie rausgehenden Gespraechen entfernen
      soll.
 
      Beispiel:
@@ -2396,6 +2403,9 @@ angegeben werden.
      Wird die Option "-0" verwendet, darf die "-A" Option nicht verwendet
      werden, da auch diese ja vorlaufende "0" entfernt!
      (trim="value:value")
+
+     Auch eine Amtholung wie z.b. "#0" l‰ﬂt sich damit entfernen!
+
 
  -o  Auch die causes (Hinweise, wie z.b. "non-selected user clearing")
      anderer Geraete werden angezeigt. Ohne diese Option werden nur

@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.41 1999/05/13 11:40:11 akool Exp $
+/* $Id: tools.h,v 1.42 1999/05/22 10:19:36 akool Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,20 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.42  1999/05/22 10:19:36  akool
+ * isdnlog Version 3.29
+ *
+ *  - processing of "sonderrufnummern" much more faster
+ *  - detection for sonderrufnummern of other provider's implemented
+ *    (like 01929:FreeNet)
+ *  - Patch from Oliver Lauer <Oliver.Lauer@coburg.baynet.de>
+ *  - Patch from Markus Schoepflin <schoepflin@ginit.de>
+ *  - easter computing corrected
+ *  - rate-de.dat 1.02-Germany [22-May-1999 11:37:33] (from rate-CVS)
+ *  - countries-de.dat 1.02-Germany [22-May-1999 11:37:47] (from rate-CVS)
+ *  - new option "-B" added (see README)
+ *    (using "isdnlog -B16 ..." isdnlog now works in the Netherlands!)
+ *
  * Revision 1.41  1999/05/13 11:40:11  akool
  * isdnlog Version 3.28
  *
@@ -694,6 +708,7 @@
 #define	CONF_ENT_TRIM	   "TRIM"
 #define	CONF_ENT_OTHER	   "OTHER"
 #define CONF_ENT_IGNORERR  "IGNORERR"
+#define	CONF_ENT_VBN	   "VBN"
 
 /****************************************************************************/
 
@@ -983,6 +998,7 @@ _EXTERN char    	mlabel[BUFSIZ];
 _EXTERN char    *amtsholung;
 _EXTERN int	ignoreRR;
 _EXTERN int 	interns0;
+_EXTERN	char    *vbn;
 #undef _EXTERN
 
 /****************************************************************************/
