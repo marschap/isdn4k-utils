@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.95, 25 March 2005
+<date>v2.0.96, 1 May 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -373,13 +373,20 @@ AT&amp;FS14=10S15=0S18=1&amp;E&lt;your_msn&gt;
 <label id="feature_divert">
 <p>
 Call diversion features have been implemented recently. Use the new
-program <tt/divertctrl/. If you make use of capi4linux, then you find a
-similar program named <tt/capidivert/ at:
-<url url=" http://www.tp1.ruhr-uni-bochum.de/&tilde;kai/i4l/">. 
-So far there is no howto and only little documentation, so for now this is
-something only for the more experienced user.
+program <tt>divertctrl</tt> in conjunction with the HiSax driver.
 
-In the Netherlands, the keypad protocol can be used as an alternative.
+If you make use of capi4linux, then you find a similar program named
+<tt>capidivert</tt> at:
+<url url="http://www.tp1.ruhr-uni-bochum.de/&tilde;kai/i4l/">. 
+For now this is something only for the more experienced user, as so far there
+is no howto and only little documentation, and it is not automatically included
+in most distributions. However, it can be used with active ISDN cards.
+
+In the Netherlands, the keypad protocol can be used as an alternative. To use
+it you just dial with the usual dial command from an ttyI device:
+<code>
+atd*123*0123456789#
+</code>
 
 <sect1> feature_ipx: Can I route ipx/spx over ISDN with Linux?  
 <label id="feature_ipx">
@@ -1724,6 +1731,12 @@ for more than two cards, to pass all arguments. As an example, you can
 load HiSax for two Sedlbauer cards with the following command:
 <code>
 modprobe -v hisax protocol=2,2 type=28,28
+</code>
+<item>Driver ID: the HiSax driver uses 'HiSax' as the default for a driver
+id if you have only one card. For more cards you have to set the id
+explicitely, e.g. for two cards in the form of
+<code>
+id="contr0%contr1"
 </code>
 <item>Dialin of many people at the same time: have a look at question
 <ref id="dialin_manyparallel" name="dialin_manyparallel">.
@@ -3728,8 +3741,8 @@ Can happen when the partner cannot handle the large frames from i4l and simply
 closes the B channel during the transfer. Try making the frames smaller with
 AT&amp;B512.
 
-<sect1> ttyI_uucp: When I use UUCP with X.75, I always get transfer errors!  
-<label id="ttyI_uucp">
+<sect1> ttyI_x75uucp: When I use UUCP with X.75, I always get transfer errors!  
+<label id="ttyI_x75uucp">
 <p>
 Andreas Gutzwiller <tt><htmlurl url="mailto:andy@hippo.proxyon.imp.com"
 name="andy@hippo.proxyon.imp.com"></tt> wrote on 5 Dec 1996:
@@ -5367,8 +5380,8 @@ things when it's not needed, the SPV is cheaper than a leased line.
 This SPV is not to be confused with the Austrian understanding of SPV. The
 Austrian `SPV' has one channel leased line, and one channel for dialing.
 
-<sect1> 1tr6_spv: Does isdn4linux support SPVs? How?  
-<label id="1tr6_spv">
+<sect1> 1tr6_spvdial: Does isdn4linux support SPVs? How?  
+<label id="1tr6_spvdial">
 <p>
 To switch on the support for SPVs, add an &dquot;S&dquot; before the number
 to be dialed. This works (quite well) for modem emulations as well
