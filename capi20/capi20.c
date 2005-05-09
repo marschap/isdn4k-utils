@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.c,v 1.26 2005/03/04 11:00:31 calle Exp $
+ * $Id: capi20.c,v 1.27 2005/05/09 08:21:57 calle Exp $
  * 
  * $Log: capi20.c,v $
+ * Revision 1.27  2005/05/09 08:21:57  calle
+ * - get_buffer() now returns 0, if no buffer is available.
+ *
  * Revision 1.26  2005/03/04 11:00:31  calle
  * New functions: cleanup_buffers_for_ncci() and cleanup_buffers_for_plci()
  * triggered by DISCONNECT_B3_RESP and DISCONNECT_IND to fix buffer leak.
@@ -271,7 +274,8 @@ static unsigned char *get_buffer(unsigned applid, size_t *sizep, unsigned *handl
 
    assert(validapplid(applid));
    ap = applinfo[applid];
-   buf = ap->firstfree;
+   if ((buf = ap->firstfree) == 0)
+      return 0;
    ap->firstfree = buf->next;
    buf->next = 0;
    buf->used = 1;
