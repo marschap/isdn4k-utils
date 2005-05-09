@@ -1,7 +1,10 @@
 /*
- * $Id: convert.c,v 1.18 2005/03/08 07:26:47 keil Exp $
+ * $Id: convert.c,v 1.19 2005/05/09 08:23:01 calle Exp $
  *
  * $Log: convert.c,v $
+ * Revision 1.19  2005/05/09 08:23:01  calle
+ * - added SendingComplete to CONNECT_RESP (no funktions changed).
+ *
  * Revision 1.18  2005/03/08 07:26:47  keil
  * - add SENDING_COMPLETE to INFO_REQ CONNECT_REQ and CONNECT_IND
  * - remove SENDING_COMPLETE parameter (always NULL) from capi_fill_DISCONNECT_REQ
@@ -448,7 +451,7 @@ static unsigned char *cpars[] = {
     /*36*/ 0,
     /*37*/ 0,
 #ifndef CAPI_LIBRARY_V2
-    /*38 CONNECT_RESP*/         (unsigned char*)"\x03\x2f\x0d\x06\x08\x0a\x05\x07\x09\x33\x01\x16\x17\x29\x04\x0c\x28\x30\x1c\x01\x01",
+    /*38 CONNECT_RESP*/         (unsigned char*)"\x03\x2f\x0d\x06\x08\x0a\x05\x07\x09\x33\x01\x16\x17\x29\x04\x0c\x28\x30\x1c\x32\x01\x01",
 #else
     /*38 CONNECT_RESP*/         (unsigned char*)"\x03\x2f\x0d\x06\x08\x0a\x05\x07\x09\x01\x16\x17\x29\x04\x0c\x28\x30\x1c\x01\x01",
 #endif
