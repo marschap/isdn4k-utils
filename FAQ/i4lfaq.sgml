@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.96, 1 May 2005
+<date>v2.0.97, 11 June 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1105,6 +1105,11 @@ standard interfaces (network, USB) which do not require isdn4linux at all.
 The drivers for passive cards are currently not working under 64bit.
 Obviously you can also not make use of binary drivers, unless you find a
 binary compiled for 64bit.
+
+One external USB device based on the HFC-S chipset reported to work with
+isdn4linux is the Sitecom DC 104 with serial number greater than SN 46000202
+(olders are ST chipset based, they have the same box). Also "tiny USB TA"
+from Billion, and "surf mini usb" from Acer have been reported to work.
 
 <sect1> hardware_alpha: Can I run isdn4linux on a DEC Alpha with Linux?  
 <label id="hardware_alpha">
@@ -5796,22 +5801,3 @@ used.
 </descrip>
 
 </article>
-
-
-<!-- Keep this comment at the end of the file
-Local variables:
-mode: sgml
-sgml-omittag:t
-sgml-shorttag:t
-sgml-namecase-general:t
-sgml-general-insert-case:lower
-sgml-minimize-attributes:nil
-sgml-always-quote-attributes:t
-sgml-indent-step:2
-sgml-indent-data:nil
-sgml-parent-document:nil
-sgml-exposed-tags:nil
-sgml-local-catalogs:nil
-sgml-local-ecat-files:nil
-End:
--->
