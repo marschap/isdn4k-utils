@@ -18,7 +18,7 @@ export MKDIR=$(TOPDIR)/mkinstalldirs
 PPPSRCDIRS=/src/isdn/pppd
 
 ifeq ($(PPPVERSIONS),)
-PPPVERSIONS = 2.3.11 2.4.0 2.4.1 2.4.1b1 2.4.1b2 2.4.2b3 2.4.2
+PPPVERSIONS = 2.3.11 2.4.0 2.4.1 2.4.1b1 2.4.1b2 2.4.2b3 2.4.2 2.4.3
 endif
 
 PEERDIR=${DESTDIR}/etc/ppp/peers/isdn
