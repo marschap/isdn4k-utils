@@ -1,4 +1,4 @@
-/* $Id: isdnrate.c,v 1.44 2004/12/18 15:10:50 tobiasb Exp $
+/* $Id: isdnrate.c,v 1.45 2005/08/01 12:15:15 keil Exp $
 
  * ISDN accounting for isdn4linux. (rate evaluation)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnrate.c,v $
+ * Revision 1.45  2005/08/01 12:15:15  keil
+ * make GCC4 happy
+ *
  * Revision 1.44  2004/12/18 15:10:50  tobiasb
  * Show date with type of day for isdnrate -vT ...
  *
@@ -327,7 +330,7 @@
 
 static void print_header(void);
 
-static char *myname, *myshortname;
+char *myname, *myshortname;
 static char options[] = "ab:c:d:f:h:i:l:op:r:st:v::x:CD::G:HLNP:O:S:TUVX::Z";
 static char usage[] = "%s: usage: %s [ -%s ] Destination ...\n";
 
@@ -336,7 +339,7 @@ int     verbose = 0;
 static int usestat = 0;
 static int duration = LCR_DURATION;
 static time_t start;
-static int day, month, year, hour, min, sec;
+int day, month, year, hour, min, sec;
 static char ignore[MAXPROVIDER];
 static char *fromarea = 0;
 static char wanted_day;

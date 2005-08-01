@@ -25,7 +25,7 @@
  * PATCHLEVEL 9
  */
 
-char main_rcsid[] = "$Id: main.c,v 1.25 2003/06/30 22:30:57 keil Exp $";
+char main_rcsid[] = "$Id: main.c,v 1.26 2005/08/01 12:15:15 keil Exp $";
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -1044,9 +1044,10 @@ void reap_kids()
 static char line[256];			/* line to be logged accumulated here */
 static char *linep;
 
+static void pr_log __P((void *, char *, ...));
+
 void log_packet(u_char *p,int len,char *prefix,int linkunit)
 {
-	static void pr_log __P((void *, char *, ...));
 
     int i, n;
     u_short proto;
