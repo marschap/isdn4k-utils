@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.98, 8 July 2005
+<date>v2.0.99, 7 August 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -641,15 +641,30 @@ Use the following command to start the ISDN card in NT mode:
 hisaxctrl &lt;id&gt; 98 1
 </code>
 Make sure that the crossed cable is terminated even if it is very short!
-Nothing will work without termination, not even a 1m cable.
-Some HFC card already have jumpers for termination.
+Nothing will work without termination, not even a 1m cable. Some HFC card
+already have jumpers for termination. Since TX as well as RX circuits must
+be terminated with its own resistor, two jumpers should be present, like this:
+<verb>
+> 3 RX+ 2a --[100 Ohm]----+     ---------- /      ----------
+> 4 TX+ 1a --[100 Ohm]--+ |    | 87654321 |      | 12345678 |
+> 5 TX- 1b ---oJ1o------+ |    |__      __|/     |/_      /_|
+> 6 RX- 2b ---oJ2o--------+       |____|            |/___|
+</verb>
+
+It has been reported that for proper functioning even on a short cable a
+termination is required at/near both ends (at the ISDN card as well as at
+the connecting ISDN device).
 
 However, this will only give you the physical connection. Up to now
 isdn4linux does not (yet?) implement the higher level ISDN protocol DSS1
 (this means that isdn4linux can not pretend to an ISDN device that it is
-an ISDN exchange, and give it the proper ISDN commands).
-As a result, you can simulate a leased line, but not pretend to be the
-PBX.
+an ISDN exchange, and give it the proper ISDN commands). As a result, you can
+simulate a leased line, but not pretend to be the PBX with isdn4linux.
+
+With the newer mISDN modules the situation is better. A special user space
+module is available for the emulation of a PBX. Development of a kernel module
+is in progress. In any case the chipset has to support the NT mode.
+
 
 <sect1> feature_lcr: Can isdn4linux do least cost routing (LCR)?  
 <label id="feature_lcr">
