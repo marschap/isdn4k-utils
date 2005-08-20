@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.99, 7 August 2005
+<date>v2.0.100, 21 August 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -1775,10 +1775,27 @@ id="contr0%contr1"
 channels?  
 <label id="config_manychannels">
 <p>
-Increase the parameter ISDN_MAX_CHANNELS in
-<tt>/usr/src/linux/include/linux/isdn.h</tt> and rebuild the isdn stuff. Don't
-forget to create the additional devices with makedev.sh (part of isdn4k-utils)
-or by hand.
+You can adjust the parameter ISDN_MAX_CHANNELS and the ISDN_MINOR* parameters
+in <tt>/usr/src/linux/include/linux/isdn.h</tt> and rebuild the isdn stuff.
+It is unlikely you have more than 64 physical B channels available, therefore
+you probably want to leave ISDN_MINOR_B and ISDN_MINOR_BMAX as they are.
+
+Your bottleneck are probably the number of potential (logical) network
+connections (ipppX devices). The maximum number for this (ISDN_MAX_CHANNELS)
+is 127, since the minor devices start at 128 (see ISDN_MINOR_PPP) and have to
+end before 255 (ISDN_MINOR_STATUS).
+
+To further increase the maximum number of logical connections you either
+have the possibility to use an additional major (e.g. 44 - not used any
+more) - this requires some small changes to the driver and the installation
+of one ipppd instance per logical connection; or to use only one
+ipppd per physical B channel with external Radius authentication. In the
+first case you have to modify and recompile the driver, in the second case
+you have to modify and recompile ipppd (you'll find some preparations for
+this already in the source code).
+
+Don't forget to create the additional devices with makedev.sh (part of
+isdn4k-utils) or by hand.
 
 <sect1> config_gsmv110: How do I connect my PalmPilot via GSM over V.110  
 to my computer?  
