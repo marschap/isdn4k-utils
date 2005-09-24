@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.100, 21 August 2005
+<date>v2.0.101, 24 September 2005
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -83,6 +83,25 @@ kernel. It consists of the main module <tt/isdn/ and the
 actual hardware driver that control some specific card.
 In addition, the package <tt/isdn4k-utils/ contains utilities to
 make use of ISDN specific features.
+Please note that since kernel 2.6.0 isdn4linux is considered legacy.
+It has been superseded by the new mISDN drivers (see question
+<ref id="general_misdn" name="general_misdn">.
+
+<sect1> general_misdn: What is mISDN?  
+<label id="general_misdn">
+<p>
+mISDN is the successor of isdn4linux, and also consists of kernel modules
+that are part of the Linux kernel. The mISDN modules have been rewritten
+from scratch since the old isdn4linux modules were difficult to maintain.
+
+The new mISDN modules are based on the CAPI interface (see question
+<ref id="feature_capi" name="feature_capi"> for more details on the CAPI
+interface). Not all ISDN cards supported by isdn4linux have been/will be
+ported to mISDN. For the moment, isdn4linux can still be used in parallel
+with mISDN, but this may change in the future.
+
+For more technical and configuration information about the mISDN driver
+see question <ref id="config_misdn">.
 
 <sect1> general_hardware: What hardware is supported by isdn4linux?  
 <label id="general_hardware">
@@ -1400,13 +1419,17 @@ If the interrupt for the card is shared with other devices and your card does
 not work, then there could be an issue with the motherboard. See question
 <ref id="hardware_irqsharing" name="hardware_irqsharing"> for this.
 
-One very interesting thing: the Fritz! card is currently the only passive card
-for which a capi driver exists. As a result, it can be configured to
+One very interesting thing: the Fritz! card was the first card
+for which a capi driver existed which can be configured to
 fax. See question <ref id="feature_capi" name="feature_capi"> and
 <url url="http://www.avm.de/ftp/cardware/fritzcrd/linux/index.htm">
 for more information on this. Usage of the capi driver is completely optional,
 you might as well stay with the standard driver if you do not need capi
 support.
+
+In total three drivers exist: the old Hisax driver (part of isdn4linux), the
+new mISDN driver, and the binary AVM driver. Only the last one is prepared
+for sending faxes.
 
 <sect1> hardware_avmb1: What is special about the AVM B1 card?  
 <label id="hardware_avmb1">
@@ -1897,6 +1920,8 @@ howto (isdn.html) and a ISDN quick-install guide (isdnquick.html).
 <url url="http://www.schlenn.de/isdn4linux/">
 <item>Tips to configure Red Hat:
 <url url="http://www.webideal.de/rh-isdn/">
+<item>Tips to configure Debian with Fritz Card PCI and kernel 2.6 (in German):
+<url url="http://www.plzk.de/archiv/files/docs/FritzCard.PCI.Linux-HOWTO.html">
 <item>Tips to configure Mandrake:
 <url url="http://www.mandrakeuser.org/connect/cisdn.html">
 <item>Tips to configure Gentoo:
@@ -5180,6 +5205,15 @@ for communicating, but can log outgoing calls from any device.
 
 See also question <ref id="isdnlog_reversedcard" name="isdnlog_reversedcard">
 for using two ISDN cards for logging.
+
+<sect1> isdnlog_enoughdata: How can I check whether isdnlog receives enough
+information from the kernel drivers?
+<p>
+First stop isdnlog (e.g. "killall isdnlog"), then run "cat /dev/isdnctrl0".
+When you trigger some activity on the isdn line (e.g. by initiating an
+incoming call) you should see lines starting with "HEX:" or "D2:" in the
+output of the cat command. If these lines are missing then check your
+configuration of the kernel drivers.
 
 
 <!-- Audio
