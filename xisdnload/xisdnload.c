@@ -469,7 +469,7 @@ int main(argc, argv)
     XrmValue namein, pixelout;
     time_t t;
     struct tm *tm;
-    char now[20];
+    char now[32];
     int a;
 
     t = time(NULL);
@@ -537,7 +537,7 @@ int main(argc, argv)
 
       strcpy(label_format, label);
 
-      sprintf(now, "uninitialized %s", history);
+      snprintf(now, 32, "uninitialized %s", history);
       XtSetArg (args[0], XtNlabel, now);
       XtSetValues (label_wid, args, ONE);
 
