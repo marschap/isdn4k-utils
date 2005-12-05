@@ -1,0 +1,228 @@
+Return-Path: POPmail
+X-Envelope-From: <owner-isdn4linux@listserv.isdn4linux.de>
+X-Envelope-To: <subscribe@i4l.mhessler.de>
+X-Delivery-Time: 940694442
+Received: from abaco.to.com (abaco.to.com [194.221.235.40])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id SAA10046
+	for <subscribe@i4l.mhessler.de>; Sat, 23 Oct 1999 18:00:42 +0200 (MET DST)
+Received: by listserv.isdn4linux.de id <80305-340>; Sat, 23 Oct 1999 18:00:15 +0200
+Received: from news.wuecom.de (IDENT:news@news.wuecom.de [194.120.69.13])
+	by abaco.to.com (8.9.1/8.9.1) with ESMTP id SAA22667
+	for <isdn4linux@listserv.isdn4linux.de>; Sat, 23 Oct 1999 18:00:14 +0200
+From: kurt_erich_finger@my-deja.com
+Received: (from news@localhost)
+	by news.wuecom.de (8.8.7/8.8.7) id SAA15677
+	for isdn4linux@listserv.isdn4linux.de; Sat, 23 Oct 1999 18:00:13 +0200
+To: isdn4linux@listserv.isdn4linux.de
+Newsgroups: de.alt.comm.isdn4linux
+Subject: HOWTO Linux ISDN Internet
+Date: 	Sat, 23 Oct 1999 15:50:00 GMT
+Organization: Deja.com - Before you buy.
+Lines: 188
+Message-ID: <7uslf8$qff$1@nnrp1.deja.com>
+NNTP-Posting-Host: 212.144.81.33
+X-Article-Creation-Date: Sat Oct 23 15:50:00 1999 GMT
+X-Http-User-Agent: Mozilla/4.0 (compatible; MSIE 5.0; Windows 98)
+X-Http-Proxy: 1.1 x30.deja.com:80 (Squid/1.1.22) for client 212.144.81.33
+X-MyDeja-Info: XMYDJUIDkurt_erich_finger
+Xref: news.wuecom.de!news.think.de!news.mayn.franken.de de.alt.comm.isdn4linux:42693
+X-Gateway: isdn4linux-newsgate
+X-Gateway-Admin: fritz@isdn4linux.de
+Sender: owner-isdn4linux@listserv.isdn4linux.de
+Precedence: bulk
+X-Loop: isdn4linux
+
+Da es nicht ganz so einfach ist mit ISDN ins Internet zu kommen,
+hab ich mal einiges zusammengeschrieben.(in Englisch, damit auch
+andere etwas davon haben). Ich hab's auch nur mit Hilfe der
+newsgroup geschafft. Vielleicht sind folgende Zeilen fuer einige
+user ja ganz nuetzlich. Fuer Details ist dann das Linux (ISDN) Howto
+ganz nuetzlich.
+
+Falls jemand der Meinung ist, dieses Posting war unnoetig,lasst es mich
+wissen
+
+Kurt-Erich Finger
+
+---beginners only----
+I tried get into the internet using LINUX and an ISDN-card.
+In the manual for the LINUX distribution (SuSE 6.1) almost everything
+was explained but some crucial information (for a newbee) is missing.
+With the help of this newsgroup I was able to overcome the problems.
+I thought it would be a good idea to write a tiny HOWTO for beginners.
+Since ISDN is not only used in Germany but also in other countries I
+decided to only write it in English.
+(If you think this should not appear here, please let me know.)
+I choose otelo to give a working example, if you prefer another provider
+you can change the details later. If you don't live in Germany modify
+the
+example as necessary.
+
+My configuration:
+	SuSE 6.1
+	Kernel 2.2.5
+	ISDN-utils 3.0
+	Virgin PC with Win98 and LINUX (loadlin)
+	Fritz!card PnP (no other cards)
+
+1.Try to find out which IRQ and Port can be used. If you run the card
+  already under Win you can find it under >Setting>System.
+  (I use IRQ=3, address: 200, I know there could be conflicts with
+COM2!)
+
+PnP cards:
+2. run/sbin/pnpdump -c > /etc/isapnp.conf
+   Edit /etc/isapnp.conf
+
+ (READPORT 0x0203)
+ (ISOLATE PRESERVE)
+ (IDENTIFY *)
+ (VERBOSITY 2)
+ (CONFLICT (IO FATAL)(IRQ FATAL)(DMA FATAL)(MEM FATAL)) # or WARNING
+
+ (CONFIGURE AVM0900/-1 (LD 0
+ (IO 0 (SIZE 32) (BASE 0x0200)(CHECK) )
+ (INT 0 (IRQ 3 (MODE +E)))
+ (NAME "AVM0900/-1[0]{AVM ISDN-Controller FRITZ!Card}")
+  (ACT Y)
+ ))
+ (WAITFORKEY)
+
+  The lines (IO (SIZE 32) (BASE Ox0200)) and (INT 0 (IRQ 3 (MODE +E))
+should
+  contain the values you want. If necessary remove the # signs at the
+  beginning of all above lines.
+
+   Save the file and start
+          isapnp /etc/isapnp.conf
+   If you receive an -FATAL- error message, first delete :
+                (CHECK)  !!!!!
+   in the configuration file and start isapnp again.
+   If you still get resource conflicts try other IRQ's and addresses.
+   Switch the auto configuration for ISA-pnp the BIOS off.
+   If you get an ISOLATE PRESERVE error, reboot.
+
+all cards:
+
+3. Run Yast
+   Strictly follow the SuSE manual.
+
+   A device named ippp0 must exist!!!!!!
+
+   I assume you want to connect to a provider who uses dynamic IP-
+addresses
+   syncPPP and PAP or CHAP for authorising.
+   I will describe how you can make a connection to otelo (Germany)
+since
+   you can connect directly without an account (username:otelo,
+   password: online)
+
+   Using Yast the IP-Address can be : 192.168.0.99
+                  Netmask           : 255.255.255.255
+                  Default -gateway  :  -
+                  IP-Adress PtP     : 192.168.0.1
+   The last address could cause problems with t-online, use 192.168.1.1
+
+   Configure the Name-Server:
+   List of IP Addresses : 195.50.149.33 195.50.149.6
+   List of Domains      : otelo-online.de
+Leave Yast
+
+Make sure the file /etc/isdn/isdn.conf contains
+your COUNTRYCODE and AREACODE without the leading 0
+Boot or activate ISDN under Yast to start the network.
+
+When you configure with Yast the PAP protocol is set.
+otelo and probably some other provider need CHAP!!!!
+
+Let's see what happens if we try to connect:
+         isdnctrl dial ippp0
+will try to connect to your provider.
+Check /var/log/messages!
+If you don't see local and remote IP addresses but
+ISDN error messages or a 'Modem Hangup' something went wrong.
+To find out you need more information in the messages file.
+Edit /etc/rc.config.d/I4L_sp_option.rc.config
+     I4L_VERBOSE=yes
+and in /etc/ppp/ioptions
+uncomment  debug.
+This should give enough information in the /var/log/message file.
+
+If you try to connect to otelo you will find that your computer
+is sending a string containing <PAP> and otelo sends <CHAP> indicating
+that you have to change the protocol from PAP to CHAP.
+To change the protocol you have to add
+    user otelo in /etc/ppp/options.ipp0
+add
+  # client	   server	secret			IP addresses
+     "otelo"	*	"online"
+to /etc/ppp/chap-secrets and delete the corresponding line in
+/etc/ppp/pap-secrets.
+
+Start isdnctrl dail ippp0 and watch /var/log/messages. If you seen see
+IP addresses you made it.
+Otherwise read some of the links in the Weekly ISDN FAQ of E.Corry.
+
+Now you have a connection to your provider and you may want to use the
+Netscape Navigator.
+First another problem needs to be solved:
+If no traffic is on the line it will be cut and the default route will
+be deleted.
+(You will find the time-out in /etc/rc.config.d/I4L_option.rc.config
+I4L_IDLETIME)
+
+The file /etc/ppp/ip-up (ip-down is only a link to ip-up) has to be
+modified:
+BASENAME=`basename $0`
+INTERFACE=$1
+DEVICE=$2
+SPEED=$3
+LOCALIP=$4
+REMOTEIP=$5
+
+case "$BASENAME" in
+ip-up)
+        /sbin/route add default gw $REMOTEIP dev $INTERFACE
+        #/sbin/init.d/route start $INTERFACE
+        ;;
+ip-down)
+        /sbin/route add default gw $REMOTEIP dev $INTERFACE
+        #/sbin/init.d/route start $INTERFACE
+        ;;
+*)
+        ;;
+esac
+
+(from http://www.suse.de/sdb/de/html/isdn-defroute.html (dynamic IP-
+numbers))
+
+Now you can start
+  isdnctrl dial ippp0
+  startx  (kde)
+  Netscape
+
+I hope it works with you!
+
+In case of problems check-out http://www.suse.de
+deutsch: http://www.franken/de/users/klaus/DE-ISDN-HOWTO
+English: http://www.wurtel.demon.nl
+French:  http://www.perso.wanadoo.fr/philippe.latu
+
+
+Kurt-Erich Finger
+
+
+
+
+
+
+
+
+Sent via Deja.com http://www.deja.com/
+Before you buy.
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@listserv.isdn4linux.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body.
+

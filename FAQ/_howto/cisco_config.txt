@@ -1,0 +1,121 @@
+Return-Path: owner-isdn4linux@hub-wue.franken.de
+Received: from hsun6.wi-inf.uni-essen.de by aixrs1.hrz.uni-essen.de (AIX 4.1/UCB 5.64/4.03)
+          id AA24066; Tue, 11 Mar 1997 18:40:54 +0100
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id SAA21704; Tue, 11 Mar 1997 18:42:29 +0100
+Received: from oops.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0w4PZW-000oJva; Tue, 11 Mar 97 12:18 MET
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0w4PXH-001IS9a; Tue, 11 Mar 97 12:16 MET
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0w4PXB-001IS8E; Tue, 11 Mar 97 12:15 MET
+Received: from kermit.mbo.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0w4PYD-000BmGC; Tue, 11 Mar 97 12:17 MET
+Received: (from lars@localhost) by kermit.mbo.de (8.7.5/8.6.12) id MAA28434 for isdn4linux@hub-wue.franken.de; Tue, 11 Mar 1997 12:18:02 +0100
+From: Lars Maier <lars@mbo.de>
+Message-Id: <199703111118.MAA28434@kermit.mbo.de>
+Subject: Nochmal Cisco 1003<->i4l
+To: isdn4linux@hub-wue.franken.de
+Date: Tue, 11 Mar 1997 12:18:02 +0100 (MET)
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+
+Hallo,
+leider habe ich immernoch folgendes Problem:
+Eine Cisco 1003 soll sich auf einer Linux-Kiste ohne PPP einwaehlen.
+Die Cisco erkennt die Routen nicht nach dem booten, sondern erst
+nach
+clear interface bri0
+oder
+einem Anruf auf einer msm des NT's, an dem die Cisco haengt
+oder Zustecken eines 2. Geraetes auf den SO + damit telefonieren.
+Anschliessend tut die Cisco was sie soll.
+Ist bri0 mit encapsulation PPP Konfiguriert, erkennt die Cisco die 
+Routen ohne Hilfe.
+Ios Version ist: 11.1(6)
+Hat jemand eine Idee, wie sich dieses Problem loesen laesst?
+
+Gruss
+
+Lars
+
+---------
+Konfiguration, show ip route :
+---------
+
+Using 912 out of 7506 bytes                                                     
+!                                                                               
+version 11.1                                                                    
+no service pad                                                                  
+service udp-small-servers                                                       
+service tcp-small-servers                                                       
+!                                                                               
+hostname kraemer-1                                                              
+!                                                                               
+boot system flash                                                               
+boot system host 255.255.255.255                                                
+enable secret 5 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                                  
+enable password XXXXXX                                                          
+!                                                                               
+ip subnet-zero                                                                  
+isdn switch-type basic-net3                                                     
+!                                                                               
+interface Ethernet0                                                             
+ ip address 194.221.188.225 255.255.255.240                                     
+!                                                                               
+interface BRI0                                                                  
+ ip address 194.221.188.17 255.255.255.252                                      
+ bandwidth 64
+ no keepalive                                                                   
+ dialer idle-timeout 300                                                        
+ dialer map ip 194.221.188.18 name 7531915XXX 07531915XXX                       
+ dialer-group 1                                                                 
+!                                                                               
+ip domain-name wdkraemer.de                                                     
+ip name-server 194.221.188.5                                                    
+ip classless                                                                    
+ip route 0.0.0.0 0.0.0.0 194.221.188.18                                         
+ip route 10.0.0.0 255.0.0.0 Null0                                               
+ip route 127.0.0.0 255.0.0.0 Null0                                              
+ip route 172.16.0.0 255.240.0.0 Null0                                           
+ip route 192.0.2.0 255.255.255.0 Null0                                          
+ip route 192.168.0.0 255.255.0.0 Null0                                          
+dialer-list 1 protocol ip permit                                                
+!                                                                               
+line con 0                                                                      
+line vty 0 4                                                                    
+ password XXXXXX                                                                
+ login                                                                          
+!                                                                               
+end
+
+--------
+So sollte es nicht sein:
+S    10.0.0.0/8 is directly connected, Null0                                    
+S    127.0.0.0/8 is directly connected, Null0                                   
+     194.221.188.0/24 is subnetted, 1 subnets                                   
+C       194.221.188.224 is directly connected, Ethernet0                        
+S    192.0.2.0/24 is directly connected, Null0                                  
+S    192.168.0.0/16 is directly connected, Null0                                
+S    172.16.0.0/12 is directly connected, Null0
+
+So ist es mit Nachhilfe, oder bei PPP:
+S    10.0.0.0/8 is directly connected, Null0                                    
+S    127.0.0.0/8 is directly connected, Null0                                   
+     194.221.188.0/24 is variably subnetted, 2 subnets, 2 masks                 
+C       194.221.188.224/28 is directly connected, Ethernet0                     
+C       194.221.188.16/30 is directly connected, BRI0                           
+S    192.0.2.0/24 is directly connected, Null0                                  
+S*   0.0.0.0/0 [1/0] via 194.221.188.18                                         
+S    192.168.0.0/16 is directly connected, Null0                                
+S    172.16.0.0/12 is directly connected, Null0
+
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]

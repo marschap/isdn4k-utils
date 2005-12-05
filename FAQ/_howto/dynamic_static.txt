@@ -1,0 +1,136 @@
+Return-Path: owner-isdn4linux@hub-wue.franken.de 
+Return-Path: <owner-isdn4linux@hub-wue.franken.de>
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id SAA05994; Thu, 15 May 1997 18:44:02 +0200
+Received: from oops.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0wS0qb-000oQya; Thu, 15 May 97 15:45 MET DST
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0wS0yX-001IV8a; Thu, 15 May 97 15:53 MET DST
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0wS0yR-001IV7E; Thu, 15 May 97 15:53 MET DST
+Received: from lion.euromedia.nl by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0wS0pO-000BnEC; Thu, 15 May 97 15:44 MET DST
+Received: from localhost (barry@localhost)
+	by lion.euromedia.nl (8.8.5/8.8.5) with SMTP id OAA01009
+	for <isdn4linux@hub-wue.franken.de>; Thu, 15 May 1997 14:44:01 +0100
+Date: Thu, 15 May 1997 15:44:01 +0200 (MET DST)
+From: Barry Lagerweij <barry@euromedia.nl>
+Reply-To: Barry Lagerweij <barry@euromedia.nl>
+To: isdn4linux@hub-wue.franken.de
+Subject: static *AND* dynamic IP addresses
+Message-ID: <Pine.LNX.3.94.970515134954.48A-100000@lion.euromedia.nl>
+MIME-Version: 1.0
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 4060
+
+Hi everyone,
+
+I've been running ipppd with isdn4linux very succesful so far, using
+dynamic IP addresses. Just create ippp0 and ippp1 with isdnctrl, and bind
+each of them to a port, and use ifconfig to configure ippp0 and ippp1 to a
+certain IP-address.
+When a call comes in, ipppd will select either ippp0 or ippp1, and use
+that IP address. But now I want all my regular callers to get a dynamic IP
+address, but a few of the callers should be assigned a static IP address.
+
+I've been trying everything, and finally I came up with the answer :
+
+1) create the interfaces with isdnctrl:
+---cut-here---
+/sbin/ifconfig $DEVICE down
+$ISDNBIN delif  $DEVICE            # Create new interface 'DEVICE'
+$ISDNBIN addif  $DEVICE            # Create new interface 'DEVICE'
+$ISDNBIN addphone $DEVICE in \*  # Set incoming phone-number
+$ISDNBIN eaz $DEVICE $LOCAL_NUMBER             # Set local EAZ .. 
+$ISDNBIN l2_prot $DEVICE hdlc      # for sync PPP: set Level 2 to HDLC
+$ISDNBIN l3_prot $DEVICE trans     # not really necessary, 'trans' is default
+$ISDNBIN encap $DEVICE syncppp     # encap the IP Pakets in PPP frames
+$ISDNBIN huptimeout $DEVICE 600    # Hangup-Timeout is 600 sec.
+$ISDNBIN chargehup $DEVICE off     # Hangup before next Charge-Info
+$ISDNBIN pppbind $DEVICE 0
+---cut-here---
+
+2) Then I start the ipppd :
+---cut-here---
+/sbin/ipppd \
+        -vjccomp -ac -pc \
+        mru 1524 \
+        -bsdcomp \
+        -detach \
+        debug \
+	auth \
+	+pap \
+        useifip \
+	proxyarp \
+        login \
+        ms-dns $LOCAL_IP \
+        domain euromedia.nl \
+        ipcp-accept-remote \
+        $DEVICE $DEVICE2 &
+---cut-here---
+
+Please note the 'useifip' and 'ipcp-accept-remote'. If the client offers a
+IP-address that is acceptable for ipppd, but ipppd does not
+'ipcp-accept-remote', that IP-address is NAK-ed by ipppd (I think this is
+a bug!!!), so I must add 'ipcp-accept-remote'.
+
+The nifty stuff is done in 'auth-up' and 'ip-up' :
+auth-up:
+---cut-here---
+#!/bin/sh
+if [ $2 = staticuser ]; then
+  /sbin/ifconfig $1 194.183.96.3 pointopoint 194.183.96.227 metric 1
+else
+  if [ $1 = ippp0 ]; then
+    /sbin/ifconfig $1 194.183.96.3 pointopoint 194.183.96.225 metric 1
+  elif [$1 = ippp1 ]; then
+    /sbin/ifconfig $1 194.183.96.3 pointopoint 194.183.96.226 metric 1
+  fi
+fi
+if [ $2 = routeuser1 ]; then
+  /sbin/route del 194.183.120.0
+  /sbin/route add -net 194.183.120.0 netmask 255.255.255.252 $1
+elif [ $2 = routeuser2 ]; then
+  /sbin/route del 194.183.120.8
+  /sbin/route add -net 194.183.120.8 netmask 255.255.255.248 $1
+elif [ $2 = routeuser2 ]; then
+  /sbin/route del 194.183.120.16
+  /sbin/route add -net 194.183.120.16 netmask 255.255.255.252 $1
+fi
+---cut-here---
+
+As you can see, I have one static-IP address user. All other callers are
+assigned a IP-address based on the isdn-device (ippp0 or ippp1).
+Furthermore, I have three callers that need to be assigned a pool of
+IP-addresses. (a subnet of 4 or 8 addresses). This is used for ISDN
+routers, like the Ascend or 3com. All of these routes are configured
+dynamically when that user logs-in, and deleted as soon as the user hangs 
+up.
+Since ipppd is started with 'useifip', ipppd will use the IP-address that
+has just been assigned by ifconfig (in auth-up) !!!
+
+Finally, the route to the interface itself is made, in ip-up :
+---cut-here---
+#!/bin/sh
+/sbin/route add -host $5 $1
+---cut-here---
+
+In auth-down and ip-down the route is deleted. This allows me to have
+static and dynamic IP-addresses, based on the username, and to have extra
+routes added to the device, based on the username.
+
+I don't know if this is the correct way to do it, but it works for me !
+
+PS: only a few users are allowed ISDN access. So I've modified pathnames.h
+to point to '/etc/ippp' instead of '/etc/ppp'. This way I can have a
+different PPP setup for analog and ISDN callers.
+
+Barry Lagerweij
+
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]

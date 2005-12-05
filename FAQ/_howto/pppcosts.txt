@@ -1,0 +1,64 @@
+Return-Path: POPmail
+Return-Path: <owner-isdn4linux@hub-wue.franken.de>
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id BAA15222; Wed, 2 Apr 1997 01:42:14 +0200
+Received: from oops.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0wC9b7-000oMha; Tue, 1 Apr 97 21:52 MET DST
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0wC9Zz-001Ib6a; Tue, 1 Apr 97 21:50 MET DST
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0wC9Zv-001Ib5E; Tue, 1 Apr 97 21:50 MET DST
+Received: from oops.franken.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0wC9a3-000Bm6C; Tue, 1 Apr 97 21:50 MET DST
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0wC9Zr-001Ib5E; Tue, 1 Apr 97 21:50 MET DST
+To: isdn4linux@hub-wue.franken.de
+Xref: oops de.alt.comm.isdn4linux:2619
+From: Tillmann Steinbrecher <tst@darmstadt.netsurf.de>
+Newsgroups: de.alt.comm.isdn4linux
+Subject: pppcosts 0.04 (Telefonkostenanzeige für PPP) jetzt auch für ISDN!
+Date: Tue, 01 Apr 1997 18:09:58 +0200
+Organization: http://people.frankfurt.netsurf.de/tst/
+Lines: 25
+Message-ID: <33413356.E22991E@darmstadt.netsurf.de>
+Reply-To: tst@darmstadt.netsurf.de,0050763@telmi.de
+NNTP-Posting-Host: board-49.darmstadt.netsurf.de
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Mailer: Mozilla 4.0b2 (X11; I; Linux 2.0.28 i586)
+X-Priority: 3 (Normal)
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+Content-Type: text/plain; charset=us-ascii
+
+Hi,
+
+die neue Version von pppcosts (Programm zur Kostenberechnung
+für PPP-Verbindungen, zeigt Online-Zeit und Telefonkosten
+z.B. in einem kleinen Fenster an) ist jetzt verfügbar.
+Sie funktioniert jetzt auch mit ISDN, deshalb das Announcement
+hier.
+
+Wer Interesse hat:
+
+http://people.darmstadt.netsurf.de/tst/pppcosts.htm
+
+Ist demnächst auch auf SunSite; zur Zeit noch im
+Incoming-Verzeichnis, später dann auch in
+sunsite.unc.edu /pub/Linux/system/network/serial/
+pppcosts-0.04.tgz (20K).
+
+ciao - Till
+-- 
+ _____   ___ _____      
+|_   _| / __|_   _|  Tillmann Steinbrecher - tst@darmstadt.netsurf.de
+  | | _ \__ \ | | _  Pager 0050763@telmi.de   http://till.home.ml.org
+  |_|(_)|___/ |_|(_)   "Black holes are where God divided by zero."
+
+
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]
+

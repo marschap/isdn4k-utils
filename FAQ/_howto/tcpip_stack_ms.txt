@@ -1,0 +1,82 @@
+Return-Path: POPmail
+Return-Path: <owner-isdn4linux@hub-wue.franken.de>
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id WAA09672; Sat, 5 Apr 1997 22:37:34 +0200
+Received: from oops.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0wDaF3-000oMna; Sat, 5 Apr 97 20:31 MET DST
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0wDaEr-001IWda; Sat, 5 Apr 97 20:30 MET DST
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0wDaEo-001IUzE; Sat, 5 Apr 97 20:30 MET DST
+Received: from dinet.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0wDaE6-000BmHC; Sat, 5 Apr 97 20:30 MET DST
+Received: (from todd@localhost) by dinet.de (8.8.5/8.8.5/DInet-DIS-1) id UAA22630; Sat, 5 Apr 1997 20:29:40 +0200
+From: Torsten Hentschel <Torsten.Hentschel@DInet.de>
+Message-Id: <199704051829.UAA22630@dinet.de>
+Subject: Re: Windows => Linux => ISDN => WWW  Wo gibt es eine Anleitung  ?
+To: C.Reiser@t-online.de
+Date: Sat, 5 Apr 1997 20:29:40 +0200 (MET DST)
+Cc: isdn4linux@hub-wue.franken.de
+In-Reply-To: <E85snA.3It@temic-ech.spacenet.de> from "Karsten Keil" at Apr 5, 97 09:49:58 am
+X-NCC-RegID: de.delta
+X-Organization: DI Delta Internet GmbH
+X-Phone: +49 2932 916 132
+X-Fax: +49 2932 916 232
+X-Mailer: ELM [version 2.4 PL24]
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by dinet.de id UAA22630
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+Content-Type: text/plain; charset=US-ASCII
+
+> Christian Reiser (C.Reiser@t-online.de) wrote:
+> : Wo gibt es Informationen wie man ein Windows 3.11 (Ethernet-)Netzwerk=
+=20
+> : (mit Novell-Server) mit Netscape =FCber einen Linux-Server mit ISDN
+> : ans WWW anbinden kann. Bevorzugt w=E4re eine Linux-Proxy L=F6sung.
+>=20
+> : Hardware-Eckdaten:
+> : Netzwerkkarten:  3Com507
+> : 14 Clients: 16 Mb; dx2/50 Dos 6.22; Windows wird aus dem Server
+> : gestartet
+> : 1 Novell-Server: Novell 3.11
+> : 1 Linux-Server : 16 MB; dx2/50; SUSE 4.4; Kernel 2.0.25; Hisax 1.2;=20
+> : 		 Fritz-Card
+> Du brauchst auf den Novell Clients einen TCP/IP Protocol Stack z.B. Nov=
+ell
+> LAN Workplace, oder einen anderen, der auf die ODI Treiber aufsetzt.
+> Ohne den geht garnichts.
+> Wenn das laeuft, sollte es genuegend Anleitungen geben, entweder ueber =
+Proxy
+> oder ueber Masquerading ueber die Linuxbox ins Internet zu kommen.
+
+Man braucht gar nicht Novell etwas Geld in den Rachen werfen.
+Den TCP/IP-Stack kann man von Microsoft fuer Windows 3.11 auch
+kostenlos bekommen (und Windows95 hat ihn eingebaut):
+
+http://www.microsoft.com/kb/softlib/mslfiles/TCP32B.EXE
+
+Nur eines gibt es zu beachten: Ausser TCP/IP darf kein weiteres
+Protokoll durch das Microsoft Netzwerk eingebunden werden.
+Denn IPX wuerde sofort mit den Treibern von Novell hapern.
+
+Ansonsten laeuft das hier bei einem unserer Kunden wunderbar,
+in einer sehr aehnlichen Konfiguration.
+
+Gruesse,
+
+  Torsten Hentschel
+
+--=20
+                                        http://www.DInet.de/
+    /\                                  von-Siemens-Str. 12=20
+   /  \       Delta Internet GmbH       59757 Arnsberg
+  /    \   Netzwerkdienst & Vertrieb    Tel. +49 2932 91 61 32=20
+ /______\                               Fax. +49 2932 91 61 91
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]
+

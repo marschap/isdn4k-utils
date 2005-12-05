@@ -1,0 +1,87 @@
+Return-Path: a0037@stud.uni-bayreuth.de
+Newsgroups: de.alt.comm.isdn4linux
+Subject: Re: LZS: Max will es nicht annehmen
+Reply-To: Juergen Leising <a0037@stud.uni-bayreuth.de>
+
+On Sat, Mar 06, 1999 at 04:52:45PM +0100, Karsten Gessner wrote:
+> kann mal jemand die Schritte in Kurzform posten,
+> die zu einer lauffähigen Version der lzscomp führen "müssten" !
+
+Hi -
+
+- das Ganze geht nur fuer kernel 2.1.x / 2.2.x
+- Neue Dateien von http://www.ibh-dd.de/~beck/stuff/lzs4i4l/ holen
+- ccp.c  in das ipppd-Unterverzeichnis der isdn4k-utils kopieren
+- isdn_lzscomp.c nach /usr/src/linux-2.2.1/drivers/isdn kopieren (oder welcher
+  kernel eben verwendet wird)
+- /usr/src/linux-2.2.1/drivers/isdn/Makefile editieren: Wenn das ISDN-Subsystem
+  modular gebaut ist, sieht das Makefile dann so aus:
+
+	ifeq ($(CONFIG_ISDN),m)
+    		M_OBJS += isdn.o
+    		O_TARGET += isdn.o
+    		O_OBJS += isdn_net.o isdn_tty.o isdn_v110.o
+    		OX_OBJS += isdn_common.o
+    		ifdef CONFIG_ISDN_PPP
+      		O_OBJS += isdn_ppp.o
+      		M_OBJS += isdn_bsdcomp.o
+      		M_OBJS += isdn_lzscomp.o
+    	endif
+
+- kernel neu kompilieren
+- isdn-utilities neu kompilieren
+- zusaetzlich beim ISDN-Module laden muessen die Kompressions-Module auch noch
+  geladen werden, z. B. 
+
+	/sbin/insmod isdn_bsdcomp
+	/sbin/insmod isdn_lzscomp comp=8 debug=3
+
+	comp und debug je nach Bedarf aendern; hierzu das README des obigen URLS lesen
+
+- /etc/ppp/ioptions.ipppx (je nach dem, welcher ipppd einen kompressionsfaehigen peer
+  ansprechen soll)
+  z. B. 
+
+	bsdcomp 15,15
+	lzs 1:4
+
+	1 ist die Zahl der histories (so 'was wie frames), 4 der checkmode (Fehlerkorrektur)
+
+  aber diese Werte haengen ganz vom peer ab; welche Werte sind richtig?
+  - Hierzu wieder das README lesen
+  - Debugging hoch genug einstellen, um die Kommunikation zwischen peer und eigenem 
+    Rechner verfolgen zu koennen; demgemaess die Werte fuer die Module aendern/einstellen.
+
+
+
+- kann der peer kein ccp: Pech gehabt
+- ist der peer eine pre-RFC-Ascend: Pech gehabt.
+
+Wer fuer diese beiden Faelle eine Loesung hat - mail an mich, bitte.
+
+
+Tschuess, Juergen.
+
+
+-- 
+*****************************************************************
+* Juergen Leising, E-Mail: juergen.leising@stud.uni-bayreuth.de *
+*          http://www.stud.uni-bayreuth.de/~a0037/              *
+*****************************************************************
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]
+
+
+-- 
+I have seen her. That is enough, perhaps.
+Pug smiled. "You are a rare man."
+	Raymond E Feist - The King's Buccaneer
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@listserv.isdn4linux.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body.
+

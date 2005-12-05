@@ -1,0 +1,51 @@
+Return-Path: POPmail
+Return-Path: <owner-isdn4linux@hub-wue.franken.de>
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id WAA09582; Tue, 15 Apr 1997 22:57:36 +0200
+Received: from oops.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0wHCfe-000oPka; Tue, 15 Apr 97 20:09 MET DST
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0wHChM-001IXYa; Tue, 15 Apr 97 20:11 MET DST
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0wHChI-001IXUE; Tue, 15 Apr 97 20:11 MET DST
+Received: from hertz.ikp.physik.th-darmstadt.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0wHCem-000BmHC; Tue, 15 Apr 97 20:08 MET DST
+Received: (from bon@localhost) by hertz.ikp.physik.th-darmstadt.de (8.8.3/8.8.3) id UAA00262; Tue, 15 Apr 1997 20:07:43 +0200
+Date: Tue, 15 Apr 1997 20:07:43 +0200
+Message-Id: <199704151807.UAA00262@hertz.ikp.physik.th-darmstadt.de>
+From: Uwe Bonnes <bon@elektron.ikp.physik.th-darmstadt.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+To: Thomas Haas <haas@studi.unizh.ch>
+Cc: isdn4linux@hub-wue.franken.de
+Subject: Re: modem.inf fuer i4l
+In-Reply-To: <Pine.LNX.3.95.970415171412.805A-100000@peecee.haaseng.ch>
+References: <Pine.LNX.3.95.970415171412.805A-100000@peecee.haaseng.ch>
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+Content-Type: text/plain; charset=us-ascii
+
+>>>>> "Thomas" == Thomas Haas <thaas@haaseng.ch> writes:
+
+    Thomas> Hallo Mit NetModem/IP von http://www.tactical-sw.com/ kann ich
+    Thomas> nun endlich die ttyIxx von Win95 aus uebers Netz nutzen. Cool.
+
+    Thomas> Weiss jemand, wie eine win95-inf-Datei fuer Modems aussehen
+    Thomas> muss? Ich moechte gerne so eine inf-Datei fuer den
+    Thomas> i4l-Modem-Emulator (ttyIxx) basteln, oder hat das schon jemand
+    Thomas> gemacht?
+
+Vielleicht hilft Dir weiter wie Kevin Wells ein Inf-File fuer ein
+Nullmodemadapter geschrieben hat:
+http://www.vt.edu:10021/K/kewells/net/
+
+Uwe Bonnes                bon@elektron.ikp.physik.th-darmstadt.de
+
+Institut fuer Kernphysik  Schlossgartenstrasse 9  64289 Darmstadt
+--------- Tel. 06151 162516 -------- Fax. 06151 164321 ----------
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]
+

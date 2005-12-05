@@ -1,0 +1,82 @@
+Return-Path: owner-isdn4linux@hub-wue.franken.de
+Received: from hsun6.wi-inf.uni-essen.de by aixrs1.hrz.uni-essen.de (AIX 4.1/UCB 5.64/4.03)
+          id AA44892; Mon, 10 Mar 1997 19:02:05 +0100
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id TAA14192; Mon, 10 Mar 1997 19:03:40 +0100
+Received: from oops.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0w43xj-000oHda; Mon, 10 Mar 97 13:13 MET
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0w43vH-001ITva; Mon, 10 Mar 97 13:11 MET
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0w43vB-001ITuE; Mon, 10 Mar 97 13:11 MET
+Received: from ki.comcity.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0w43wO-000BoNC; Mon, 10 Mar 97 13:12 MET
+Received: from commgate.local.comcity.de by ki.comcity.de (SMI-8.6/SMI-SVR4)
+	id OAA13546; Mon, 10 Mar 1997 14:08:01 -0100
+Received: from [194.25.34.206] by commgate.local.comcity.de with ESMTP id S.000357002404 for <dimi@wiesbaden.netsurf.de>,...; Mon, 10 Mar 1997 13:12:39 +0100
+Received: from widor2.comcity.de (vwidor@widor2.comcity.de [192.168.1.2]) by widor1.comcity.de (8.7.5/8.7.3) with SMTP id MAA00192; Mon, 10 Mar 1997 12:52:10 +0100
+Message-Id: <3323F56B.4FEA8D7@rd.comcity.de>
+Date: Mon, 10 Mar 1997 12:50:03 +0100
+From: Volker Widor <vwidor@ki.comcity.de>
+Organization: -
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.0.29 i586)
+To: Dimitrios Dimitrakos <dimi@wiesbaden.netsurf.de>
+Cc: isdn4linux@hub-wue.franken.de
+Subject: Re: T-Online BTX
+References: <331A14C0.5AFA30E1@wiesbaden.netsurf.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+
+bei mir leuft XCept-1.1.2.
+(allerdings komischerweise nur in SW)
+ich habe aber ISDN beim kompilieren von XCept ausgeschaltet.
+dann noch in init.cept folgendes:
+
+---------------------------------------------------------
+hangupstring            "~+++~ATH0^M"
+connectstring           "64000/X.75"
+nodialtonestring        "NO DIALTONE^M"
+nocarrierstring         "NO CARRIER^M"
+busystring              "BUSY^M"
+opendevice      9600    "/dev/ttyI2"
+
+send            "AT&F^M"
+sleep   1
+send                    "AT&D2^M"
+send                    "ATQ0^M"
+send                    "ATV1^M"
+send                    "ATS2=255^M"
+send                    "AT&X1^M"
+send                    "AT&E000000^M"    #<-- eaz eintragen!
+send                    "ATD01910^M"
+wait                    10
+
+---------------------------------------------------------
+
+und schon lueppt das!
+
+nur eine frage, wo wir gerade dabei sind:
+wenn ich den ceptd von einem anderen rechner aus nutzen will, und den
+benutzer in users.cept
+freigegeben habe, scheitert ceptd mit der fehlermeldung (ueber syslog):
+
+serverhost ceptd[160]: warning: can't verify hostname:
+gethostbyname(clientname) failed
+serverhost ceptd[160]: refused connect from name@clienthost
+
+falls da jemand sagen kann, was man da machen kann, waere ich sehr
+dankbar.
+(das muss wohl irgendwo im socket.c in ceptd liegen)
+
+-- 
+    /  Volker Widor  -  Kiewittsholm 6a  -  D-24107 Ottendorf  /
+   /  Tel.: +49 431 583572  Fax: +49 431 583502               /
+  /  E-Mail: vwidor@rd.comcity.de                            /
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]

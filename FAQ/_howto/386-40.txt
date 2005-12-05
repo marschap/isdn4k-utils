@@ -1,0 +1,99 @@
+Return-Path: owner-isdn4linux@hub-wue.franken.de
+Received: from hsun6.wi-inf.uni-essen.de by aixrs1.hrz.uni-essen.de (AIX 4.1/UCB 5.64/4.03)
+          id AA50180; Sat, 15 Mar 1997 01:13:08 +0100
+Received: from rachael.franken.de by hsun6.wi-inf.uni-essen.de (SMI-8.6/SMI-SVR4)
+	id BAA17710; Sat, 15 Mar 1997 01:14:40 +0100
+Received: from oops.franken.de by rachael.franken.de with smtp
+	(Smail3.1.29.1 #8) id m0w5dUP-000oRUa; Fri, 14 Mar 97 21:22 MET
+Received: by oops.franken.de (Linux Smail3.1.29.1 #1)
+	id m0w5dSE-001Iada; Fri, 14 Mar 97 21:19 MET
+Received: from hub-wue.franken.de by oops.franken.de  with smtp
+	(Linux Smail3.1.29.1 #1) id m0w5dSA-001IacE; Fri, 14 Mar 97 21:19 MET
+Received: from goofy.chess.langenfeld.de by hub-wue.franken.de with smtp
+	(Smail3.1.29.1 #1) id m0w5dSd-000BltC; Fri, 14 Mar 97 21:20 MET
+Received: (from tom@localhost) by goofy.chess.langenfeld.de (8.7.5/8.7.3) id VAA00934 for isdn4linux@hub-wue.franken.de; Fri, 14 Mar 1997 21:19:37 +0100
+From: Thomas Heiling <tom@goofy>
+Message-Id: <199703142019.VAA00934@goofy.chess.langenfeld.de>
+Subject: MASQ: TCP/UDP checksum errors SOLVED!
+To: isdn4linux@hub-wue.franken.de
+Date: Fri, 14 Mar 1997 21:19:35 +0100 (MET)
+X-Mailer: ELM [version 2.4 PL25 PGP2]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Sender: owner-isdn4linux@hub-wue.franken.de
+Precedence: bulk
+
+Hello!
+after some tweaking and testing I have solved the problem with
+the checksum errors. ( Apparently and hopefully, up to now no
+more error messages)
+Because of the slowness of my computer (thanks Fritz!) I have done
+two things:
+a) changed the IRQ from 15 to 5 for the Teles card -> the Teles is now
+on the Master controller
+b) got irqtune and changed the priority for the teles card to maximum
+in favour of disk. ( irqtune 5 )
+With this two changes I was able to cure my errors from HiSax:
+MASQ: failed TCP/UDP checksum from xx.xx.xx.xx!
+for the Teles-driver the following error messages:
+Teles: 	HSCX RDO mode=2
+	HSCX B EXIR 40
+Possibly the first solution would be sufficient, but what the heck,
+don't touch a running system.
+
+The original message is included below and yes I know my reply address
+is wrong and should be heiling@online-club.de. I will fix
+this really soon now, if my new Debian CD has arrived.
+Thanks 
+Dr. Thomas Heiling 
+> 
+> Newsgroups: comp.os.linux.networking
+> Subject: MASQ:failed TCP/UDP checksum ?
+> Reply-To: heiling@mail.online-club.de
+> Followup-To:
+> Keywords:
+> Summary:
+> 
+> Hello!
+> I am running Linux 2.0.29 with the isdnlinux-patches and
+> with the hisax driver. I have configured this system as a router,
+> that means with IP_FIREWALL and IP_MASQUERADING enabled.
+> The connectivity from the Linux computer is o.k. and the first time
+> the private net "behind " the firewall had access to the internet.
+> If I start the Windows Microsoft Explorer from another machine and
+> do some surfing everything went fine.
+> But after some time I get something like this:
+> Mar  8 20:42:24 goofy kernel: MASQ: failed TCP/UDP checksum from
+> 194.77.170.27!
+> and the Windows computer hungs up.
+> The first thought was, that the "Optimize as router not as host" config
+> is not 100% error proven, so I compiled a new kernel without this option
+> and tried again. But the same error message comes up again.
+> Thanks for any pointers and help
+> 
+> My System:
+> 386/40 Mhz + CoPro, 20 MB RAM, 2 * 520 MB harddisk
+> Teles 16.3 Isdn card ( with HiSax 2.0 + Patch 1-3),
+> Adaptec 1542 + CD-Rom
+> The system was first a Debian 1.1 System, but now I had done some
+> tweaking and compiled/installed new versions.
+> The System is connected via ISDN/PPP and the Firewall is up.
+> 
+> 
+> Dr. Thomas Heiling
+> email: heiling@online-club.de
+> 
+> ---------------------------------------------------
+> To remove yourself from this mailing list send
+> email to majordomo@hub-wue.franken.de containing
+> "unsubscribe isdn4linux <your_email_address>" in
+> the message body [-vg]
+> 
+> 
+
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@hub-wue.franken.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body [-vg]

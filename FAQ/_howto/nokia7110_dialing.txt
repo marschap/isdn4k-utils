@@ -1,0 +1,104 @@
+From owner-isdn4linux@listserv.isdn4linux.de  Sun Oct 29 22:16:25 2000
+Return-Path: <owner-isdn4linux@listserv.isdn4linux.de>
+Received: from localhost (mathes@localhost [127.0.0.1])
+	by athlet.mhessler.de (8.8.8/8.8.8) with ESMTP id WAA02008
+	for <mathes@localhost>; Sun, 29 Oct 2000 22:16:25 +0100
+X-Envelope-From: <owner-isdn4linux-outgoing@server-007.to.com>
+X-Envelope-To: <subscribe@i4l.mhessler.de>
+X-Delivery-Time: 971869541
+Received: from post.strato.de
+	by fetchmail-4.6.0 POP3
+	for <mathes/localhost> (single-drop); Sun, 29 Oct 2000 22:16:25 MET
+Received: from server-007.to.com (server-007.to.com [194.221.235.10])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id NAA01812
+	for <subscribe@i4l.mhessler.de>; Wed, 18 Oct 2000 13:44:42 +0200 (MET DST)
+Received: by server-007.to.com (Postfix)
+	id B5E8F13CE0; Wed, 18 Oct 2000 13:43:26 +0200 (CEST)
+Delivered-To: isdn4linux-outgoing@server-007.to.com
+Received: by server-007.to.com (Postfix, from userid 88)
+	id AA80813CE4; Wed, 18 Oct 2000 13:43:26 +0200 (CEST)
+Delivered-To: isdn4linux@listserv.isdn4linux.de
+Received: from inonet.com (unknown [212.117.66.174])
+	by server-007.to.com (Postfix) with ESMTP id 3DA2513CE0
+	for <isdn4linux@listserv.isdn4linux.de>; Wed, 18 Oct 2000 13:43:26 +0200 (CEST)
+Received: from 12er.inonet.com [62.158.199.41] by inonet.com with ESMTP
+  (SMTPD32-5.01) id AEBD4CE00AA; Wed, 18 Oct 2000 13:51:25 +03d0
+Received: from inonet.com (laser.inonet.com [192.168.0.11])
+	by 12er.inonet.com (8.8.8/8.8.8) with ESMTP id NAA00393;
+	Wed, 18 Oct 2000 13:07:39 +0200
+Message-ID: <39ED8AFA.35AB9D5E@inonet.com>
+Date: Wed, 18 Oct 2000 13:35:22 +0200
+From: Matthias Lenhardt <mlenhardt@inonet.com>
+Organization: InoNet Computer GmbH
+X-Mailer: Mozilla 4.61 [en] (X11; I; Linux 2.2.10 i686)
+X-Accept-Language: de-DE, en
+MIME-Version: 1.0
+To: Tom Sedge <tom@cognality.com>, isdn4linux@listserv.isdn4linux.de
+Subject: Re: Nokia 7110 -> ISDN questions
+References: <Pine.LNX.4.21.0010181225000.31029-100000@behemoth.cognality.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Sender: owner-isdn4linux@listserv.isdn4linux.de
+Precedence: bulk
+X-Loop: isdn4linux
+
+Tom Sedge wrote:
+> 
+> Hi,
+> 
+> I'm trying to get a Nokia 7110 calling in to a Linux ISDN box, but am a
+> little confused (even after reading the V.110 Mini-FAQ).
+> 
+> I want to WAP browse directly from the phone, there is no PDA connected to
+> it.
+
+Hi Tom,
+unfortunately, I can't tell you why your configuration doesn't work, but
+I
+can show you mine. It allows me to dail into a Linux box with the Nokia
+7110 mobile and access local WAP contents:
+
+/etc/inittab:
+# ISDN Dialin for WAP
+# Settings for Nokia 7110
+i0:23:respawn:/usr/sbin/mgetty -m '""
+AT&B512&E<YourMSN>&X0S14=4S19=197&R9600 OK' -s 38400 /dev/ttyI0
+
+/etc/mgetty+sendfax/login.config:
+/AutoPPP/ - root /usr/sbin/pppd file /etc/ppp/wap.conf
+
+/etc/ppp/wap.conf:
+-vjccomp -ac -pc -vj
+name <Hostname>
+192.168.1.200:192.168.1.201
+netmask 255.255.255.0
+ipcp-accept-local
+ipcp-accept-remote
+noauth
+nodetach
+noipx
+mru 296
+proxyarp
+lock
+asyncmap 0
+idle
+60                                                                                                                              
+
+Hope that helps,
+Matthias
+-- 
+<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>
+Matthias Lenhardt - Software Ingenieur
+    mail:mlenhardt@inonet.com
+InoNet Computer GmbH
+    http://www.inonet.com/
+Computers are like air conditioners:
+They stop working properly if you open windows.
+<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>
+
+---------------------------------------------------
+To remove yourself from this mailing list send
+email to majordomo@listserv.isdn4linux.de containing
+"unsubscribe isdn4linux <your_email_address>" in
+the message body.
+
