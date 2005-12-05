@@ -894,10 +894,11 @@ Other archives are:
 url="ftp://ftp.uni-oldenburg.de/pub/unix/linux/isdn/isdn4linux/Mailing-List"></tt>
 </itemize>
 
-<sect1> docu_bugtracker: Is there a bug tracker available for isdn4linux?
+<sect1> docu_bugtracker: Is there a bug tracker available for isdn4linux?  
+<label id="docu_bugtracker">
 <p>
 Yes, there is a bugtracker available under the following url:
-<url url="https://www.isdn4linux.de/mantis". You have to register yourself
+<url url="https://www.isdn4linux.de/mantis">. You have to register yourself
 before you can search for known bugs and enter new issues.
 
 <!-- Supported Hardware & hardware-specific stuff
@@ -2029,7 +2030,8 @@ distributions will do that for you (e.g. Suse), for others you have to do
 this yourself (e.g. Mandrake 10).
 
 
-<sect1> config_asterisk: How can I install asterisk with mISDN?
+<sect1> config_asterisk: How can I install asterisk with mISDN?  
+<label id="config_asterisk">
 <p>
 First you have to get mISDNuser and compile it. Then you have to compile
 chan_misdn (included with asterisk) so it works together with mISDNuser.
@@ -2594,7 +2596,7 @@ for i in eicon isdnlog ipppd ; do
 done
 </code>
 
-<sect1> trouble_hisaxparams: HiSax does not work - how can I set the
+<sect1> trouble_hisaxparams: HiSax does not work - how can I set the  
 HiSax parameters for newer Linux kernels?  
 <label id="trouble_hisaxparams">
 <p>
@@ -5266,7 +5268,8 @@ incoming call) you should see lines starting with "HEX:" or "D2:" in the
 output of the cat command. If these lines are missing then check your
 configuration of the kernel drivers.
 
-<sect1> isdnlog_database: How can I set up isdnlog with database support?
+<sect1> isdnlog_database: How can I set up isdnlog with database support?  
+<label id="isdnlog_database">
 <p>
 You have to rebuild isdnlog for this. You can find some instructions
 (in German) on:
