@@ -385,7 +385,7 @@ int wuftp_check_user (char *user, char *passw, char *isdnno) {
       syslog (LOG_NOTICE,
         "EFT LOGIN REFUSED (not anonymous) FROM %s, %s",
           remotehost, user);
-      return;
+      return 0;
     }
 /* fall here if username okay in any case */
 #endif /* ANON_ONLY */
@@ -416,7 +416,7 @@ int wuftp_check_user (char *user, char *passw, char *isdnno) {
 	sprintf (autherrmsg, "User %s access denied.", user);
         syslog(LOG_NOTICE, "EFT LOGIN REFUSED (access denied) FROM %s, %s",
 		remotehost, user);
-        return;
+        return 0;
     } else
         if (use_accessfile)             /* see above.  _H*/
             acl_setfunctions();

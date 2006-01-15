@@ -46,7 +46,7 @@ SUBDIRS  =
 DEFS    += -I$(PREFIXDIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(DEFS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(DEFS) -fno-strict-aliasing -c -o $@ $<
 
 all: .depend libisdn.a
 

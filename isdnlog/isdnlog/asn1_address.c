@@ -1,4 +1,4 @@
-/* $Id: asn1_address.c,v 1.4 2000/01/20 07:30:09 kai Exp $
+/* $Id: asn1_address.c,v 1.5 2006/01/15 15:08:55 keil Exp $
  *
  * ISDN accounting for isdn4linux. (ASN.1 parser)
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: asn1_address.c,v $
+ * Revision 1.5  2006/01/15 15:08:55  keil
+ * fix some issues with newer gcc (mostly aliasing)
+ *
  * Revision 1.4  2000/01/20 07:30:09  kai
  * rewrote the ASN.1 parsing stuff. No known problems so far, apart from the
  * following:
@@ -201,7 +204,7 @@ int ParsePublicPartyNumber(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 
 int ParsePrivatePartyNumber(struct Aoc *chanp, u_char *p, u_char *end, char *str)
 {
-	int privateTypeOfNumber;
+	int privateTypeOfNumber = -1;
 	char numberDigits[20];
 	INIT;
 

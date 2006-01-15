@@ -56,6 +56,7 @@
 #elif defined(HAVE_SYS_MOUNT)
 #include <sys/mount.h>
 #endif
+#include <unistd.h>
 
 #include <arpa/ftp.h>
 
@@ -197,7 +198,7 @@ char *outbuf;
     *outptr = '\0';
 }
 
-int reply (int msg, char *str) {
+void reply (int msg, char *str) {
 	fprintf (stderr, "%d - %s\n", msg, str);
 }
 

@@ -2,7 +2,7 @@
 #
 # (c) 1995-97 Volker Götz
 #
-# $Id: Makefile,v 1.7 2002/07/19 21:23:53 keil Exp $
+# $Id: Makefile,v 1.8 2006/01/15 15:08:55 keil Exp $
 
 ifeq (../.config,$(wildcard ../.config))
 	#
@@ -32,7 +32,7 @@ PROGS=imontty
 all: $(PROGS)
 
 imontty: imontty.c imontty.h
-	cc $(CCFLAGS) -o imontty imontty.c
+	cc $(CFLAGS) $(CCFLAGS) -o imontty imontty.c
 
 rootperm:
 	@echo 'main(int argc,char**argv){unlink(argv[0]);return(getuid()==0);}'>g

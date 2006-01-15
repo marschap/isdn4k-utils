@@ -13,7 +13,7 @@ vpath %.c $(TOPDIR)
 CC	= gcc
 INC     = -I$(TOPDIR) -I$(CAPIINC) -Ipppd
 DEFS    = -DPPPVER=$(shell $(TOPDIR)/pversion $(PPPVERSION))
-CFLAGS	= -O2 -Wall -fPIC $(DEFS) $(INC) -L$(CAPILIB)
+MYCFLAGS= -O2 -Wall -fPIC $(DEFS) $(INC) -L$(CAPILIB)
 LDFLAGS	= -shared -L$(CAPILIB)
 
 ALL = capiplugin.so userpass.so
@@ -24,7 +24,10 @@ capiplugin.so: capiplugin.o capiconn.o
 	$(CC) -o $@ $(LDFLAGS) capiplugin.o capiconn.o -lcapi20dyn
 
 userpass.so: userpass.o
-	$(CC) -o $@ $(LDFLAGS) $(CFLAGS) -nostdlib userpass.o
+	$(CC) -o $@ $(LDFLAGS) $(CFLAGS) $(MYCFLAGS) -nostdlib userpass.o
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(MYCFLAGS) -c -o $@ $<
 
 distclean: clean
 

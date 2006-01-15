@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.3 2002/01/31 18:55:23 paul Exp $
+# $Id: Makefile,v 1.4 2006/01/15 15:08:54 keil Exp $
 
 TDU_M_OBJ = master.o
 TDU_S_OBJ = slave.o echo_pos.o
@@ -11,7 +11,7 @@ EFT_OBJ = eft.o eft_dir.o eft_names.o eft_tmpfile.o
 
 OBJECTS = $(TDU_M_OBJ) $(TDU_S_OBJ) $(TDU_OBJ) $(EFT_M_OBJ) $(EFT_S_OBJ) $(EFT_OBJ) 
 
-CFLAGS += -Iinclude
+CPPFLAGS += -Iinclude
 
 all: libeft.a
 
