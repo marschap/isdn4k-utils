@@ -4,7 +4,7 @@
 
 <title>FAQ for isdn4linux
 <author>Matthias Hessler (<tt><htmlurl url="mailto:hessler@isdn4linux.de" name="hessler@isdn4linux.de"></tt>)
-<date>v2.0.102, 5 December 2005
+<date>v2.0.103, 15 January 2006
 <abstract>
 If you are reading this FAQ online, you may consider downloading the whole
 thing, and reading it offline (much cheaper). To download the latest
@@ -2776,11 +2776,12 @@ computer to your internet provider manually, then you can set up dial on demand
 functionality (see section <ref id="dod" name="dod">).
 </enum>
 
-<sect1> lan_modemserver: How can I allow the users in my LAN to dial out via  
-the ISDN card(s) in my Linux PC (like a modem server)?  
+<sect1> lan_modemserver: How can forward ISDN data from a local computer in  
+my LAN to the ISDN card(s) in my Linux PC (like a modem server)?  
 <label id="lan_modemserver">
 <p>
-On the Linux side use modemd, which is a very short perl script
+On the Linux PC you have to install a forwarding server.
+One option is to use <tt>modemd</tt>. This is a very short perl script
 (also see Linux Modem sharing mini-HOWTO at
 <tt><url url="http://www.linuxdoc.org/HOWTO/mini/Linux-Modem-Sharing.html"></tt>):
 <code>
@@ -2800,8 +2801,9 @@ And this has to be added to <tt>/etc/inet.conf</tt>:
 <code>
 modemd stream tcp nowait root /usr/sbin/tcpd /usr/sbin/modemd ttyI5
 </code>
-Instead of modemd you can also use the program mserver, which has some
-additional functionality (e.g. rights based on ip address):
+
+Instead of modemd you can also use the program <tt>mserver</tt>, which has
+some additional functionality (e.g. rights based on ip address):
 <tt><url url="ftp://ftp.innet.be/pub/staff/carl/"></tt>
 
 Additionally, you need some software on your non-ISDN computer which emulates a
@@ -2823,6 +2825,64 @@ Those who just want to save their CrossPoint installation should be aware that
 it now offers tcp modem support, such that it will run without additional
 software. Check out:
 <tt><url url="http://www.openxp.de"></tt>
+
+<sect1> lan_remotedialing: How can I allow the users in my LAN to trigger  
+a dial out via   the ISDN card(s) in my Linux PC?  
+<label id="lan_remotedialing">
+<p>
+For this you need two pieces of software. At the computer where the ISDN-line
+is connected you need to install a <tt>dial daemon</tt>. The dial daemon
+will execute any dial commands given from a <tt>dial frontend</tt> located on
+a different computer on the LAN. You have several options to choose a dial
+daemon and dial frontend.
+<enum>
+<item>
+At first you can use the free software <tt>smpppd</tt> (SuSE Meta PPP
+Daemon) from SuSE as the dial daemon. smpppd gets used in the SuSE distribution
+for all ISDN, Modem and DSL connections. You can connect to smpppd locally or
+over a LAN via different dial frontends and trigger dial-out, hang-up and so
+on. The most known dial frontend is kinternet a small applet for the KDE
+Kicker. Others are the qt-only qinternet and the command line tool cinternet.
+Unfortunately there is no frontend for Windows or Mac OS available.
+
+Obviously this is the easiest way if you already have SuSE installed on the
+server, and all other involved computers are also based on Linux (installation
+of the dial frontend should not be too difficult with non-SuSE distributions).
+Some more hints:
+<itemize>
+<item>The software is available in SuSE-Linux within the packages smpppd,
+kinternet and qinternet, see <url url="http://www.opensuse.org">
+<item>In order to allow smpppd listening into the LAN change the following
+two options in /etc/smpppd.conf (see also "man smpppd.conf"):
+<code>
+open-inet-socket = yes # (default is no)
+bind-address = &lt;IP&gt; # IP of the LAN-network-card of the dial in server;
+# default is listening on all network cards (!)
+</code>
+<item>On the client side you can either enter the dial server via GUI or via
+/etc/smpppd-c.conf (see also "man smpppd-c.conf").
+</itemize>
+<item>
+Another free software solution working the same way is <tt>LineControl</tt>.
+It has a dial daemon (linesrv) which you can configure dialing different
+connections (similar to smpppd) be it ISDN, Modem, DSL or another dial-out
+connection. Dial frontends are available for Linux (one for KDE and one for
+Gnome), Windows and Java.
+Some more hints:
+<itemize>
+<item>The software and tutorials can be found at
+<url url="http://linecontrol.srf.ch/">
+<item>The config files is located at <tt>/etc/linesrv.conf</tt>
+(the relevant configuration options are similar to that of smpppd)
+<item>Several dial and hang up scripts where you can define the system
+commands how to dial/hang up certain connections are below
+<tt>/etc/linesrv/</tt>
+<item>In order to have the linesrv daemon running at system start of your
+server you also need to enter it in your system start configuration.
+<item>On the client side you now can enter the dial server via GUI in one of
+the frontends and dial/hang up a connection configured at the server.
+</itemize>
+</enum>
 
 
 <!-- Dialout
