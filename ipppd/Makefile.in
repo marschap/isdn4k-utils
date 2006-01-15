@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.19 2004/08/30 14:56:36 keil Exp $
+# $Id: Makefile.in,v 1.20 2006/01/15 15:11:52 keil Exp $
 #
 
 HAVE_LIBSSL   := @HAVE_LIBSSL@
@@ -82,7 +82,7 @@ LIBS        = -lcrypt -lutil
 endif
 
 ifeq ($(IPPP_FILTER),y)
-CFLAGS     += -DIPPP_FILTER
+COPTS      += -DIPPP_FILTER
 LIBS       += -lpcap
 endif
 
@@ -126,15 +126,15 @@ PPPDSRCS += isexpired.c
 endif
 
 ifeq ($(HAVE_LZSCOMP_H),1)
-	CFLAGS += -DHAVE_LZSCOMP_H
+	COPTS += -DHAVE_LZSCOMP_H
 endif
 
 ifeq ($(HAVE_PCAP_BPF_H),1)
-	CFLAGS += -DHAVE_PCAP_BPF_H
+	COPTS += -DHAVE_PCAP_BPF_H
 endif
 
 ifeq ($(HAVE_NET_BPF_H),1)
-	CFLAGS += -DHAVE_NET_BPF_H
+	COPTS += -DHAVE_NET_BPF_H
 endif
 
 %.8: %.man
