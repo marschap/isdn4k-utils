@@ -16,7 +16,7 @@ V: 0.21 Norway [04.03.2000]
 U: %.3f NOK
 
 
-S:Nødtelefon
+S:NÃ¸dtelefon
 N:110,112,113,1412
 
 S: Internett
@@ -28,7 +28,7 @@ N:81007*,8101*,21312164,21312064
 #     Telenor telephone charges. Basis. Privat.
 #
 #  NB! After 15.03.2000 it is possible to surf around the clock with
-#  "Kveldstakst", called "Døgnsurf". To enable this charge, you must
+#  "Kveldstakst", called "DÃ¸gnsurf". To enable this charge, you must
 #  call 140. It's free, so there is NO reason not to do this. See:
 #  http://www.telenor.no/pressesenter/telenor/aktuell/951139407.shtml
 #
@@ -44,13 +44,13 @@ B:81007007
 C:Name:Telenor
 C:Homepage:http://www.online.no/
 C:Homepage:http://www.telenor.no/
-Z:0 Gratis/grønt
+Z:0 Gratis/grÃ¸nt
 A:110,112,113,1412
 A:800
 T:*/*=0
 Z:1 Internett
 A:81007,8101
-T: [15.03.2000] */*=0.45/0,0.14(60)/1 Døgnsurf
+T: [15.03.2000] */*=0.45/0,0.14(60)/1 DÃ¸gnsurf
 T: [-15.03.2000] W/08-15=0.45/0,0.22(60)/1 Gammel Arbeidstidstakst
 T: [-15.03.2000] W/15-08=0.45/0,0.14(60)/1 Gammel Kveldstakst
 T: [-15.03.2000] E,H/0-24=0.45/0,0.14(60)/1 Gammel Weekendtakst
@@ -105,13 +105,13 @@ T:*/*=0.45/0,1.6(60)/1
 P:10,1 T2 F2C
 B:1502
 C:Honepage:http://www.tele2.no/
-Z:0 Gratis/grønt
+Z:0 Gratis/grÃ¸nt
 A:110,112,113,1412
 A:800
 T:*/*=0
 Z:1 Internett
 A:21312164,81007,8101
-T:*/*=0.45/0,0.135(60)/1 Døgntakst
+T:*/*=0.45/0,0.135(60)/1 DÃ¸gntakst
 Z:2 Norge
 A:+47
 T:W/08-15=0.45/0,0.21(60)/1 Arbeidstidstakst
@@ -126,7 +126,7 @@ T:E,H/*=0.45/0,0.135(60)/1 Weekendtakst
 P:10,2 T2 C2I
 B:1502
 C:Honepage:http://www.tele2.no/
-Z:0 Gratis/grønt
+Z:0 Gratis/grÃ¸nt
 A:110,112,113,1412
 A:800
 T:*/*=0
@@ -143,18 +143,18 @@ T:E,H/*=0.45/0,0.135(60)/1 Weekendtakst
 
 #################################################################
 #
-#     Tele2 telephone charges, Connect2Internet with "døgntakst".
+#     Tele2 telephone charges, Connect2Internet with "dÃ¸gntakst".
 #
 P:10,3 T2 C2I
 B:1502
 C:Honepage:http://www.tele2.no/
-Z:0 Gratis/grønt
+Z:0 Gratis/grÃ¸nt
 A:110,112,113,1412
 A:800
 T:*/*=0
 Z:1 Internett
 A:21312064,81007,8101
-T:*/*=0.45/0,0.135(60)/1 Døgntakst
+T:*/*=0.45/0,0.135(60)/1 DÃ¸gntakst
 Z:2 Norge
 A:+47
 T:W/08-15=0.45/0,0.21(60)/1 Arbeidstidstakst

@@ -61,7 +61,7 @@
 2053	Velbert-Neviges
 2054	Essen-Kettwig
 2056	Heiligenhaus
-2058	Wülfrath
+2058	WÃ¼lfrath
 2064	Dinslaken
 2065	Duisburg-Rheinhausen
 2066	Duisburg-Homberg
@@ -70,7 +70,7 @@
 2102	Ratingen
 2103	Hilden
 2104	Mettmann
-211	Düsseldorf
+211	DÃ¼sseldorf
 2120	Solingen
 2121	Solingen
 2122	Solingen
@@ -82,7 +82,7 @@
 2128	Solingen
 2129	Haan
 2131	Neuss
-2132	Meerbusch-Büderich
+2132	Meerbusch-BÃ¼derich
 2133	Dormagen
 2137	Neuss-Norf
 214	Leverkusen
@@ -95,12 +95,12 @@
 2157	Nettetal-Kaldenkirchen
 2158	Grefrath
 2159	Meerbusch-Osterath
-2161	Mönchengladbach
+2161	MÃ¶nchengladbach
 2162	Viersen
 2163	Schwalmtal
-2164	Jüchen-Otzenrath
-2165	Jüchen
-2166	Mönchengladbach-Rheydt
+2164	JÃ¼chen-Otzenrath
+2165	JÃ¼chen
+2166	MÃ¶nchengladbach-Rheydt
 2171	Leverkusen-Opladen
 2173	Langenfeld
 2174	Burscheid
@@ -109,27 +109,27 @@
 2182	Grevenbroich-Kapellen
 2183	Rommerskirchen
 2191	Remscheid
-2192	Hückeswagen
+2192	HÃ¼ckeswagen
 2193	Dabringhausen
 2195	Radevormwald
 2196	Wermelskrichen
 2202	Bergisch-Gladbach
-2203	Köln-Porz
+2203	KÃ¶ln-Porz
 2204	Bensberg
-2205	Rösrath
+2205	RÃ¶srath
 2206	Overath
-2207	Kürten-Dürscheid
+2207	KÃ¼rten-DÃ¼rscheid
 2208	Niederkassel
-221	Köln
+221	KÃ¶ln
 2222	Bornheim
-2223	Königswinter
+2223	KÃ¶nigswinter
 2224	Bad Honnef
 2225	Meckenheim
 2226	Rheinbach
 2227	Bornheim-Merten
 2228	Remagen-Rolandseck
-2232	Brühl
-2233	Hürth
+2232	BrÃ¼hl
+2233	HÃ¼rth
 2234	Frechen
 2235	Erftstadt
 2236	Wesseling
@@ -138,14 +138,14 @@
 2241	Siegburg
 2242	Hennef
 2243	Eitorf
-2244	Königswinter-Oberpleis
+2244	KÃ¶nigswinter-Oberpleis
 2245	Much
 2246	Lohmar
 2247	Neunkirchen-Seelscheid
 2248	Hennef-Uckerath
 2251	Euskirchen
-2252	Zülpich
-2253	Bad Münstereifel
+2252	ZÃ¼lpich
+2253	Bad MÃ¼nstereifel
 2254	Weilerwist
 2255	Euskirchen-Flamersheim
 2256	Mechernich-Satzvey
@@ -156,28 +156,28 @@
 2264	Marienheide
 2265	Reichshof-Eckenhagen
 2266	Lindlar
-2267	Wipperfürth
-2268	Kürten
-2269	Kierspe-Rönsahl
+2267	WipperfÃ¼rth
+2268	KÃ¼rten
+2269	Kierspe-RÃ¶nsahl
 2271	Bergheim
 2272	Bedburg
 2273	Kerpen-Horrem
 2274	Elsdorf
 2275	Kerpen-Buir
 228	Bonn
-2291	Waldbröl
+2291	WaldbrÃ¶l
 2292	Windeck
-2293	Nümbrecht
+2293	NÃ¼mbrecht
 2294	Morsbach
 2295	Ruppichteroth
-2296	Reichshof-Brüchermühle
-2297	Wildbergerhütte
+2296	Reichshof-BrÃ¼chermÃ¼hle
+2297	WildbergerhÃ¼tte
 2301	Holzwickede
 2302	Witten
 2303	Unna
 2304	Schwerte
 2305	Castrop-Rauxel
-2306	Lünen
+2306	LÃ¼nen
 2307	Kamen
 2308	Unna-Hemmerde
 2309	Waltrop
@@ -195,13 +195,13 @@
 2336	Schwelm
 2337	Hagen-Dahl
 2338	Breckerfeld
-2339	Sprockhövel-Haßlinghausen
+2339	SprockhÃ¶vel-HaÃŸlinghausen
 234	Bochum
-2351	Lüdenscheid
+2351	LÃ¼denscheid
 2352	Altena
 2353	Halver
 2354	Meinerzhagen
-2355	Schalksmühle
+2355	SchalksmÃ¼hle
 2357	Herscheid
 2358	Meinerzhagen-Valbert
 2359	Kierspe
@@ -221,11 +221,11 @@
 2374	Iserlohn-Letmathe
 2375	Balve
 2377	Wickede
-2378	Fröndenberg-Langschede
+2378	FrÃ¶ndenberg-Langschede
 2379	Menden-Asbeck
 2381	Hamm
 2382	Ahlen Westfalen
-2383	Bönen
+2383	BÃ¶nen
 2384	Welver
 2385	Hamm Rhynern
 2387	Drennsteinfurt-Walstedde
@@ -235,36 +235,36 @@
 2392	Werdohl
 2393	Sundern-Allendorf
 2394	Neuenrade-Affeln
-2395	Finnentrop Rönkhausen
+2395	Finnentrop RÃ¶nkhausen
 2401	Baesweiler
 2402	Stolberg
 2403	Eschweiler
 2404	Alsdorf
-2405	Würselen
+2405	WÃ¼rselen
 2406	Herzogenrath
 2407	Herzogenrath-Kohlscheid
-2408	Aachen-Kornelimünster
+2408	Aachen-KornelimÃ¼nster
 2409	Stolberg-Gressenich
 241	Aachen
-2421	Düren
+2421	DÃ¼ren
 2422	Kreuzau
 2423	Langerwehe
-2424	Vettweiß
+2424	VettweiÃŸ
 2425	Nideggen-Embken
-2426	Nörvenich
+2426	NÃ¶rvenich
 2427	Nideggen
 2428	Niederzier
-2429	Hürtgenwald
+2429	HÃ¼rtgenwald
 2431	Erkelenz
 2432	Wassenberg
-2433	Hückelhoven
+2433	HÃ¼ckelhoven
 2434	Wegberg
-2435	Erkelenz-Lövenich
-2436	Wegberg-Rödgen
+2435	Erkelenz-LÃ¶venich
+2436	Wegberg-RÃ¶dgen
 2440	Nettersheim-Tondorf
 2441	Kall
 2443	Mechernich
-2444	Schleiden-Gmünd
+2444	Schleiden-GmÃ¼nd
 2445	Schleiden
 2446	Heimbach
 2447	Dahlem
@@ -276,7 +276,7 @@
 2454	Gangelt
 2455	Waldfeucht
 2456	Selfkant
-2461	Jülich
+2461	JÃ¼lich
 2462	Linnich
 2463	Titz
 2464	Aldenhoven
@@ -289,15 +289,15 @@
 2484	Mechernich-Eiserfey
 2485	Schleiden-Dreiborn
 2486	Nettersheim
-2501	Münster-Hiltrup
+2501	MÃ¼nster-Hiltrup
 2502	Nottuln
 2504	Telgte
 2505	Altenberge
-2506	Münster-Wolbeck
+2506	MÃ¼nster-Wolbeck
 2507	Havixbeck
 2508	Drensteinfurt
-2509	Nottun-Appelhüsen
-251	Münster
+2509	Nottun-AppelhÃ¼sen
+251	MÃ¼nster
 2520	Wadersloh-Diestedde
 2521	Beckum
 2522	Oelde
@@ -309,10 +309,10 @@
 2528	Ennigerloh-Enniger
 2529	Oelde-Stromberg
 2532	Ostbevern
-2533	Münster-Nienberge
-2534	Münster-Roxel
+2533	MÃ¼nster-Nienberge
+2534	MÃ¼nster-Roxel
 2535	Sendenhorst-Albersloh
-2536	Münster-Albachten
+2536	MÃ¼nster-Albachten
 2538	Drensteinfurt-Rinkerode
 2541	Coesfeld
 2542	Gescher
@@ -320,12 +320,12 @@
 2545	Rosendahl-Darfeld
 2546	Coesfeld-Lette
 2547	Rosendahl-Osterwick
-2548	Dülmen-Rorup
+2548	DÃ¼lmen-Rorup
 2551	Steinfurt-Burgsteinfurt
 2552	Steinfurt-Borghorst
 2553	Ochtrup
 2554	Laer
-2555	Schöppingen
+2555	SchÃ¶ppingen
 2556	Metelen
 2557	Wettringen
 2558	Horstmar
@@ -335,7 +335,7 @@
 2564	Vreden
 2565	Gronau-Epe
 2566	Ledgen
-2567	Ahaus-Alstätte
+2567	Ahaus-AlstÃ¤tte
 2568	Heek
 2571	Greven
 2572	Emsdetten
@@ -350,11 +350,11 @@
 2586	Beelen
 2587	Ennigerloh-Westkirchen
 2588	Harsewinkel-Greffen
-2590	Dülmen-Buldern
-2591	Lüdinghausen
+2590	DÃ¼lmen-Buldern
+2591	LÃ¼dinghausen
 2592	Selm
 2593	Ascheberg
-2594	Dülmen
+2594	DÃ¼lmen
 2595	Olfen
 2596	Nordkirchen
 2597	Senden
@@ -364,36 +364,36 @@
 2602	Montabaur
 2603	Bad Ems
 2604	Nassau
-2605	Löf
+2605	LÃ¶f
 2606	Winningen
 2607	Kobern-Gondorf
 2608	Weischneudorf
 261	Koblenz
-2620	Neuhäusel
+2620	NeuhÃ¤usel
 2621	Lahnstein
 2622	Bendorf
 2623	Ransbach-Baumbach
-2624	Höhr-Grenzhausen
+2624	HÃ¶hr-Grenzhausen
 2625	Ochtendung
 2626	Selters
 2627	Braubach
 2628	Rhens
-2630	Mülheim-Kärlich
+2630	MÃ¼lheim-KÃ¤rlich
 2631	Neuwied
 2632	Andernach
-2633	Brohl-Lützing
+2633	Brohl-LÃ¼tzing
 2634	Rengsdorf
 2635	Rheinbrohl
 2636	Burgbrohl
-2637	Weißenthurm
+2637	WeiÃŸenthurm
 2638	Waldbreitbach
 2639	Anhausen
 2641	Bad Neuenahr-Ahrweiler
 2642	Remagen
 2643	Altenahr
 2644	Linz
-2645	Vettelschoß
-2646	Königsfeld
+2645	VettelschoÃŸ
+2646	KÃ¶nigsfeld
 2647	Kesseling
 2651	Mayen
 2652	Mendig
@@ -415,8 +415,8 @@
 2675	Ediger-Eller
 2676	Ulmen
 2677	Lutzerath
-2678	Büchel
-2680	Mündersbach
+2678	BÃ¼chel
+2680	MÃ¼ndersbach
 2681	Altenirchen
 2682	Hamm
 2683	Asbach
@@ -432,7 +432,7 @@
 2694	Wershofen
 2695	Insul
 2696	Nohn
-2697	Blankenheim-Ahrhütte
+2697	Blankenheim-AhrhÃ¼tte
 271	Siegen
 2721	Lennestadt
 2722	Attendorn
@@ -456,7 +456,7 @@
 2750	Diedenshausen
 2751	Bad Berleburg
 2752	Bad Laasphe
-2753	Erndtebrück
+2753	ErndtebrÃ¼ck
 2754	Bad Laasphe-Freudingen
 2755	Bad Berleburg-Schwarzenau
 2758	Bad Berleburg-Girkhausen
@@ -469,7 +469,7 @@
 2771	Dillenburg
 2772	Herborn
 2773	Haiger
-2774	Dietzhölztal
+2774	DietzhÃ¶lztal
 2775	Driedorf
 2776	Bad Endbach-Hartenrod
 2777	Breitscheid
@@ -477,7 +477,7 @@
 2779	Greifenstein-Beilstein
 2801	Xanten
 2802	Alpen
-2803	Wesel-Büderich
+2803	Wesel-BÃ¼derich
 2804	Xanten-Marienbaum
 281	Wesel
 2821	Kleve
@@ -507,12 +507,12 @@
 2852	Hamminkeln
 2853	Schermbeck
 2855	Voerde
-2856	Hamminkeln-Brünen
+2856	Hamminkeln-BrÃ¼nen
 2857	Rees-Mehr
-2858	Hünxe
+2858	HÃ¼nxe
 2859	Wesel-Bislich
 2861	Borken
-2862	Südlohn
+2862	SÃ¼dlohn
 2863	Velen
 2864	Reken
 2865	Raesfeld
@@ -530,12 +530,12 @@
 2921	Soest
 2922	Werl
 2923	Lippetal-Herzfeld
-2924	Möhnesee
+2924	MÃ¶hnesee
 2925	Warstein-Allagen
 2927	Neuengeseke
-2928	Soest Ostönnen
+2928	Soest OstÃ¶nnen
 2931	Arnsberg
-2932	Neheim-Hüsten
+2932	Neheim-HÃ¼sten
 2933	Sundern
 2934	Sundern-Altenhellefeld
 2935	Sundern-Hachen
@@ -546,15 +546,15 @@
 2943	Erwitte
 2944	Rietberg-Mastholte
 2945	Lippstadt-Benninghausen
-2947	Anröchte
+2947	AnrÃ¶chte
 2948	Lippstadt-Rebbeke
-2951	Büren
-2952	Rüthen
-2953	Wünnenberg
-2954	Rüthen-Oestereiden
-2955	Büren-Wewelsburg
-2957	Wünneberg-Haaren
-2958	Büren-Harth
+2951	BÃ¼ren
+2952	RÃ¼then
+2953	WÃ¼nnenberg
+2954	RÃ¼then-Oestereiden
+2955	BÃ¼ren-Wewelsburg
+2957	WÃ¼nneberg-Haaren
+2958	BÃ¼ren-Harth
 2961	Brilon
 2962	Olsberg
 2963	Brilon-Messinghausen
@@ -564,7 +564,7 @@
 2973	Eslohe
 2974	Schmallenberg-Fredeburg
 2975	Schmallenberg-Oberkirchen
-2977	Schmallenberg-Bödefeld
+2977	Schmallenberg-BÃ¶defeld
 2981	Winterberg
 2982	Medebach
 2983	Winterberg-Siedlinghausen
@@ -575,8 +575,8 @@
 2993	Marsberg-Canstein
 2994	Marsberg-Westheim
 30	Berlin
-310	Testrufnummer Ferngespräche	2
-311	Testrufnummer Ortsgespräche	2
+310	Testrufnummer FerngesprÃ¤che	2
+311	Testrufnummer OrtsgesprÃ¤che	2
 3301	Oranienburg
 3302	Henningsdorf
 3303	Birkenwerdr
@@ -585,7 +585,7 @@
 33053	Zehlendorf
 33054	Liebenwalde
 33055	Kremmen
-33056	Mühlenbeck
+33056	MÃ¼hlenbeck
 3306	Gransee
 3307	Zehdenick
 33080	Marienthal
@@ -598,22 +598,22 @@
 33087	Bredereiche
 33088	Falkenthal
 33089	Himmelpfort
-33093	Fürstenberg
-33094	Löwenberg
+33093	FÃ¼rstenberg
+33094	LÃ¶wenberg
 331	Potsdam
-33200	Bergholz-Rehbrücke
-33201	Groß Glienicke
-33202	Töplitz
+33200	Bergholz-RehbrÃ¼cke
+33201	GroÃŸ Glienicke
+33202	TÃ¶plitz
 33203	Kleinmachnow
 33204	Beelitz
 33205	Michendorf
 33206	Fichtenwalde
-33207	Groß Kreutz
+33207	GroÃŸ Kreutz
 33208	Fahrland
 33209	Caputh
 3321	Nauen
 3322	Falkensee
-33230	Börnicke
+33230	BÃ¶rnicke
 33231	Pausin
 33232	Brieselang
 33233	Ketzin
@@ -621,11 +621,11 @@
 33235	Friesack
 33237	Paulinenaue
 33238	Senzke
-33239	Groß Behnitz
+33239	GroÃŸ Behnitz
 3327	Werder
 3328	Teltow
 3329	Stahnsdorf
-3331	Angermünde
+3331	AngermÃ¼nde
 3332	Schwedt
 33331	Casekow
 33332	Gartz
@@ -633,41 +633,41 @@
 33334	Greiffenberg
 33335	Pinnow
 33336	Passow
-33337	Altkünkendorf
+33337	AltkÃ¼nkendorf
 33338	Stolpe
 3334	Eberswalde
 3335	Finowfurt
 33361	Joachimsthal
 33362	Liepe
 33363	Altenhof
-33364	Groß Ziethen
-33365	Lüdersdorf
+33364	GroÃŸ Ziethen
+33365	LÃ¼dersdorf
 33366	Chorin
 33367	Friedrichswalde
 33368	Hohensaaten
 33369	Oderberg
 3337	Biesenthal
 3338	Bernau
-33393	Groß Schönebeck
+33393	GroÃŸ SchÃ¶nebeck
 33394	Blumberg
 33395	Zerpenschleuse
 33396	Klosterfelde
 33397	Wandlitz
 33398	Werneuchen
-3341	Straußberg
+3341	StrauÃŸberg
 3342	Neuenhagen
-33432	Müncheberg
+33432	MÃ¼ncheberg
 33433	Buckow
 33434	Herzfelde
 33435	Rehfelde
-33436	Prötzel
+33436	PrÃ¶tzel
 33437	Reichenberg
 33438	Altlandsberg
 33439	Fredersdorf-Vogelsdorf
 3344	Bad Freienwalde
 33451	Heckelberg
 33452	Neulewin
-33454	Wölsickendorf-Wollenberg
+33454	WÃ¶lsickendorf-Wollenberg
 33456	Wriezen
 33457	Altreetz
 33458	Falkenberg
@@ -679,15 +679,15 @@
 33475	Letschin
 33476	Neuhardenberg
 33477	Trebnitz
-33478	Groß Neuendorf
-33479	Küstrin-Kietz
+33478	GroÃŸ Neuendorf
+33479	KÃ¼strin-Kietz
 335	Frankfurt/Oder
 33601	Podelzig
 33602	Alt Zeschdorf
 33603	Falkenhagen
 33604	Lebus
-33605	Booßen
-33606	Müllrose
+33605	BooÃŸen
+33606	MÃ¼llrose
 33607	Briesen
 33608	Jacobsdorf
 33609	Brieskow-Finkenheerd
@@ -696,15 +696,15 @@
 33631	Bad Saarow-Pieskow
 33632	Hangelsberg
 33633	Spreenhagen
-33634	Berkenbrück
+33634	BerkenbrÃ¼ck
 33635	Arensdorf
-33636	Steinhöfel
+33636	SteinhÃ¶fel
 33637	Beerfelde
-33638	Rüdersdorf
-3364	Eisenhüttenstadt
+33638	RÃ¼dersdorf
+3364	EisenhÃ¼ttenstadt
 33652	Neuzelle
 33653	Ziltendorf
-33654	Fünfeichen
+33654	FÃ¼nfeichen
 33655	Grunow
 33656	Bahro
 33657	Steindorf
@@ -718,35 +718,35 @@
 33677	Glienicke
 33678	Storkow
 33679	Wendisch-Ritz
-33701	Großbeeren
-33702	Wünsdorf
+33701	GroÃŸbeeren
+33702	WÃ¼nsdorf
 33703	Sperenberg
 33704	Baruth
 33708	Rangsdorf
 3371	Luckenwalde
-3372	Jüterburg
+3372	JÃ¼terburg
 33731	Trebbin
 33732	Hennickendorf
-33733	Stülpe
+33733	StÃ¼lpe
 33734	Felgentreu
-33741	Niedergörsdorf
+33741	NiedergÃ¶rsdorf
 33742	Oehna
-33743	Blönsdorf
+33743	BlÃ¶nsdorf
 33744	Hohenseefeld
 33745	Petkus
 33746	Werbig
 33747	Marzahna
 33748	Treuenbrietzen
-3375	Königswusterhausen
-33760	Münchehofe
+3375	KÃ¶nigswusterhausen
+33760	MÃ¼nchehofe
 33762	Zeuthen
 33763	Bestensee
 33764	Mittenwalde
-33765	Märkisch Buchholz
+33765	MÃ¤rkisch Buchholz
 33766	Teupitz
 33767	Freidersdorf
 33768	Prieros
-33769	Töpchin
+33769	TÃ¶pchin
 3377	Zossen
 3378	Ludwigsfelde
 3379	Mahlow
@@ -754,27 +754,27 @@
 3382	Lehnin
 33830	Ziesar
 33831	Weseram
-33832	Rogäsen
+33832	RogÃ¤sen
 33833	Wollin
 33834	Pritzerbe
 33835	Golzow
 33836	Butzow
 33837	Brielow
-33838	Päwesin
+33838	PÃ¤wesin
 33839	Wusterwitz
 33841	Belzig
 33843	Niemegk
-33844	Brück
+33844	BrÃ¼ck
 33845	Borkheide
 33846	Dippmannsdorf
-33847	Görzke
+33847	GÃ¶rzke
 33848	Raben
 33849	Wiesenburg
 3385	Rathenow
 3386	Premnitz
 33870	Zollchow
 33872	Hohennauen
-33873	Großwudicke
+33873	GroÃŸwudicke
 33874	Stechow
 33875	Rhinow
 33876	Buschow
@@ -782,14 +782,14 @@
 33878	Nennhausen
 3391	Neuruppin
 33920	Walsleben
-33921	Zechlinerhütte
+33921	ZechlinerhÃ¼tte
 33922	Karwesee
 33923	Flecken Zechlin
-33924	Rägelin
+33924	RÃ¤gelin
 33925	Wustrau-Altfriesack
 33926	Herzberg
 33928	Wildberg
-33929	Gühlen-Glienicke
+33929	GÃ¼hlen-Glienicke
 33931	Reinsberg
 33932	Fehrbellin
 33933	Lindow
@@ -815,7 +815,7 @@
 33979	Wusterhausen
 33981	Putlitz
 33982	Hoppenrade
-33983	Groß Pankow
+33983	GroÃŸ Pankow
 33984	Blumenthal
 33986	Falkenhagen
 33989	Sadenbeck
@@ -824,10 +824,10 @@
 34202	Delitzsch
 34203	Zwenkau
 34204	Schkeuditz
-34205	Markranstädt
-34206	Rötha
+34205	MarkranstÃ¤dt
+34206	RÃ¶tha
 34207	Zwochau
-34208	Löbnitz
+34208	LÃ¶bnitz
 3421	Torgau
 34221	Schildau-Gneisenaustadt
 34222	Arzberg
@@ -835,11 +835,11 @@
 34224	Belgern
 3423	Eilenburg
 34241	Jesewitz
-34242	Hohenprießnitz
-34243	Bad Düben
+34242	HohenprieÃŸnitz
+34243	Bad DÃ¼ben
 34244	Mockrehna
 3425	Wurzen
-34261	Kühren
+34261	KÃ¼hren
 34262	Falkenhain
 34263	Hohburg
 34291	Borsdorf
@@ -851,11 +851,11 @@
 34297	Liebertwolkwitz
 34298	Taucha
 34299	Gaschwitz
-3431	Döbeln
+3431	DÃ¶beln
 34321	Leisnig
-34322	Roßwein
+34322	RoÃŸwein
 34324	Ostrau
-34325	Mochau-Lüttewitz
+34325	Mochau-LÃ¼ttewitz
 34327	Waldheim
 34328	Hartha
 3433	Borna
@@ -869,44 +869,44 @@
 34348	Frohburg
 3435	Oschatz
 34361	Dahlen
-34362	Mügeln
+34362	MÃ¼geln
 34363	Cavertitz
 34364	Wermsdorf
 3437	Grimma
 34381	Colditz
 34382	Nerchau
 34383	Trebsen
-34384	Großbothen
+34384	GroÃŸbothen
 34385	Mutzschen
-34386	Dürrweitzschen
+34386	DÃ¼rrweitzschen
 3441	Zeitz
 34422	Osterfeld
 34423	Heuckewalde
 34424	Reuden
-34425	Droyßig
+34425	DroyÃŸig
 34426	Kayna
-3443	Weißenfels
-34441	Hohenmölsen
+3443	WeiÃŸenfels
+34441	HohenmÃ¶lsen
 34443	Teuchern
-34444	Lützen
-34445	Stößen
-34446	Großkorbetha
+34444	LÃ¼tzen
+34445	StÃ¶ÃŸen
+34446	GroÃŸkorbetha
 3445	Naumburg
 34461	Nebra
 34462	Laucha
-34463	Bad Kösen
+34463	Bad KÃ¶sen
 34464	Freyburg
 34465	Bad Bibra
 34466	Janisroda
 34467	Eckartsberga
 3447	Altenburg
 3448	Meuselwitz
-34491	Schmölln
+34491	SchmÃ¶lln
 34492	Lucka
-34493	Gößnitz
+34493	GÃ¶ÃŸnitz
 34494	Ehrenhain
 34495	Dobitschen
-34496	Nöbdenitz
+34496	NÃ¶bdenitz
 34497	Langenleuba-Niederhain
 34498	Rositz
 345	Halle
@@ -915,21 +915,21 @@
 34602	Landsberg
 34603	Nauendorf
 34604	Niemberg
-34605	Gröbers
+34605	GrÃ¶bers
 34606	Teicha
 34607	Wettin
-34609	Salzmünde
+34609	SalzmÃ¼nde
 3461	Merseburg
-3462	Bad Dürrenberg
-34632	Mücheln
+3462	Bad DÃ¼rrenberg
+34632	MÃ¼cheln
 34633	Braunsbedra
-34635	Bad Lauchstädt
-34636	Schafstädt
+34635	Bad LauchstÃ¤dt
+34636	SchafstÃ¤dt
 34637	Frankleben
-34638	Zöschen
+34638	ZÃ¶schen
 34639	Wallendorf
 3464	Sangerhausen
-34651	Roßla
+34651	RoÃŸla
 34652	Allstedt
 34653	Rottleberode
 34654	Stolberg
@@ -938,13 +938,13 @@
 34659	Blankenheim
 3466	Artern
 34671	Bad Frankenhausen
-34672	Roßleben
+34672	RoÃŸleben
 34673	Heldrungen
-34691	Könnern
+34691	KÃ¶nnern
 34692	Alsleben
 3471	Bernburg
 34721	Nienburg
-34722	Preußlitz
+34722	PreuÃŸlitz
 3473	Aschersleben
 34741	Frose
 34742	Sylda
@@ -956,7 +956,7 @@
 34771	Querfurt
 34772	Helbra
 34773	Schwittersdorf
-34774	Röblingen
+34774	RÃ¶blingen
 34775	Wippra
 34776	Rothenschirmbach
 34779	Abberode
@@ -964,17 +964,17 @@
 34782	Mansfeld
 34783	Gerbstedt
 34785	Sandersleben
-34901	Roßlau
+34901	RoÃŸlau
 34903	Coswig
 34904	Oranienbaum
-34905	Wörlitz
+34905	WÃ¶rlitz
 34906	Raguhn
 34907	Jeber-Bergfrieden
 34909	Aken
 3491	Lutherstadt Wittenberg
-34920	Kropstädt
+34920	KropstÃ¤dt
 34921	Kemberg
-34922	Mühlanger
+34922	MÃ¼hlanger
 34923	Cobbelsdorf
 34924	Zahna
 34925	Bad Schmiedeberg
@@ -984,40 +984,40 @@
 34929	Straach
 3493	Bitterfeld
 3494	Wolfen
-34953	Gräfenhainichen
+34953	GrÃ¤fenhainichen
 34954	Roitzsch
 34955	Gossa
-34956	Zörbig
-3496	Köthen
+34956	ZÃ¶rbig
+3496	KÃ¶then
 34973	Osternienburg
-34975	Görzig
-34976	Gröbzig
+34975	GÃ¶rzig
+34976	GrÃ¶bzig
 34977	Quellendorf
 34978	Radegast
 34979	Wulfen
 3501	Pirna
 35020	Struppen
-35021	Königstein
+35021	KÃ¶nigstein
 35022	Bad Schandau
 35023	Bad Gottleuba
 35024	Stadt Wehlen
 35025	Liebstadt
-35026	Dürrröhrsdorf-Dittersbach
+35026	DÃ¼rrrÃ¶hrsdorf-Dittersbach
 35027	Weesenstein
 35028	Krippen
 35032	Langenhennersdorf
 35033	Rosenthal
 3504	Dippoldiswalde
 35052	Kripsdorf
-35053	Glashütte
+35053	GlashÃ¼tte
 35054	Glising-Lauenstein
-35055	Höckendorf
+35055	HÃ¶ckendorf
 35056	Altenberg
 35057	Hermsdorf
 35058	Pretzschendorf
 351	Dresden
 35200	Arnsdorf
-35201	Langenbrück
+35201	LangenbrÃ¼ck
 35202	Klingenberg
 35203	Tharandt
 35204	Wilsdruff
@@ -1026,25 +1026,25 @@
 35207	Moritzburg
 35208	Radeburg
 35209	Mohorn
-3521	Meißen
-3522	Großenhain
+3521	MeiÃŸen
+3522	GroÃŸenhain
 3523	Coswig b. Dresden
 35240	Tauscha
 35241	Lommatzsch
 35242	Nossen
-35243	Weinböhla
-35244	Krögis
+35243	WeinbÃ¶hla
+35244	KrÃ¶gis
 35245	Burkhardswalde-Munzig
 35246	Ziegenhain
 35247	Zehren
-35248	Schönfeld
-35249	Baßlitz
+35248	SchÃ¶nfeld
+35249	BaÃŸlitz
 3525	Riesa
-35263	Gröditz
+35263	GrÃ¶ditz
 35264	Strehla
 35265	Glaubitz
 35266	Heyda
-35267	Diesbar-Seußlitz
+35267	Diesbar-SeuÃŸlitz
 35268	Stauchitz
 3528	Radeberg
 3529	Heidenau
@@ -1052,17 +1052,17 @@
 35322	Doberlug-Kirchhain
 35323	Sonnewalde
 35324	Crinitz
-35325	Rückersdorf
-35326	Schönborn
-35327	Prießen
+35325	RÃ¼ckersdorf
+35326	SchÃ¶nborn
+35327	PrieÃŸen
 35329	Dollenchen
 3533	Elsterwerda
 35341	Bad Liebenwerda
-35342	Mühlberg
+35342	MÃ¼hlberg
 35343	Hirschfeld
 3535	Herzberg
 35361	Schlieben
-35362	Schönewalde
+35362	SchÃ¶newalde
 35363	Fermerswalde
 35364	Lebusa
 35365	Falkenberg
@@ -1072,49 +1072,49 @@
 35385	Annaburg
 35386	Prettin
 35387	Seyda
-35388	Klöden
+35388	KlÃ¶den
 35389	Holzdorf
 3541	Calau
-3542	Lübbenau
+3542	LÃ¼bbenau
 35433	Vetschau
-35434	Altdöbern
+35434	AltdÃ¶bern
 35435	Gollmitz
 35436	Laasow
 35439	Zinnitz
 3544	Luckau
 35451	Dahme
-35452	Golßen
+35452	GolÃŸen
 35453	Drahnsdorf
 35454	Uckro
 35455	Walddrehna
 35456	Terpt
-3546	Lübben
+3546	LÃ¼bben
 35471	Birkenhainchen
 35472	Schlepzig
-35473	Neu Lübbenau
-35474	Schönwalde
+35473	Neu LÃ¼bbenau
+35474	SchÃ¶nwalde
 35475	Straupitz
-35476	Wittmannsdorf-Bückchen
+35476	Wittmannsdorf-BÃ¼ckchen
 35477	Rietzneuendorf-Friedrichshof
 35478	Goyatz-Guhlen
 355	Cottbus
-35600	Döbern
+35600	DÃ¶bern
 35601	Peitz
 35602	Drebkau
 35603	Burg
 35604	Krieschow
 35605	Komptendorf
 35606	Briesen
-35607	Jänschwalde
-35608	Groß Oßnig
+35607	JÃ¤nschwalde
+35608	GroÃŸ OÃŸnig
 35609	Drachhausen
 3561	Guben
 3562	Forst
 3563	Spremberg
 3564	Schwarze Pumpe
-35691	Bärenklau
+35691	BÃ¤renklau
 35692	Kerkwitz
-35693	Lauschütz
+35693	LauschÃ¼tz
 35694	Gosda
 35695	Simmersdorf
 35696	Briesnig
@@ -1125,117 +1125,117 @@
 35723	Bernsdorf
 35724	Lohsa
 35725	Wittichau
-35726	Groß Särchen
+35726	GroÃŸ SÃ¤rchen
 35727	Burghammer
 35728	Uhyst
 3573	Senftenberg
 3574	Lauchhammer
 35751	Welzow
 35752	Ruhland
-35753	Großräschen
+35753	GroÃŸrÃ¤schen
 35754	Klettwitz
 35755	Ortrand
 35756	Hosena
-3576	Weißwasser
+3576	WeiÃŸwasser
 35771	Bad Muskau
 35772	Rietschen
 35773	Schleife
 35774	Boxberg
 35775	Pechern
 3578	Kamenz
-35792	Oßling
+35792	OÃŸling
 35793	Elstra
-35795	Königsbrück
+35795	KÃ¶nigsbrÃ¼ck
 35796	Panschwitz-Kuckau
 35797	Schwepnitz
-3581	Görlitz
+3581	GÃ¶rlitz
 35820	Zodel
 35822	Hagenwerder
 35823	Ostritz
 35825	Kodersdorf
-35826	Königshain
+35826	KÃ¶nigshain
 35827	Nieder-Seifersdorf
 35828	Reichenbach
 35829	Gersdorf
 3583	Zittau
-35841	Großschönau
+35841	GroÃŸschÃ¶nau
 35842	Niederoderwitz
 35843	Hirschfelde
 35844	Oybin
-3585	Löbau
+3585	LÃ¶bau
 3586	Neugersdorf
 35872	Neusalza-Spremberg
 35873	Herrnhut
 35874	Bernstadt
 35875	Obercunnersdorf
-35876	Weißenberg
+35876	WeiÃŸenberg
 35877	Cunewalde
 3588	Niesky
 35891	Rothenburg
 35892	Horka
-35893	Mücka
-35894	Hähnichen
+35893	MÃ¼cka
+35894	HÃ¤hnichen
 35895	Klitten
 3591	Bautzen
 3592	Kirschau
 35930	Seitschen
-35931	Königswartha
+35931	KÃ¶nigswartha
 35932	Guttau
 35933	Neschwitz
-35934	Großdubrau
+35934	GroÃŸdubrau
 35935	Kleinwelka
 35936	Sohland
 35937	Prischwitz
-35938	Großpostwitz
+35938	GroÃŸpostwitz
 35939	Hochkirch
 3594	Bischofswerda
 35951	Neukirch
-35952	Großröhrsdorf
+35952	GroÃŸrÃ¶hrsdorf
 35953	Burkau
-35954	Großharthau
+35954	GroÃŸharthau
 35955	Pulsnitz
 3596	Neustadt i Sa
 35971	Sebnitz
 35973	Stolpen
 35974	Hinterhermsdorf
 35975	Hohnstein
-3601	Mühlhausen
+3601	MÃ¼hlhausen
 36020	Ebeleben
 36021	Schlotheim
-36022	Großengottern
+36022	GroÃŸengottern
 36023	Horsmar
 36024	Diedorf
-36025	Körner
+36025	KÃ¶rner
 36026	Struth
 36027	Lengenfeld Unterm Stein
 36028	Kammerforst
 36029	Menteroda
 3603	Bad Langensalza
 36041	Bad Tennstedt
-36042	Gräfentonna
+36042	GrÃ¤fentonna
 36043	Kirchheilingen
 3605	Leinefelde
 3606	Heiligenstadt
 36071	Teistungen
-36072	Weißenborn-Lüderode
+36072	WeiÃŸenborn-LÃ¼derode
 36074	Worbis
-36075	Dingelstädt(Eichsfeld)
+36075	DingelstÃ¤dt(Eichsfeld)
 36076	Niederorschel
-36077	Großbodungen
+36077	GroÃŸbodungen
 36081	Arenshausen
 36082	Ershausen
 36083	Uder
 36084	Heuthen
 36085	Reinholterode
-36087	Wüstheuterode
+36087	WÃ¼stheuterode
 361	Erfurt
 36200	Elxleben
 36201	Walschleben
 36202	Neudietendorf
 36203	Vieselbach
 36204	Stotternheim
-36205	Gräfenroda
-36206	Großfahner
+36205	GrÃ¤fenroda
+36206	GroÃŸfahner
 36207	Plaue
 36208	Ermstedt
 36209	Klettbach
@@ -1244,7 +1244,7 @@
 3623	Friedrichroda
 3624	Ohrdruf
 36252	Tambach-Dietharz
-36253	Georgenthal(Thür)
+36253	Georgenthal(ThÃ¼r)
 36254	Friedrichswerth
 36255	Goldbach
 36256	Wechmar
@@ -1255,33 +1255,33 @@
 3629	Stadtilm
 3631	Nordhausen
 3632	Sondershausen
-36330	Großberndten
+36330	GroÃŸberndten
 36331	Ilfeld
 36332	Ellrich
 36333	Heringen
 36334	Wolkramshausen
-36335	Großwechsungen
+36335	GroÃŸwechsungen
 36336	Klettenberg
 36337	Schiedungen
 36338	Bleicherode
-3634	Sömmerda
-3635	Kölleda
-3636	Greußen
-36370	Großenehrich
-36371	Schloßvippach
+3634	SÃ¶mmerda
+3635	KÃ¶lleda
+3636	GreuÃŸen
+36370	GroÃŸenehrich
+36371	SchloÃŸvippach
 36372	Kleinneuhausen
-36373	Buttstädt
-36374	Weißensee
-36375	Kindelbrück
-36376	Straußfurt
+36373	ButtstÃ¤dt
+36374	WeiÃŸensee
+36375	KindelbrÃ¼ck
+36376	StrauÃŸfurt
 36377	Rastenberg
 36378	Ostramondra
 36379	Holzengel
 3641	Jena
 36421	Camburg
-36422	Reinstädt
-36423	Orlamünde
-36424	Kahla(Thür)
+36422	ReinstÃ¤dt
+36423	OrlamÃ¼nde
+36424	Kahla(ThÃ¼r)
 36425	Isserstedt
 36426	Ottendorf
 36427	Dornburg(Saale)
@@ -1294,26 +1294,26 @@
 36453	Mellingen
 36454	Magdala
 36458	Bad Berka
-36459	Blankenhain(Thür)
+36459	Blankenhain(ThÃ¼r)
 36461	Bad Sulza
-36462	Oßmannstedt
+36462	OÃŸmannstedt
 36463	Gebstedt
 36464	Wormstedt
 36465	Oberndorf
-3647	Pößneck
+3647	PÃ¶ÃŸneck
 36481	Neustadt(Orla)
 36482	Triptis
-36483	Ziegenrück
+36483	ZiegenrÃ¼ck
 36484	Knau
 365	Gera
-36601	Hermsdorf(Thür)
+36601	Hermsdorf(ThÃ¼r)
 36602	Ronneburg
 36603	Weida
-36604	Münchenbernsdorf
-36605	Bad Köstritz
+36604	MÃ¼nchenbernsdorf
+36605	Bad KÃ¶stritz
 36606	Kraftsdorf
-36607	Niederpöllnitz
-36608	Seelingstädt
+36607	NiederpÃ¶llnitz
+36608	SeelingstÃ¤dt
 3661	Greiz
 36621	Elsterberg
 36622	Triebes
@@ -1327,58 +1327,58 @@
 36642	Harra
 36643	Thimmendorf
 36644	Hirschberg(Saale)
-36645	Mühltroff
+36645	MÃ¼hltroff
 36646	Tanna
 36647	Saalburg
 36648	Dittersdorf
 36649	Gefell
 36651	Lobenstein
 36652	Wurzbach
-36653	Lehesten(Thüringerw)
+36653	Lehesten(ThÃ¼ringerw)
 36691	Eisenberg
-36692	Bürgel
+36692	BÃ¼rgel
 36693	Crossen(Elster)
-36694	Schkölen
-36695	Pölzig
+36694	SchkÃ¶len
+36695	PÃ¶lzig
 36701	Lichte
 36702	Lauscha
-36703	Gräfenthal
+36703	GrÃ¤fenthal
 36704	Steinheid
-36705	Oberweißbach
+36705	OberweiÃŸbach
 3671	Saalfeld(Saale)
 3672	Rudolstadt
 36730	Sitzendorf
 36731	Unterloquitz
-36732	Könitz
+36732	KÃ¶nitz
 36733	Kaulsdorf
 36734	Leutenberg
 36735	Probstzella
 36736	Arnsgereuth
 36737	Drognitz
-36738	Königsee
+36738	KÃ¶nigsee
 36739	Rottenbach
 36741	Bad Blankenburg
-36742	Uhlstädt
+36742	UhlstÃ¤dt
 36743	Teichel
 36744	Remda
-3675	Sonneberg(Thür)
+3675	Sonneberg(ThÃ¼r)
 36761	Heubisch
 36762	Steinach
 36764	Neuhaus-Schierschnitz
 36766	Schalkau
 3677	Ilmenau
-36781	Großbreitenbach
+36781	GroÃŸbreitenbach
 36782	Schmiedefeld
-36783	Gehren(Thür)
-36784	Stützerbach
-36785	Gräfinau-Angstedt
+36783	Gehren(ThÃ¼r)
+36784	StÃ¼tzerbach
+36785	GrÃ¤finau-Angstedt
 3679	Neuhaus a Rennweg
 3681	Suhl
 3682	Zella-Mehlis
 3683	Schmalkalden
 36840	Trusetal
 36841	Schleusingen
-36842	Oberhof(Thür)
+36842	Oberhof(ThÃ¼r)
 36843	Benshausen
 36844	Rohr
 36845	Gehlberg
@@ -1391,11 +1391,11 @@
 36870	Masserberg
 36871	Heldburg
 36873	Themar
-36874	Schönbrunn
+36874	SchÃ¶nbrunn
 36875	Streufdorf
 36878	Brattendorf
 3691	Eisenach
-36920	Großenlupnitz
+36920	GroÃŸenlupnitz
 36921	Wutha
 36922	Gerstungen
 36923	Treffurt
@@ -1412,22 +1412,22 @@
 36944	Rentwertshausen
 36945	Henneberg
 36946	Reichenhausen
-36947	Jüchsen
-36948	Römhild
-36949	Obermaßfeld
+36947	JÃ¼chsen
+36948	RÃ¶mhild
+36949	ObermaÃŸfeld
 3695	Bad Salzungen
 36961	Bad Liebenstein
 36962	Vacha
-36963	Dorndorf(Rhön)
+36963	Dorndorf(RhÃ¶n)
 36964	Dermbach
 36965	Stadtlengsfeld
 36966	Kaltennordheim
 36967	Geisa
-36968	Roßdorf
+36968	RoÃŸdorf
 36969	Merkers
 371	Chemnitz
 37200	Wittgensdorf
-37202	Claußnitz
+37202	ClauÃŸnitz
 37203	Gersdorf
 37204	Lichtenstein
 37206	Frankenberg
@@ -1437,14 +1437,14 @@
 3721	Meinersdorf
 3722	Limbach-Oberfrohna
 3723	Hohenstein-Ernstthal
-3724	Burgstädt
+3724	BurgstÃ¤dt
 3725	Zschopau
-3726	Flöha
+3726	FlÃ¶ha
 3727	Mittweida
 37291	Augustusburg
 37292	Oederan
 37293	Eppendorf in Sachsen
-37294	Grünhainichen
+37294	GrÃ¼nhainichen
 37295	Lugau
 37296	Stollberg
 37297	Thum
@@ -1457,26 +1457,26 @@
 37324	Reinsberg
 37325	Niederbobritzsch
 37326	Frauenstein
-37327	Rechenberg-Bienenmühle
-37328	Großschirma
-37329	Großhartmannsdorf
+37327	Rechenberg-BienenmÃ¼hle
+37328	GroÃŸschirma
+37329	GroÃŸhartmannsdorf
 3733	Annaberg-Buchholz
 37341	Ehrenfriedersdorf
 37342	Cranzahl
-37343	Jöhstadt
+37343	JÃ¶hstadt
 37344	Crottendorf
 37346	Geyer
-37347	Bärenstein
+37347	BÃ¤renstein
 37348	Oberwiesenthal
 37349	Scheibenberg
 3735	Marienberg
 37360	Olbernhau
 37361	Neuhausen
 37362	Seiffen
-37363	Zöblitz
+37363	ZÃ¶blitz
 37364	Reitzenhain
 37365	Sayda
-37366	Rübenau
+37366	RÃ¼benau
 37367	Lengefeld
 37368	Deutschneudorf
 37369	Wolkenstein
@@ -1492,7 +1492,7 @@
 37430	Eichigt
 37431	Mehltheuer
 37432	Pausa
-37433	Gutenfürst
+37433	GutenfÃ¼rst
 37434	Bobenkirchen
 37435	Reuth
 37436	Weischlitz
@@ -1503,13 +1503,13 @@
 3745	Falkenstein Vogtl
 37462	Rothenkirchen
 37463	Bergen Vogtl
-37464	Schöneck
+37464	SchÃ¶neck
 37465	Tannenbergsthal
 37467	Klingenthal
 37468	Treuen
 375	Zwickau
 37600	Neumark
-37601	Mülsen
+37601	MÃ¼lsen
 37602	Kirchberg Sachs
 37603	Wildenfels
 37604	Mosel
@@ -1528,18 +1528,18 @@
 3773	Johanngeorgenstadt
 3774	Schwarzenberg
 37752	Eibenstock
-37754	Zwönitz
-37755	Schönheide
+37754	ZwÃ¶nitz
+37755	SchÃ¶nheide
 37756	Breitenbrunn
-37757	Rittersgrün
+37757	RittersgrÃ¼n
 381	Rostock
 38201	Gelbensande
 38202	Volkenshagen
 38203	Bad Doberan
 38204	Broderstorf
 38205	Tessin
-38206	Graal-Müritz
-38207	Stäbelow
+38206	Graal-MÃ¼ritz
+38207	StÃ¤below
 38208	Kavelstorf
 38209	Sanitz
 3821	Ribnitz-Damgarten
@@ -1550,15 +1550,15 @@
 38224	Gresenhorst
 38225	Trinwillershagen
 38226	Dierhagen
-38227	Lüdershagen
-38228	Dettmannsdorf-Kölzow
-38229	Bad Sülze
+38227	LÃ¼dershagen
+38228	Dettmannsdorf-KÃ¶lzow
+38229	Bad SÃ¼lze
 38231	Barth
 38232	Zingst
 38233	Prerow
 38234	Born
-38292	Kröpelin
-38293	Kühlungsborn
+38292	KrÃ¶pelin
+38293	KÃ¼hlungsborn
 38294	Neubukow
 38295	Satow
 38296	Rerik
@@ -1571,7 +1571,7 @@
 38305	Gingst
 38306	Samtens
 38307	Poseritz
-38308	Göhren
+38308	GÃ¶hren
 38309	Trent
 3831	Stralsund
 38320	Tribsees
@@ -1584,18 +1584,18 @@
 38327	Elmenhorst
 38328	Miltzow
 38331	Rakow
-38332	Groß Bisdorf
+38332	GroÃŸ Bisdorf
 38333	Horst
 38334	Grammendorf
 3834	Greifswald
 38351	Mesekenhagen
 38352	Kemnitz
-38353	Gützkow
+38353	GÃ¼tzkow
 38354	Wusterhusen
-38355	Züssow
+38355	ZÃ¼ssow
 38356	Behrenhoff
 3836	Wolgast
-38370	Kröslin
+38370	KrÃ¶slin
 38371	Karlshagen
 38372	Usedom
 38373	Katzow
@@ -1605,7 +1605,7 @@
 38377	Zinnowitz
 38378	Heringsdorf
 38379	Benz Usedom
-3838	Bergen a Rügen
+3838	Bergen a RÃ¼gen
 38391	Altenirchen
 38392	Sassnitz
 38393	Binz
@@ -1630,17 +1630,17 @@
 38457	Krakow
 38458	Zehna
 38459	Laage
-38461	Bützow
+38461	BÃ¼tzow
 38462	Baumgarten
 38464	Bernitt
-38466	Jürgenshagen
+38466	JÃ¼rgenshagen
 3847	Sternberg
 38481	Witzin
 38482	Warin
-38483	Brüel
+38483	BrÃ¼el
 38484	Ventschow
 38485	Dabel
-38486	Gustävel
+38486	GustÃ¤vel
 38488	Demen
 385	Schwerin (Meckl.)
 3860	Raben Steinfeld
@@ -1657,28 +1657,28 @@
 38722	Raduhn
 38723	Kladrum
 38724	Siggelkow
-38725	Groß Godems
+38725	GroÃŸ Godems
 38726	Spornitz
 38727	Mestlin
-38728	Domsühl
+38728	DomsÃ¼hl
 38729	Marnitz
-38731	Lübz
+38731	LÃ¼bz
 38732	Gallin
-38733	Karbow-Vietlübbe
+38733	Karbow-VietlÃ¼bbe
 38735	Plau
 38736	Goldberg
 38737	Ganzlin
 38738	Karow
 3874	Ludwigslust
-38750	Malliß
+38750	MalliÃŸ
 38751	Picher
 38752	Zierzow
-38753	Wöbbelin
+38753	WÃ¶bbelin
 38754	Leussow
 38755	Eldena
 38756	Grabow
 38757	Neustadt-Glewe
-38758	Dömitz
+38758	DÃ¶mitz
 38759	Tewswoos
 3876	Perleberg
 3877	Wittenberge
@@ -1688,53 +1688,53 @@
 38783	Dallmin
 38784	Kleinow
 38785	Berge
-38787	Glöwen
-38788	Groß Warnow
+38787	GlÃ¶wen
+38788	GroÃŸ Warnow
 38789	Wolfshagen
 38791	Bad Wilsnack
 38792	Lenzen
 38793	Dergenthin
 38794	Cumlosen
 38796	Viesecke
-38797	Karstädt
+38797	KarstÃ¤dt
 3881	Grevesmuehlen
-38821	Lüdersdorf
+38821	LÃ¼dersdorf
 38822	Diedrichshagen
 38823	Selmsdorf
 38824	Mallentin
-38825	Klütz
+38825	KlÃ¼tz
 38826	Dassow
 38827	Kalkhorst
-38828	Schönberg
+38828	SchÃ¶nberg
 3883	Hagenow
 38841	Neuhaus (Elbe)
-38842	Lüttenmark
+38842	LÃ¼ttenmark
 38843	Bennin
-38844	Gülze
+38844	GÃ¼lze
 38845	Kaarssen
 38847	Boizenburg
 38848	Vellahn
 38850	Gammelin
 38851	Zarrentin
 38852	Wittenburg
-38853	Drönnewitz
+38853	DrÃ¶nnewitz
 38854	Redefin
-38855	Lübtheen
+38855	LÃ¼btheen
 38856	Pritzier
 38858	Lassahn
 38859	Alt Zachun
 3886	Gadebusch
-38871	Mühlen Eichsen
+38871	MÃ¼hlen Eichsen
 38872	Rehna
 38873	Carlow
-38874	Lützow
+38874	LÃ¼tzow
 38875	Schlagsdorf
 38876	Roggendorf
 39000	Beetzendorf
 39001	Apenburg
 39002	Oebisfelde
-39003	Jübar
-39004	Köckte
+39003	JÃ¼bar
+39004	KÃ¶ckte
 39005	Kusey
 39006	Miesterhorst
 39007	Tangeln
@@ -1743,7 +1743,7 @@
 3901	Salzwedel
 3902	Diesdorf
 39030	Burnau
-39031	Dähre
+39031	DÃ¤hre
 39032	Mahlsdorf
 39033	Wallstawe
 39034	Fleetmark
@@ -1754,14 +1754,14 @@
 39039	Bonese
 3904	Haldersleben
 39050	Bartensleben
-39051	Calvörde
+39051	CalvÃ¶rde
 39052	Erxleben
-39053	Süplingen
+39053	SÃ¼plingen
 39054	Flechtingen
-39055	Hörsingen
-39056	Klüden
-39057	Rätzlingen
-39058	Uthmöden
+39055	HÃ¶rsingen
+39056	KlÃ¼den
+39057	RÃ¤tzlingen
+39058	UthmÃ¶den
 39059	Wegenstedt
 39061	Weferlingen
 39062	Bebertal
@@ -1769,18 +1769,18 @@
 39080	Kalbe Milde
 39081	Kekerbeck
 39082	Mieste
-39083	Meßdorf
+39083	MeÃŸdorf
 39084	Lindstedt
 39085	Zichtau
-39086	Jävenitz
+39086	JÃ¤venitz
 39087	Jerchel
 39088	Letzlingen
 39089	Bismark
-3909	Klötze
+3909	KlÃ¶tze
 391	Magdeburg
 39200	Gommern
 39201	Wolmirstedt
-39202	Groß Ammensleben
+39202	GroÃŸ Ammensleben
 39203	Barleben
 39204	Niederndodeleben
 39205	Langenweddingen
@@ -1789,34 +1789,34 @@
 39208	Loitsche
 39209	Wanzleben
 3921	Burg
-39221	Möckern
-39222	Möser
-39223	Theeßen
-39224	Büden
+39221	MÃ¶ckern
+39222	MÃ¶ser
+39223	TheeÃŸen
+39224	BÃ¼den
 39225	Altengrabow
 39226	Hohenziatz
 3923	Zerbst
 39241	Leitzkau
-39242	Prödel
+39242	PrÃ¶del
 39243	Nedlitz
 39244	Steutz
 39245	Loburg
 39246	Lindau
-39247	Güterglück
+39247	GÃ¼terglÃ¼ck
 39248	Dobritz
-3925	Staßfurt
-39262	Güsten
+3925	StaÃŸfurt
+39262	GÃ¼sten
 39263	Unseburg
 39264	Kroppenstedt
-39265	Löderburg
-39266	Förderstedt
+39265	LÃ¶derburg
+39266	FÃ¶rderstedt
 39267	Schneidlingen
 39268	Egeln
-3928	Schönebeck
+3928	SchÃ¶nebeck
 39291	Calbe
 39292	Biederitz
 39293	Dreileben
-39294	Groß Rosenburg
+39294	GroÃŸ Rosenburg
 39295	Zuchau
 39296	Welsleben
 39297	Eickendorf
@@ -1824,25 +1824,25 @@
 3931	Stendal
 39320	Schinne
 39321	Arneburg
-39322	Tangermünde
-39323	Schönhausen
-39324	Kläden
+39322	TangermÃ¼nde
+39323	SchÃ¶nhausen
+39324	KlÃ¤den
 39325	Vinzelberg
 39327	Klietz
 39328	Rochau
-39329	Möringen
+39329	MÃ¶ringen
 3933	Genthin
 39341	Redekin
 39342	Gladau
 39343	Jerichow
-39344	Güsen
+39344	GÃ¼sen
 39345	Parchen
 39346	Tucheim
 39347	Kade
 39348	Klitsche
 39349	Parey
-3935	Tangerhütte
-39361	Lüderitz
+3935	TangerhÃ¼tte
+39361	LÃ¼deritz
 39362	Grieben
 39363	Angern
 39364	Dolle
@@ -1857,21 +1857,21 @@
 39388	Goldbeck
 39389	Schollene
 39390	Iden
-39391	Lückstedt
-39392	Rönnebeck
+39391	LÃ¼ckstedt
+39392	RÃ¶nnebeck
 39393	Werben
 39394	Hohenberg-Krusemark
 39395	Wanzer
 39396	Neukirchen
 39397	Geestgottberg
-39398	Groß Garz
+39398	GroÃŸ Garz
 39399	Kleinau
 39400	Wefensleben
 39401	Neuwegersleben
-39402	Völpke
-39403	Gröningen
+39402	VÃ¶lpke
+39403	GrÃ¶ningen
 39404	Ausleben
-39405	Hötensleben
+39405	HÃ¶tensleben
 39406	Harbke
 39407	Seehausen
 39408	Hadmersleben
@@ -1883,7 +1883,7 @@
 39424	Schwanebeck
 39425	Dingelstedt
 39426	Hessen
-39427	Ströbeck
+39427	StrÃ¶beck
 39428	Pabstorf
 3943	Wernigerode
 3944	Blankenburg
@@ -1904,8 +1904,8 @@
 39484	Harzgerode
 39485	Gernrode
 39487	Friedrichsbrunn
-39488	Güntersberge
-39489	Straßberg
+39488	GÃ¼ntersberge
+39489	StraÃŸberg
 3949	Oschersleben
 395	Neubrandenburg
 39600	Zwiedorf
@@ -1913,7 +1913,7 @@
 39602	Kleeth
 39603	Burg Stargard
 39604	Wildberg
-39605	Groß Nemerow
+39605	GroÃŸ Nemerow
 39606	Glienke
 39607	Kotelow
 39608	Staven
@@ -1922,38 +1922,38 @@
 3963	Woldegk
 3964	Bredenfelde
 3965	Burow
-3966	Cölpin
+3966	CÃ¶lpin
 3967	Oertzenhof
-3968	Schönbeck
+3968	SchÃ¶nbeck
 3969	Siedenbollentin
 3971	Anklam
 39721	Liepen
 39722	Sarnow
 39723	Krien
-39724	Klein Bünzow
+39724	Klein BÃ¼nzow
 39726	Ducherow
 39727	Spantekow
 39728	Medow
 3973	Pasewalk
 39740	Nechlin
 39741	Jatznick
-39742	Brüssow
+39742	BrÃ¼ssow
 39743	Zerrenthin
 39744	Rothenklempenow
 39745	Hetzdorf
 39746	Krackow
-39747	Züsedom
+39747	ZÃ¼sedom
 39748	Viereck
 39749	Grambow
 39751	Penkun
 39752	Blumenhagen
 39753	Strasburg
-39754	Löcknitz
+39754	LÃ¶cknitz
 3976	Torgelow
-39771	Ueckermünde
-39772	Rothemühl
+39771	UeckermÃ¼nde
+39772	RothemÃ¼hl
 39773	Altwarp
-39774	Mönkebude
+39774	MÃ¶nkebude
 39775	Ahlbeck b Torgelow
 39776	Hintersee
 39777	Borkenfriede
@@ -1969,28 +1969,28 @@
 39826	Blankensee
 39827	Schwarz
 39828	Wustrow
-39829	Blankenförde
+39829	BlankenfÃ¶rde
 39831	Feldberg Meckl
 39832	Wesenberg
 39833	Mirow
 3984	Prenzlau
-39851	Göritz
-39852	Schönermark
+39851	GÃ¶ritz
+39852	SchÃ¶nermark
 39853	Holzendorf
 39854	Kleptow
 39855	Parmen-Weggun
 39856	Beenz
 39857	Drense
 39858	Bietikow
-39859	Fürstenwerder
+39859	FÃ¼rstenwerder
 39861	Gramzow
-39862	Schmölln
+39862	SchmÃ¶lln
 39863	Seehausen
 3987	Templin
 39881	Ringenwalde
 39882	Gollin
-39883	Groß Dölln
-39884	Haßleben
+39883	GroÃŸ DÃ¶lln
+39884	HaÃŸleben
 39885	Jakobshagen
 39886	Milmersdorf
 39887	Gerswalde
@@ -2002,20 +2002,20 @@
 39923	Priborn
 39924	Stuer
 39925	Wredenhagen
-39926	Grabowhöfe
-39927	Nossentiner Hütte
-39928	Möllenhagen
+39926	GrabowhÃ¶fe
+39927	Nossentiner HÃ¼tte
+39928	MÃ¶llenhagen
 39929	Jabel
-39931	Röbel
+39931	RÃ¶bel
 39932	Malchow
 39933	Vollrathsruhe
-39934	Groß Plasten
+39934	GroÃŸ Plasten
 3994	Malchin
 39951	Faulenrost
 39952	Grammentin
 39953	Schwinkendorf
 39954	Stavenhagen
-39955	Jürgenstorf
+39955	JÃ¼rgenstorf
 39956	Neukalen
 39957	Gielow
 39959	Dargun
@@ -2023,17 +2023,17 @@
 39971	Gnoien
 39972	Walkendorf
 39973	Altkalen
-39975	Thürkow
-39976	Groß Bützin
-39977	Jördensdorf
-39978	Groß Roge
+39975	ThÃ¼rkow
+39976	GroÃŸ BÃ¼tzin
+39977	JÃ¶rdensdorf
+39978	GroÃŸ Roge
 3998	Demmin
 39991	Daberkow
-39992	Görmin
+39992	GÃ¶rmin
 39993	Hohenmocker
 39994	Metschow
 39995	Nossendorf
-39996	Törpin
+39996	TÃ¶rpin
 39997	Jarmen
 39998	Loitz
 39999	Tutow
@@ -2041,7 +2041,7 @@
 4101	Pinneberg
 4102	Ahrensburg
 4103	Wedel
-4104	Aumühle
+4104	AumÃ¼hle
 4105	Seevetal
 4106	Quickborn
 4107	Slek
@@ -2051,13 +2051,13 @@
 4121	Elmshorn
 4122	Uetersen
 4123	Barmstedt
-4124	Glückstadt
-4125	Seestermühe
+4124	GlÃ¼ckstadt
+4125	SeestermÃ¼he
 4126	Horst
 4127	Westerhorn
 4128	Kollmar
 4129	Haseldorf
-4131	Lüneburg
+4131	LÃ¼neburg
 4132	Amelinghausen
 4133	Wittorf
 4134	Embsen
@@ -2071,14 +2071,14 @@
 4142	Steinkirchen
 4143	Drochtersen
 4144	Himmelpforten
-4146	Stade-Bützfleth
+4146	Stade-BÃ¼tzfleth
 4148	Drochtersen-Assel
 4149	Fredenbeck
 4151	Schwarzenbek
 4152	Geesthacht
 4153	Lauenburg
 4154	Trittau
-4155	Büchen
+4155	BÃ¼chen
 4156	Talkau
 4158	Roseburg
 4159	Basthorst
@@ -2099,8 +2099,8 @@
 4176	Marschacht
 4177	Drage
 4178	Radbruch
-4179	Winsen-Tönnhausen
-4180	Königsmoor
+4179	Winsen-TÃ¶nnhausen
+4180	KÃ¶nigsmoor
 4181	Buchholz
 4182	Tostedt
 4183	Jesteburg
@@ -2113,7 +2113,7 @@
 4191	Kaltenkirchen
 4192	Bad Bramstedt
 4193	Henstedt-Ulzburg
-4194	Sievershütten
+4194	SievershÃ¼tten
 4195	Hartenholm
 4202	Achim
 4203	Weyhe
@@ -2127,17 +2127,17 @@
 4221	Delmenhorst
 4222	Ganderkesee
 4223	Ganderkesee-Bookholzberg
-4224	Groß-Ippener
+4224	GroÃŸ-Ippener
 4230	Verden-Walle
 4231	Verden
 4232	Langwedel
 4233	Blender
-4234	Dörverden
+4234	DÃ¶rverden
 4235	Langwedel-Etelsen
 4236	Kirchlinteln
 4237	Bendingborstel
 4238	Neddenaverbergen
-4239	Dörverden-Westen
+4239	DÃ¶rverden-Westen
 4240	Syke-Heiligenfelde
 4241	Bassum
 4242	Syke
@@ -2156,15 +2156,15 @@
 4256	Hilgermissen
 4257	Schweringen
 4258	Schwarme
-4260	Visselhövede-Wittorf
-4261	Rotenburg/Wümme
-4262	Visselhövede
-4263	Scheeßel
+4260	VisselhÃ¶vede-Wittorf
+4261	Rotenburg/WÃ¼mme
+4262	VisselhÃ¶vede
+4263	ScheeÃŸel
 4264	Sottrum
 4265	Fintel
 4266	Brockel
-4267	Lauenbrück
-4268	Bötersen
+4267	LauenbrÃ¼ck
+4268	BÃ¶tersen
 4269	Ahausen-Kirchwalsede
 4271	Sulingen
 4272	Siedenburg
@@ -2172,7 +2172,7 @@
 4274	Varrel
 4275	Ehrenburg
 4276	Borstel
-4277	Schwanförden
+4277	SchwanfÃ¶rden
 4281	Zeven
 4282	Sittensen
 4283	Tarmstedt
@@ -2195,13 +2195,13 @@
 4307	Raisdorf
 4308	Schwedeneck
 431	Kiel
-4320	Heidmühlen
-4321	Neumünster
+4320	HeidmÃ¼hlen
+4321	NeumÃ¼nster
 4322	Bordesholm
-4323	Bornhöved
+4323	BornhÃ¶ved
 4324	Brokstedt
 4326	Wankendorf
-4327	Großenaspe
+4327	GroÃŸenaspe
 4328	Rickling
 4329	Langwedel
 4330	Emkendorf
@@ -2217,29 +2217,29 @@
 4340	Achterwehr
 4342	Preetz
 4343	Laboe
-4344	Schönberg
+4344	SchÃ¶nberg
 4346	Gettorf
 4347	Flintbek
-4348	Schönkirchen
-4349	Dänischenhagen
-4351	Eckernförde
+4348	SchÃ¶nkirchen
+4349	DÃ¤nischenhagen
+4351	EckernfÃ¶rde
 4352	Damp
 4353	Ascheffel
 4354	Fleckeby
 4355	Rieseby
-4356	Groß Wittensee
+4356	GroÃŸ Wittensee
 4357	Sehestedt
-4358	Loose bei Eckernförde
+4358	Loose bei EckernfÃ¶rde
 4361	Oldenburg in Holstein
 4362	Heiligenhafen
 4363	Lensahn
 4364	Dahme
 4365	Heringsdorf
-4366	Grömitz-Cismar
-4367	Großenbrode
+4366	GrÃ¶mitz-Cismar
+4367	GroÃŸenbrode
 4371	Burg auf Fehmarn
 4372	Westfehmarn
-4381	Lütjenburg
+4381	LÃ¼tjenburg
 4382	Wangels
 4383	Grebin
 4384	Selent
@@ -2263,23 +2263,23 @@
 4425	Wangerland-Hooksiel
 4426	Wangerland-Hornumersiel
 4431	Wildeshausen
-4432	Dötlingen-Brettorf
-4433	Dötlinen
+4432	DÃ¶tlingen-Brettorf
+4433	DÃ¶tlinen
 4434	Colnrade
-4435	Großenkneten
+4435	GroÃŸenkneten
 4441	Vechta
 4442	Lohne
 4443	Dinklage
 4444	Goldenstedt
 4445	Visbek Kreis Vechta
 4446	Bakum Kreis Vechta
-4447	Vechta-Langförden
+4447	Vechta-LangfÃ¶rden
 4451	Varel Jadebusen
 4452	Zetel-Neuenburg
 4453	Zetel
 4454	Jade
 4455	Jade-Schweiburg
-4456	Varel-Altjührden
+4456	Varel-AltjÃ¼hrden
 4458	Wiefelstede-Spohle
 4461	Jever
 4462	Wittmund
@@ -2298,75 +2298,75 @@
 4477	Lastrup-Hemmelte
 4478	Cappeln
 4479	Molbergen-Peheim
-4480	Ovelgönne-Strückhausen
+4480	OvelgÃ¶nne-StrÃ¼ckhausen
 4481	Hatten-Sandkrug
 4482	Hatten
-4483	Ovelgönne-Großenmeer
-4484	Hude-Wüsting
+4483	OvelgÃ¶nne-GroÃŸenmeer
+4484	Hude-WÃ¼sting
 4485	Elsfeth-Huntorf
 4486	Edewecht-Friedrichsfehn
-4487	Großenkneten-Huntlosen
+4487	GroÃŸenkneten-Huntlosen
 4488	Westerstede
 4489	Apen
 4491	Friesoythe
 4492	Saterland
 4493	Friesoythe-Gehlenberg
-4494	Bösel bei Friesoythe
-4495	Friesoythe-Thüle
+4494	BÃ¶sel bei Friesoythe
+4495	Friesoythe-ThÃ¼le
 4496	Friesoythe-Markhausen
-4497	Barßel-Harkenbrügge
+4497	BarÃŸel-HarkenbrÃ¼gge
 4498	Saterland-Ramsloh
-4499	Barßel
+4499	BarÃŸel
 4501	Kastorf
-4502	Lübeck-Travemünde
+4502	LÃ¼beck-TravemÃ¼nde
 4503	Timmendorfer Strand
 4504	Ratekau
 4505	Stockelsdorf-Curau
 4506	Stockelsdorf-Krumbeck
 4508	Krummesse
-4509	Groß Grönau
-451	Lübeck
+4509	GroÃŸ GrÃ¶nau
+451	LÃ¼beck
 4521	Eutin
-4522	Plön
+4522	PlÃ¶n
 4523	Malente
-4524	Scharbeutz-Pönitz
-4525	Ahrensbök
+4524	Scharbeutz-PÃ¶nitz
+4525	AhrensbÃ¶k
 4526	Ascheberg
 4527	Bosau
-4528	Schönwalde
-4529	Süsel-Bujendorf
+4528	SchÃ¶nwalde
+4529	SÃ¼sel-Bujendorf
 4531	Bad Oldesloe
 4532	Bargteheide
 4533	Reinfeld
 4534	Steinburg
 4535	Nahe
 4536	Steinhorst
-4537	Sülfeld
+4537	SÃ¼lfeld
 4539	Westerau
 4541	Ratzeburg
-4542	Mölln
+4542	MÃ¶lln
 4543	Nusse
 4544	Berkenthin
 4545	Seedorf
 4546	Mustin
 4547	Gudow
-4550	Bühnsdorf
+4550	BÃ¼hnsdorf
 4551	Bad Segeberg
 4552	Leezen
 4553	Geschendorf
 4554	Wahlstedt
 4555	Seedorf b Bad Segeberg
-4556	Ahrensbök-Gnissau
+4556	AhrensbÃ¶k-Gnissau
 4557	Blunk
 4558	Todesfelde
 4559	Wensin
 4561	Neustadt in Holstein
-4562	Grömitz
+4562	GrÃ¶mitz
 4563	Scharbeutz-Haffkrug
 4564	Schashagen
 4602	Freienwill
 4603	Havetoft
-4604	Großenwiehe
+4604	GroÃŸenwiehe
 4605	Medelby
 4606	Wanderup
 4607	Janneby
@@ -2375,43 +2375,43 @@
 461	Flensburg
 4621	Schleswig
 4622	Taarstedt
-4623	Böklund
+4623	BÃ¶klund
 4624	Kropp
-4625	Jübek
+4625	JÃ¼bek
 4626	Treia
-4627	Dörpstedt
+4627	DÃ¶rpstedt
 4630	Barderup
-4631	Glücksburg
+4631	GlÃ¼cksburg
 4632	Steinbergkirche
 4633	Satrup
 4634	Husby
-4635	Sörup
+4635	SÃ¶rup
 4636	Langballig
 4637	Sterup
 4638	Tarp
 4639	Schafflund
-4641	Süderbarup
+4641	SÃ¼derbarup
 4642	Kappeln
 4643	Gelting
 4644	Karby
 4646	Mohrkirch
 4651	Sylt
-4661	Niebüll
+4661	NiebÃ¼ll
 4662	Leck
-4663	Süderlügum
-4664	Neukirchen bei Niebüll
-4665	Emmelsbüll-Horsbüll
+4663	SÃ¼derlÃ¼gum
+4664	Neukirchen bei NiebÃ¼ll
+4665	EmmelsbÃ¼ll-HorsbÃ¼ll
 4666	Ladelund
-4667	Dagebüll
-4668	Klanxbüll
+4667	DagebÃ¼ll
+4668	KlanxbÃ¼ll
 4671	Bredstedt
 4672	Langenhorn
 4673	Joldelund
 4674	Ockholm
-4681	Wyk auf Föhr
+4681	Wyk auf FÃ¶hr
 4682	Amrum
 4683	Oldsum
-4684	Langeneß
+4684	LangeneÃŸ
 4702	Sandstedt
 4703	Loxstedt
 4704	Drangstedt
@@ -2423,7 +2423,7 @@
 4721	Cuxhaven
 4722	Cuxhaven-Altenbruch
 4723	Cuxhaven-Altenwalde
-4724	Cuxhaven-Lüdingworth
+4724	Cuxhaven-LÃ¼dingworth
 4725	Helgoland
 4731	Nordenham
 4732	Stadland-Rodenkirchen
@@ -2445,26 +2445,26 @@
 4751	Otterndorf
 4752	Neuhaus
 4753	Balje
-4754	Bülkau
+4754	BÃ¼lkau
 4755	Ihlienworth
 4756	Odisheim
 4757	Wanna
 4758	Nordleda
-4761	Bremervörde
-4762	Kütenholz
+4761	BremervÃ¶rde
+4762	KÃ¼tenholz
 4763	Gnarrenburg
 4764	Gnarrenburg-Klenkendorf
 4765	Ebersdorf
-4766	Bäsdahl
-4767	Bremervörde-Bevern
+4766	BÃ¤sdahl
+4767	BremervÃ¶rde-Bevern
 4768	Hipstedt
-4769	Bremervörde-Isetersheim
+4769	BremervÃ¶rde-Isetersheim
 4770	Wischhafen
 4771	Hemmoor
 4772	Oberndorf
 4773	Larnstedt
 4774	Hechthausen
-4775	Großenwörden
+4775	GroÃŸenwÃ¶rden
 4776	Osten-Altendorf
 4777	Cadenberge
 4778	Wingst
@@ -2479,7 +2479,7 @@
 4803	Pahlen
 4804	Nordhastedt
 4805	Schafstedt
-4806	Sarzbüttel
+4806	SarzbÃ¼ttel
 481	Heide
 4821	Itzehoe
 4822	Kellinghusen
@@ -2488,20 +2488,20 @@
 4825	Burg
 4826	Hohenlockstedt
 4827	Wacken
-4828	Lägerdorf
+4828	LÃ¤gerdorf
 4829	Wewelsfleth
-4830	Süderhastedt
+4830	SÃ¼derhastedt
 4832	Meldorf
 4833	Wesselburen
-4834	Büsum
+4834	BÃ¼sum
 4835	Albersdorf
 4836	Hennstedt
 4837	Neuenkirchen
 4838	Tellingstedt
-4839	Wöhrden
+4839	WÃ¶hrden
 4841	Husum
 4842	Nordstrand
-4843	Viöl
+4843	ViÃ¶l
 4844	Pellworm
 4845	Ostenfeld
 4846	Hattstedt
@@ -2509,7 +2509,7 @@
 4848	Rantrum
 4849	Hooge
 4851	Marne
-4852	Brunsbüttel
+4852	BrunsbÃ¼ttel
 4853	Sankt Michaelisdonn
 4854	Friedrichskoog
 4855	Eddelak
@@ -2517,7 +2517,7 @@
 4857	Barlt
 4858	Sankt Margarethen
 4859	Windbergen
-4861	Tönning
+4861	TÃ¶nning
 4862	Garding
 4863	Sankt Peter-Ording
 4864	Oldenswort
@@ -2525,13 +2525,13 @@
 4871	Hohenwestedt
 4872	Hanerau-Hademarschen
 4873	Aukrug
-4874	Todenbüttel
+4874	TodenbÃ¼ttel
 4875	Stafstedt
 4876	Reher
 4877	Hennstedt
 4881	Friedrichstadt
 4882	Lunden
-4883	Süderstapel
+4883	SÃ¼derstapel
 4884	Schwabstedt
 4885	Bergenhusen
 4892	Schenefeld
@@ -2542,11 +2542,11 @@
 4920	Wirdum
 4921	Emden
 4922	Borkum
-4923	Krummhörn-Pewsum
+4923	KrummhÃ¶rn-Pewsum
 4924	Moormerland-Oldersum
 4925	Hinte
-4926	Krummhörn-Greetsiel
-4927	Krummhörn-Loquard
+4926	KrummhÃ¶rn-Greetsiel
+4927	KrummhÃ¶rn-Loquard
 4928	Ihlow-Riepe
 4929	Ihlow Kreis Aurich
 4931	Norden
@@ -2554,15 +2554,15 @@
 4933	Dornum
 4934	Marienhafe
 4935	Juist
-4936	Großheide
+4936	GroÃŸheide
 4938	Hagermarsch
 4939	Baltrum
 4941	Aurich
-4942	Südbrookmerland
-4943	Großefehn
+4942	SÃ¼dbrookmerland
+4943	GroÃŸefehn
 4944	Wiesmoor
-4945	Großefehn-Timmel
-4946	Großefehn-Bagband
+4945	GroÃŸefehn-Timmel
+4946	GroÃŸefehn-Bagband
 4947	Aurich-Ogenbargen
 4948	Wiesmoor-Marcardsmoor
 4950	Holtland
@@ -2577,10 +2577,10 @@
 4959	Dollart
 4961	Papenburg
 4962	Papenburg-Aschendorf
-4963	Dörpen
+4963	DÃ¶rpen
 4964	Rhede-Ems
 4965	Surwold
-4966	Neubörger
+4966	NeubÃ¶rger
 4967	Rhauderfehn-Burlage
 4968	Neulehe
 4971	Esens
@@ -2599,27 +2599,27 @@
 5027	Linsburg
 5028	Pennigsehl
 5031	Wunstorf
-5032	Neustadt am Rübenberge
-5033	Wunstorf-Großenheidorn
+5032	Neustadt am RÃ¼benberge
+5033	Wunstorf-GroÃŸenheidorn
 5034	Neustadt-Hagen
-5035	Groß-Munzel
+5035	GroÃŸ-Munzel
 5036	Neustadt-Scheeren
 5037	Bad Rehburg
 5041	Springe
-5042	Bad Münster
+5042	Bad MÃ¼nster
 5043	Lauenau
 5044	Springe-Eldagsen
 5045	Springe-Bennigsen
 5051	Bergen Kr. Celle
 5052	Hermannsburg
-5053	Faßberg-Müden
-5054	Bergen-Sülze
-5055	Faßberg
-5056	Winsen-Meißendorf
+5053	FaÃŸberg-MÃ¼den
+5054	Bergen-SÃ¼lze
+5055	FaÃŸberg
+5056	Winsen-MeiÃŸendorf
 5060	Bodenburg
 5062	Holle bei Hildesheim
 5063	Bad Salzdetfurth
-5064	Groß Düngen
+5064	GroÃŸ DÃ¼ngen
 5065	Sibbesse
 5066	Sarstedt
 5067	Bockenem
@@ -2631,7 +2631,7 @@
 5074	Rodewald
 5082	Langlingen
 5083	Hohne bei Celle
-5084	Hambühren
+5084	HambÃ¼hren
 5085	Burgdorf-Ehlershausen
 5086	Celle-Scheuen
 5101	Pattensen
@@ -2646,7 +2646,7 @@
 5126	Algermissen
 5127	Harsum
 5128	Hohenhameln
-5129	Söhlde
+5129	SÃ¶hlde
 5130	Wedematk
 5131	Garbsen
 5132	Lehrte
@@ -2661,7 +2661,7 @@
 5144	Wathlingen
 5145	Beedenbostel
 5146	Wietze
-5147	Uetze-Hänigsen
+5147	Uetze-HÃ¤nigsen
 5148	Steinhorst
 5149	Wienhausen
 5151	Hameln
@@ -2669,10 +2669,10 @@
 5153	Salzhemmendorf
 5154	Aerzen
 5155	Emmerthal
-5156	Coppenbrügge
-5157	Emmerthal-Börry
+5156	CoppenbrÃ¼gge
+5157	Emmerthal-BÃ¶rry
 5158	Hemeringen
-5159	Coppenbrügge-Bisperode
+5159	CoppenbrÃ¼gge-Bisperode
 5161	Walsrode
 5162	Fallingbostel
 5163	Fallingbostel-Dorfmark
@@ -2710,67 +2710,67 @@
 5203	Werther
 5204	Steinhagen
 5205	Bielefeld-Sennestadt
-5206	Bielefeld-Jöllenbeck
-5207	Schloß Holte-Stukenbrock
-5208	Leopoldshöhe
-5209	Gütersloh-Friedrichsdorf
+5206	Bielefeld-JÃ¶llenbeck
+5207	SchloÃŸ Holte-Stukenbrock
+5208	LeopoldshÃ¶he
+5209	GÃ¼tersloh-Friedrichsdorf
 521	Bielefeld
 5221	Herford
 5222	Bad Salzufflen
-5223	Bünde
+5223	BÃ¼nde
 5224	Enger
 5225	Spenge
-5226	Bruchmühlen
+5226	BruchmÃ¼hlen
 5228	Vlotho-Exter
 5231	Detmold
 5232	Lage
 5233	Steinheim
 5234	Horn-Bad Meinberg
 5235	Blomberg
-5236	Blomberg-Großenmarpe
+5236	Blomberg-GroÃŸenmarpe
 5237	Augustdorf
 5238	Nieheim-Himmighausen
-5241	Gütersloh
-5242	Rheda-Wiedenbrück
+5241	GÃ¼tersloh
+5242	Rheda-WiedenbrÃ¼ck
 5244	Rietberg
 5245	Herzebrock-Clarholz
 5246	Verl
 5247	Harsewinkel
 5248	Langenberg
-5250	Delbrück
+5250	DelbrÃ¼ck
 5251	Paderborn
 5252	Bad Lippspringe
 5253	Bad Driburg
-5254	Paderborn-Schloß Neuhaus
+5254	Paderborn-SchloÃŸ Neuhaus
 5255	Altenbeken
-5257	Hövelhof
+5257	HÃ¶velhof
 5258	Salzkotten
 5259	Bad Driburg-Neuenheerse
 5261	Lemgo
 5262	Extertal
 5263	Barntrup
 5264	Kalletal
-5265	Dörentrup
+5265	DÃ¶rentrup
 5266	Lemgo-Kirchheide
-5271	Höxter
+5271	HÃ¶xter
 5272	Brakel
 5273	Beverungen
 5274	Niehelm
-5275	Höxter-Ottbergen
-5276	Marlenmünster
-5277	Höxter-Fürstenau
-5278	Höxter-Ovenhausen
+5275	HÃ¶xter-Ottbergen
+5276	MarlenmÃ¼nster
+5277	HÃ¶xter-FÃ¼rstenau
+5278	HÃ¶xter-Ovenhausen
 5281	Bad Pyrmont
 5282	Schleder-Schwalenberg
-5283	Lüdge-Rischenau
+5283	LÃ¼dge-Rischenau
 5284	Schwalenberg
 5285	Bad Pyrmont-Kleinenberg
 5286	Ottenstein
 5292	Lichtenau-Atteln
 5293	Paderborn-Dahl
-5294	Hövelhof-Espeln
+5294	HÃ¶velhof-Espeln
 5295	Lichtenau
-5300	Salzgitter-Üfingen
+5300	Salzgitter-Ãœfingen
 5301	Lehre-Essenrode
 5302	Vechelde
 5303	Wedenburg
@@ -2791,13 +2791,13 @@
 5327	Bad Grund/Harz
 5328	Altenau
 5329	Schulenberg
-5331	Wolfenbüttel
-5332	Schöppenstedt
+5331	WolfenbÃ¼ttel
+5332	SchÃ¶ppenstedt
 5333	Dettum
 5334	Hornburg
 5335	Schladen
 5336	Semmenstedt
-5337	Kissenbrück
+5337	KissenbrÃ¼ck
 5339	Gielde
 5341	Salzgitter
 5344	Lengede
@@ -2805,8 +2805,8 @@
 5346	Liebenburg
 5347	Burgdorf
 5351	Helmstedt
-5352	Schönigen
-5353	Königslutter
+5352	SchÃ¶nigen
+5353	KÃ¶nigslutter
 5354	Jerxheim
 5355	Frellstedt
 5356	Helmstedt-Barmke
@@ -2818,22 +2818,22 @@
 5364	Velpke
 5365	Wolfsburg-Neindorf
 5366	Jembke
-5367	Rühen
+5367	RÃ¼hen
 5368	Parsau
 5371	Gifhorn
 5372	Meinersen
 5373	Hillerse
-5374	Isenbüttel
-5375	Müden
+5374	IsenbÃ¼ttel
+5375	MÃ¼den
 5376	Wesendorf
 5377	Ehra-Lessien
 5378	Sassenburg-Platenburg
-5379	Sassenburg-Grußendorf
+5379	Sassenburg-GruÃŸendorf
 5381	Seesen
 5382	Bad Gandersheim
 5383	Lutter
-5384	Seesen-Groß Rhüden
-5401	Georgsmarienhütte
+5384	Seesen-GroÃŸ RhÃ¼den
+5401	GeorgsmarienhÃ¼tte
 5402	Bissendorf
 5403	Bad Iburg
 5404	Westerkappeln
@@ -2841,7 +2841,7 @@
 5406	Belm
 5407	Wallenhorst
 5409	Hilter
-541	Osnabrück
+541	OsnabrÃ¼ck
 5421	Dissen
 5422	Melle
 5423	Versmold
@@ -2851,32 +2851,32 @@
 5427	Melle-Buer
 5428	Melle-Neuenkirchen
 5429	Melle-Wellingholzhausen
-5431	Quakenbrück
-5432	Löningen
+5431	QuakenbrÃ¼ck
+5432	LÃ¶ningen
 5433	Badbergen
 5434	Essen/Oldenburg
 5435	Berge
 5436	Nortrup
 5437	Menslage
-5438	Bakum-Lüsche
-5439	Bersenbrück
+5438	Bakum-LÃ¼sche
+5439	BersenbrÃ¼ck
 5441	Diepholz
 5442	Barnstorf
-5443	Lemförde
+5443	LemfÃ¶rde
 5444	Wagenfeld
 5445	Drebber
 5446	Rehden
 5447	Lembruch
 5448	Barver
-5451	Ibbenbüren
+5451	IbbenbÃ¼ren
 5452	Mettingen
 5453	Recke
-5454	Hörstel-Riesenbeck
+5454	HÃ¶rstel-Riesenbeck
 5455	Tecklenburg-Brochterbeck
 5456	Westerkappeln-Velpe
 5457	Hopsten-Schale
 5458	Hopsten
-5459	Hörstel
+5459	HÃ¶rstel
 5461	Bramsche
 5462	Ankum
 5464	Alfhausen
@@ -2899,16 +2899,16 @@
 5492	Steinfeld
 5493	Neuenkirchen Kr. Vechta
 5494	Holdorf
-5495	Vörden
+5495	VÃ¶rden
 5502	Dransfeld
-5503	Nörten-Hardenberg
+5503	NÃ¶rten-Hardenberg
 5504	Friedland
 5505	Hardegsen
 5506	Adelebsen
-5507	Ebergötzen
+5507	EbergÃ¶tzen
 5508	Gleichen-Rittmarshausen
-5509	Rosdorf Kr. Göttingen
-551	Göttingen
+5509	Rosdorf Kr. GÃ¶ttingen
+551	GÃ¶ttingen
 5520	Braunlage
 5521	Herzberg
 5522	Osterode
@@ -2924,11 +2924,11 @@
 5534	Eschershausen
 5535	Polle
 5536	Holzminden-Neuhaus
-5541	Hannoversch Münden
+5541	Hannoversch MÃ¼nden
 5542	Witzenhausen
 5543	Staufenberg
 5544	Reinhardshausen
-5545	Hedemünden
+5545	HedemÃ¼nden
 5546	Scheden
 5551	Northeim
 5552	Katlenburg
@@ -2946,7 +2946,7 @@
 5573	Uslar-Volpriehausen
 5574	Oberweser
 5582	Sankt Andreasberg
-5583	Braunlage-Hohegeiß
+5583	Braunlage-HohegeiÃŸ
 5584	Hattorf am Harz
 5585	Herzberg-Sieber
 5586	Wieda
@@ -2956,11 +2956,11 @@
 5601	Schauenburg
 5602	Hessisch Lichtenau
 5603	Gudensberg
-5604	Großalmerode
+5604	GroÃŸalmerode
 5605	Kaufungen
 5606	Zierenberg
 5607	Fuldatal
-5608	Söhrewald
+5608	SÃ¶hrewald
 5609	Ahnatal
 561	Kassel
 5621	Bad Wildungen
@@ -2973,7 +2973,7 @@
 5632	Willingen
 5633	Diemelsee
 5634	Waldeck-Sachsenhausen
-5635	Vöhl
+5635	VÃ¶hl
 5636	Lichtenfels-Goddelsheim
 5641	Warburg
 5642	Warburg-Scherfede
@@ -2990,7 +2990,7 @@
 5654	Herleshausen
 5655	Wanfried
 5656	Waldkappel
-5657	Meißner
+5657	MeiÃŸner
 5658	Wehretal
 5659	Ringgau
 5661	Melsungen
@@ -3009,7 +3009,7 @@
 5682	Borken
 5683	Wabern
 5684	Frielendorf
-5685	Knüllwald
+5685	KnÃ¼llwald
 5686	Schwarzenborn
 5691	Bad Arolsen
 5692	Wolfhagen
@@ -3025,21 +3025,21 @@
 5707	Petershagen
 571	Minden
 5721	Stadthagen
-5722	Bückeburg
+5722	BÃ¼ckeburg
 5723	Bad Nenndorf
 5724	Obernkirchen
 5725	Lindhorst
 5726	Wiedensahl
 5731	Bad Oeynhausen
-5732	Löhne
+5732	LÃ¶hne
 5733	Viotho
 5734	Bergkirchen
-5741	Lübbecke
-5742	Preußisch-Oldendorf
+5741	LÃ¼bbecke
+5742	PreuÃŸisch-Oldendorf
 5743	Espekamp-Gestringen
-5744	Hüllhorst
+5744	HÃ¼llhorst
 5745	Sternwede-Levern
-5746	Rödlinghausen
+5746	RÃ¶dlinghausen
 5751	Rinteln
 5752	Auetal-Hattendorf
 5753	Auetal-Bersen
@@ -3056,13 +3056,13 @@
 5771	Rahden
 5772	Espelkamp
 5773	Sternwede-Wehdern
-5774	Wagenfeld-Ströhen
+5774	Wagenfeld-StrÃ¶hen
 5775	Diepenau
-5776	Preußisch Ströhen
+5776	PreuÃŸisch StrÃ¶hen
 5777	Diepenau-Essern
 5802	Wrestedt
 5803	Rosche
-5804	Rätzlingen
+5804	RÃ¤tzlingen
 5805	Oetzen
 5806	Barum
 5807	Altenmendingen
@@ -3071,24 +3071,24 @@
 5820	Suhlendorf
 5821	Bad Beversen
 5822	Ebstorf
-5823	Bienenbüttel
+5823	BienenbÃ¼ttel
 5824	Bodenteich
 5825	Wieren
 5826	Suderburg
-5827	Unterlüß
+5827	UnterlÃ¼ÃŸ
 5828	Himbergen
 5829	Wriedel
 5831	Wittingen
-5832	Hankensbüttel
+5832	HankensbÃ¼ttel
 5833	Brome
 5834	Wittingen-Knesebeck
 5835	Wahrenholz
 5836	Wittingen-Radenbeck
 5837	Sparkensehl
-5838	Groß Oesingen
+5838	GroÃŸ Oesingen
 5839	Wittingen-Ohrdorf
 5840	Schnackenburg
-5841	Lüchow
+5841	LÃ¼chow
 5842	Schnega
 5843	Wustrow
 5844	Clenze
@@ -3116,29 +3116,29 @@
 5875	Emmendorf
 5882	Gorleben
 5883	Lemgow
-5901	Fürstenau
+5901	FÃ¼rstenau
 5902	Freren
-5903	Emsbüren
+5903	EmsbÃ¼ren
 5904	Lengerich
 5905	Beesten
-5906	Lühne
+5906	LÃ¼hne
 5907	Geeste
 5908	Wietmarschen-Lohne
 5909	Wettrup
 591	Lingen
 5921	Nordhorn
 5922	Bad Bentheim
-5923	Schüttorf
+5923	SchÃ¼ttorf
 5924	Bad Bentheim-Gildehaus
 5925	Wietmarschen
 5926	Engden
 5931	Meppen
 5932	Haren
 5933	Lathen
-5934	Haren-Rütenbrock
-5935	Twist-Schönighsdorf
+5934	Haren-RÃ¼tenbrock
+5935	Twist-SchÃ¶nighsdorf
 5936	Twist
-5937	Geeste-Groß Hesepe
+5937	Geeste-GroÃŸ Hesepe
 5939	Sustrum
 5941	Neuhaus
 5942	Uelsen
@@ -3149,25 +3149,25 @@
 5947	Laar
 5948	Itterbeck
 5951	Werlte
-5952	Sögel
-5953	Börger
+5952	SÃ¶gel
+5953	BÃ¶rger
 5954	Lorup
 5955	Esterwegen
 5956	Rastorf
 5957	Lindern
-5961	Haselünne
+5961	HaselÃ¼nne
 5962	Herzlake
 5963	Bawinkel
 5964	Lahden
-5965	Klein Berßen
+5965	Klein BerÃŸen
 5966	Meppen-Apeldorn
 5971	Rheine
 5973	Neuenkirchen
 5975	Rheine-Mesum
 5976	Salzbergen
 5977	Spelle
-5978	Hörstel-Dreierwalde
-6002	Ober-Mörlen
+5978	HÃ¶rstel-Dreierwalde
+6002	Ober-MÃ¶rlen
 6003	Rosbach
 6004	Lich-Eberstadt
 6007	Rosbach-Rodheim
@@ -3184,44 +3184,44 @@
 6031	Friedberg
 6032	Bad Nauheim
 6033	Butzbach
-6034	Wöllnstadt
+6034	WÃ¶llnstadt
 6035	Reichelsheim
-6036	Wölfersheim
+6036	WÃ¶lfersheim
 6039	Karben
 6041	Glauburg
-6042	Büdingen
+6042	BÃ¼dingen
 6043	Nidda
 6044	Schotten
 6045	Gedern
 6046	Ortenberg
 6047	Altenstadt
-6048	Büdingen-Eckartshausen
+6048	BÃ¼dingen-Eckartshausen
 6049	Kefenrod
-6050	Biebergemünd
+6050	BiebergemÃ¼nd
 6051	Gelnhausen
 6052	Bad Orb
-6053	Wächtersbach
+6053	WÃ¤chtersbach
 6054	Birstein
 6055	Freigericht
-6056	Bad Soden-Salmünster
-6057	Flörsbachtal
-6058	Gründau
+6056	Bad Soden-SalmÃ¼nster
+6057	FlÃ¶rsbachtal
+6058	GrÃ¼ndau
 6059	Jossgrund
 6061	Michelstadt
 6062	Erbach
-6063	Bad König
+6063	Bad KÃ¶nig
 6066	Michelstadt-Vielbrunn
 6068	Beerfelden
 6071	Dieburg
 6073	Babenhausen
-6074	Rödermark
-6078	Groß-Umstadt
+6074	RÃ¶dermark
+6078	GroÃŸ-Umstadt
 6081	Usingen
 6082	Niederreifenberg
 6083	Weilrod
 6084	Schmitten
 6085	Waldsolms
-6086	Grävenwiesbach
+6086	GrÃ¤venwiesbach
 6087	Waldems
 6092	Heimbuchenthal
 6093	Laufach
@@ -3232,10 +3232,10 @@
 6102	Neu-Isenburg
 6103	Langen
 6104	Heusenstamm
-6105	Mörfelden-Walldorf
+6105	MÃ¶rfelden-Walldorf
 6106	Rodgau
 6107	Kelsterbach
-6108	Mühlheim/Main
+6108	MÃ¼hlheim/Main
 6109	Frankfurt-Bergen-Enkheim
 611	Wiesbaden
 6120	Aarbergen
@@ -3255,14 +3255,14 @@
 6136	Nieder-Olm
 6138	Mommenheim
 6139	Budenheim
-6142	Rüsselsheim
+6142	RÃ¼sselsheim
 6144	Bischofsheim
-6145	Flörsheim
+6145	FlÃ¶rsheim
 6146	Hochheim
 6147	Trebur
 6150	Weiterstadt
 6151	Darmstadt
-6152	Groß-Gerau
+6152	GroÃŸ-Gerau
 6154	Ober-Ramstadt
 6155	Griesheim
 6157	Pfungstadt
@@ -3270,7 +3270,7 @@
 6159	Messel
 6161	Brensbach
 6162	Reinheim
-6163	Höchst
+6163	HÃ¶chst
 6164	Reichelsheim
 6165	Breuberg
 6166	Fischbachtal
@@ -3278,15 +3278,15 @@
 6171	Oberursel
 6172	Bad Homburg
 6173	Kronberg
-6174	Königstein
+6174	KÃ¶nigstein
 6175	Friedrichsdorf
 6181	Hanau
 6182	Seligenstadt
 6183	Erlensee
 6184	Langenselbold
 6185	Hammersbach
-6186	Großkrotzenburg
-6187	Schöneck
+6186	GroÃŸkrotzenburg
+6187	SchÃ¶neck
 6188	Kahl a.Main
 6190	Hattersheim
 6192	Hofheim
@@ -3300,7 +3300,7 @@
 6205	Hockenheim
 6206	Lampertheim
 6207	Wald-Michelbach
-6209	Mörlenbach
+6209	MÃ¶rlenbach
 6211	Mannheim
 6212	Mannheim
 6213	Mannheim
@@ -3312,11 +3312,11 @@
 6220	Wilhelmsfeld
 6221	Heidelberg
 6222	Wiesloch
-6223	Neckargemünd
+6223	NeckargemÃ¼nd
 6224	Sandhausen
 6226	Meckesheim
 6227	Walldorf
-6228	Schönau
+6228	SchÃ¶nau
 6229	Neckarsteinach
 6231	Hochdorf-Assenheim
 6232	Speyer
@@ -3337,10 +3337,10 @@
 6249	Guntersblum
 6251	Bensheim
 6252	Heppenheim
-6253	Fürth
+6253	FÃ¼rth
 6254	Lautertal
 6255	Lindenfels
-6256	Lampertheim-Hüttenfeld
+6256	Lampertheim-HÃ¼ttenfeld
 6257	Seeheim-Jugenheim
 6258	Gernsheim
 6261	Mosbach
@@ -3348,9 +3348,9 @@
 6263	Neckargerach
 6264	Neudenau
 6265	Billigheim
-6266	Haßmersheim
+6266	HaÃŸmersheim
 6267	Fahrenbach
-6268	Hüffenhardt
+6268	HÃ¼ffenhardt
 6269	Gundelsheim
 6271	Eberbach
 6272	Hirschhorn
@@ -3358,11 +3358,11 @@
 6275	Rothenberg
 6276	Hesseneck
 6281	Buchen
-6282	Walldürn
+6282	WalldÃ¼rn
 6283	Hardheim
 6284	Mudau
-6285	Walldürn-Altheim
-6286	Walldürn-Rippberg
+6285	WalldÃ¼rn-Altheim
+6286	WalldÃ¼rn-Rippberg
 6287	Limbach
 6291	Adelsheim
 6292	Seckach
@@ -3371,7 +3371,7 @@
 6295	Rosenberg
 6296	Ahorn
 6297	Ravenstein
-6298	Möckmühl
+6298	MÃ¶ckmÃ¼hl
 6301	Otterbach
 6302	Winnweiler
 6303	Enkenbach-Alsenborn
@@ -3379,27 +3379,27 @@
 6305	Hochspeyer
 6306	Trippstadt
 6307	Schopp
-6308	Olsbrücken
+6308	OlsbrÃ¼cken
 631	Kaiserslautern
 6321	Neustadt a d Weinstr
-6322	Bad Dürkheim
+6322	Bad DÃ¼rkheim
 6323	Edenkoben
-6324	Haßloch
+6324	HaÃŸloch
 6325	Lambrecht
 6326	Deidesheim
 6327	Neustadt-Lachen
 6328	Elmstein
 6329	Weidenthal
 6331	Pirmasens
-6332	Zweibrücken
+6332	ZweibrÃ¼cken
 6333	Waldfischbach-Burgalben
-6334	Thaleischweiler-Fröschen
+6334	Thaleischweiler-FrÃ¶schen
 6335	Trulben
 6336	Dellfeld
-6337	Großbundenbach
+6337	GroÃŸbundenbach
 6338	Hornbach
-6339	Großsteinhausen
-6340	Wörth-Schaidt
+6339	GroÃŸsteinhausen
+6340	WÃ¶rth-Schaidt
 6341	Landau
 6342	Schweigen-Rechtenbach
 6343	Bad Bergzabern
@@ -3414,21 +3414,21 @@
 6353	Freinsheim
 6355	Albisheim
 6356	Carlsberg
-6357	Standenbühl
+6357	StandenbÃ¼hl
 6358	Kriegsfeld
-6359	Grünstadt
+6359	GrÃ¼nstadt
 6361	Rockenhausen
 6362	Alsenz
 6363	Niederkirchen
-6364	Nußbach
+6364	NuÃŸbach
 6371	Landstuhl
-6372	Bruchmühlbach-Miesau
-6373	Schönenberg-Kübelberg
+6372	BruchmÃ¼hlbach-Miesau
+6373	SchÃ¶nenberg-KÃ¼belberg
 6374	Weilerbach
 6375	Wallhalben
 6381	Kusel
 6382	Lauterecken
-6383	Glan-Münchweiler
+6383	Glan-MÃ¼nchweiler
 6384	Konken
 6385	Reichenbach-Steegen
 6386	Altenkirchen
@@ -3437,12 +3437,12 @@
 6392	Hauenstein
 6393	Fischbach
 6394	Bundenthal
-6395	Münchweiler
+6395	MÃ¼nchweiler
 6396	Hinterweidenthal
 6397	Leimen
 6398	Vorderweidenthal
-6400	Mücke
-6401	Grünberg
+6400	MÃ¼cke
+6401	GrÃ¼nberg
 6402	Hungen
 6403	Linden
 6404	Lich
@@ -3451,7 +3451,7 @@
 6407	Rabenbach
 6408	Buseck
 6409	Biebertal
-641	Gießen
+641	GieÃŸen
 6420	Lahntal
 6421	Marburg
 6422	Kirchhain
@@ -3459,30 +3459,30 @@
 6424	Ebsdorfergrund
 6425	Rauschenberg
 6426	Fronhausen
-6427	Cölbe-Schönstadt
+6427	CÃ¶lbe-SchÃ¶nstadt
 6428	Stadtallendorf
 6429	Schweinsberg
-6430	Hahnstätten
+6430	HahnstÃ¤tten
 6431	Limburg a. d. Lahn
 6432	Diez
 6433	Hadamar
 6434	Bad Camberg
 6435	Wallmerod
 6436	Dornburg
-6438	Hünfelden
+6438	HÃ¼nfelden
 6439	Holzappel
-6440	Kölschhausen
+6440	KÃ¶lschhausen
 6441	Wetzlar
 6442	Braunfels
 6443	Ehringshausen
 6444	Bischoffen
-6445	Schöffengrund
+6445	SchÃ¶ffengrund
 6446	Hohenahr
-6447	Langgöns-Niederkleen
+6447	LanggÃ¶ns-Niederkleen
 6449	Ehringshausen-Katzenfurt
 6451	Frankenberg
 6452	Battenberg
-6453	Gemünden
+6453	GemÃ¼nden
 6454	Lichtenfels-Sachsenberg
 6455	Frankenau
 6456	Haina
@@ -3496,10 +3496,10 @@
 6467	Hatzfeld
 6468	Dautphetal-Mornshausen
 6471	Weilburg
-6472	Weilmünster
+6472	WeilmÃ¼nster
 6473	Leun
 6474	Villmar-Aumenau
-6475	Weilmünster-Wolfenhausen
+6475	WeilmÃ¼nster-Wolfenhausen
 6476	Mengerskirchen
 6477	Greifenstein-Nenderoth
 6478	Greifenstein-Ulm
@@ -3518,7 +3518,7 @@
 6506	Welschbillig
 6507	Neumagen-Dhron
 6508	Hetzerath
-6509	Büdlich
+6509	BÃ¼dlich
 651	Trier
 6522	Mettendorf
 6523	Holsthum
@@ -3529,30 +3529,30 @@
 6531	Bernkastel-Kues
 6532	Zeltingen-Rachtig
 6533	Morbach
-6534	Mülheim
+6534	MÃ¼lheim
 6535	Osann-Monzel
 6536	Kleinich
 6541	Traben-Trarbach
 6542	Bullay
-6543	Büchenbeuren
+6543	BÃ¼chenbeuren
 6544	Rhaunen
 6545	Blankenrath
 6550	Irrhausen
-6551	Prüm
+6551	PrÃ¼m
 6552	Olzheim
-6553	Schönecken
+6553	SchÃ¶necken
 6554	Waxweiler
 6555	Bleialf
 6556	Pronsfeld
 6557	Hallschlag
-6558	Büdesheim
+6558	BÃ¼desheim
 6559	Leidenborn
 6561	Bitburg
 6562	Speicher
 6563	Kyllburg
 6564	Neuerburg
 6565	Dudeldorf
-6566	Körperich
+6566	KÃ¶rperich
 6567	Oberkail
 6568	Wolsfeld
 6569	Bickendorf
@@ -3577,8 +3577,8 @@
 6593	Hillesheim
 6594	Birresborn
 6595	Dockweiler
-6596	Üdersdorf
-6597	Jünkerath
+6596	Ãœdersdorf
+6597	JÃ¼nkerath
 6599	Weidenbach
 661	Fulda
 6620	Phillipsthal
@@ -3594,7 +3594,7 @@
 6630	Schwalmtal-Storndorf
 6631	Alsfeld
 6633	Homberg (Ohm)
-6634	Gemünden
+6634	GemÃ¼nden
 6635	Kirtorf
 6636	Romrod
 6637	Feldatal
@@ -3610,7 +3610,7 @@
 6648	Bad Salzschlirf
 6650	Hosenfeld
 6651	Rasdorf
-6652	Hünfeld
+6652	HÃ¼nfeld
 6653	Burghaun
 6654	Gersfeld
 6655	Neuhof
@@ -3618,8 +3618,8 @@
 6657	Hofbieber
 6658	Poppenhausen
 6659	Eichenzell
-6660	Steinau-Marjoß
-6661	Schlüchtern
+6660	Steinau-MarjoÃŸ
+6661	SchlÃ¼chtern
 6663	Steinau
 6664	Sinntal-Sterbfritz
 6665	Sinntal-Altengronau
@@ -3634,9 +3634,9 @@
 6675	Breitenbach
 6676	Hohenroda
 6677	Neuenstein
-6678	Wildeck-Hönebach
+6678	Wildeck-HÃ¶nebach
 6681	Hilders
-6682	Tann Rhön
+6682	Tann RhÃ¶n
 6683	Ehrenberg
 6684	Hofbier Schwarzbach
 6691	Schwalmstadt
@@ -3648,15 +3648,15 @@
 6697	Willingshausen
 6698	Schrecksbach
 6701	Sprendlingen
-6703	Wöllstein
+6703	WÃ¶llstein
 6704	Langenlonsheim
 6706	Wallhausen
 6707	Windesheim
-6708	Bad Münster am Stein-Ebernburg
-6709	Fürfeld
+6708	Bad MÃ¼nster am Stein-Ebernburg
+6709	FÃ¼rfeld
 671	Bad Kreuznach
 6721	Bingen
-6722	Rüdesheim
+6722	RÃ¼desheim
 6723	Oestrich-Winkel
 6724	Stromberg
 6725	Gau-Algesheim
@@ -3664,12 +3664,12 @@
 6727	Gensingen
 6728	Ober-Hilbersheim
 6731	Alzey
-6732	Wörrstadt
+6732	WÃ¶rrstadt
 6733	Gau-Odernheim
 6734	Flonheim
 6735	Eppelsheim
 6736	Bechenheim
-6737	Köngernheim
+6737	KÃ¶ngernheim
 6741	St Goar
 6742	Boppard
 6743	Bacharach
@@ -3684,18 +3684,18 @@
 6755	Odernheim
 6756	Winterbach
 6757	Becherbach
-6758	Waldböckelheim
+6758	WaldbÃ¶ckelheim
 6761	Simmern
 6762	Kastellaun
-6763	Kirchberg Hunsrück
-6764	Rheinböllen
-6765	Gemünden
+6763	Kirchberg HunsrÃ¼ck
+6764	RheinbÃ¶llen
+6765	GemÃ¼nden
 6766	Kisselbach
 6771	St Goarshausen
-6772	Nastätten
+6772	NastÃ¤tten
 6773	Kamp-Bornhofen
 6774	Kaub
-6775	Strüth
+6775	StrÃ¼th
 6776	Dachsenhausen
 6781	Idar-Oberstein
 6782	Birkenfeld
@@ -3706,13 +3706,13 @@
 6787	Niederbrombach
 6788	Sein
 6789	Heimbach
-6802	Völklingen-Lauterbach
+6802	VÃ¶lklingen-Lauterbach
 6803	Mandelbachtal-Ommersheim
 6804	Mandelbachtal
 6805	Kleinblittersdorf
 6806	Heusweiler
-6809	Großrosseln
-681	Saarbrücken
+6809	GroÃŸrosseln
+681	SaarbrÃ¼cken
 6821	Neunkirchen
 6824	Ottweiler
 6825	Illingen
@@ -3723,14 +3723,14 @@
 6833	Rehlingen-Siersburg
 6834	Bous
 6835	Beckingen
-6836	Überherrn
+6836	Ãœberherrn
 6837	Wallerfangen
 6838	Saarwellingen
 6841	Homburg Saar
 6842	Blieskastel
 6843	Gersheim
 6844	Blieskastel-Altheim
-6848	Homburg-Einöd
+6848	Homburg-EinÃ¶d
 6849	Kirkel
 6851	St Wendel
 6852	Nohfelden
@@ -3739,13 +3739,13 @@
 6855	Freisen
 6856	St Wendel-Niederkirchen
 6857	Namborn
-6858	Ottweiler-Fürth
+6858	Ottweiler-FÃ¼rth
 6861	Merzig
 6864	Mettlach
 6865	Mettlach-Orscholz
 6866	Perl-Nennig
 6867	Perl
-6868	Mettlach-Tünsdorf
+6868	Mettlach-TÃ¼nsdorf
 6869	Merzig-Silwingen
 6871	Wadern
 6872	Losheim am See
@@ -3756,26 +3756,26 @@
 6881	Lebach
 6887	Schmelz
 6888	Lebach-Steinbach
-6893	Saarbrücken-Ensheim
+6893	SaarbrÃ¼cken-Ensheim
 6894	St. Ingbert
 6897	Sulzbach Saar
-6898	Völklingen
+6898	VÃ¶lklingen
 69	Frankfurt am Main
-700	persönliche Rufnummer
+700	persÃ¶nliche Rufnummer
 7021	Kirchheim
-7022	Nürtingen
+7022	NÃ¼rtingen
 7023	Weilheim
 7024	Wendlingen
 7025	Neuffen
 7026	Lenningen
-7031	Böblingen
+7031	BÃ¶blingen
 7032	Herrenberg
 7033	Weil der Stadt
 7034	Ehningen
-7041	Mühlacker
+7041	MÃ¼hlacker
 7042	Vaihingen
 7043	Maulbronn
-7044	Mönsheim
+7044	MÃ¶nsheim
 7045	Oberderdingen
 7046	Zaberfeld
 7051	Calw
@@ -3787,14 +3787,14 @@
 7062	Beilstein
 7063	Bad Wimpfen
 7066	Bad Rappenau Bonfeld
-7071	Tübingen
+7071	TÃ¼bingen
 7072	Gomaringen
 7073	Ammerbuch
 7081	Bad Wildbad
-7082	Neuenbürg
+7082	NeuenbÃ¼rg
 7083	Bad Herrenalb
-7084	Schömberg
-7085	Enzklösterle
+7084	SchÃ¶mberg
+7085	EnzklÃ¶sterle
 711	Stuttgart
 7121	Reutlingen
 7122	St Johann
@@ -3803,9 +3803,9 @@
 7125	Bad Urach
 7126	Burladingen-Melchingen
 7127	Neckartenzlingen
-7128	Sonnenbühl
+7128	SonnenbÃ¼hl
 7129	Lichtenstein
-7130	Löwenstein
+7130	LÃ¶wenstein
 7131	Heilbronn
 7132	Neckarsulm
 7133	Lauffen
@@ -3818,11 +3818,11 @@
 7142	Bietigheim-Bissingen
 7143	Besigheim
 7144	Marbach
-7145	Markgröningen
+7145	MarkgrÃ¶ningen
 7146	Remseck
 7147	Sachsenheim
-7148	Großbottwar
-7150	Korntal-Münchingen
+7148	GroÃŸbottwar
+7150	Korntal-MÃ¼nchingen
 7151	Waiblingen
 7152	Leonberg
 7153	Plochingen
@@ -3831,16 +3831,16 @@
 7157	Waldenbuch
 7158	Neuhausen
 7159	Renningen
-7161	Göppingen
-7162	Süßen
+7161	GÃ¶ppingen
+7162	SÃ¼ÃŸen
 7163	Ebersbach
 7164	Boll
-7165	Göppingen-Hohenstaufen
+7165	GÃ¶ppingen-Hohenstaufen
 7166	Adelberg
-7171	Schwäbisch Gmünd
+7171	SchwÃ¤bisch GmÃ¼nd
 7172	Lorch
 7173	Heubach
-7174	Mögglingen
+7174	MÃ¶gglingen
 7175	Leinzell
 7176	Spraitbach
 7181	Schorndorf
@@ -3854,21 +3854,21 @@
 7195	Winnenden
 7202	Karlsbad
 7203	Walzbachtal
-7204	Malsch-Völkersbach
+7204	Malsch-VÃ¶lkersbach
 721	Karlsruhe
 7220	Forbach-Hundsbach
 7221	Baden-Baden
 7222	Rastatt
-7223	Bühl
+7223	BÃ¼hl
 7224	Gernsbach
 7225	Gaggenau
-7226	Bühl-Sand
+7226	BÃ¼hl-Sand
 7227	Lichtenau
 7228	Forbach
 7229	Iffezheim
 7231	Pforzheim
-7232	Königsbach-Stein
-7233	Niefern-Öschelbronn
+7232	KÃ¶nigsbach-Stein
+7233	Niefern-Ã–schelbronn
 7234	Tiefenbronn
 7235	Unterreichenbach
 7236	Keltern
@@ -3885,13 +3885,13 @@
 7250	Kraichtal
 7251	Bruchsal
 7252	Bretten
-7253	Bad Schönborn
-7254	Waghäusel
+7253	Bad SchÃ¶nborn
+7254	WaghÃ¤usel
 7255	Graben-Neudorf
 7256	Philippsburg
 7257	Bruchsal-Untergrombach
 7258	Oberderdingen-Flehingen
-7259	Östringen-Odenheim
+7259	Ã–stringen-Odenheim
 7260	Sinsheim-Hilsbach
 7261	Sinsheim
 7262	Eppingen
@@ -3902,22 +3902,22 @@
 7267	Gemmingen
 7268	Bad Rappenau-Obergimpern
 7269	Sulzfeld
-7271	Wörth am Rhein
-7272	Rülzheim
+7271	WÃ¶rth am Rhein
+7272	RÃ¼lzheim
 7273	Hagenbach
 7274	Germersheim
 7275	Kandel
 7276	Herxheim
-7277	Wörth-Büchelberg
+7277	WÃ¶rth-BÃ¼chelberg
 7300	Roggenburg
 7302	Pfaffenhofen
 7303	Illertissen
 7304	Blaustein
 7305	Erbach
-7306	Vöhringen
+7306	VÃ¶hringen
 7307	Senden
 7308	Nersingen
-7309	Weißenhorn
+7309	WeiÃŸenhorn
 731	Ulm/Neuulm
 7321	Heidenheim
 7322	Giengen
@@ -3926,7 +3926,7 @@
 7325	Sontheim
 7326	Neresheim
 7327	Dischingen
-7328	Königsbronn
+7328	KÃ¶nigsbronn
 7329	Steinheim
 7331	Geislingen
 7332	Lauterstein
@@ -3949,23 +3949,23 @@
 7355	Hochdorf
 7356	Schemmerhofen
 7357	Attenweiler
-7358	Eberhardzell-Füramoos
+7358	Eberhardzell-FÃ¼ramoos
 7361	Aalen
 7362	Bopfingen
 7363	Lauchheim
 7364	Oberkochen
 7365	Essingen
-7366	Abtsgmünd
+7366	AbtsgmÃ¼nd
 7367	Aalen-Ebnat
 7371	Riedlingen
 7373	Zwiefalten
 7374	Uttenweiler
 7375	Obermarchtal
 7376	Langenenslingen
-7381	Münsingen
-7382	Römerstein
-7383	Münsingen-Buttenhausen
-7384	Schelklingen-Hütten
+7381	MÃ¼nsingen
+7382	RÃ¶merstein
+7383	MÃ¼nsingen-Buttenhausen
+7384	Schelklingen-HÃ¼tten
 7385	Gomadingen
 7386	Hayingen
 7387	Hohenstein
@@ -3975,18 +3975,18 @@
 7392	Laupheim
 7393	Munderklingen
 7394	Schelklingen
-7395	Ehingen Dächingen
+7395	Ehingen DÃ¤chingen
 7402	Fluorn-Winzeln
 7403	Dunningen
 7404	Epfendorf
 741	Rottweil
-7420	Deißlingen
+7420	DeiÃŸlingen
 7422	Schramberg
 7423	Oberndorf
 7424	Spaichingen
 7425	Trossingen
 7426	Gosheim
-7427	Schömberg
+7427	SchÃ¶mberg
 7428	Rosenfeld
 7429	Egesheim
 7431	Albstadt-Ebingen
@@ -3994,14 +3994,14 @@
 7433	Balingen
 7434	Winterlingen
 7435	Albstadt-Laufen
-7436	Meßstetten-Oberdigisheim
+7436	MeÃŸstetten-Oberdigisheim
 7440	Bad Rippoldsau
 7441	Freudenstadt
 7442	Baiersbronn
 7443	Dornstetten
 7444	Alpirsbach
 7445	Pfalzgrafenweiler
-7446	Loßburg
+7446	LoÃŸburg
 7447	Baiersbronn-Schwarzenberg
 7448	Seewald
 7449	Baiersbronn-Obertal
@@ -4016,21 +4016,21 @@
 7459	Nagold-Hochdorf
 7461	Tuttlingen
 7462	Immendingen
-7463	Mühlheim
+7463	MÃ¼hlheim
 7464	Talheim
 7465	Emmingen-Liptingen
 7466	Beuron
 7467	Neuhausen
 7471	Hechingen
 7472	Rottenburg
-7473	Mössingen
+7473	MÃ¶ssingen
 7474	Haigerloch
 7475	Burladingen
 7476	Bisingen
 7477	Jungingen
 7478	Hirrlingen
 7482	Horb-Dettingen
-7483	Horb-Mühringen
+7483	Horb-MÃ¼hringen
 7484	Simmersfeld
 7485	Empfingen
 7486	Horb-Altheim
@@ -4057,20 +4057,20 @@
 7544	Markdorf
 7545	Immenstaad
 7546	Oberteuringen
-7551	Überlingen
+7551	Ãœberlingen
 7552	Pfullendorf
 7553	Salem
 7554	Heiligenberg
 7555	Deggenhausertal
-7556	Uhldingen-Mühlhofen
-7557	Herdwangen-Schönach
+7556	Uhldingen-MÃ¼hlhofen
+7557	Herdwangen-SchÃ¶nach
 7558	Illmensee
 7561	Leutkirch
 7562	Isny
-7563	Kißlegg
+7563	KiÃŸlegg
 7564	Bad Wurzach
 7565	Aichstetten
-7566	Argenbühl
+7566	ArgenbÃ¼hl
 7567	Leutkirch-Friesenhofen
 7568	Bad-Wurzach-Hauerz
 7569	Isny-Eisenbach
@@ -4079,7 +4079,7 @@
 7572	Mengen
 7573	Stetten
 7574	Gammertingen
-7575	Meßkirch
+7575	MeÃŸkirch
 7576	Krauchenwies
 7577	Veringenstadt
 7578	Wald
@@ -4090,11 +4090,11 @@
 7584	Altshausen
 7585	Ostrach
 7586	Herbertingen
-7587	Hoßkirch
+7587	HoÃŸkirch
 7602	Oberried Breisgau
 761	Freiburg
 7620	Schopfheim-Gersbach
-7621	Lörrach
+7621	LÃ¶rrach
 7622	Schopfheim
 7623	Rheinfelden
 7624	Grenzach-Wyhlen
@@ -4103,12 +4103,12 @@
 7627	Steinen
 7628	Efringen-Kirchen
 7629	Tegernau
-7631	Müllheim
+7631	MÃ¼llheim
 7632	Badenweiler
 7633	Staufen
 7634	Sulzburg
 7635	Schliengen
-7636	Münstertal
+7636	MÃ¼nstertal
 7641	Emmendingen
 7642	Endingen
 7643	Herbolzheim
@@ -4118,8 +4118,8 @@
 7651	Titisee-Neustadt
 7652	Hinterzarten
 7653	Lenzkirch
-7654	Löffingen
-7655	Feldberg-Altglashütten
+7654	LÃ¶ffingen
+7655	Feldberg-AltglashÃ¼tten
 7656	Schluchsee
 7657	Eisenbach
 7660	St Peter
@@ -4131,10 +4131,10 @@
 7666	Denzlingen
 7667	Breisach
 7668	Ihringen
-7669	St Märgen
+7669	St MÃ¤rgen
 7671	Todtnau
 7672	St Blasien
-7673	Schönau
+7673	SchÃ¶nau
 7674	Todtmoos
 7675	Bernau
 7676	Feldberg Schwarzwald
@@ -4148,7 +4148,7 @@
 7704	Geisingen
 7705	Wolterdingen
 7706	Oberbaldingen
-7707	Bräunlingen
+7707	BrÃ¤unlingen
 7708	Geisingen Leipferdingen
 7709	Wutach
 771	Donaueschingen
@@ -4157,32 +4157,32 @@
 7722	Triberg
 7723	Furtwangen
 7724	St Georgen
-7725	Königsfeld
-7726	Bad Dürrheim
-7727	Vöhrenbach
+7725	KÃ¶nigsfeld
+7726	Bad DÃ¼rrheim
+7727	VÃ¶hrenbach
 7728	Niedereschach
 7729	Tennenbronn
 7731	Singen
 7732	Radolfzell
 7733	Engen
 7734	Gailingen
-7735	Öhningen
+7735	Ã–hningen
 7736	Tengen
-7738	Steißlingen
+7738	SteiÃŸlingen
 7739	Hilzingen
 7741	Tiengen
 7742	Klettgau
-7743	Ühlingen-Birkendorf
-7744	Stühlingen
+7743	Ãœhlingen-Birkendorf
+7744	StÃ¼hlingen
 7745	Jestetten
-7746	Wutöschingen
+7746	WutÃ¶schingen
 7747	Berau
 7748	Grafenhausen
 7751	Waldshut
 7753	Albbruck
-7754	Görwihl
+7754	GÃ¶rwihl
 7755	Weilheim
-7761	Bad Säckingen
+7761	Bad SÃ¤ckingen
 7762	Wehr
 7763	Murg
 7764	Herrischried
@@ -4190,7 +4190,7 @@
 7771	Stockach
 7773	Bodman-Ludwigshafen
 7774	Eigeltingen
-7775	Mühlingen
+7775	MÃ¼hlingen
 7777	Sauldorf
 7802	Oberkirch
 7803	Gengenbach
@@ -4220,15 +4220,15 @@
 7843	Renchen
 7844	Rheinau
 7851	Kehl
-7852	Willstätt
+7852	WillstÃ¤tt
 7853	Kehl-Bodersweier
 7854	Kehl-Goldscheuer
 7903	Mainhardt
 7904	Ilshofen
 7905	Langenburg
 7906	Braunsbach
-7907	Schwäbisch Hall-Sulzdorf
-791	Schwäbisch Hall
+7907	SchwÃ¤bisch Hall-Sulzdorf
+791	SchwÃ¤bisch Hall
 7930	Boxberg
 7931	Bad Mergentheim
 7932	Niederstetten
@@ -4236,18 +4236,18 @@
 7934	Weikersheim
 7935	Schrozberg
 7936	Schrozberg-Bartenstein
-7937	Dörzbach
+7937	DÃ¶rzbach
 7938	Mulfingen
 7939	Schrozberg-Spielbach
-7940	Künzelsau
-7941	Öhringen
+7940	KÃ¼nzelsau
+7941	Ã–hringen
 7942	Neuenstein
-7943	Schöntal
+7943	SchÃ¶ntal
 7944	Kupferzell
-7945	Wüstenrot
+7945	WÃ¼stenrot
 7946	Bretzfeld
 7947	Forchtenberg
-7948	Öhringen-Ohrnberg
+7948	Ã–hringen-Ohrnberg
 7949	Pfedelbach-Untersteinbach
 7950	Schnelldorf
 7951	Crailsheim
@@ -4255,21 +4255,21 @@
 7953	Blaufelden
 7954	Kirchberg a d Jagst
 7955	Wallhausen
-7957	Kreßberg
+7957	KreÃŸberg
 7958	Rot am See-Brettheim
 7959	Frankenhardt
 7961	Ellwangen
 7962	Fichtenau
 7963	Adelmannsfelden
-7964	Stödtlen
-7965	Ellwangen-Röhlingen
+7964	StÃ¶dtlen
+7965	Ellwangen-RÃ¶hlingen
 7966	Unterschneidheim
 7967	Jagstzell
 7971	Gaildorf
 7972	Gschwend
 7973	Obersontheim
-7974	Bühlerzell
-7975	Untergröningen
+7974	BÃ¼hlerzell
+7975	UntergrÃ¶ningen
 7976	Sulzbach-Laufen
 7977	Oberrot
 800	FreeCall
@@ -4291,7 +4291,7 @@
 8036	Stephanskirchen Simsee
 8038	Vogtareuth
 8039	Rott a.Inn
-8041	Bad Tölz
+8041	Bad TÃ¶lz
 8042	Lenggries
 8043	Jachenau
 8045	Lenggries-Fall
@@ -4301,13 +4301,13 @@
 8053	Bad Endorf
 8054	Breitbrunn a. Chiemsee
 8055	Halfing
-8056	Eggstätt
+8056	EggstÃ¤tt
 8057	Aschau.Sachrang
 8061	Bad Aibling
-8062	Bruckmühl Mangfall
+8062	BruckmÃ¼hl Mangfall
 8063	Feldkirchen-Westerham
 8064	Au b.Bad Aibling
-8065	Tuntenhausen-Schönau
+8065	Tuntenhausen-SchÃ¶nau
 8066	Bad Feilnbach
 8067	Tuntenhausen
 8071	Wasserburg a.Inn
@@ -4323,11 +4323,11 @@
 8085	Sankt Wolfgang Kr.Erding
 8086	Buchbach Oberbay
 8091	Kirchseeon
-8092	Grafing b.München
+8092	Grafing b.MÃ¼nchen
 8093	Glonn Kr.Ebersberg
-8094	Steinhöring
+8094	SteinhÃ¶ring
 8095	Aying
-8102	Höhenkirchen Siegertbrunn
+8102	HÃ¶henkirchen Siegertbrunn
 8104	Sauerlach
 8105	Gilching
 8106	Vaterstetten
@@ -4343,8 +4343,8 @@
 8136	Markt Indersdorf
 8137	Petershausen
 8138	Schwabhausen b. Dachau
-8139	Röhrmoos
-8141	Fürstenfeldbruck
+8139	RÃ¶hrmoos
+8141	FÃ¼rstenfeldbruck
 8142	Olching
 8143	Inning a.Ammersee
 8144	Grafrath
@@ -4352,7 +4352,7 @@
 8146	Moorenweis
 8151	Starnberg
 8152	Herrsching a. Ammersee
-8153	Weißling
+8153	WeiÃŸling
 8157	Feldafink
 8158	Tutzing
 8161	Freising
@@ -4360,10 +4360,10 @@
 8166	Allershausen Oberbay.
 8167	Allershausen
 8168	Zolling
-8170	Straßlach-Dingharting
+8170	StraÃŸlach-Dingharting
 8171	Wolfratshausen
 8176	Egling
-8177	Münsing Starnbacher See
+8177	MÃ¼nsing Starnbacher See
 8178	Icking
 8179	Eurasburg a.d.Loisach
 8191	Landsberg a.Lech
@@ -4371,24 +4371,24 @@
 8193	Geltendorf
 8194	Vilgertshofen
 8195	Weil Kr.Landsber a.Lech
-8196	Pürgen
+8196	PÃ¼rgen
 8202	Althegnenberg
-8203	Großaitingen
+8203	GroÃŸaitingen
 8204	Mickhausen
 8205	Dasing
 8206	Egling
 8207	Affing
 8208	Eurasburg
 821	Augsburg
-8221	Günzburg
+8221	GÃ¼nzburg
 8222	Burgau
 8223	Ichenhausen
 8224	Offingen
 8225	Jettingen-Scheppach
 8226	Bibertal
 8230	Gablingen
-8231	Königsbrunn
-8232	Schwabmünchen
+8231	KÃ¶nigsbrunn
+8232	SchwabmÃ¼nchen
 8233	Kissing
 8234	Bobingen
 8236	Fischach
@@ -4397,16 +4397,16 @@
 8239	Langenneufnach
 8241	Buchloe
 8243	Fuchstal
-8245	Türkheim
+8245	TÃ¼rkheim
 8246	Waal
-8247	Bad Wörishofen
+8247	Bad WÃ¶rishofen
 8248	Lamerdingen
 8249	Ettringen
 8250	Hilgertshausen-Tandem
 8251	Aichach
 8252	Schrobenhausen
-8253	Pöttmes
-8254	Altomünster
+8253	PÃ¶ttmes
+8254	AltomÃ¼nster
 8257	Inchenhofen
 8258	Sielenbach
 8259	Schiltberg
@@ -4432,13 +4432,13 @@
 8292	Dinkelscherben
 8293	Welden
 8294	Horgau
-8295	Altenmünster
+8295	AltenmÃ¼nster
 8296	Villenbach
-8302	Görisried
+8302	GÃ¶risried
 8303	Waltenhofen
 8304	Wildpoldsried
 8306	Ronsberg
-831	Kempten Allgäu
+831	Kempten AllgÃ¤u
 8320	Missen-Wilhams
 8321	Sonthofen
 8322	Oberstdorf
@@ -4453,33 +4453,33 @@
 8331	Memmingen
 8332	Ottobeuren
 8333	Babenhausen
-8334	Bad Grönenbach
+8334	Bad GrÃ¶nenbach
 8335	Felheim
 8336	Erkheim
 8337	Altenstadt
-8338	Böhen
+8338	BÃ¶hen
 8340	Baisweil
 8341	Kaufbeuren
 8342	Marktoberdorf
 8343	Aitrang
 8344	Westendorf
-8345	Stöttwang
+8345	StÃ¶ttwang
 8346	Pforzen
 8347	Friesenried
 8348	Bidingen
-8349	Stötten
+8349	StÃ¶tten
 8361	Nesselwang
-8362	Füssen
+8362	FÃ¼ssen
 8363	Pfronten
 8364	Seeg
 8365	Wertach
 83658	Jungholz Tirol (+43 5676 ab 2003-07)
 8366	Oy-Mittelberg
-8367	Roßhaupten
+8367	RoÃŸhaupten
 8368	Halblech
-8369	Rückholz
+8369	RÃ¼ckholz
 8370	Wiggensbach
-8372	Obergünzburg
+8372	ObergÃ¼nzburg
 8373	Altusried
 8374	Dietmannsried
 8375	Weitnau
@@ -4490,25 +4490,25 @@
 8380	Achberg
 8381	Lindenberg
 8382	Lindau
-8383	Grünenbach
-8384	Röthenbach
+8383	GrÃ¼nenbach
+8384	RÃ¶thenbach
 8385	Hergatz
 8386	Oberstaufen
 8387	Weiler-Simmerberg
 8388	Hergensweiler
-8389	Weißensberg
+8389	WeiÃŸensberg
 8392	Markt Rettenbach
-8393	Holzgünz
+8393	HolzgÃ¼nz
 8394	Lautrach
 8395	Tannheim
-8402	Münchsmünster
-8403	Pförring
+8402	MÃ¼nchsmÃ¼nster
+8403	PfÃ¶rring
 8404	Oberdolling
 8405	Stammham
-8406	Böhmfeld
-8407	Großmehring
+8406	BÃ¶hmfeld
+8407	GroÃŸmehring
 841	Ingolstadt
-8421	Eichstätt
+8421	EichstÃ¤tt
 8422	Dollnstein
 8423	Titting
 8424	Nassenfels
@@ -4516,7 +4516,7 @@
 8427	Wellheim
 8431	Neuburg
 8432	Burgheim
-8433	Königsmoos
+8433	KÃ¶nigsmoos
 8434	Rennertshofen
 8435	Ehekirchen
 8441	Pfaffenhofen a d Ilm
@@ -4524,7 +4524,7 @@
 8443	Hohenwart
 8444	Schweitenkirchen
 8445	Gerolsbach
-8446	Pörnbach
+8446	PÃ¶rnbach
 8450	Ingolstadt-Zuchering
 8452	Geisenfeld
 8453	Reichertshofen
@@ -4544,21 +4544,21 @@
 8468	Altmannstein-Pondorf
 8469	Freystadt-Burggriesbach
 8501	Thurnau
-8502	Fürstenzell
+8502	FÃ¼rstenzell
 8503	Neuhaus a.Inn
 8504	Tittling
 8505	Hutthurm
-8506	Bad Höhenstadt
+8506	Bad HÃ¶henstadt
 8507	Neuburg a.Inn
 8509	Ruderting
 851	Passau
 8531	Pocking
 8532	Griesbach i.Rottal
-8533	Rotthalmünster
+8533	RotthalmÃ¼nster
 8534	Tettenweis
 8535	Haarbach
-8536	Kößlarn
-8537	Bad Füssing-Aigen
+8536	KÃ¶ÃŸlarn
+8537	Bad FÃ¼ssing-Aigen
 8538	Pocking Hartkirchen
 8541	Vilshofen Niederbay
 8542	Ortenburg
@@ -4573,9 +4573,9 @@
 8551	Freyung
 8552	Grafenau Niederbay
 8553	Spiegelau
-8554	Schönberg Niederbay
+8554	SchÃ¶nberg Niederbay
 8555	Perlesreut
-8556	Haidmühle
+8556	HaidmÃ¼hle
 8557	Mauth
 8558	Hohenau Niederbay
 8561	Pfarrkirchen
@@ -4588,7 +4588,7 @@
 8573	Ering
 8574	Wittibreut
 8581	Waldkirchen
-8582	Röhrnbach Niederbay
+8582	RÃ¶hrnbach Niederbay
 8583	Neureichnau
 8584	Breitenberg Niederbay
 8585	Grainet
@@ -4604,8 +4604,8 @@
 8628	Kienberg Oberbay
 8629	Palling
 8630	Oberneunkirchen
-8631	Mühldorf a. Inn
-8633	Tüßling
+8631	MÃ¼hldorf a. Inn
+8633	TÃ¼ÃŸling
 8634	Garching a.d. Alz
 8635	Pleiskirchen
 8636	Ampfing
@@ -4614,7 +4614,7 @@
 8639	Neumarkt-Sankt Veit
 8640	Reit im Winkl
 8641	Grassau
-8642	Übersee
+8642	Ãœbersee
 8649	Schleching
 8650	Marktschellenberg
 8651	Bad Reichenhall
@@ -4622,7 +4622,7 @@
 8654	Freilassing
 8656	Anger
 8657	Ramsau b. Berchtesgaden
-8661	Grabenstätt Chiemsee
+8661	GrabenstÃ¤tt Chiemsee
 8662	Siegsdorf Kr. Traunstein
 8663	Ruhpolding
 8664	Chieming
@@ -4630,8 +4630,8 @@
 8666	Teisendorf
 8667	Seeon-Seebruck
 8669	Traunreut
-8670	Reischach Kr Altötting
-8671	Altötting
+8670	Reischach Kr AltÃ¶tting
+8671	AltÃ¶tting
 8677	Burghausen Salzach
 8678	Marktl
 8679	Burgkirchen Salzach
@@ -4639,10 +4639,10 @@
 8682	Laufen salzach
 8683	Tittmoning
 8684	Fridolfing
-8685	Kirchanschöring
+8685	KirchanschÃ¶ring
 8686	Petting
 8687	Taching-Tengling
-8702	Wörth a.d.Isar
+8702	WÃ¶rth a.d.Isar
 8703	Essenbach
 8704	Altdorf-Pettrach
 8705	Altfraunhofen
@@ -4656,7 +4656,7 @@
 8723	Arnstorf
 8724	Massing
 8725	Wurmannsquick
-8726	Schönau
+8726	SchÃ¶nau
 8727	Falkenberg
 8728	Geratskirchen
 8731	Dingolfing
@@ -4690,22 +4690,22 @@
 8785	Rottenburg-Oberroning
 8801	Seeshaupt
 8802	Huglfing
-8803	Preißenberg
-8805	Hohenpreißenberg
+8803	PreiÃŸenberg
+8805	HohenpreiÃŸenberg
 8806	Utting a. Ammersee
-8807	Dießen a.Ammersee
-8808	Pähl
+8807	DieÃŸen a.Ammersee
+8808	PÃ¤hl
 8809	Wessobrunn
 881	Weilheim i.OB
 8821	Garmisch-Patenkirchen
 8822	Oberammergau
 8823	Mittenwald
 8824	Oberau Loisach
-8825	Krün
+8825	KrÃ¼n
 8841	Murnau a.Staffelsee
 8845	Bad Kohlgrub
 8846	Uffing a.Staffelsee
-8847	Obersöchering
+8847	ObersÃ¶chering
 8851	Kochel a. See
 8856	Penzberg
 8857	Benediktbeuren
@@ -4716,7 +4716,7 @@
 8867	Rottenbuch Oberbay
 8868	Schwabsoien
 8869	Kinsau
-89	München
+89	MÃ¼nchen
 9001	Premium Rate - Information
 9003	Premium Rate - Unterhaltung
 9005	Premium Rate - Sonstige (Erotik)
@@ -4724,25 +4724,25 @@
 9005001	Centalk	5
 9005310	Centel
 9009	Premium Rate - Dialer
-906	Donauwörth
+906	DonauwÃ¶rth
 9070	Tapfheim
 9071	Dillingen
 9072	Lauingen
 9073	Gundelfingen
-9074	Höchstädt
-9075	Glött
+9074	HÃ¶chstÃ¤dt
+9075	GlÃ¶tt
 9076	Wittislingen
 9077	Bachhagel
 9078	Mertingen
 9080	Harburg Schwaben
-9081	Nördlingen
+9081	NÃ¶rdlingen
 9082	Oettingen
-9083	Möttingen
+9083	MÃ¶ttingen
 9084	Bissingen
 9085	Alerheim
 9086	Fremdingen
 9087	Marktoffingen
-9088	Mönchsdeggingen
+9088	MÃ¶nchsdeggingen
 9089	Bissingen-Unterringingen
 9090	Rain Lech
 9091	Monheim
@@ -4758,7 +4758,7 @@
 9105	Grosshabersdorf
 9106	Markt Erlbach
 9107	Trautskirchen
-911	Nürnberg
+911	NÃ¼rnberg
 9120	Leinburg
 9122	Schwabach
 9123	Lauf a.d.Pegnitz
@@ -4810,7 +4810,7 @@
 9182	Velburg
 9183	Burgthann
 9184	Deining
-9185	Mühlhausen
+9185	MÃ¼hlhausen
 9186	Lauterhofen
 9187	Altdorf
 9188	Postbauer-Heng
@@ -4902,7 +4902,7 @@
 9305	Estenfeld
 9306	Kist
 9307	Altertheim
-931	Würzburg
+931	WÃ¼rzburg
 9321	Kitzingen
 9323	Iphofen
 9324	Dettelbach
@@ -4917,13 +4917,13 @@
 9337	Gaukoenigshofen
 9338	Roettingen Unterfr.
 9339	Ippesheim
-9340	Königheim-Brehmen
+9340	KÃ¶nigheim-Brehmen
 9341	Tauberbischofsheim
 9342	Wertheim
-9343	Lauda-Königshofen
+9343	Lauda-KÃ¶nigshofen
 9344	Gerchsheim
-9345	Külsheim
-9346	Grünsfeld
+9345	KÃ¼lsheim
+9346	GrÃ¼nsfeld
 9347	Wittighausen
 9348	Werbach-Gamburg
 9349	Werbach-Wenkheim
@@ -4979,15 +4979,15 @@
 9420	Feldkirchen Niederbay
 9421	Straubing
 9422	Bogen Niederbay
-9423	Geiselhöring
-9424	Straßkirchen
+9423	GeiselhÃ¶ring
+9424	StraÃŸkirchen
 9426	Oberschneiding
 9427	Leiblfing
 9428	Kirchroth
 9429	Rain Niederbay
 9431	Schwandorf
 9433	Nabburg
-9434	Bodenwöhr
+9434	BodenwÃ¶hr
 9435	Schwarzenfeld
 9436	Nittenau
 9438	Fensterbach
@@ -5012,14 +5012,14 @@
 9466	Stamsried
 9467	Michelsneukirchen
 9468	Zell Oberpf
-9469	Roding-Neubäu
+9469	Roding-NeubÃ¤u
 9471	Burglengenfeld
 9472	Hohenfels Oberpf
-9473	Kallmünz
-9474	Schmidmühlen
-9480	Sünching
+9473	KallmÃ¼nz
+9474	SchmidmÃ¼hlen
+9480	SÃ¼nching
 9481	Pfatter
-9482	Wörth a.d.Donau
+9482	WÃ¶rth a.d.Donau
 9484	Brennberg
 9491	Hemau
 9492	Parsberg
@@ -5079,8 +5079,8 @@
 9575	Weismain
 9576	Lichtenfels-Isling
 9602	Neustadt a d Waldnaab
-9603	Floß
-9604	Wernberg-Köblitz
+9603	FloÃŸ
+9604	Wernberg-KÃ¶blitz
 9605	Weiherhammer
 9606	Pfreimd
 9607	Luhe-Wildenau
@@ -5097,12 +5097,12 @@
 9632	Waldsassen
 9633	Mitterteich
 9634	Wiesau
-9635	Bärnau
-9636	Plößberg
+9635	BÃ¤rnau
+9636	PlÃ¶ÃŸberg
 9637	Falkenberg Oberpf
 9638	Neualbenreuth
-9639	Mähring
-9641	Grafenwöhr
+9639	MÃ¤hring
+9641	GrafenwÃ¶hr
 9642	Kemnath
 9643	Auerbach i d Opf
 9644	Pressath
@@ -5110,11 +5110,11 @@
 9646	Freihung
 9647	Kirchenthumbach
 9648	Neustadt a Kulm
-9651	Vohenstrauß
+9651	VohenstrauÃŸ
 9652	Waidhaus
 9653	Eslarn
 9654	Pleystein
-9655	Tännesberg
+9655	TÃ¤nnesberg
 9656	Moosbach
 9657	Waldthurn
 9658	Georgenberg
@@ -5123,12 +5123,12 @@
 9662	Vilseck
 9663	Neukirchen
 9664	Hahnbach
-9665	Königstein
+9665	KÃ¶nigstein
 9666	Illschwang
 9671	Oberviechtach
 9672	Neunburg
 9673	Tiefenbach
-9674	Schönsee
+9674	SchÃ¶nsee
 9675	Altendorf
 9676	Winklarn
 9677	Oberviechtach-Pullenried
@@ -5157,7 +5157,7 @@
 9737	Wartmannsroth
 9738	Rottershausen
 9741	Bad Brueckenau
-9742	Kalbach Rhön
+9742	Kalbach RhÃ¶n
 9744	Zeitlofs-Detter
 9745	Wildflecken
 9746	Zeitlofs
@@ -5227,12 +5227,12 @@
 9875	Wolframs-Eschenbach
 9876	Rohr Mittelfr.
 9901	Hengersberg
-9903	Schöllnach
+9903	SchÃ¶llnach
 9904	Lalling
 9905	Bernried
 9906	Mariaposching
 9907	Zenting
-9908	Schöfweg
+9908	SchÃ¶fweg
 991	Deggendorf
 9920	Bischofsmais
 9921	Regen
@@ -5249,9 +5249,9 @@
 9933	Wallersdorf
 9935	Stephansposching
 9936	Wallerfing
-9937	Oberpöring
+9937	OberpÃ¶ring
 9938	Moos
-9941	Kötzting
+9941	KÃ¶tzting
 9942	Viechtach
 9943	Lam
 9944	Miltach
@@ -5272,10 +5272,10 @@
 9965	Sankt Englmar
 9966	Wiesenfelden
 9971	Cham
-9972	Waldmünchen
+9972	WaldmÃ¼nchen
 9973	Furth i Wald
 9974	Traitsching
-9975	Waldmünchen-Geigant
-9976	Rötz
+9975	WaldmÃ¼nchen-Geigant
+9976	RÃ¶tz
 9977	Arnschwang
-9978	Schönthal Oberpf
+9978	SchÃ¶nthal Oberpf

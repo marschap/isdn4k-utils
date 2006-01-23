@@ -4,7 +4,7 @@ V:1.00 TEST [04-Jul-2000]
 # for testing
 # use samples/isdn.conf.at as isdn.conf and configure RATEFILE=rtest.dat
 
-U:%.3f öS
+U:%.3f Ã¶S
 
 P:1,0 Prov10
 B:1001

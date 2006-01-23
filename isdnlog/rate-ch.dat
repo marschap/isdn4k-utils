@@ -9,20 +9,20 @@
 #   0 -   9     : Inland
 #  10 -  30     : Natel / GSM
 #  31 -  39     : Satelitenfunk (Inmarsat, Iridium)
-#  40 -  59     : Telefonauskünfte
+#  40 -  59     : TelefonauskÃ¼nfte
 #  60 -  79     : Pager Services
 #  80 -  89     : Shared Cost (0180)
 #  90 -  99     : Premium Rate (0190)
 # 100 - 159     : Internet Tarife
 # 160 - 169     : Televotum, etc.
-# 170           : Persönliche Rufnummer (0700)
+# 170           : PersÃ¶nliche Rufnummer (0700)
 # 171 - 199     : Sonstiges
 # 200 - xxx     : Auslandstarife
 #
 # Beschreibung einzelner Zonen
 #
 #    0 -   9 : Inland
-#    0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
+#    0 : Verbindungen an der eigenen Tk-Anlage (zwangslÃ¤ufig kostenlos)
 #        sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
 #    1 : Lokal / Region (alle Nummern die ohne Vorwahl erreichbar sind)
 #    4 : National 
@@ -76,7 +76,7 @@
 #  163 : T-VoteCall 2           (01372)
 #  164 : DTAG Ansagedienste
 #
-#  170 : Persönliche Rufnummer  (0700)
+#  170 : PersÃ¶nliche Rufnummer  (0700)
 #
 #  171 - 199 : Sonstiges
 #  171 : Expo 2000              (02000)
@@ -103,27 +103,27 @@ S:Strassenhilfe
 N:140
 S:Die dargebotene Hand
 N:143
-S:Telefonhilfe für Kinder und Jugendliche
+S:Telefonhilfe fÃ¼r Kinder und Jugendliche
 N:147
 
 # Auskunftsdienste
-S:Swisscom Geschäftsstelle
+S:Swisscom GeschÃ¤ftsstelle
 N:113
 S:Auskunft Inland
 N:111
-S:Internationale Auskunft für Österreich
+S:Internationale Auskunft fÃ¼r Ã–sterreich
 N:1151
-S:Internationale Auskunft für Deutschland
+S:Internationale Auskunft fÃ¼r Deutschland
 N:1152
-S:Internationale Auskunft für Frankreich
+S:Internationale Auskunft fÃ¼r Frankreich
 N:1153
-S:Internationale Auskunft für Italien
+S:Internationale Auskunft fÃ¼r Italien
 N:1154
-S:Internationale Auskunft für andere Länder
+S:Internationale Auskunft fÃ¼r andere LÃ¤nder
 N:1159
 S:Internationale Vermittlung
 N:1141
-S:Nationale Vermittlung für Mobiltelefone
+S:Nationale Vermittlung fÃ¼r Mobiltelefone
 N:1144
 
 # Services:
@@ -139,7 +139,7 @@ S:Sportresultate, Gewinnzahlen und -quoten
 N:164
 S:Lawinenbulletin, aktuelle Wettermeldungen
 N:187
-S:Störungsannahme
+S:StÃ¶rungsannahme
 N:175
 S:Regionale Informationen
 N:1600

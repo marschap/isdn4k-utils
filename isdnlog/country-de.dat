@@ -1,7 +1,7 @@
 V:1.60 Int [03-Jan-2005 01:02:00]
 #
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.49 2005/02/27 22:01:41 tobiasb Exp $
+# $Id: country-de.dat,v 1.50 2006/01/23 17:07:09 keil Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
 # It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
 # in the CVS at http://www.isdn4linux.de.
@@ -44,7 +44,7 @@ V:1.60 Int [03-Jan-2005 01:02:00]
 # Decoding table for ISO 3166-1 alpha-2 codes (2004-09-17)
 # http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/iso_3166-1_decoding_table.html
 #
-# Last code change was new entry for Âland Islands (AX) on 2004-02-13.
+# Last code change was new entry for Ã‚land Islands (AX) on 2004-02-13.
 #
 # User-assigned code elements: AA, QM..QZ, XA..XZ, ZZ
 # Should be used for numerical country codes not related to a country and
@@ -247,7 +247,7 @@ R:IL
 T:_ILMF
 
 N:Palestina
-A:Palästina, Palestinensisches Autonomiegebiet
+A:PalÃ¤stina, Palestinensisches Autonomiegebiet
 C:+972777
 T:PS # since 11.10.1999
 
@@ -451,12 +451,12 @@ R:IN
 T:_INMF
 
 
-N:Türkei
+N:TÃ¼rkei
 E:Turkey
 C:+90
 T:TR
 
-N:Türkei Mobilfunk
+N:TÃ¼rkei Mobilfunk
 E:Turkey cellphone
 C:+905
 R:TR
@@ -851,14 +851,14 @@ T:_VNMF
 # +830 .. +839 -- Reserved for E.164 country code expansion
 
 
-N:Südkorea
-A:Korea (Süd), Korea Rep. (South), Korea (Republik), Südkorea (Republik), Republik Korea, Korea Republic (south)
-A:Korea Republik (Süd)
+N:SÃ¼dkorea
+A:Korea (SÃ¼d), Korea Rep. (South), Korea (Republik), SÃ¼dkorea (Republik), Republik Korea, Korea Republic (south)
+A:Korea Republik (SÃ¼d)
 E:South Korea
 C:+82
 T:KR
 
-N:Korea (Süd) Mobilfunk
+N:Korea (SÃ¼d) Mobilfunk
 A:Korea Rep. (South) Mobilfunk
 E:South Korea cellphone
 C:+8227, +821
@@ -922,40 +922,40 @@ T:_KZMF
 # fixme: code SU ("USSR") was deleted 1992-02,
 # should be RU ("Russian Federation"), which is already used below.
 N:Russische Forderation (ostl.)
-A:Rußland, Russland, Rußland (östl.), Russische Föderation, Russian Federation, Russische Förderation Ost
-A:Russland (östl.), Russland (östlich)
+A:RuÃŸland, Russland, RuÃŸland (Ã¶stl.), Russische FÃ¶deration, Russian Federation, Russische FÃ¶rderation Ost
+A:Russland (Ã¶stl.), Russland (Ã¶stlich)
 E:Russian Federation (east)
 C:+7
 T:SU
 
-N:Rußland Mobilfunk
+N:RuÃŸland Mobilfunk
 E:Russia cellphone
-A:Russische Föderation Mobilfunk
+A:Russische FÃ¶deration Mobilfunk
 C:+7901, +7902
 R:SU
 T:_RUMF
 
-N:Russische Föderat. (westl.)
-A:Russische Foderat. (westl.), Russische Föderation (westl.)
-A:Rußland (westl.), GUS (Russische Föderation), GUS, Russische Förderation West
+N:Russische FÃ¶derat. (westl.)
+A:Russische Foderat. (westl.), Russische FÃ¶deration (westl.)
+A:RuÃŸland (westl.), GUS (Russische FÃ¶deration), GUS, Russische FÃ¶rderation West
 A:Russland (westl.), Russland (westlich)
 C:+7863, +7862, +7861, +7820, +7817, +7816, +7815, +7814
 C:+7811, +7543, +7517, +75112, +75110, +7510, +7505, +7503, +7501, +709246
 C:+709245, +709244, +709243, +709237, +7091, +7087, +7086, +7085, +7084
 C:+7083, +7082, +7081, +7074, +7073, +7072, +7071, +7011
-C:+7502			# Rußland Moskau Overlay
+C:+7502			# RuÃŸland Moskau Overlay
 E:Russia
 T:RU
 
 N:St. Petersburg
-A:Rußland St. Petersburg, Leningrad
+A:RuÃŸland St. Petersburg, Leningrad
 C:+7812, +751285
 R:RU
 T:LED
 
 N:Moskau
 E:Moscow
-A:Rußland Moskau,Russische Föderation / Moskau
+A:RuÃŸland Moskau,Russische FÃ¶deration / Moskau
 C:+7096, +7095
 R:RU
 T:MOW
@@ -1029,13 +1029,13 @@ R:TK
 T:_TKMF
 
 
-N:Französisch-Polynesien
+N:FranzÃ¶sisch-Polynesien
 A:Franz. Polynesien
 E:French Polynesia
 C:+689
 T:PF
 
-N:Französisch-Polynesien Mobilfunk
+N:FranzÃ¶sisch-Polynesien Mobilfunk
 E:French Polynesia cellphone
 R:PF
 T:_PFMF
@@ -1429,14 +1429,14 @@ T:_MYMF
 # Source (2000-11-20):
 # http://www.itu.int/itudoc/itu-t/number/n/nat/76774.html
 N:Niederl. Antillen
-A:Niederländische Antillen, Antillen (Niederlande)
+A:NiederlÃ¤ndische Antillen, Antillen (Niederlande)
 E:Netherlands Antilles
 C:+599
 T:AN
 
 N:Niederl. Antillen Mobilfunk
 E:Netherlands Antilles cellphone
-A:Niederländische Antillen Mobilfunk
+A:NiederlÃ¤ndische Antillen Mobilfunk
 C:+5994165
 C:+59951, +59952, +59956, +59957, +59959
 C:+59978, +59970
@@ -1473,7 +1473,7 @@ T:_SRMF
 
 N:Martinique / Franz. Antillen
 E:Martinique
-A:Französische Antillen, Martinique (French Antilles)
+A:FranzÃ¶sische Antillen, Martinique (French Antilles)
 A:Franz. Antillen
 C:+596
 T:MQ
@@ -1497,13 +1497,13 @@ R:PY
 T:_PYMF
 
 
-N:Französisch-Guayana
-A:Französisch Guyana, Franz. Guyana, French Guyana
+N:FranzÃ¶sisch-Guayana
+A:FranzÃ¶sisch Guyana, Franz. Guyana, French Guyana
 E:French Guiana
 C:+594
 T:GF
 
-N:Französisch-Guayana Mobilfunk
+N:FranzÃ¶sisch-Guayana Mobilfunk
 E:French Guiana cellphone
 R:GF
 T:_GFMF
@@ -1867,7 +1867,7 @@ C:+491566		# reserved (2002-07-12): +49156
 R:_DEMF
 T:_DEMM
 
-N:Deutschland Bündelfunk Dolphin Telecom
+N:Deutschland BÃ¼ndelfunk Dolphin Telecom
 E:Germany trunk network Dolphin Telecom
 C:+491672
 R:DE
@@ -1889,7 +1889,7 @@ C:+49116116
 R:DE
 T:_DESN
 
-N:Deutschland Persönliche Rufnummer
+N:Deutschland PersÃ¶nliche Rufnummer
 E:Germany personal number
 C:+49700		# reserved (2002-05-23): +49701
 R:DE
@@ -2002,7 +2002,7 @@ T:_SJMF
 
 # nofix: uninhabited, only automatic meteorological station
 #N:Bouvet
-#A:Bouvetøya, Liverpool Island, Bouvet Island
+#A:BouvetÃ¸ya, Liverpool Island, Bouvet Island
 #R:NO
 #T:BV
 
@@ -2026,14 +2026,14 @@ T:STO
 
 # Source (2003-07-07)
 # http://www.itst.dk/wimpdoc.asp?page=tema&objno=95024386
-N:Dänemark
+N:DÃ¤nemark
 E:Denmark
 C:+45
 T:DK
 
-N:Dänemark Mobilfunk
+N:DÃ¤nemark Mobilfunk
 E:Denmark cellphone
-A:Dänemark Mobile
+A:DÃ¤nemark Mobile
 C:+452
 C:+4530, +4531
 C:+4540
@@ -2042,13 +2042,13 @@ C:+4560, +4561
 R:DK
 T:_DKMF
 
-N:Dänemark Freephone
+N:DÃ¤nemark Freephone
 E:Denmark freephone
 C:+4580
 R:DK
 T:_DKFF
 
-N:Sønderjylland
+N:SÃ¸nderjylland
 C:+4574, +4573
 R:DK
 T:_SOEN
@@ -2057,17 +2057,17 @@ T:_SOEN
 # nofix: code assigned is GB, UK is exceptionally reserved
 # Source (2003-07-22):
 # http://www.oftel.gov.uk/publications/numbering/2003/ntnp_final_c0703.pdf
-N:Großbritannien
-A:Großbritannien Insel Man Kanalinseln, Great Britain,Großbritanien
-A:Großbritannien und Nordirland, England
+N:GroÃŸbritannien
+A:GroÃŸbritannien Insel Man Kanalinseln, Great Britain,GroÃŸbritanien
+A:GroÃŸbritannien und Nordirland, England
 E:United Kingdom
 C:+44
 T:UK
 
 # +447[789] excluding Isle of Man and Channel Islands
-N:Großbritannien Mobilfunk
+N:GroÃŸbritannien Mobilfunk
 E:United Kingdom cellphone
-A:Großbritannien Mobile
+A:GroÃŸbritannien Mobile
 C:+44770, +44771, +44772, +44773, +44774, +44775, +44776, +44777
 C:+447780
 C:+447782, +447783, +447784, +447785, +447786, +447787, +447788, +447789
@@ -2084,7 +2084,7 @@ C:+4479
 R:UK
 T:_UKMF
 
-N:Großbritannien Sondernummern
+N:GroÃŸbritannien Sondernummern
 E:United Kingdom special numbers
 A:United Kingdom Premium Rate
 C:+4490
@@ -2103,7 +2103,7 @@ T:EDI
 
 # Source (2001-09-17):
 # http://www.warwick.ac.uk/search/Phones/nng_list.txt
-N:Insel Man (Großbritannien)
+N:Insel Man (GroÃŸbritannien)
 A:Insel Man
 E:Isle of Man
 R:UK
@@ -2114,20 +2114,20 @@ T:_UKIM
 
 N:Insel Man Mobilfunk
 E:Isle of Man cellphone
-A:Insel Man (Großbritannien) Mobilfunk
+A:Insel Man (GroÃŸbritannien) Mobilfunk
 C:+447624
 R:_UKIM
 T:_IMMF
 
 N:Insel Man Freephone
 E:Isle of Man freephone
-A:Insel Man (Großbritannien) Freephone
+A:Insel Man (GroÃŸbritannien) Freephone
 C:+44808162
 R:_UKIM
 T:_IMFF
 
 # Source see Isle of Man
-N:Kanalinseln (Großbritannien)
+N:Kanalinseln (GroÃŸbritannien)
 A:Kanalinseln, Kanalinseln (GB), Guernsey und Jersey
 E:Channel Islands
 R:UK
@@ -2137,14 +2137,14 @@ T:_UKIK
 
 N:Kanalinseln Mobilfunk
 E:Channel Islands cellphone
-A:Kanalinseln (Großbritannien) Mobilfunk
+A:Kanalinseln (GroÃŸbritannien) Mobilfunk
 C:+447781, +4477977, +4477978, +4478398
 R:_UKIK
 T:_GGMF
 
 N:Kanalinseln Freephone
 E:Channel Islands freephone
-A:Kanalinseln (Großbritannien) Freephone
+A:Kanalinseln (GroÃŸbritannien) Freephone
 C:+44800976, +44800735
 R:_UKIK
 T:_GGFF
@@ -2166,24 +2166,24 @@ T:_UKMN
 #T:GS
 
 
-N:Österreich
+N:Ã–sterreich
 E:Austria
 A:Osterreich
 C:+43
 T:AT
 
-N:Österreich Mobilfunk
+N:Ã–sterreich Mobilfunk
 E:Austria cellphone
 C:+43699, +43676, +43664, +43663
 R:AT
 T:_ATMF
 
-N:Österreich Sondernummern
+N:Ã–sterreich Sondernummern
 E:Austria special numbers
 C:+4345, +43700, +4371, +4389
 T:_ATSO
 
-N:Österreich Auskunft
+N:Ã–sterreich Auskunft
 A:Auskunft Austria
 E:Austria information
 C:+4366211811
@@ -2203,7 +2203,7 @@ T:VIE
 # Source (2002-08-05):
 # http://www.ak.li/en/cc423NumberingPlan.asp
 N:Liechtenstein
-A:Lichtenstein, Fürstentum Liechtenstein
+A:Lichtenstein, FÃ¼rstentum Liechtenstein
 C:+423			# since 1999-04-05
 C:+4175			# until 2003(?), portion of CH=+41 
 T:LI
@@ -2296,12 +2296,12 @@ R:CH
 T:ZRH
 
 
-N:Rumänien
+N:RumÃ¤nien
 E:Romania
 C:+40
 T:RO
 
-N:Rumänien Mobilfunk
+N:RumÃ¤nien Mobilfunk
 E:Romania cellphone
 C:+4092, +4094
 R:RO
@@ -2490,7 +2490,7 @@ T:_ADMF
 N:Weissrussland
 A:Weissrussland Belarus
 E:Belarus
-A:Belarus (Weißrußland)
+A:Belarus (WeiÃŸruÃŸland)
 C:+375
 T:BY
 
@@ -2619,17 +2619,17 @@ C:+3584, +35850
 R:FI
 T:_FIMF
 
-# According to http://www.aland.fi/, the Åland Islands form an autonomous
+# According to http://www.aland.fi/, the Ã…land Islands form an autonomous
 # demilitarized and unilingually Swedish province of Finland.
-N:Åland Inseln
-E:Åland Islands
+N:Ã…land Inseln
+E:Ã…land Islands
 A:Aland Inseln, Aland Islands
 C:+35818
 R:FI
 T:AX
 
-N:Åland Inseln Mobilfunk
-E:Åland Islands cellphone
+N:Ã…land Inseln Mobilfunk
+E:Ã…land Islands cellphone
 A:Aland Inseln Mobilfunk, Aland Islands cellphone
 C:+3584570, +3584573, +3584575
 R:_FIMF
@@ -2640,7 +2640,7 @@ T:_AXMF
 # http://www.cyta.com.cy/tesa/uk/ti.htm
 N:Zypern
 E:Cyprus
-A:Zypern (Griechisch), Zypern (griech.), Zypern Süd
+A:Zypern (Griechisch), Zypern (griech.), Zypern SÃ¼d
 C:+357
 T:CY
 
@@ -2651,9 +2651,9 @@ C:+3579992, +357994, +357995, +357996, +357998
 R:CY
 T:_CYMF
 
-N:Zypern (Türkisch)
+N:Zypern (TÃ¼rkisch)
 A:Zypern (Nord), Zypern (Nordzypern), Cyprus (north), Cyprus (turk)
-A:Zypern (Türk.), Nordzypern
+A:Zypern (TÃ¼rk.), Nordzypern
 E:Turk Cyprus
 C:+90392
 R:TK
@@ -2895,7 +2895,7 @@ C:+323
 R:BE
 T:ANR
 
-N:Brüssel
+N:BrÃ¼ssel
 E:Brussels
 A:Brussel
 C:+322
@@ -2957,13 +2957,13 @@ T:_GRMF
 
 # Source (2000-09-18):
 # http://www.itu.int/itudoc/itu-t/number/g/gre/82117_ww2.doc
-N:Grönland
+N:GrÃ¶nland
 E:Greenland
 C:+299
 T:GL
 R:DK
 
-N:Grönland Mobilfunk
+N:GrÃ¶nland Mobilfunk
 E:Greenland cellphone
 C:+29949, +29952, +29953, +29954, +29955, +29956, +29957, +29958, +29959
 R:GL
@@ -2972,16 +2972,16 @@ T:_GLMF
 
 # Source (2003-10-27):
 # http://www.fse.fo/images/sidur/2_200310271729_403.xls
-N:Färöer-Inseln
-A:Färöer, Faröer, Faröer Inseln, Faroer Inseln, Fäeroer
+N:FÃ¤rÃ¶er-Inseln
+A:FÃ¤rÃ¶er, FarÃ¶er, FarÃ¶er Inseln, Faroer Inseln, FÃ¤eroer
 E:Faroe Islands
 C:+298
 T:FO
 R:DK
 
-N:Färöer-Inseln Mobilfunk
+N:FÃ¤rÃ¶er-Inseln Mobilfunk
 E:Faroe Islands cellphone
-A:Färöer Inseln Mobilfunk, Färöer Mobilfunk
+A:FÃ¤rÃ¶er Inseln Mobilfunk, FÃ¤rÃ¶er Mobilfunk
 C:+29821, +29822, +29823, +29824, +29825, +29826, +29827, +29828, +29829
 C:+2985
 C:+29871, +29872, +29873, +29874, +29875, +29876, +29877, +29878, +29879
@@ -3040,13 +3040,13 @@ T:_TRIS
 # +280 .. +289 -- Spare codes, reserved for E.164 country code expansion.
 
 
-N:Südafrika
+N:SÃ¼dafrika
 A:Sudafrika
 E:South Africa
 C:+27
 T:ZA
 
-N:Südafrika Mobilfunk
+N:SÃ¼dafrika Mobilfunk
 E:South Africa cellphone
 C:+2782, +2783
 R:ZA
@@ -3166,7 +3166,7 @@ T:_ZWMF
 
 
 N:Reunion
-A:Réunion, Reunion Island, Reunion Islands
+A:RÃ©union, Reunion Island, Reunion Islands
 C:+262
 T:RE
 R:FR
@@ -3295,13 +3295,13 @@ T:_SOMF
 
 # Source (2000-08-13):
 # http://www.itu.int/itudoc/itu-t/number/e/eth/73270.html
-N:Äthiopien
+N:Ã„thiopien
 E:Ethiopia
-A:Äthopien,Athiopien
+A:Ã„thopien,Athiopien
 C:+251
 T:ET
 
-N:Äthiopien Mobilfunk
+N:Ã„thiopien Mobilfunk
 E:Ethiopia cellphone
 C:+251920, +251921, +251922, +251923, +251929
 R:ET
@@ -3443,20 +3443,20 @@ R:GA
 T:_GAMF
 
 
-N:Äquatorial-Guinea
+N:Ã„quatorial-Guinea
 E:Equatorial Guinea
 A:Aquatorial Guinea
 C:+240
 T:GQ
 
-N:Äquatorial-Guinea Mobilfunk
+N:Ã„quatorial-Guinea Mobilfunk
 E:Equatorial Guinea cellphone
 R:GQ
 T:_GQMF
 
 
 N:Sao Tome und Principe
-A:Sao Tome et Principe, Sao Tome and Principa, Sao Tome, Sao Tomé
+A:Sao Tome et Principe, Sao Tome and Principa, Sao Tome, Sao TomÃ©
 E:Sao Tome and Principe
 C:+239
 T:ST
@@ -3638,15 +3638,15 @@ R:BF
 T:_BFMF
 
 
-N:Elfenbeinküste Cote de Ivoire
-A:Cote d'Ivoire (Elfenbeinküste), Cote d'Ivoire, Elfenbeinküste
+N:ElfenbeinkÃ¼ste Cote de Ivoire
+A:Cote d'Ivoire (ElfenbeinkÃ¼ste), Cote d'Ivoire, ElfenbeinkÃ¼ste
 A:Cote DIvoire (Ivory Coast)
 A:Cote d'Ivoiry
 E:Ivory Coast
 C:+225
 T:CI
 
-N:Elfenbeinküste Cote de Ivoire Mobilfunk
+N:ElfenbeinkÃ¼ste Cote de Ivoire Mobilfunk
 E:Ivory Coast cellphone
 R:CI
 T:_CIMF
@@ -3785,7 +3785,7 @@ R:MA
 T:_MAMF
 
 N:Western Sahara
-C:+21248	# Lâayoune, maybe incomplete 
+C:+21248	# LÃ¢ayoune, maybe incomplete 
 R:MA
 T:EH
 
@@ -3798,13 +3798,13 @@ T:_EHMF
 # +210 .. 211 -- Spare codes
 
 
-N:Ägypten
+N:Ã„gypten
 E:Egypt
 A:Agypten
 C:+20
 T:EG
 
-N:Ägypten Mobilfunk
+N:Ã„gypten Mobilfunk
 E:Egypt cellphone
 C:+2012
 R:EG
@@ -4031,8 +4031,8 @@ T:_GUMF
 
 
 N:Marianen (SaipanNord-)
-A:Nördliche Marianen, Marianen, Marianen (Saipan), Saipan, Salpan
-A:Marianen (Nördliche)
+A:NÃ¶rdliche Marianen, Marianen, Marianen (Saipan), Saipan, Salpan
+A:Marianen (NÃ¶rdliche)
 A:Westl. Marianen
 A:Commonwealth of the Northern Mariana Islands (CNMI)
 E:Northern Mariana Islands

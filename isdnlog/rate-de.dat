@@ -1,62 +1,62 @@
 V:3.12 [27-Feb-2005 22:15:34]
 
-# Währungsformat
+# WÃ¤hrungsformat
 #
 # ACHTUNG! Falls weiterhin in EURO angezeigt werden soll, bitte die folgende
 # 				 Zeile aktivieren:
 # U:%.3f EUR
 #
 # Neu: Anzeige in Cent. Hierzu ist isdnlog-4.61 oder besser erforderlich!
-U:^%.3f ¢
+U:^%.3f Â¢
 
 # Diese Tariftabelle ist ein Service der I4L-Tarifdatenbank-Crew.
-# Alle Angaben erfolgen ohne Gewähr
+# Alle Angaben erfolgen ohne GewÃ¤hr
 #
 # (C) Copyright 1999, 2000, 2001, 2002 by Andreas Kool (akool@isdn4linux.de)
 #
-# $Id: rate-de.dat,v 1.130 2005/02/27 22:01:41 tobiasb Exp $
+# $Id: rate-de.dat,v 1.131 2006/01/23 17:07:09 keil Exp $
 #
 #
-# Das "A:" Tag muß folgendermaßen gefüllt werden:
+# Das "A:" Tag muÃŸ folgendermaÃŸen gefÃ¼llt werden:
 #
-#   A:0191011     Sonderrufnummer (nur innerhalb eines Landes gültig,
+#   A:0191011     Sonderrufnummer (nur innerhalb eines Landes gÃ¼ltig,
 #                 und daher _ohne_ Landesvorwahl!
 #   A:+496171     Normale Telefonnummer _immer_ mit Landesvorwahl, und
-#                 ohne führende "0"
+#                 ohne fÃ¼hrende "0"
 #
 #   Handy-Rufnummern werden _mit_ Landesvorwahl eingetragen!
 #
 #
-# Zonenzuordnung für Deutschland
+# Zonenzuordnung fÃ¼r Deutschland
 #
 # Vorbemerkung (Stand Januar 2003): Zwingend erforderlich ist die richtige
 # Verwendung der Inlandszonen 1-3, da diese Zonen nicht wie alle anderen
 # Zonen mittels A:-Tags zugeordnet werden, sondern aufgrund der Verzonungs-
-# tabelle (zone-de-dtag.cdb).  Die folgende Beschreibung der übrigen Zonen
+# tabelle (zone-de-dtag.cdb).  Die folgende Beschreibung der Ã¼brigen Zonen
 # mag veraltet sein.  Insbesondere die unmittelbar folgende Grobzuordnung ist
-# aber weiterhin gültig, solange keine zwingenden Hindernisse bestehen.
+# aber weiterhin gÃ¼ltig, solange keine zwingenden Hindernisse bestehen.
 # Weitere Informationen zum Aufbau dieser Datei liefert man rate-files.
 #
 #   0 -   9     : Inland
 #  10 -  30     : Handies (D-Netze, E-Netze)
 #  31 -  39     : Satelitenfunk (Inmarsat, Iridium)
-#  40 -  59     : Telefonauskünfte
+#  40 -  59     : TelefonauskÃ¼nfte
 #  60 -  79     : Cityruf, Scall, Quix etc.
 #  80 -  89     : Shared Cost (0180)
 #  90 -  99     : Premium Rate (0190)
 # 100 - 159     : Internet Tarife
 # 160 - 169     : Televotum, etc.
-# 170           : Persönliche Rufnummer (0700)
+# 170           : PersÃ¶nliche Rufnummer (0700)
 # 171 - 199     : Sonstiges
 # 200 - xxx     : Auslandstarife
 #
 # Beschreibung einzelner Zonen
 #
 #    0 -   9 : Inland
-#    0 : Verbindungen an der eigenen Tk-Anlage (zwangsläufig kostenlos)
+#    0 : Verbindungen an der eigenen Tk-Anlage (zwangslÃ¤ufig kostenlos)
 #        sowie alle "FreeCall" (kostenlos) Nummern des jeweiligen Providers
 #    1 : Ortszone (alle Nummern, die ohne Vorwahl erreichbar sind.
-#                  Z.Zt. nur über den preselected Provider erreichbar)
+#                  Z.Zt. nur Ã¼ber den preselected Provider erreichbar)
 #    2 : Cityzone (Nummern im Umkreis von max. 20 km)
 #    3 : Region 50 (Nummern im Umkreis von max. 50 km)
 #    4 : Fernzone (Deutschlandweit)
@@ -126,7 +126,7 @@ U:^%.3f ¢
 #  163 : T-VoteCall 2           (01372)
 #  164 : DTAG Ansagedienste
 #
-#  170 : Persönliche Rufnummer  (0700)
+#  170 : PersÃ¶nliche Rufnummer  (0700)
 #
 #  171 - 199 : Sonstiges
 #  171 : Expo 2000              (02000)
@@ -137,38 +137,38 @@ U:^%.3f ¢
 #
 # Sonderrufnummern:
 #
-# o Zwingend erforderlich für in allen Ortsnetzen ohne führende Null (nationale
-#   Verkehrsausscheidungsziffer) gültige Nummern wie 110 oder 118..
+# o Zwingend erforderlich fÃ¼r in allen Ortsnetzen ohne fÃ¼hrende Null (nationale
+#   Verkehrsausscheidungsziffer) gÃ¼ltige Nummern wie 110 oder 118..
 #
-# o Außerdem genutzt für alle nationalen Rufnummern mit besonderen Preis,
-#   anders gesagt für alle Rufnummern außer:
-#   - Teilnehmerrufnummern, lies Festnetzanschlüsse in den Ortsnetzen
+# o AuÃŸerdem genutzt fÃ¼r alle nationalen Rufnummern mit besonderen Preis,
+#   anders gesagt fÃ¼r alle Rufnummern auÃŸer:
+#   - Teilnehmerrufnummern, lies FestnetzanschlÃ¼sse in den Ortsnetzen
 #   - Mobilfunk
-#   - Bündelfunk Dolphin (01672)
+#   - BÃ¼ndelfunk Dolphin (01672)
 #   - Nationale Teilnehmerrufnummer (NTR) (032)
 #
-# o Nicht möglich bei Kennzahlen zur Providerauswahl, neben der offiziellen
+# o Nicht mÃ¶glich bei Kennzahlen zur Providerauswahl, neben der offiziellen
 #   010.. sind dies zur Zeit die 01900 und die 09005.
 #
 # Ohne Sonderrufnummernstatus erfolgt bei fehlenden Preisinformationen
-# eine Zuordnung zur nationalen Ferngesprächszone (Z:4 mit A:DE oder A:+49).
-# Dieser Umstand steht gegenwärtig einer deutlichen Reduzierung der Sonder-
-# rufnummern hauptsächlich entgegen.
+# eine Zuordnung zur nationalen FerngesprÃ¤chszone (Z:4 mit A:DE oder A:+49).
+# Dieser Umstand steht gegenwÃ¤rtig einer deutlichen Reduzierung der Sonder-
+# rufnummern hauptsÃ¤chlich entgegen.
 #
-# Bei überlappenden Definitionen muss die speziellere Definition vor der
+# Bei Ã¼berlappenden Definitionen muss die speziellere Definition vor der
 # allgemeineren stehen, z. B. "S:.. // N:01141" vor "S:.. // N:011*".
-# Dies berücksichtigend ergeben sich die folgenden, numerisch aufsteigend
+# Dies berÃ¼cksichtigend ergeben sich die folgenden, numerisch aufsteigend
 # geordneten Angaben:
 #
-# Der Nummernraum für das öffentliche Telefonnetz/ISDN in Deutschland
+# Der Nummernraum fÃ¼r das Ã¶ffentliche Telefonnetz/ISDN in Deutschland
 #
 # Quelle: http://www.regtp.de/reg_tele/start/in_05-06-01-00-00_m/index.html
 # Stand: 24.11.2004
-# mit #~ gekennzeichnete Angaben sind älteren Datums und ggf. hinfällig.
-# Mit Ausnahme von Mobil- und Bündelfunk ist der Nummernplan vollständig
-# wiedergegeben, sich für Sonderrufnummern eignende Bereiche (s. o.) sind
-# auskommentiert.  Teilweise wird nicht die kürzest mögliche Notation
-# gewählt, um bei der Ausgabe eine bessere Strukturierung zu gewährleisten,
+# mit #~ gekennzeichnete Angaben sind Ã¤lteren Datums und ggf. hinfÃ¤llig.
+# Mit Ausnahme von Mobil- und BÃ¼ndelfunk ist der Nummernplan vollstÃ¤ndig
+# wiedergegeben, sich fÃ¼r Sonderrufnummern eignende Bereiche (s. o.) sind
+# auskommentiert.  Teilweise wird nicht die kÃ¼rzest mÃ¶gliche Notation
+# gewÃ¤hlt, um bei der Ausgabe eine bessere Strukturierung zu gewÃ¤hrleisten,
 # z. B. "N:01801" usw. statt "N:0180"
 
 # S:nationale Verkehrsausscheidungsziffer
@@ -193,7 +193,7 @@ N:01191
 
 S:Sperr-Notruf			# Sperrung elektronischer Berechtigungen
 N:116116, 0116116
-# 0116116 für Anrufe aus dem Ausland, darf im Inland zu 116116 umgesetzt werden
+# 0116116 fÃ¼r Anrufe aus dem Ausland, darf im Inland zu 116116 umgesetzt werden
 
 S:Mehrwertdienste		# auslaufend
 N:011*
@@ -202,7 +202,7 @@ N:011*
 S:ID web.de
 N:01212*
 
-S:ID tesion CN Südwest
+S:ID tesion CN SÃ¼dwest
 N:012230*
 
 S:ID 3U Telecom
@@ -220,7 +220,7 @@ N:012*
 S:Televotum, Teledialog		# Verlagerung geplant, danach Reserve
 N:01370*, 01371*, 01372*, 01373*, 01374*, 01375*, 01376*, 01377*, 01378*, 01379*
 N:01381*
-# 0137: Rufnummern für Massenverkehr zu bestimmten Zielen (MABEZ)
+# 0137: Rufnummern fÃ¼r Massenverkehr zu bestimmten Zielen (MABEZ)
 
 # S:frei			# soweit frei: Reserve
 # N:013*
@@ -240,7 +240,7 @@ N:0164*
 S:Telmi				# e*message [Deutsche Funkruf GmbH]
 N:0166*
 
-# S:Bündelfunk			# siehe country.dat
+# S:BÃ¼ndelfunk			# siehe country.dat
 # N:0167
 
 S:Scall				# e*message [TMobil]
@@ -285,14 +285,14 @@ N:01901*, 01902*, 01903*, 01904*, 01905*, 01906*, 01907*, 01908*, 01909*
 # und kann daher analog 010* nicht als Sonderrufnummer definiert sein.
 # N:01900*
 
-# Zuordnung von offenen Internetzugängen zu den jeweiligen Telefonanbietern,
-# da 019[1-3]* unabhängig einer vorangestellten VBN zum selben
-# Anbieter führt und bei diesen Rufnummern eine VBN nicht notwendig ist.
+# Zuordnung von offenen InternetzugÃ¤ngen zu den jeweiligen Telefonanbietern,
+# da 019[1-3]* unabhÃ¤ngig einer vorangestellten VBN zum selben
+# Anbieter fÃ¼hrt und bei diesen Rufnummern eine VBN nicht notwendig ist.
 # Bei Irrtum bitte Nachricht an rates4linux-users@lists.sourceforge.net .
 #
-# Die für die Zuordnungen erforderlichen X:-Tags sind beim jeweiligen
-# Provider angegeben, was ihre Wirkung nicht beeinträchtigt und Fehler,
-# insbesondere beim Auslassen und Hinzufügen einzelner Provider, vermeidet.
+# Die fÃ¼r die Zuordnungen erforderlichen X:-Tags sind beim jeweiligen
+# Provider angegeben, was ihre Wirkung nicht beeintrÃ¤chtigt und Fehler,
+# insbesondere beim Auslassen und HinzufÃ¼gen einzelner Provider, vermeidet.
 
 #~ Internetzugaenge zzgl. Grundgebuehr
 S:UUnet classic
@@ -324,7 +324,7 @@ N:019231770 # freenet.de AG Internet-by-call           # 01019019231770 (user:be
 N:019231780 # freenet.de AG Sorglos                    # 01019019231780 (user:beliebig; pw: beliebig)
 N:0192340   # net@home (GTS Esprit) Call by Call 01040 # 010400192340   (User:esprit; pw:telecom oder User:gts; pw:internet)
 N:0192343   # Call.POP/Imagecom (GTS Esprit)           # 010400192343   (User:call; pw:pop)
-N:0192361   # Lübecker Nachrichten LN-Online           # 010880192361   (User:LN; pw:online)
+N:0192361   # LÃ¼becker Nachrichten LN-Online           # 010880192361   (User:LN; pw:online)
 N:01924924  # Internet Private CbC Telepassport        # 0102401924924  (User:beliebig: pw:beliebig)
 N:019251    # Talknet (Talkline)                       # 01050019251    (User:talknet: pw:talknet)
 N:0192658   # MSN Easysurfer (Worldcom/UUnet)	       # 0192658   	(User:beliebig; pw:beliebig)
@@ -349,7 +349,7 @@ N:0194*
 
 S:Betreiberkennung int. Mehrwertdienst
 N:01988*
-# Zielnetzbetreiberkennungen zur Generierung von Routingnummern für
+# Zielnetzbetreiberkennungen zur Generierung von Routingnummern fÃ¼r
 # Internationale entgeltfreie Mehrwertdienste 
 
 S:Routingnr. Auskunftsdienste
@@ -373,17 +373,17 @@ N:031*
 # S:Nat. Teilnehmerrufnummern	# (NTR)
 # N:032*
 
-# S:belegt			# Reserve für Telekommunikationsdienste
+# S:belegt			# Reserve fÃ¼r Telekommunikationsdienste
 # N:0600*
 
-# S:frei			# Reserve für Telekommunikationsdienste
+# S:frei			# Reserve fÃ¼r Telekommunikationsdienste
 # N:0500*, 0501*, 0601*
 
-S:Persönliche Rufnummern
-N:0700*, 0701*			# 0701: Reserve für persönliche Rufnummern
+S:PersÃ¶nliche Rufnummern
+N:0700*, 0701*			# 0701: Reserve fÃ¼r persÃ¶nliche Rufnummern
 
 S:Freephone			# Freephone Dienste
-N:0800*, 0801*			# 0801: Reserve für Freephone Dienste
+N:0800*, 0801*			# 0801: Reserve fÃ¼r Freephone Dienste
 
 S:Premium Rate - Information
 N:09001*
@@ -398,7 +398,7 @@ N:09003*
 S:Premium Rate - Dialer		# Registrierungspflichtige Anwahlprogramme
 N:09009*			# seit 14.12.2004 obligatorisch
 
-# S:frei			# Reserve für Telekommunikationsdienste
+# S:frei			# Reserve fÃ¼r Telekommunikationsdienste
 # N:0901*, 0902*, 0903*, 0904*, 0905*
 
 # S:Ortsnetzkennzahlen		# (ONKz)
@@ -415,7 +415,7 @@ N:112
 # 116116, 0116116: siehe vor 011
 
 # Zuordnung der Auskunftdienste zu den jeweiligen Provider, diese
-# Zuordnung gilt unabhängig der Wahl einer VBN.  Bis auf weiteres
+# Zuordnung gilt unabhÃ¤ngig der Wahl einer VBN.  Bis auf weiteres
 # werden die Auskunftsdienste beim Telefonie-Angebot des jeweiligen
 # Providers angegeben, beginnend mit Zone 40.
 
@@ -494,7 +494,7 @@ S:AK info-portal
 N:11849, 11881, 11889
 N:11882				# Ausland
 
-S:AK der heiße Draht
+S:AK der heiÃŸe Draht
 N:11852, 11866, 11868
 
 S:AK Yellow Acces Operating
@@ -549,7 +549,7 @@ N:11899
 S:Auskunft			# Auskunftsdienste (AK)
 N:118*
 # Rufnummern der Form 118xy mit x=1..9 und y=0..9, wenn hiervon keine mehr
-# verfügbar, dann auch der Form 1180yy
+# verfÃ¼gbar, dann auch der Form 1180yy
 
 # S:netzinterne Nutzung
 # N:11*
@@ -565,11 +565,11 @@ N:118*
 # Vergabe von Pnums
 # =================
 # 
-# Jeder Provider benötigt eine einmalige Pnum.  Diese Datei dokumentiert
+# Jeder Provider benÃ¶tigt eine einmalige Pnum.  Diese Datei dokumentiert
 # die Vergabe und stellt damit die Einmaligkeit sicher.  Diese Datei ist
 # im Rates4linux-CVS als tarife/rate-de/Pnum-Vergabe beheimatet.
 # 
-# Zu den Begrifflichkeiten: Die _Datei_ in diesem Verzeichnis enthält
+# Zu den Begrifflichkeiten: Die _Datei_ in diesem Verzeichnis enthÃ¤lt
 # den mit P:_Pnum_ und B:_VBN_ eindeutig identifizierten Provider.
 # Gibt es mehrere Angebote mit gleicher VBN werden diese in der Datei
 # hintereinander notiert: P:_Pnum_,0   P:_Pnum_,1   P:_Pnum_,2   usw.
@@ -600,7 +600,7 @@ N:118*
 #  309
 # -----+------------+------------+-----------------------------
 #  310
-#  ...   *** reserviert für Endnutzer ***
+#  ...   *** reserviert fÃ¼r Endnutzer ***
 #  319
 # -----+------------+------------+-----------------------------
 #  320   *** reserviert ***
@@ -620,12 +620,12 @@ N:118*
 # 1) 2003-08-14--2005-02-05: VBN und Datei 09005310
 #
 # Die `historischen' Vergaben sind, teilweise weit, vor dem Jahr 2003
-# geschehen und zur möglichst weitgehenden Abwärtskompatibilität mit
-# älteren Versionen von isdnlog & Co beizubehalten.
+# geschehen und zur mÃ¶glichst weitgehenden AbwÃ¤rtskompatibilitÃ¤t mit
+# Ã¤lteren Versionen von isdnlog & Co beizubehalten.
 # 
-# Der Bereich `reserviert für Endnutzer' stellt diesen Pnums für
-# individuelle Providerdefinitionen zur Verfügung, mit der Sicherheit,
-# dass diese auch in der Zukunft nicht zu Kollisionen führen.
+# Der Bereich `reserviert fÃ¼r Endnutzer' stellt diesen Pnums fÃ¼r
+# individuelle Providerdefinitionen zur VerfÃ¼gung, mit der Sicherheit,
+# dass diese auch in der Zukunft nicht zu Kollisionen fÃ¼hren.
 # 
 # 
 #####################################################################
@@ -636,7 +636,7 @@ B:01011
 # G:21-Nov-2001
 D:dtag
 C:Name:o.tel.o CbC
-C:Address:Mannesmann Zwölfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 Düsseldorf
+C:Address:Mannesmann ZwÃ¶lfte Verwaltungsgesellschaft mbH, Mannesmannufer 2, 40213 DÃ¼sseldorf
 C:Homepage:http://www.o-tel-o.de
 C:Hotline:01803/1998 oder 0800/7370 (Geschaeftskunden)
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
@@ -650,7 +650,7 @@ P:13,0 Tele2 Privat CbC
 B:01013
 D:dtag
 C:Name:Tele2 Privat CbC
-C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
+C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 DÃ¼sseldorf
 C:Homepage:http://www.tele2.de
 C:Telefon:01805-01013-1
 C:Hotline:0800/24-01013
@@ -683,7 +683,7 @@ T:W/07-19=0.046/60
 T:W/19-07=0.0148/60
 T:E,H/*=0.0170/60
 #
-# Mobilfunknetz wird über die Netzvorwahl bestimmt.
+# Mobilfunknetz wird Ã¼ber die Netzvorwahl bestimmt.
 Z:10 Mobil D-Netze
 A:_DEMD1
 A:_DEMD2
@@ -717,7 +717,7 @@ P:13,1 Tele2 Privat Preselection
 B:01013
 D:dtag
 C:Name:Tele2 Privat Preselection
-C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 Düsseldorf
+C:Address:Telecommunications Services GmbH, Postfach 130840, 40558 DÃ¼sseldorf
 C:Homepage:http://www.tele2.de
 C:Telefon:01805-01013-1
 C:Hotline:0800/24-01013
@@ -750,7 +750,7 @@ T:W/07-19=0.0460/60
 T:W/19-07=0.0148/60
 T:E,H/*=0.0170/60
 #
-# Mobilfunknetz wird über die Netzvorwahl bestimmt.
+# Mobilfunknetz wird Ã¼ber die Netzvorwahl bestimmt.
 Z:10 Mobil D-Netze
 A:_DEMD1
 A:_DEMD2
@@ -799,7 +799,7 @@ A:_FOMF,_GRMF,_HRMF
 A:_PLMF,_RUMF
 A:_YUMF,_SKMF,_SIMF
 A:_CZMF
-#A:Türkische Region Zypern Mobilfunk
+#A:TÃ¼rkische Region Zypern Mobilfunk
 A:_HUMF,_CYMF
 T:*/*=0.41/60
 Z:216 Int. 5
@@ -954,10 +954,10 @@ T:6-7/*=0.026/60 Wochenende
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.185/60
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.037/60 Superangebot
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.194/60 Superangebot
 #####################################################################
@@ -975,7 +975,7 @@ C:EMail:service@01019.net, rechnung@01019.net
 C:Homepage:http://www.01019telefondienste.de/, http://www.01019.net/
 C:TarifURL:http://www.01019.net/tarife/callbycall.html
 C:TarifChanged:2005-02-15
-C:Quelle:(für freenet.de Internet-CbC) freenet.de AG Tarifblatt (2004-08-01)
+C:Quelle:(fÃ¼r freenet.de Internet-CbC) freenet.de AG Tarifblatt (2004-08-01)
 C:TarifURL:http://www.freenet.de/freenet/zugang/impressum/tarifblatt/index.html
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
@@ -993,12 +993,12 @@ A:031* 	 	      # Testrufnummern
 A:110		      # Polizei
 A:112		      # Notruf, Feuerwehr
 T:*/*=0
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:  W/09-19=0.0139/60
 T:  W/19-09=0.0290/60
 T:E,H/09-19=0.0090/60
 T:E,H/19-09=0.0290/60
-Z:2-4 Ferngespräche bundesweit
+Z:2-4 FerngesprÃ¤che bundesweit
 A:DE
 T:  W/09-15=0.0169/60
 T:  W/15-19=0.0135/60
@@ -1036,7 +1036,7 @@ T:*/*=0.0590/0,0.0078/60
 X:019231770=19
 Z:105 freenet.de Sorglos CbC
 A:019231780
-T:*/*=0.0129/60 	# für freenet.de Mitglieder auch bei 01929
+T:*/*=0.0129/60 	# fÃ¼r freenet.de Mitglieder auch bei 01929
 X:019231780=19
 Z:106 freenet.de SuperStar by-Call
 A:019231785
@@ -1066,7 +1066,7 @@ C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 R:19,0;0,40,102-106 	# Freecall, Auskunft, Internet-CbC wie bei 01019 CbC
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:*/*=0.030(60)/1
 Z:2 Regio 20
 T:*/*=0.0460(60)/1
@@ -1101,11 +1101,11 @@ C:Erfasste Zonen:
 C:1	-   4	Deutschland
 C:10		Mobilfunk
 R:19,0;0,40,102-106 	# Freecall, Auskunft, Internet-CbC wie bei 01019 CbC
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:*/07-19=0.0300/60
 T:*/19-22=0.0200/60
 T:*/22-07=0.0150/60
-Z:2-4 Ferngespräche bundesweit
+Z:2-4 FerngesprÃ¤che bundesweit
 A:DE
 T:*/07-19=0.0610/60 Standard
 T:*/19-22=0.0460/60 Spar
@@ -1142,7 +1142,7 @@ Z:0 FreeCall
 A:0800*,0801*        # Freephone
 A:031* 	 	      # Testrufnummern
 T:*/*=0
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:*/09-21=0.0390/60
 T:*/21-09=0.0139/60
 Z:2-4 Inland
@@ -1163,7 +1163,7 @@ T:*/*=0.199/60
 #
 P:27,0 Nordcom nordFon(Net) ISDN
 B:01027
-# Verzonungstabelle für Zonen 1-3 ("50 km umzu") erforderlich:
+# Verzonungstabelle fÃ¼r Zonen 1-3 ("50 km umzu") erforderlich:
 D:dtag
 C:Name:Nordcom nordFon(Net) ISDN
 C:Address:nordCom, EWE TEL GmbH, Am Weserstadion 1, 28205 Bremen
@@ -1172,8 +1172,8 @@ C:TarifChanged:2005-04-01
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 #
-C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom Kunden
-C:Regionalanbieter für Bremen, Bremerhaven, Achim, Lemwerder, Langen
+C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne GesprÃ¤che zwischen Nordcom Kunden
+C:Regionalanbieter fÃ¼r Bremen, Bremerhaven, Achim, Lemwerder, Langen
 C:und Schiffdorf.
 C:Komplettanschluss, mtl. 22,00 EUR.
 C:Euro
@@ -1240,15 +1240,15 @@ C:TarifChanged:2003-01-01
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 #
-C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne Gespräche zwischen Nordcom
+C:Sondertarif 5 "Nordcom-Nordcom": Netzinterne GesprÃ¤che zwischen Nordcom
 C:Kunden
-C:Regionalanbieter für Bremen, Bremerhaven, Achim, Lemwerder, Langen
+C:Regionalanbieter fÃ¼r Bremen, Bremerhaven, Achim, Lemwerder, Langen
 C:und Schiffdorf.
 C:Komplettanschluss, mtl. 47,00 EUR.
 C:Euro
 C:Erfasste Zonen:
 C:102           nordNet Flatrate
-C:übrige Zonen wie nordFon(Net) ISDN
+C:Ã¼brige Zonen wie nordFon(Net) ISDN
 R:27,0;0-15
 #
 Z:102 nordNet Flatrate
@@ -1262,8 +1262,8 @@ P:30,0 01030 CbC
 B:01030
 D:dtag
 C:Name:01030 Call by Call
-C:Address:Telecall Vertriebsgesellschaft für Telefonsysteme mbH
-C:Address:Leopoldstrasse 16, 40211 Düsseldorf
+C:Address:Telecall Vertriebsgesellschaft fÃ¼r Telefonsysteme mbH
+C:Address:Leopoldstrasse 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.01030.com/
 C:TarifURL:http://www.01030.com/tarife.php
 C:TarifChanged:2005-02-25
@@ -1308,7 +1308,7 @@ C:Erfasste Zonen:
 C:   0       Freephone
 C:   1 -   4 Deutschland
 C:  10 -  11 Mobilfunk
-C:  20       Bündelfunk (01672 = Dolphin Telecom)
+C:  20       BÃ¼ndelfunk (01672 = Dolphin Telecom)
 C:  25 -  35 Satellitenfunk
 C:  40 -  41 Auskunft DTAG Inland/Ausland
 C:  44 -  45 Auskunft Telegate Inland/Ausland
@@ -1317,20 +1317,20 @@ C:  80 -  84 Shared Cost 0180
 C:  90 -  95 Premium Rate 0190 und 0900
 C: 100       T-Online
 C: 160 - 164 T-VoteCall 0137,0138
-C: 170       Persönliche Rufnummer 0700
+C: 170       PersÃ¶nliche Rufnummer 0700
 C: 171       Ansage Lotto (01162) und Zeit (01191)
 C: 173 - 174 City- und Deutschlandverbindungen mit TNB Zuschlag
 C: 181 - 185 IVPN/NG/ID: Deutsche Bank, Barmer Ersatzkasse, web.de
 C: 251 - 281 Ausland Mobilfunk
-C: 286 - 299 Ausland Mobilfunk mit Preisänderung am 01.05.2005 (temporär)
+C: 286 - 299 Ausland Mobilfunk mit PreisÃ¤nderung am 01.05.2005 (temporÃ¤r)
 C: 301 - 311 Ausland
-# Auslandszonen 200-249 für AktivPlus in P:33,1 (vorrangig) freigehalten.
-# unvollständig erfasst nach Inlandspreisliste:
+# Auslandszonen 200-249 fÃ¼r AktivPlus in P:33,1 (vorrangig) freigehalten.
+# unvollstÃ¤ndig erfasst nach Inlandspreisliste:
 #   012, 0181-0189, siehe Zone 181 und folgende.
-# Die Informationen zu ausländischen Mobilfunknetzen in den Dateien
-#   country[-de].dat und dest.cdb müssen nicht mit denen der DTAG überein-
+# Die Informationen zu auslÃ¤ndischen Mobilfunknetzen in den Dateien
+#   country[-de].dat und dest.cdb mÃ¼ssen nicht mit denen der DTAG Ã¼berein-
 #   stimmen.  Nicht jedem Eintrag der Form "<Land> Mobilfunk" sind auch
-#   Nummerbereiche zugeordnet.  Die DTAG bietet zur Ermittelung der für
+#   Nummerbereiche zugeordnet.  Die DTAG bietet zur Ermittelung der fÃ¼r
 #   sie relevanten Vorwahlnummern folgende Rufnummer an: 0800-33-03333.
 #
 Z:0 Freephone
@@ -1339,9 +1339,9 @@ Z:0 Freephone
 # A:08003301000 # Telekom Privatkundenvertrieb
 # A:08003301115 # Telekom Geschaftskundenvertrieb
 # A:08003301136 # Telegrammaufnahme per Telefax
-# A:08003302000 # Störungsannahme PK
-# A:08003301172 # Störungsannahme GK
-# A:08003301174 # Störungsannahme Kabelfernsehen
+# A:08003302000 # StÃ¶rungsannahme PK
+# A:08003301172 # StÃ¶rungsannahme GK
+# A:08003301174 # StÃ¶rungsannahme Kabelfernsehen
 # A:08003302050 # Beratung Telefonkarten
 # A:+10         # Operator Service
 A:110         # Polizei / Notruf
@@ -1349,11 +1349,11 @@ A:112         # Feuerwehr / Rettungsleitstelle
 A:0800*,0801* # Freephone
 A:_F800
 A:_KMFF
-# Gebührenfreiheit restlicher Destinationen unbelegt
+# GebÃ¼hrenfreiheit restlicher Destinationen unbelegt
 A:031* 	      # Testrufnummern
 A:_NLFF,_CHFF
-A:116116 	# Sperr-Notruf, Rufnummer fürs Inland
-A:0116116 	# Sperr-Notruf, Umwertung zu 116116 ist zulässig
+A:116116 	# Sperr-Notruf, Rufnummer fÃ¼rs Inland
+A:0116116 	# Sperr-Notruf, Umwertung zu 116116 ist zulÃ¤ssig
 T:*/*=0
 #
 Z:1-2 City
@@ -1394,11 +1394,11 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.25694/60	# 0.2215 +16%
 #
-Z:20 Bündelfunk Dolphin Telecom
+Z:20 BÃ¼ndelfunk Dolphin Telecom
 A:_DEBD
 T:*/*=0.368068/60	# 0.3173 +16%
 #
-# FIXME: gem. header nur Z:31-39 für Satellitenfunk
+# FIXME: gem. header nur Z:31-39 fÃ¼r Satellitenfunk
 Z:25 Inmarsat A
 A:_INA_
 T:*/*=5.267328(60)/0.7	# 4.5408 +16%
@@ -1433,11 +1433,11 @@ Z:35 Thuraya
 A:_THUR
 T:*/*=4.5936(60)/0.8	# 3.9600 +16%
 #
-# Hier angegebene Auskunftpreise gelten nicht für Arcor-Komplettanschlüsse,
+# Hier angegebene Auskunftpreise gelten nicht fÃ¼r Arcor-KomplettanschlÃ¼sse,
 # daher keine X:-Tags, Zonennummern manuell synchronisiert.
 #
 Z:40 Auskunft DTAG Inland
-A:11833,11836,11837 	# auf deutsch, türkisch und englisch
+A:11833,11836,11837 	# auf deutsch, tÃ¼rkisch und englisch
 T:*/*=0.199984/0,0.989944/60 	# 0.1724 0.8534 +16%  FIXME: nach Weitervermittlung falsch
 Z:41 Auskunft DTAG Ausland
 A:11834
@@ -1445,7 +1445,7 @@ T:*/*=0.989944/0,1.189928/60	# 0.8534 1.0258 +16%
 #
 C:TarifURL:http://www.telegate.de/telegate/agb.htm
 C:TarifChanged:2003-07
-# FIXME: Preiswechsel nach Weitervermittlung nicht unterstützt.
+# FIXME: Preiswechsel nach Weitervermittlung nicht unterstÃ¼tzt.
 Z:43 Auskunft Telegate Inland
 A:11880
 T:*/*=1.19/60
@@ -1527,10 +1527,10 @@ A:+499005
 T:*/*=30.00|2.00/60 variable Tarifierung - Obergrenzen nach TKG angenommen
 #
 Z:100 T-Online
-# nur bei Tarif 'eco' oder 'DSL-flat' richtig, für 'by call' s. u.
+# nur bei Tarif 'eco' oder 'DSL-flat' richtig, fÃ¼r 'by call' s. u.
 A:0191011
 T:*/*=0.015892/60 eco o. dsl flat	# 0.01370 +16%
-# T-Online by call läuft auch über die 0191011, dann diese T-Zeile:
+# T-Online by call lÃ¤uft auch Ã¼ber die 0191011, dann diese T-Zeile:
 # T:*/*=0.019894/60 by call	# 0.01715 +16%
 X:0191011=33
 #
@@ -1550,7 +1550,7 @@ Z:164 T-VoteCall 0137-[89]
 A:01378,01379
 T:*/*=0.489984/0,0/60	# 0.4224 +16%
 #
-Z:170 Persönliche Rufnummer
+Z:170 PersÃ¶nliche Rufnummer
 A:0700 	# FIXME: zumindest teilw. intern. erreichbar, aber N:0700 in header
 T:[-24.12.2005]W/09-18=0.061248/30	# 0.0528 +16%
 T:[-24.12.2005]W/18-09=0.061248/60	# 0.0528 +16%
@@ -1568,31 +1568,31 @@ Z:171 Ansage Lotto/Zeit
 A:01162,01191
 T:*/*=0.24592/60	# 0.2120 +16%
 #
-# Ab 01.05.2005 werden für Verbindungen "zu Anschlüssen bestimmter anderer
-# Teilnehmernetzbetreiber" erhöhte Preise berechnet. Für welche Rufnummern
+# Ab 01.05.2005 werden fÃ¼r Verbindungen "zu AnschlÃ¼ssen bestimmter anderer
+# Teilnehmernetzbetreiber" erhÃ¶hte Preise berechnet. FÃ¼r welche Rufnummern
 # dies zutrifft kann dann unter 0800 33 09576 ermittelt werden.
 # 
-# Hier in der rate-de.dat werden dafür für die einzelnen Tarife der Dt.
+# Hier in der rate-de.dat werden dafÃ¼r fÃ¼r die einzelnen Tarife der Dt.
 # Telekom die Zonen 173 (City) und 174 (Deutschland) neu geschaffen.
 # Werden Verbindungen zu "Onlinediensten" abweichend tarifiert, ergeben sich
-# zusätzlich die neuen Zonen 175 (Onlinedienste City) und 176 (Onlinedienste
+# zusÃ¤tzlich die neuen Zonen 175 (Onlinedienste City) und 176 (Onlinedienste
 # Deutschland).  Individuell von jedem Nutzer anzugegeben sind jeweils die
 # betroffenen Rufnummern.
 #
 # Dies kann entweder direkt in dieser Datei durch entsprechende A:-Zeilen
 # geschehen, die deaktiviert ('#') vorgeleistet sind oder durch im Verzeichnis
-# der rate-de.dat angelegte Include-Dateien. Hierfür sind dann die
+# der rate-de.dat angelegte Include-Dateien. HierfÃ¼r sind dann die
 # deaktivierten I:-Zeilen zu aktivieren und Include-Dateien mit entsprechenden
-# Namen anzulegen. Für die folgende Zone 173 wäre alternativ zur A:-Zeile zum
+# Namen anzulegen. FÃ¼r die folgende Zone 173 wÃ¤re alternativ zur A:-Zeile zum
 # Beispiel die Datei dtag-tnb-zuschlag-city mit einer Zeile
-# "A:+492001987654, +492001876543" anzulegen. Bei dieser Variante müssen die
-# Rufnummern nicht wiederholt für jeden Tarif angegeben werden und bei einer
+# "A:+492001987654, +492001876543" anzulegen. Bei dieser Variante mÃ¼ssen die
+# Rufnummern nicht wiederholt fÃ¼r jeden Tarif angegeben werden und bei einer
 # aktualisierten rate-de.dat sind lediglich die jeweiligen I:-Zeilen wieder
-# zu aktivieren. Eine dritte Möglichkeit besteht in X:-Zeilen mit Angabe
-# einer Zone entweder in der rate-de.dat oder in der raté.conf.  Analog zum
-# vorigen Beispiel wäre "X:02001987654=33z173, 02001876*=33z173".
+# zu aktivieren. Eine dritte MÃ¶glichkeit besteht in X:-Zeilen mit Angabe
+# einer Zone entweder in der rate-de.dat oder in der ratÃ©.conf.  Analog zum
+# vorigen Beispiel wÃ¤re "X:02001987654=33z173, 02001876*=33z173".
 #
-# Dieser Anwendungsfall ist neu für die rate-de.dat, daher wird um
+# Dieser Anwendungsfall ist neu fÃ¼r die rate-de.dat, daher wird um
 # Erfahrungsberichte an rates4linux-crew@lists.sourceforge.net oder die
 # rates4linux-users Mailingliste gebeten.
 #
@@ -1635,35 +1635,35 @@ T:[01.01.2006]E,H/*=0.031628/60 Abend	# 0.0258 +16%
 #
 # - 0181     Internationale Virtuelle Private Netze (IVPN)
 # - 018[2-9] Nutzergruppen (NG), vormals Geschlossene Benutzergruppen
-# Für beide Nummernarten gibt es keine öffentliche Verzeichnisse über
+# FÃ¼r beide Nummernarten gibt es keine Ã¶ffentliche Verzeichnisse Ã¼ber
 # vergebene Rufnummern.  Hinsichtlich der Verbindungspreise verweist die
 # Dt. Telekom auf die Rufnummer 0800 33 03333.  Hier folgen einige
-# ausgewählte Kennzahlen, die Preisangaben stammen von den jeweiligen
-# Inhabern.  Bei mehr als 19 Einträgen werden neue Zonennummern benötigt.
+# ausgewÃ¤hlte Kennzahlen, die Preisangaben stammen von den jeweiligen
+# Inhabern.  Bei mehr als 19 EintrÃ¤gen werden neue Zonennummern benÃ¶tigt.
 #
 # Einen Sonderfall stellt der Informationsverbund Berlin - Bonn (IVBB) mit
 # der Kennzahl 01888 dar: Aus den Vorwahlbereichen 0[3489]* fallen die Kosten
 # einer Verbindung nach Berlin (030) an, aus den Vorwahlbereichen 0[2567]*
 # einer Verbindung nach Bonn (0228) an.  Bei den Optionstarifen gibt es teil-
 # weise abweichende Regelungen.  Davon abgesehen wird der IVBB der Zone 4
-# zugeordnet, individuell kann dies mit einem X: Tag in der rate.conf geändert
+# zugeordnet, individuell kann dies mit einem X: Tag in der rate.conf geÃ¤ndert
 # werden, siehe rate-files(5).
 #
-# Der gesamte Nummernbereich 018* behält seinen Sonderrufnummernstatus,
-# andernfalls würde bei fehlender Preisangabe fälschlicherweise der Preis für
-# nationale Festnetzgespräche (Zone 4 mit A:DE) angewandt.  Ein generelles
-# X: Tag würde den Preisvergleich mit anderen Vollanschlüssen beeinträchtigen.
+# Der gesamte Nummernbereich 018* behÃ¤lt seinen Sonderrufnummernstatus,
+# andernfalls wÃ¼rde bei fehlender Preisangabe fÃ¤lschlicherweise der Preis fÃ¼r
+# nationale FestnetzgesprÃ¤che (Zone 4 mit A:DE) angewandt.  Ein generelles
+# X: Tag wÃ¼rde den Preisvergleich mit anderen VollanschlÃ¼ssen beeintrÃ¤chtigen.
 #
 # - 012      Innovative Dienste (ID)
 # Vergleichbar mit 018, hier gibt es aber ein Verzeichnis der zugeteilten
-# Nummernbereiche, die Dt. Telekom verweist für Preisauskünfte auf die
+# Nummernbereiche, die Dt. Telekom verweist fÃ¼r PreisauskÃ¼nfte auf die
 # Rufnummer 0800 33 04567.
 #
 # Quelle: 2005-01-01 http://www.deutsche-bank.de/pbc/pdf/db_service_nummern.pdf
 Z:181 Deutsche Bank
 A:01818100
 T:*/*=0.099/60
-# Quelle: 2005-01-01 http://www.barmer.de/ >Service&Ber. >Geschäftsstellensuche
+# Quelle: 2005-01-01 http://www.barmer.de/ >Service&Ber. >GeschÃ¤ftsstellensuche
 Z:182 Barmer Ersatzkasse
 A:018500
 T:*/*=0.029/60
@@ -1680,7 +1680,7 @@ Z:185 web.de Kundenservice
 A:012128200000
 T:*/*=1.86/60
 #
-# Numerierung der Zonen für Auslandsmobilfunk
+# Numerierung der Zonen fÃ¼r Auslandsmobilfunk
 #    Z := 246 + 3*<Nr> + <*/**/***>
 #    z. B. 'Nr. 1 *' = 250 oder Nr. '11 ***' = 282
 Z:251 Welt Mobilfunk 1.2
@@ -1763,7 +1763,7 @@ Z:282 Welt Mobilfunk 11.3
 A:_KEMF
 T:*/*=1.7719/60	# 1.2844+0.2431 +16%
 #
-# Vorrübergehende Zonen für Mobilfunkpreisänderungen am 01.05.2005.
+# VorrÃ¼bergehende Zonen fÃ¼r MobilfunkpreisÃ¤nderungen am 01.05.2005.
 Z:286 Welt Mobilfunk 3.1-2
 A:_BAMF
 T:[-01.05.2005]*/*=0.476644/60	# 0.2644+0.1465 +16%
@@ -1901,18 +1901,18 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.
 C:Quelle:"Preisliste AktivPlus", Stand 2005-01-01
 C:TarifURL:http://www.dtag.de/dtag/agb/dokument/pdf/0,1384,746,00.pdf
 C:TarifChanged:2005-01-01
-C:Grundgebühr zusätzlich für diesen Tarif: 5,06 EUR/Monat (bei T-ISDN)
+C:GrundgebÃ¼hr zusÃ¤tzlich fÃ¼r diesen Tarif: 5,06 EUR/Monat (bei T-ISDN)
 C:Euro
 C:Erfasste Zonen:
 C:   1 -   4 Deutschland
 C:  10 -  11 Mobilfunk
 C: 173 - 174 Zonen 1-2 und 3-4 mit TNB-Zuschlag ab 01.05.2005
 C: 200 - 216 Ausland Mobilfunk AktivPlus
-C: 217 - 219 Ausland Mobilfunk AktivPlus mit Preisänderung am 01.05.2005
+C: 217 - 219 Ausland Mobilfunk AktivPlus mit PreisÃ¤nderung am 01.05.2005
 C: 220 - 225 Ausland AktivPlus
-C:Übernommene Zonen von DTAG T-ISDN Standard (33,0):
+C:Ãœbernommene Zonen von DTAG T-ISDN Standard (33,0):
 C:   0       Freecall
-C:  20 - 171 nationale Dienste sowie Bündel- und Satellitenfunk
+C:  20 - 171 nationale Dienste sowie BÃ¼ndel- und Satellitenfunk
 C: 181 - 185 IVPN/NG/ID: Deutsche Bank, Barmer Ersatzkasse, web.de
 C: 250 -     sonstiges Ausland mit Mobilfunk
 R:33,0;0,20-171,181-185
@@ -1954,7 +1954,7 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.24534/60	# 0.2115 +16%
 #
-# Zuschlag für bestimmte andere Teilnehmernetzbetreiber (TNB), siehe oben.
+# Zuschlag fÃ¼r bestimmte andere Teilnehmernetzbetreiber (TNB), siehe oben.
 Z:173 City TNB Zuschlag
 #A:+492001987654, +492001876
 #I:dtag-tnb-zuschlag-city.dat
@@ -1992,7 +1992,7 @@ T:[01.01.2006]W/07-18=0.047636/60 Tag	# 0.0396 +16%
 T:[01.01.2006]W/18-07=0.02722/60 Spar	# 0.0220 +16%
 T:[01.01.2006]E,H/*=0.02722/60 Spar	# 0.0220 +16%
 #
-# 1.2 bedeutet in Preisliste Nr. 1 mit Fussnote ** für Mobilfunkzuschlag usw.
+# 1.2 bedeutet in Preisliste Nr. 1 mit Fussnote ** fÃ¼r Mobilfunkzuschlag usw.
 # Erste Zone muss 200 wegen R:-Tags sein, auch wenn sie nicht  "... 1.1" ist.
 Z:200 Welt Mobilfunk AktivPlus 1.2
 A:_ADMF,_BEMF,_DKMF,_FIMF
@@ -2039,7 +2039,7 @@ A:_IRMF
 T:[-01.05.2005]*/*=0.454952/60	# 0.3922 +16%
 T:[01.05.2005]*/*=0.704932/60	# 0.3922+0.2155 +16%
 #
-# vorrübergehende Zonen 217-219 für Zuschlagsänderung am 01.05.2005
+# vorrÃ¼bergehende Zonen 217-219 fÃ¼r ZuschlagsÃ¤nderung am 01.05.2005
 Z:217 Welt Mobilfunk AktivPlus 3.1-2
 A:_CNMF
 T:[-01.05.2005]*/*=0.318188/60	# 0.1278+0.1465 +16%
@@ -2216,9 +2216,9 @@ T:*/*=1.489904/60	# 1.2844 +16%
 #
 #####################################################################
 P:33,2 DTAG AktivPlus xxl sunday
-# Dies ist der "alte" xxl-Tarif, der bis Ende 2003 "AktivPlus xxl" hieß.
-# Wird nicht mehr neu angeboten, gilt auch für "T-ISDN xxl" Anschlüsse,
-# die nun unter "T-ISDN xxl sunday" geführt werden.
+# Dies ist der "alte" xxl-Tarif, der bis Ende 2003 "AktivPlus xxl" hieÃŸ.
+# Wird nicht mehr neu angeboten, gilt auch fÃ¼r "T-ISDN xxl" AnschlÃ¼sse,
+# die nun unter "T-ISDN xxl sunday" gefÃ¼hrt werden.
 # "AktivPlus xxl (neu)" ist anderer Tarif, siehe P:33,4 weiter unten.
 B:01033
 D:dtag
@@ -2231,17 +2231,17 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.
 C:Quelle:"Preisliste AktivPlus xxl sunday", Stand 2005-01-01
 C:TarifURL:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,1067,00.pdf
 C:TarifChanged:2005-01-01
-C:Grundgebühr zusätzlich gegenüber Standard-ISDN: 7,61 EUR/Monat.
+C:GrundgebÃ¼hr zusÃ¤tzlich gegenÃ¼ber Standard-ISDN: 7,61 EUR/Monat.
 C:Euro
 C:Erfasste Zonen:
 C:   1 -   4 Deutschland
 C:   5 -   6 Onlinedienste nach Blacklist
 C: 173 - 176 Zonen 1-2, 3-4, 5 und 6 mit TNB-Zuschlag ab 01.05.2005
-C:Übernommene Zonen von DTAG T-ISDN Standard (33,0):
+C:Ãœbernommene Zonen von DTAG T-ISDN Standard (33,0):
 C:   0       Freecall
-C:  20 - 171 nationale Dienste sowie Bündel- und Satellitenfunk
+C:  20 - 171 nationale Dienste sowie BÃ¼ndel- und Satellitenfunk
 C: 181 - 185 IVPN/NG/ID: Deutsche Bank, Barmer Ersatzkasse, web.de
-C:Übernommene Zonen von DTAG T-ISDN AktivPlus (33,1):
+C:Ãœbernommene Zonen von DTAG T-ISDN AktivPlus (33,1):
 C:  10 -  11 Mobilfunk
 C: 200 -     Ausland
 R:33,0;0,20-171,181-185
@@ -2285,10 +2285,10 @@ T:[01.01.2006]7,H/*=0/60 xxl unentgeltlich
 T:[01.01.2006]W/18-07=0.02552/60 Spar	# 0.0220 +16%
 T:[01.01.2006]6/*=0.02552/60 Spar	# 0.0220 +16%
 #
-# Ab 01.04.2004: Auch beim alten xxl-Tarif separate Preise für Verbindungen
-# zu Onlinediensten und zu zur Übermittlung von Daten genutzten RUfnummern.
-# Die Übermittlung von Faxen wird hiervon ausdrücklich ausgenommen.
-# Nach Inkraftreten können die Zonen 5 und 6 vom neuen xxl übernommen werden.
+# Ab 01.04.2004: Auch beim alten xxl-Tarif separate Preise fÃ¼r Verbindungen
+# zu Onlinediensten und zu zur Ãœbermittlung von Daten genutzten RUfnummern.
+# Die Ãœbermittlung von Faxen wird hiervon ausdrÃ¼cklich ausgenommen.
+# Nach Inkraftreten kÃ¶nnen die Zonen 5 und 6 vom neuen xxl Ã¼bernommen werden.
 Z:5 Onlinedienste im Citybereich
 #A:+494155709709
 #I:dtag-online-city.dat
@@ -2328,9 +2328,9 @@ T:[01.01.2006]W/07-18=0.045936/60 Tag	# 0.0396 +16%
 T:[01.01.2006]W/18-07=0.02552/60 Spar	# 0.0220 +16%
 T:[01.01.2006]E,H/*=0.02552/60 Spar	# 0.0220 +16%
 #
-# Ab 01.05.2005: Zuschlag von brutto 0.002/60 für City- und Deutschland-
-# verbindungen zu bestimmten anderen Teilnehmernetzbetreibern.  Außerdem
-# kann der Zuschlag auch für Onlinedieste erhoben werden.
+# Ab 01.05.2005: Zuschlag von brutto 0.002/60 fÃ¼r City- und Deutschland-
+# verbindungen zu bestimmten anderen Teilnehmernetzbetreibern.  AuÃŸerdem
+# kann der Zuschlag auch fÃ¼r Onlinedieste erhoben werden.
 #
 Z:173 City TNB Zuschlag
 #A:+492001987654, +492001876
@@ -2453,7 +2453,7 @@ T:[01.01.2006]E,H/*=0.027492/60 Spar	# 0.0220+0.0017 +16%
 #
 #####################################################################
 P:33,3 DTAG AktivPlus basis
-# Hier nur nationale Festnetzverbindungen (Zone 1-4) vergünstigt.
+# Hier nur nationale Festnetzverbindungen (Zone 1-4) vergÃ¼nstigt.
 B:01033
 D:dtag
 C:Name:Deutsche Telekom AG AktivPlus basis
@@ -2465,9 +2465,9 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.
 C:Quelle:"Preisliste AktivPlus basis", Stand 2004-11-01
 C:TarifURL:http://www.dtag.de/dtag/agb/dokument/pdf/0,1384,748,00.pdf
 C:TarifChanged:2004-11-01
-C:Grundgebühr zusätzlich für diesen Tarif: 2,51 EUR/Monat
+C:GrundgebÃ¼hr zusÃ¤tzlich fÃ¼r diesen Tarif: 2,51 EUR/Monat
 C:Euro
-C:Tarif übernimmt nationale Festnetzverbindungen von AktivPlus,
+C:Tarif Ã¼bernimmt nationale Festnetzverbindungen von AktivPlus,
 C:sonstige Zonen von T-ISDN standard.
 R:33,0;0,10-
 R:33,1;1-4,173-174
@@ -2475,12 +2475,12 @@ R:33,1;1-4,173-174
 #
 #####################################################################
 P:33,4 DTAG AktivPlus xxl (neu)
-# Gilt auch für "T-ISDN xxl (neu)" Anschlüsse,
+# Gilt auch fÃ¼r "T-ISDN xxl (neu)" AnschlÃ¼sse,
 # die Tarifbezeichnung ist mittlerweile auch ohne "neu" in Gebrauch.
-# Hier auch an Samstagen unentgeltlich, dafür waren Interneteinwahlen über
+# Hier auch an Samstagen unentgeltlich, dafÃ¼r waren Interneteinwahlen Ã¼ber
 # normale Rufnummern von Beginn an kostenpflichtig.
-# Bestehende Verträge sollen (zum 01.03.2005?) auf "Call XXL" umgestellt
-# werden, der geringfügig niedrigere Minutenpreise im Festnetz aufweisen wird.
+# Bestehende VertrÃ¤ge sollen (zum 01.03.2005?) auf "Call XXL" umgestellt
+# werden, der geringfÃ¼gig niedrigere Minutenpreise im Festnetz aufweisen wird.
 B:01033
 D:dtag
 C:Name:Deutsche Telekom AG, T-Com AktivPlus xxl (neu)
@@ -2492,18 +2492,18 @@ C:TarifURL:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,996,00.pdf
 C:TarifChanged:2005-01-01
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Zusätzliche Grundgebühr für AktivPlus xxl: 9,22 EUR/Monat
+C:ZusÃ¤tzliche GrundgebÃ¼hr fÃ¼r AktivPlus xxl: 9,22 EUR/Monat
 C:Euro
 C:Erfasste Zonen:
 C:   1 -   4 Deutschland
 C:   5 -   6 Onlinedienste im City- und Deutschlandbereich
 C:  10 -  11 Mobilfunk
 C: 173 - 176 Zonen 1-2, 3-4, 5 und 6 mit TNB-Zuschlag ab 01.05.2005
-C:Übernommene Zonen von DTAG T-ISDN Standard (33,0):
+C:Ãœbernommene Zonen von DTAG T-ISDN Standard (33,0):
 C:   0       Freecall
-C:  20 - 171 nationale Dienste sowie Bündel- und Satellitenfunk
+C:  20 - 171 nationale Dienste sowie BÃ¼ndel- und Satellitenfunk
 C: 181 - 185 IVPN/NG/ID: Deutsche Bank, Barmer Ersatzkasse, web.de
-C:Übernommene Zonen von DTAG T-ISDN AktivPlus (33,1):
+C:Ãœbernommene Zonen von DTAG T-ISDN AktivPlus (33,1):
 C: 200 -     Ausland
 R:33,0;0,20-171,181-185
 R:33,1;200-
@@ -2536,14 +2536,14 @@ T:[01.01.2006]W/07-18=0.045936/60 Tag	# 0.0396 +16%
 T:[01.01.2006]E,H/*=0/60 xxl unentgeltlich
 T:[01.01.2006]W/18-07=0.02552/60 Spar	# 0.0220 +16%
 #
-# Eine kostenlose Interneteinwahl soll mit diesem Tarif nicht mehr möglich
-# sein, es gibt eine schwarze Liste mit Rufnummern von Internetzugängen unter
+# Eine kostenlose Interneteinwahl soll mit diesem Tarif nicht mehr mÃ¶glich
+# sein, es gibt eine schwarze Liste mit Rufnummern von InternetzugÃ¤ngen unter
 # http://www.t-com.de/tel/blacklist-xxl bzw.
 # http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,1015,00.pdf
 # Auf diese Liste wird unverbindlich auf http://www.telekom.de/agb verweisen.
-# Kennzeichnend für diese Rufnummern ist, dass sie nicht mit 019 beginnen,
-# sondern normalen Anschlüssen in Ortsnetzen entsprechen.
-# Diese Rufnummern sind abhängig von der eigenen Vorwahl in den folgenden
+# Kennzeichnend fÃ¼r diese Rufnummern ist, dass sie nicht mit 019 beginnen,
+# sondern normalen AnschlÃ¼ssen in Ortsnetzen entsprechen.
+# Diese Rufnummern sind abhÃ¤ngig von der eigenen Vorwahl in den folgenden
 # Zonen 5 oder 6 anzugeben, beispielhaft sind dort einige Nummern eingetragen,
 # zur Aktivierung ist das Zeichen # am Zeilenanfang zu entfernen.
 Z:5 Onlinedienste im Citybereich
@@ -2576,16 +2576,16 @@ T:[01.01.2006]W/07-18=0.045936/60 Tag	# 0.0396 +16%
 T:[01.01.2006]W/18-07=0.02552/60 Spar	# 0.0220 +16%
 T:[01.01.2006]E,H/*=0.02552/60 Spar	# 0.0220 +16%
 #
-# Spezielle Tarifkunde für 0193066:
+# Spezielle Tarifkunde fÃ¼r 0193066:
 # Diese Nummer(ngasse) ist in der "Preisliste Telefondienst (Inlandsverbindun-
 # gen)" unter Punkt 5 "Verbindungen der T-Com zu speziellen Diensten" als Nr. 9
-# "zu Zugängen von Online-Diensten mit der Zugangskennzahl 0 19 30 66" mit der
-# Preisangabe "Es gelten die Preise für Cityverbindungen" aufgeführt.  Weitere
+# "zu ZugÃ¤ngen von Online-Diensten mit der Zugangskennzahl 0 19 30 66" mit der
+# Preisangabe "Es gelten die Preise fÃ¼r Cityverbindungen" aufgefÃ¼hrt.  Weitere
 # gleichlautende Preisangabe finden sich in Punkt 5 nicht.
-# Die "Preisliste AktivPlus xxl" (neu) definiert ergänzend hierzu, dass diese
+# Die "Preisliste AktivPlus xxl" (neu) definiert ergÃ¤nzend hierzu, dass diese
 # Verbindungen an T:E,H/* nicht wie die Cityverbindungen unentgeltlich sind,
 # sondern stattdessen wie Cityverbindung zu T:W/18-07 berechnet werden.
-# Dies führt den Preisen von Zone 5.  Beim "enjoy" Tarif steht diese Schluss-
+# Dies fÃ¼hrt den Preisen von Zone 5.  Beim "enjoy" Tarif steht diese Schluss-
 # folgerung in der Preisliste, hier nicht ...
 #
 Z:10 Mobilfunk D1/D2
@@ -2597,7 +2597,7 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.19894/60	# 0.1715 +16%
 #
-# Ab 01.05.2005: Zuschlag von brutto 0.002/60 für City- und Deutschland-
+# Ab 01.05.2005: Zuschlag von brutto 0.002/60 fÃ¼r City- und Deutschland-
 # verbindungen zu bestimmten anderen Teilnehmernetzbetreibern.
 Z:173 City TNB Zuschlag
 #A:+492001987654, +492001876
@@ -2698,9 +2698,9 @@ T:[01.01.2006]E,H/*=0.027492/60 Spar	# 0.0220+0.0017 +16%
 #
 #####################################################################
 P:33,5 DTAG enjoy
-# Tarif mit Stundentaktung für Orts- und Ferngespräche.
+# Tarif mit Stundentaktung fÃ¼r Orts- und FerngesprÃ¤che.
 # Mit allen vorstehenden und weiteren Tarifen kombinierbar.
-# Hier wird der Standardtarif (P:33,0) angenommen, andere sind möglich.
+# Hier wird der Standardtarif (P:33,0) angenommen, andere sind mÃ¶glich.
 B:01033
 D:dtag
 C:Name:Deutsche Telekom AG, T-Com enjoy Tarif
@@ -2712,16 +2712,16 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.
 C:Quelle:"Preisliste enjoy Tarif", Stand 2004-11-01
 C:TarifURL:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,1132,00.pdf
 C:TarifChanged:2004-11-01
-C:Grundgebühr zusätzlich für diesen Tarif: 4,68 EUR/Monat
+C:GrundgebÃ¼hr zusÃ¤tzlich fÃ¼r diesen Tarif: 4,68 EUR/Monat
 C:Euro
 #
 C:Erfasste Zonen:
 C:   1 -   4 Deutschland mit Informationsverbund Berlin-Bonn
 C: 174       Zone 1-4 mit TNB-Zuschlag ab 01.05.2005
-C:Übernommene Zonen von DTAG T-ISDN Standard (33,0):
+C:Ãœbernommene Zonen von DTAG T-ISDN Standard (33,0):
 C:   0       Freecall
 C:  10 -     Mobilfunk, nat. Dienste, Ausland exkl. TNB-Zuschlag Festnetz
-C:Übernommene Zonen von DTAG T-ISDN AktivPlus xxl (neu) (33,4):
+C:Ãœbernommene Zonen von DTAG T-ISDN AktivPlus xxl (neu) (33,4):
 C:   5 -   6 Onlinedienste im City- und Deutschlandbereich sowie 0193066
 C: 175 - 176 Zonen 5 und 6 mit TNB-Zuschlag ab 01.05.2005
 #
@@ -2733,7 +2733,7 @@ A:01888 	# Informationsverbund Berlin-Bonn (IVBB)
 A:DE
 T:*/*=0.119944/3600	# 0.1034 +16%
 #
-# Ab 01.04.2005: Zuschlag von brutto 0.002/60 für Deutschlandverbindungen
+# Ab 01.04.2005: Zuschlag von brutto 0.002/60 fÃ¼r Deutschlandverbindungen
 # zu bestimmten anderen Teilnehmernetzbetreibern (TNB).
 #
 Z:174 Deutschland TNB Zuschlag
@@ -2744,7 +2744,7 @@ Z:174 Deutschland TNB Zuschlag
 #--
 T:[-01.05.2005]*/*=0.119944/3600 zuschlagsfrei	# 0.1034 +16%
 #--
-# Problem: Preis 0.12/3600 zuzüglich 0.002/60 (zeitgleich verschiedene Takte).
+# Problem: Preis 0.12/3600 zuzÃ¼glich 0.002/60 (zeitgleich verschiedene Takte).
 # Workaround: Die ersten 3 Stunden einzeln angeben, danach Stundentakt.
 T:[01.05.2005]*/*=0.0139664/60,0.001972/60:3540,0.0139664/60,0.001972/60:3540,0.0139664/60,0.001972/60:3540,0.238264/3600	# 0.01034+0.0017+0.0017+0.01034+0.0017 0.0017 0.01034 0.0017 0.0017 0.1034 0.1020 +16%
 # 
@@ -2752,36 +2752,36 @@ T:[01.05.2005]*/*=0.0139664/60,0.001972/60:3540,0.0139664/60,0.001972/60:3540,0.
 #####################################################################
 P:33,6 DTAG xxl Freetime
 # Neu ab 01.03.2005: basiert auf xxl-Tarif, neben Wochenende und Feiertagen
-# auch werktägliche Festnetzgespräche zur Nebenzeit unentgeltlich. Keine
-# berufliche oder geschäftsmäßige Nutzung, Verbindungen zu Onlinediensten
-# und zur Übermittlung von Daten nicht unentgeltlich, TNB-Zuschlag auch hier.
+# auch werktÃ¤gliche FestnetzgesprÃ¤che zur Nebenzeit unentgeltlich. Keine
+# berufliche oder geschÃ¤ftsmÃ¤ÃŸige Nutzung, Verbindungen zu Onlinediensten
+# und zur Ãœbermittlung von Daten nicht unentgeltlich, TNB-Zuschlag auch hier.
 B:01033
 D:dtag
 C:Name:Deutsche Telekom AG, T-Com Call XXL Freetime/T-ISDN
 C:Address:Deutsche Telekom AG, Friedrich-Ebert-Allee 140, 53113 Bonn
 C:Homepage:http://www.t-com.de/
-C:Hotline:0800r-33-01000 (Privatkunder Verkauf, Beratung, Aufträge)
+C:Hotline:0800r-33-01000 (Privatkunder Verkauf, Beratung, AuftrÃ¤ge)
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Quelle:"Preisliste Call XXL Freetime/T-ISDN", Stand 2005-03-01
 C:TarifURL:http://www.telekom.de/dtag/agb/dokument/pdf/0,1384,1219,00.pdf
 C:TarifChanged:2005-03-01
-C:Grundgebühr für diesen Tarif: 37,95 EUR/Monat
+C:GrundgebÃ¼hr fÃ¼r diesen Tarif: 37,95 EUR/Monat
 C:Euro
 C:Erfasste Zonen:
 C:   1 -   4 Deutschland
 C:   5 -   6 Onlinedienste im City- und Deutschlandbereich
 C:  10 -  11 Mobilfunk
 C: 173 - 176 Zonen 1-2, 3-4, 5 und 6 mit TNB-Zuschlag ab 01.05.2005
-C:Übernommene Zonen von DTAG T-ISDN Standard (33,0):
+C:Ãœbernommene Zonen von DTAG T-ISDN Standard (33,0):
 C:   0       Freecall
-C:  20 - 171 nationale Dienste sowie Bündel- und Satellitenfunk
+C:  20 - 171 nationale Dienste sowie BÃ¼ndel- und Satellitenfunk
 C: 181 - 185 IVPN/NG/ID: Deutsche Bank, Barmer Ersatzkasse, web.de
-C:Übernommene Zonen von DTAG T-ISDN AktivPlus (33,1):
+C:Ãœbernommene Zonen von DTAG T-ISDN AktivPlus (33,1):
 C: 200 -     Ausland
 #
 # Zonenstruktur und Redirs wie bei xxl (33,4).
-# Für Erklärungen zu Onlinediensten, #I:-Zeilen etc. siehe weiter oben.
+# FÃ¼r ErklÃ¤rungen zu Onlinediensten, #I:-Zeilen etc. siehe weiter oben.
 #
 R:33,0;0,20-171,181-185
 R:33,1;200-
@@ -2805,7 +2805,7 @@ T:[01.01.2006]W/18-07=0/60 Nebenzeit unentgeltlich
 T:[01.01.2006]E,H/*=0/60 Nebenzeit unentgeltlich
 #
 Z:3-4 Deutschland
-# IVBB gehört in die Cityzone, wenn Berlin oder Bonn dort enthalten.
+# IVBB gehÃ¶rt in die Cityzone, wenn Berlin oder Bonn dort enthalten.
 A:01888 	# Informationsverbund Berlin-Bonn (IVBB) 
 A:DE
 #--
@@ -2828,7 +2828,7 @@ T:[01.01.2006]E,H/*=0/60 Nebenzeit unentgeltlich
 Z:5 Onlinedienste im Citybereich
 #A:+494155709709
 #I:dtag-online-city.dat
-A:0193066 	# einziger explizit erwähnter "Online-Dienst"
+A:0193066 	# einziger explizit erwÃ¤hnter "Online-Dienst"
 #--
 T:[-24.12.2005]W/07-18=0.029/60 Hauptzeit	# 0.0250 +16%
 T:[-24.12.2005]W/18-07=0.014964/60 Nebenzeit	# 0.0129 +16%
@@ -2869,12 +2869,12 @@ T:[01.01.2006]E,H/*=0.02494/60 Nebenzeit	# 0.0215 +16%
 Z:10 Mobilfunk D-Netze
 A:_DEMD1
 A:_DEMD2
-T:*/*=0.178988/60 ganztägig	# 0.1543 +16%
+T:*/*=0.178988/60 ganztÃ¤gig	# 0.1543 +16%
 #
 Z:11 Mobilfunk E-Netze
 A:_DEME1
 A:_DEME2
-T:*/*=0.19894/60 ganztägig	# 0.1715 +16%
+T:*/*=0.19894/60 ganztÃ¤gig	# 0.1715 +16%
 #
 Z:173 City TNB-Zuschlag
 #A:+492001987654, +492001876
@@ -2981,7 +2981,7 @@ B:01038
 D:dtag
 C:Name:01038 Sparfon Call-by-Call
 C:Name:(vormals) 01038 Telekom Call-by-Call
-C:Address:01038 Telekom GmbH, Theresienstr. 6-8, 80333 München
+C:Address:01038 Telekom GmbH, Theresienstr. 6-8, 80333 MÃ¼nchen
 C:Homepage:http://www.01038-telekom.de/
 C:TarifURL:http://www.01038-telekom.de/?p=22
 C:TarifChanged:2005-02-26
@@ -2993,13 +2993,13 @@ A:0800*,0801*        # Freephone
 A:031*                # Testrufnummern
 T:*/*=0
 #
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:  W/09-19=0.0138/60 Ort-1
 T:  W/21-00=0.0095/60 Ort-2
 T:W/00-09,19-21=0.0348/60 Ort-3
 T:E,H/*=0.0348/60 Ort-3
 #
-Z:2-4 Ferngespräche
+Z:2-4 FerngesprÃ¤che
 A:DE
 T:  W/09-15=0.0167/60 Fern-1
 T:  W/21-22=0.0095/60 Fern-2
@@ -3025,7 +3025,7 @@ C:Name:01039 call-by-call
 # Technischer Dienstleister: Global Network Telephone GmbH,
 # an die laut RegTP auch die Kennzahl 01039 vergeben ist.
 # Global Network Telephone GmbH, Grosser Plan 8, 29221 Celle
-C:Address:Launch Communication Services GmbH, Lyoner Straße 51, 60528 Frankfurt/Main
+C:Address:Launch Communication Services GmbH, Lyoner StraÃŸe 51, 60528 Frankfurt/Main
 C:Telefon:0180-5-139513
 C:Telefax:069-65006-300
 C:Homepage:http://www.first-telecom.de/
@@ -3037,7 +3037,7 @@ C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.
 C:Erfasste Zonen:
 C:2	-   4	Deutschland
 C:10		Mobilfunk
-C:208	- 209	Dänemark
+C:208	- 209	DÃ¤nemark
 #
 Z:0 FreeCall
 A:011*		      # netzinterne Nutzung
@@ -3058,10 +3058,10 @@ A:_DEME1		# Eplus
 A:_DEME2		# E2
 T:*/*=0.222(60)/1
 #
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.059/60
-Z:209 Dänemark Mobil
+Z:209 DÃ¤nemark Mobil
 A:_DKMF
 T:*/*=0.52/60
 #####################################################################
@@ -3071,7 +3071,7 @@ P:40,0 Ventelo
 B:01040
 D:dtag
 C:Name:Ventelo CbC (01040)
-C:Address:Ventelo GmbH, Mathias-Brüggen Str. 55, 50829 Köln
+C:Address:Ventelo GmbH, Mathias-BrÃ¼ggen Str. 55, 50829 KÃ¶ln
 C:Homepage:http://www.ventelo.de/
 C:TarifURL:http://www.ventelo.de/call_by_call_preise/standardtarife.html
 C:TarifChanged:2005-02-26
@@ -3104,7 +3104,7 @@ T:E,H/*=0.139(60)/300
 P:41,0 HanseNet CbC
 B:01041
 C:Name:HanseNet CbC
-C:Address:HanseNet Telekommunikation GmbH, Überseering 33 a, 22297 Hamburg
+C:Address:HanseNet Telekommunikation GmbH, Ãœberseering 33 a, 22297 Hamburg
 C:Telefon:0800-4110411
 C:Telefax:0800-4120412
 C:EMail:info@hansenet.com
@@ -3115,7 +3115,7 @@ C:TarifURL:http://www.alice-dsl.de/opencms/export/de/download/alice_dsl_de/preis
 C:TarifChanged:2004-12
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Regionales Angebot für Hamburg und angrenzende Ortsnetze.
+C:Regionales Angebot fÃ¼r Hamburg und angrenzende Ortsnetze.
 # Call-by-Call nur aus Citybereich Hamburg, siehe Zone 1-2 (2005-02-27).
 C:Erfasste Zonen:
 C:   0        Freephone
@@ -3137,23 +3137,23 @@ A:+4940,+49410*,+49412*
 A:+494152,+494161,+494162,+494168,+494171
 A:+494174,+494176,+494177,+494179,+494193,+494532,+494535
 T:W/08-18=0.0174/60 Hauptzeit
-T:W/18-08=0.0104/60 übrige Zeit
-T:E,H/*=0.0104/60 übrige Zeit
+T:W/18-08=0.0104/60 Ã¼brige Zeit
+T:E,H/*=0.0104/60 Ã¼brige Zeit
 Z:3-4 Deutschland
 A:DE
 T:W/08-18=0.0644/60 Hauptzeit
-T:W/18-08=0.0144/60 übrige Zeit
+T:W/18-08=0.0144/60 Ã¼brige Zeit
 T:E,H/*  =0.0134/60 Wochenende
 #
 Z:10 Mobilfunk
 A:_DEMF
 T:W/08-18=0.4399/60 Hauptzeit
-T:W/18-08=0.2899/60 übrige Zeit
-T:E,H/*=0.2899/60 übrige Zeit
+T:W/18-08=0.2899/60 Ã¼brige Zeit
+T:E,H/*=0.2899/60 Ã¼brige Zeit
 #
 Z:103 Internet by call
 A:0192312
-T:*/*=0.0099/60 	# von außerhalb der Hansenet City-Zone teurer.
+T:*/*=0.0099/60 	# von auÃŸerhalb der Hansenet City-Zone teurer.
 #
 Z:200 Europa & Nordamerika
 A:AL,AD,BE,BA,BG,DK
@@ -3179,7 +3179,7 @@ T:*/*=1.4599/60
 P:41,1 HanseNet Preselection
 B:01041
 C:Name:HanseNet Preselection privat
-C:Address:HanseNet Telekommunikation GmbH, Überseering 33 a, 22297 Hamburg
+C:Address:HanseNet Telekommunikation GmbH, Ãœberseering 33 a, 22297 Hamburg
 C:Telefon:0800-4110411
 C:Telefax:0800-4120412
 C:EMail:info@hansenet.com
@@ -3190,12 +3190,12 @@ C:TarifChanged:2004-05
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Preselection
-C:Regionales Angebot für Hamburg und angrenzende Ortsnetze,
+C:Regionales Angebot fÃ¼r Hamburg und angrenzende Ortsnetze,
 C:siehe Vorwahlnummern in Zone "HanseNet City".
-C:Preselection für Ortsgespräche nur in Hamburg sowie Ahrensburg, Aumühle
-C:Barmstedt, Ellerhoop, Elmshorn, Glückstadt, Haseldorf, Henstedt-Ulzburg
+C:Preselection fÃ¼r OrtsgesprÃ¤che nur in Hamburg sowie Ahrensburg, AumÃ¼hle
+C:Barmstedt, Ellerhoop, Elmshorn, GlÃ¼ckstadt, Haseldorf, Henstedt-Ulzburg
 C:Horst Holst., Kollmar, Pinneberg, Quickborn Kr. Pinneberg, Rosengarten Kr.
-C:Harburg, Seestermühle, Seevetal, Siek Kr.  Stormarn, Tangstedt Bz. Hamburg,
+C:Harburg, SeestermÃ¼hle, Seevetal, Siek Kr.  Stormarn, Tangstedt Bz. Hamburg,
 C:Uetersen, Wedel Holstein und Westerhorn.
 C:Erfasste Zonen:
 C:   1 -   4  Deutschland
@@ -3205,7 +3205,7 @@ C: 200 - 203  Europa Festnetz
 C: 205        Europa Mobilfunk
 C: 210 - 214  Welt
 #
-R:41,0;0 	# Freephone variantenunabhängig
+R:41,0;0 	# Freephone variantenunabhÃ¤ngig
 #
 Z:1-2 HanseNet City
 A:+4940
@@ -3214,13 +3214,13 @@ A:+494152,+494124,+494129,+494193,+494126,+494162,+494128,+494176
 A:+494535,+494168,+494101,+494106,+494108,+494125,+494105,+494107
 A:+494174,+494109,+494122,+494103,+494127,+494171,+494179
 T:W/08-18=0.0299/60 Hauptzeit
-T:W/18-08=0.0139/60 übrige Zeit
-T:E,H/*=0.0139/60 übrige Zeit
+T:W/18-08=0.0139/60 Ã¼brige Zeit
+T:E,H/*=0.0139/60 Ã¼brige Zeit
 Z:3-4 Deutschland
 A:DE
 T:W/08-18=0.0439/60 Hauptzeit
-T:W/18-08=0.0229/60 übrige Zeit
-T:E,H/*=0.0229/60 übrige Zeit
+T:W/18-08=0.0229/60 Ã¼brige Zeit
+T:E,H/*=0.0229/60 Ã¼brige Zeit
 #
 Z:10 Mobil
 A:_DEMF
@@ -3293,20 +3293,20 @@ A:UY,UZ,VE
 T:*/*=0.7999/60
 Z:214 Welt 5
 A:+
-# folgende Ziele würden sonst unter USA (+1) fallen:
+# folgende Ziele wÃ¼rden sonst unter USA (+1) fallen:
 A:JM,KN,TT
 A:TC,VI,VG
 A:VC,DM,LC,MP,MS
 A:AG,AI,BB
 T:*/*=1.2999/60
 #####################################################################
-# Preise gelten auch für Telefonie bei Alice Super (1500|5000) (time|flat)
+# Preise gelten auch fÃ¼r Telefonie bei Alice Super (1500|5000) (time|flat)
 P:41,2 HanseNet allFon
 B:01041
 C:Name:Hansenet allFon
 C:Name:(vormals) HanseNet Komplett (privat)
 C:Name:(vormals) HanseNet Komplett Standard privat
-C:Address:HanseNet Telekommunikation GmbH, Überseering 33 a, 22297 Hamburg
+C:Address:HanseNet Telekommunikation GmbH, Ãœberseering 33 a, 22297 Hamburg
 C:Telefon:0800-4110411
 C:Telefax:0800-4120412
 C:EMail:info@hansenet.com
@@ -3317,17 +3317,17 @@ C:TarifChanged:2005-02-01
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Komplettanschluss
-C:Regionales Angebot für Hamburg/Lübeck und Umgebung, siehe Zone 1-2.
-C:Ebenfalls angeboten in Berlin, Frankfurt am Main, Stuttgart und München,
-C:hierfür wäre jeweils die Zone 1-2 für korrekte Preisberechnung zu ändern.
+C:Regionales Angebot fÃ¼r Hamburg/LÃ¼beck und Umgebung, siehe Zone 1-2.
+C:Ebenfalls angeboten in Berlin, Frankfurt am Main, Stuttgart und MÃ¼nchen,
+C:hierfÃ¼r wÃ¤re jeweils die Zone 1-2 fÃ¼r korrekte Preisberechnung zu Ã¤ndern.
 C:Erfasste Zonen:
 C:   1 -   4  Deutschland
-C:   5        "OnNet" für Festnetzverbindungen zwischen Hansenetkunden.
+C:   5        "OnNet" fÃ¼r Festnetzverbindungen zwischen Hansenetkunden.
 #
-R:41,0;0 	# Freephone variantenunabhängig
+R:41,0;0 	# Freephone variantenunabhÃ¤ngig
 R:41,1;10- 	# Mobilfunk, Internet by Call und Ausland wie bei Preselection
 #
-Z:1-2 City Hamburg-Lübeck
+Z:1-2 City Hamburg-LÃ¼beck
 A:+4940,+49451
 A:+494102,+494104,+494531,+494532,+494123,+494159,+494544,+494181
 A:+494186,+494550,+494161,+494177,+494120,+494121,+494152,+494553
@@ -3340,21 +3340,21 @@ A:+494503,+494154,+494122,+494103,+494539,+494127,+494171,+494179
 A:+494173
 #--
 T:W/08-18=0.0299/60 Hauptzeit
-T:W/18-08=0.0139/60 übrige Zeit
-T:E,H/*=0.0139/60 übrige Zeit
+T:W/18-08=0.0139/60 Ã¼brige Zeit
+T:E,H/*=0.0139/60 Ã¼brige Zeit
 Z:3-4 Deutschland
 A:DE
 T:W/08-18=0.0439/60 Hauptzeit
-T:W/18-08=0.0229/60 übrige Zeit
-T:E,H/*=0.0229/60 übrige Zeit
+T:W/18-08=0.0229/60 Ã¼brige Zeit
+T:E,H/*=0.0229/60 Ã¼brige Zeit
 #
-# Gespräche zwischen allen Hansenet-Festnetzkunden kostenlos.
+# GesprÃ¤che zwischen allen Hansenet-Festnetzkunden kostenlos.
 # Aktion zur Zeit befristet bis 2005-12-31.
 # Online- und Datenverbindungen sind wie erwartet ausgenommen.
 Z:5 OnNet
 # Beteiligte Rufnummern oder Nummernbereich sind wie im folgenden Beispiel
-# für die Hamburger Rufnummer 12345678 und den Nummernbereich 98765...
-# anzugeben und das folgende # zu löschen. 
+# fÃ¼r die Hamburger Rufnummer 12345678 und den Nummernbereich 98765...
+# anzugeben und das folgende # zu lÃ¶schen. 
 #A:+4912345678, +494098765*
 T:*/*=0/60 kostenlos
 #
@@ -3363,7 +3363,7 @@ T:*/*=0/60 kostenlos
 P:41,3 HanseNet allFon bestCall
 B:01041
 C:Name:HanseNet MovieStar bestCall
-C:Address:HanseNet Telekommunikation GmbH, Überseering 33 a, 22297 Hamburg
+C:Address:HanseNet Telekommunikation GmbH, Ãœberseering 33 a, 22297 Hamburg
 C:Telefon:0800-4110411
 C:Telefax:0800-4120412
 C:EMail:info@hansenet.com
@@ -3373,18 +3373,18 @@ C:TarifURL:http://www.alice-dsl.de/opencms/export/de/download/alice_dsl_de/preis
 C:TarifChanged:2005-02-01
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Optionstarif für HanseNet MovieStar, mtl. 3,90 EUR zusätzlich.
+C:Optionstarif fÃ¼r HanseNet MovieStar, mtl. 3,90 EUR zusÃ¤tzlich.
 C:Erfasste Zonen:
 C:   1 -   4  Deutschland
 #
-R:41,0;0 	# Freephone variantenunabhängig
+R:41,0;0 	# Freephone variantenunabhÃ¤ngig
 R:41,2;5	# "OnNet" Internverbindungen wie bei allFon ohne Option
 R:41,1;10- 	# Mobilfunk, Internet by Call und Ausland wie bei Preselection
 #
-# bestCall-Option gilt nicht für Online- und Datenverbindungen.
-# Hierfür wären analog zur Dt. Telekom (33,0) die Zonen 173 und 174
-# zu erstellen und mit den für Online- und Datenverbindungen genutzten
-# Rufnummern zu füllen.  Die Preise (T:-Zeilen) wären von allFon ohne
+# bestCall-Option gilt nicht fÃ¼r Online- und Datenverbindungen.
+# HierfÃ¼r wÃ¤ren analog zur Dt. Telekom (33,0) die Zonen 173 und 174
+# zu erstellen und mit den fÃ¼r Online- und Datenverbindungen genutzten
+# Rufnummern zu fÃ¼llen.  Die Preise (T:-Zeilen) wÃ¤ren von allFon ohne
 # Option (41,2) aus den Zonen 1-2 und 3-4 zu kopieren.
 Z:1-4 Deutschland
 A:DE
@@ -3395,7 +3395,7 @@ P:41,4 HanseNet allFon Talk4Free
 B:01041
 C:Name:HanseNet allFon Talk4Free
 C:Name:(vormals) HanseNet Komplett Voice Flatrate (privat)
-C:Address:HanseNet Telekommunikation GmbH, Überseering 33 a, 22297 Hamburg
+C:Address:HanseNet Telekommunikation GmbH, Ãœberseering 33 a, 22297 Hamburg
 C:Telefon:0800-4110411:Alaska, Hawaii, Kanada, Puerto Rico, USA
 C:Telefax:0800-4120412
 C:EMail:info@hansenet.com
@@ -3405,16 +3405,16 @@ C:TarifURL:http://www.alice-dsl.de/opencms/export/de/download/alice_dsl_de/preis
 C:TarifChanged:2005-02-01
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Optionstarif für HanseNet allFon, mtl. 19,90 EUR zusätzlich.
+C:Optionstarif fÃ¼r HanseNet allFon, mtl. 19,90 EUR zusÃ¤tzlich.
 C:Erfasste Zonen:
 C:   1 -   4  Deutschland
 #
-R:41,0;0 	# Freephone variantenunabhängig
+R:41,0;0 	# Freephone variantenunabhÃ¤ngig
 R:41,1;10- 	# Mobilfunk, Internet by Call und Ausland wie bei Preselection
-# Internzone "OnNet" hier nicht erforderlich, Gespräche fallen in Zone 1-4.
+# Internzone "OnNet" hier nicht erforderlich, GesprÃ¤che fallen in Zone 1-4.
 #
-# Talk4Free-Option gilt nicht für Online- und Datenverbindungen.
-# Für mögliche Erfassung dieser siehe oben bei bestCall.
+# Talk4Free-Option gilt nicht fÃ¼r Online- und Datenverbindungen.
+# FÃ¼r mÃ¶gliche Erfassung dieser siehe oben bei bestCall.
 Z:1-4 Deutschland
 A:DE
 T:*/*=0/60 Talk4Free
@@ -3472,7 +3472,7 @@ C:Euro
 C:Erfasste Zonen:
 C:   2 -   4 Deutschland
 C:  10       Mobilfunk
-C: 208 - 209 Dänemark
+C: 208 - 209 DÃ¤nemark
 Z:0 FreeCall
 A:011*		      # netzinterne Nutzung
 A:0130*,0800*,0801* # Freephone
@@ -3497,11 +3497,11 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.300/60
 #
-# Dänemark gehört zu Ausland 1
-Z:208 Dänemark
+# DÃ¤nemark gehÃ¶rt zu Ausland 1
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.1450/60
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.4250/60
 #####################################################################
@@ -3528,12 +3528,12 @@ A:110		      # Polizei
 A:112		      # Notruf, Feuerwehr
 T:*/*=0
 #
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:W/7-19=0.018/60 Hauptzeit
 T:W/19-7=0.015/60 Nebenzeit
 T:E/*=0.015/60 Nebenzeit
 #
-Z:2-4 Ferngespräche
+Z:2-4 FerngesprÃ¤che
 A:DE
 T:*/*=0.036/60 Hauptzeit
 #
@@ -3541,8 +3541,8 @@ Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.205/60
 #
-# Auslandspreisliste enthält Birma und Myanmar mit unterschiedlichen Preisen,
-# wie manuell wie üblich den höchsten verwendet.
+# Auslandspreisliste enthÃ¤lt Birma und Myanmar mit unterschiedlichen Preisen,
+# wie manuell wie Ã¼blich den hÃ¶chsten verwendet.
 Z:200 Welt 1
 A:SM
 T:*/*=0.01/60
@@ -3931,7 +3931,7 @@ T:*/*=1.45/60
 P:53,0 fon4U
 B:01053
 C:Name:fon4U (3U)
-C:Address:fon4U Telecom GmbH, Neue Kasseler Straße 62 F. 35039 Marburg
+C:Address:fon4U Telecom GmbH, Neue Kasseler StraÃŸe 62 F. 35039 Marburg
 C:Homepage:http://www.fon4u.de/
 C:TarifURL:http://www.fon4u.de/index.php?frame=1310&lang=49&site=15
 C:TarifChanged:2005-02-26
@@ -3942,7 +3942,7 @@ Z:0 FreeCall
 A:0800*,0801*        # Freephone
 A:031*                # Testrufnummern
 T:*/*=0
-# Ortsgespräche nicht erwähnt, auch nicht ausgeschlossen
+# OrtsgesprÃ¤che nicht erwÃ¤hnt, auch nicht ausgeschlossen
 Z:1-4 Festnetz
 A:DE
 T:W/08-20=0.0290(60)/60/240
@@ -3967,7 +3967,7 @@ T:*/*=0.2340(60)/60/240
 P:55,0 prompt
 B:01055
 C:Name:prompt CbC
-C:Address:prompt GmbH & Co. KG, Wilhelm-Halle-Str. 50, 80639 München
+C:Address:prompt GmbH & Co. KG, Wilhelm-Halle-Str. 50, 80639 MÃ¼nchen
 C:EMail:info@01055.com
 C:Homepage:http://www.01055-prompt.de/
 C:TarifURL:http://www.01055-prompt.de/upload/Tarif_CbC.pdf
@@ -3987,7 +3987,7 @@ T:*/*=0
 Z:2-4 Fern
 A:DE
 T:*/08-09  =0.0111/60 Sparzeit
-T:W/09-18  =0.0800/60 Geschäftszeit
+T:W/09-18  =0.0800/60 GeschÃ¤ftszeit
 T:W/18-08  =0.0259/60 Freizeit
 T:E,H/09-08=0.0259/60 Freizeit
 Z:10 Mobilfunk
@@ -4003,7 +4003,7 @@ P:56,0 01056 CbC
 B:01056
 D:dtag
 C:Name:01056 Call by Call
-C:Address:PM² Telecommunication GmbH, Siemensstraße 12b, 63263 Neu-Isenburg
+C:Address:PMÂ² Telecommunication GmbH, SiemensstraÃŸe 12b, 63263 Neu-Isenburg
 C:Homepage:http://www.01056tele.com/
 C:TarifURL:http://www.01056tele.com/frontend/index.php4?pre_cat_open=2&id=182
 C:TarifChanged:2005-01-09
@@ -4034,7 +4034,7 @@ P:58,0 01058
 B:01058
 D:dtag
 C:Name:01058 CbC
-C:Address:01058 Telecom GmbH, Leopoldstr. 16, 40211 Düsseldorf
+C:Address:01058 Telecom GmbH, Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Telefon:01805-701058, 01058-031
 C:Telefax:01805-901058
 C:EMail:support@01058telecom.de
@@ -4043,7 +4043,7 @@ C:TarifURL:http://www.01058.com/call-by-call/tarife.php
 C:TarifChanged:2005-02-26
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Tarif gilt nicht für "Online-Dienste", TarifURL verweist auf Blacklist.
+C:Tarif gilt nicht fÃ¼r "Online-Dienste", TarifURL verweist auf Blacklist.
 C:Euro
 #
 Z:0 FreeCall
@@ -4052,9 +4052,9 @@ A:031* 	 	      # Testrufnummern
 A:110		      # Polizei
 A:112		      # Notruf, Feuerwehr
 T:*/*=0
-# alternativ 0900-3-3358 als Providervorwahl für Ortsgespräche (1 ¢/min)
-# Nebenzeit/Sondertarif nicht für Onlineverbindungen.
-Z:1 Ortsgespräche
+# alternativ 0900-3-3358 als Providervorwahl fÃ¼r OrtsgesprÃ¤che (1 Â¢/min)
+# Nebenzeit/Sondertarif nicht fÃ¼r Onlineverbindungen.
+Z:1 OrtsgesprÃ¤che
 T:1-5/07-19=0.0179/60 Tarif-1
 T:1-5/19-07=0.0149/60 Tarif-2
 T:6-7/*    =0.0149/60 Weekend-Tarif
@@ -4079,7 +4079,7 @@ P:63,0 01063 TELECOM
 B:01063
 D:dtag
 C:Name:01063 TELECOM GmbH & Co. KG.
-C:Address:01063 TELECOM GmbH & Co. KG, Mottmannstraße 2, 53842 Troisdorf
+C:Address:01063 TELECOM GmbH & Co. KG, MottmannstraÃŸe 2, 53842 Troisdorf
 C:Homepage:http://www.01063telecom.de/
 C:TarifURL:http://www.01063telecom.de/callbycall.htm
 C:TarifChanged:2003-11-08
@@ -4136,7 +4136,7 @@ Z:1 eigenes Ortsnetz
 T:W/08-18=0.031(60)/1
 T:W/18-08=0.021(60)/1
 T:E,H/*=0.021(60)/1
-Z:2-4 Ferngespräche
+Z:2-4 FerngesprÃ¤che
 A:DE
 T:W/08-18=0.051(60)/1
 T:W/18-21=0.03(60)/1
@@ -4201,7 +4201,7 @@ P:66,0 01066 CbC
 B:01066
 D:dtag
 C:Name:01066 Call by Call
-C:Address:01066 GnbH, Rotterdamer Str. 111a, 40474 Düsseldorf
+C:Address:01066 GnbH, Rotterdamer Str. 111a, 40474 DÃ¼sseldorf
 C:Homepage:http://www.01066.net/
 C:TarifURL:http://www.01066.net/tarife.php
 C:TarifChanged:2005-02-26
@@ -4248,7 +4248,7 @@ C:TarifChanged:2005-02-26
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
-C:Zonen 0.. werden auch für o.tel.o CbC (11,0) verwendet.
+C:Zonen 0.. werden auch fÃ¼r o.tel.o CbC (11,0) verwendet.
 #
 Z:0 FreeCall
 A:0800*,0801*	      # Freephone
@@ -4257,7 +4257,7 @@ A:110		      # Polizei
 A:112		      # Notruf, Feuerwehr
 T:*/*=0
 #
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:  W/07-19=0.0450(60)/60 Hauptzeit
 T:E,H/07-21=0.0095(60)/60 Freizeit
 T:  */19-21=0.0095(60)/60 Nebenzeit abends
@@ -4348,7 +4348,7 @@ T:*/*=0.23/60
 #####################################################################
 # ARCOR ISDN (Minutengenau)
 #
-# Wunschrufnummern müssen in callerid.conf gesetzt werden:
+# Wunschrufnummern mÃ¼ssen in callerid.conf gesetzt werden:
 # - Festnetz auf Zone 2
 # - Mobilfunk T-Mobile/Vodafone auf Zone 15
 # - Mobilfunk E-plus/o2 Germany auf Zone 16
@@ -4359,11 +4359,11 @@ D:dtag
 C:Name:Arcor AG & Co. KG
 C:Address:Arcor AG & Co. KG, Alfred-Herrenhausen-Allee 1, 65760 Eschborn
 C:Homepage:http://www.arcor.de
-C:Hotline:0800/1070800 (InfoLine: Broschüren, CD-ROMs)
-C:Hotline:0800/1070005 (TeleSales: Beratung, Verträge)
-C:Hotline:0800/1071010 (CareLine: Geschäftskundenbetreuung)
+C:Hotline:0800/1070800 (InfoLine: BroschÃ¼ren, CD-ROMs)
+C:Hotline:0800/1070005 (TeleSales: Beratung, VertrÃ¤ge)
+C:Hotline:0800/1071010 (CareLine: GeschÃ¤ftskundenbetreuung)
 C:Hotline:0800/1071020 (CareLine: Privatkundenbetreuung)
-C:Hotline:0800/1073020 (TecLine: Störungsmeldungen)
+C:Hotline:0800/1073020 (TecLine: StÃ¶rungsmeldungen)
 C:Hotline:0800/6000100 (IPLine: Internet)
 C:TarifURL:http://www.privat.arcor.net/arcor_shop/pdf/arcor_isdn_leistungsbeschreibung_preisliste_agb.pdf
 C:TarifChanged:2003-11, erfasst 2004-04-04
@@ -4383,14 +4383,14 @@ A:112
 A:031*
 T:*/*=0
 #
-# Orts- und Nahgespräche sowie Festnetz-Wunschrufnummern
+# Orts- und NahgesprÃ¤che sowie Festnetz-Wunschrufnummern
 Z:1-2 Nah
 T:W/07-18=0.045/60 Hauptzeit
 T:W/18-21=0.025/60 Freizeit
 T:E,H/07-21=0.025/60 Freizeit
 T:*/21-07=0.02/60 Nebenzeit
 #
-# Ferngespräche
+# FerngesprÃ¤che
 Z:3-4 Fern
 A:DE
 T:W/07-18=0.09/60 Hauptzeit
@@ -4497,7 +4497,7 @@ Z:35 Thuraya
 A:_THUR
 T:*/*=0.0614/0.8
 #
-# DTAG Inlandsauskunft deutsch, türkisch, englisch
+# DTAG Inlandsauskunft deutsch, tÃ¼rkisch, englisch
 Z:40 DTAG Inlandsauskunft
 A:11833,11836,11837
 T:*/*=0.25/0,0.099/6
@@ -4644,7 +4644,7 @@ T:*/*=0.0618/2
 # Die Tarife Internet by Call -70, Internet by Call easy -72
 # Online easy talk&surf und Online speed scheinen Altkunden-
 # tarife zu sein; zumindest aber werden sie nicht mehr beworben.
-# Daher weiß ich derzeit leider teilweise auch nicht, wie teuer 
+# Daher weiÃŸ ich derzeit leider teilweise auch nicht, wie teuer 
 # sie sind.
 #
 # FIXME!
@@ -4704,7 +4704,7 @@ Z:111 Arcor-JuniorNet
 T:*/*=0.015/60
 #
 # Arcor-DSL flatrate 768
-# (gilt bei Einwahl über ISDN)
+# (gilt bei Einwahl Ã¼ber ISDN)
 Z:112 Arcor-DSL flatrate 768
 #A:0192071
 T:*/*=0.03/0,0.01/60
@@ -4765,8 +4765,8 @@ T:W/18-21=0.0614/150 Freizeit
 T:E,H/05-21=0.0614/150 Freizeit
 T:*/21-05=0.0614/240 Nebenzeit
 #
-# Persönliche Rufnummer 0700
-Z:170 Persönliche Rufnummer
+# PersÃ¶nliche Rufnummer 0700
+Z:170 PersÃ¶nliche Rufnummer
 A:0700
 T:W/09-18=0.0614/30 HZ
 T:W/18-21=0.0614/60 NZ
@@ -4784,8 +4784,8 @@ T:W/09-18=0.0614/30 HZ
 T:W/18-09=0.0614/60 NZ
 T:E,H/*=0.0614/60 NZ
 #
-# Topländer Mobilfunk
-Z:250 Topländer Mobilfunk
+# ToplÃ¤nder Mobilfunk
+Z:250 ToplÃ¤nder Mobilfunk
 A:_BEMF
 A:_DKMF
 A:_FIMF
@@ -4851,10 +4851,10 @@ A:_MKMF
 #A:_MDMF    # Moldau (Republik) Mobilfunk # FIXME
 A:_ROMF
 A:_RUMF
-##A:_SUMF    # Russland (östlich) Mobilfunk # FIXME?
+##A:_SUMF    # Russland (Ã¶stlich) Mobilfunk # FIXME?
 A:_TNMF
 A:_UAMF
-#A:_BYMF    # Weißrussland Mobilfunk # FIXME
+#A:_BYMF    # WeiÃŸrussland Mobilfunk # FIXME
 T:*/*=0.75/60
 #
 # International 5 Mobilfunk
@@ -4875,7 +4875,7 @@ T:*/*=1.25/60
 #
 # International 6 Mobilfunk
 # Einordnung nicht bei allen sicher, da in Tarifprosp. als
-# "alle anderen Länder" geführt
+# "alle anderen LÃ¤nder" gefÃ¼hrt
 Z:257 International 6 Mobilfunk
 A:_UZMF
 A:_KGMF
@@ -4917,7 +4917,7 @@ A:_VNMF
 ###A:_MHMF # Marshallinseln Mobilfunk?
 #A:_FMMF # Mikronesien Mobilfunk
 #A:_TKMF # Tokelan Mobilfunk
-###A:_PFMF # Französisch Polynesien Mobilfunk?
+###A:_PFMF # FranzÃ¶sisch Polynesien Mobilfunk?
 #A:_TVMF # Tuvalu Mobilfunk
 #A:_NCMF # Neukaledonien Mobilfunk
 A:_KIMF
@@ -4949,7 +4949,7 @@ A:_UYMF
 A:_SRMF
 ###A:_MQMF # Martinique / Franz. Antillen Mobilfunk?
 A:_PYMF
-#A:_GFMF # Französisch Guayana Mobilfunk
+#A:_GFMF # FranzÃ¶sisch Guayana Mobilfunk
 A:_ECMF
 A:_GYMF
 A:_BOMF
@@ -4973,12 +4973,12 @@ A:_SVMF
 A:_GTMF
 A:_BZMF
 ###A:_FKMF # Falklandinseln Mobilfunk?
-####A:Sönderjylland Mobilfunk #?
+####A:SÃ¶nderjylland Mobilfunk #?
 A:_IMMF #?
 A:_GGMF #?
 ###A:Nordirland Mobilfunk #?
 A:_AMMF
-###A:Zypern (türk.) Mobilfunk #?
+###A:Zypern (tÃ¼rk.) Mobilfunk #?
 ###A:Azoren Mobilfunk #?
 ###A:Madeira Mobilfunk #?
 ###A:Mallorca Mobilfunk #?
@@ -5019,7 +5019,7 @@ A:_AOMF
 A:_ZRMF
 #A:_CGMF # Kongo Mobilfunk
 A:_GAMF
-#A:_GQMF # Äquatorial-Guinea Mobilfunk
+#A:_GQMF # Ã„quatorial-Guinea Mobilfunk
 #A:_STMF # Sao Tome und Principe Mobilfunk
 #A:_CVMF # Cap Verde Mobilfunk
 A:_CMMF
@@ -5064,8 +5064,8 @@ A:_BBMF
 A:_BSMF
 T:*/*=1.65/60
 #
-# Topländer
-Z:280 Topländer
+# ToplÃ¤nder
+Z:280 ToplÃ¤nder
 A:BE
 A:DK
 A:FI
@@ -5156,7 +5156,7 @@ T:*/*=1.00/60
 #
 # International 6
 # Einordnung nicht bei allen sicher, da in Tarifprosp. als
-# "alle anderen Länder" geführt
+# "alle anderen LÃ¤nder" gefÃ¼hrt
 Z:287 International 6
 A:UZ
 A:KG
@@ -5190,7 +5190,7 @@ A:KH
 A:MO
 A:KP
 A:VN
-##A:Russland (östl.) #?
+##A:Russland (Ã¶stl.) #?
 A:_MIDW #?
 A:_CHAT #?
 A:_WAKE #?
@@ -5255,12 +5255,12 @@ A:SV
 A:GT
 A:BZ
 A:FK #?
-###A:Sönderjylland #?
+###A:SÃ¶nderjylland #?
 ###A:Insel Man #?
 ###A:Kanalinseln #?
 ###A:Nordirland #?
 A:AM
-###A:Zypern (türk.) #?
+###A:Zypern (tÃ¼rk.) #?
 ###A:Azoren #?
 ###A:Madeira #?
 ###A:Mallorca #?
@@ -5355,11 +5355,11 @@ D:dtag
 C:Name:Arcor AG & Co. KG
 C:Address:Arcor AG & Co. KG, Alfred-Herrenhausen-Allee 1, 65760 Eschborn
 C:Homepage:http://www.arcor.de
-C:Hotline:0800/1070800 (InfoLine: Broschüren, CD-ROMs)
-C:Hotline:0800/1070005 (TeleSales: Beratung, Verträge)
-C:Hotline:0800/1071010 (CareLine: Geschäftskundenbetreuung)
+C:Hotline:0800/1070800 (InfoLine: BroschÃ¼ren, CD-ROMs)
+C:Hotline:0800/1070005 (TeleSales: Beratung, VertrÃ¤ge)
+C:Hotline:0800/1071010 (CareLine: GeschÃ¤ftskundenbetreuung)
 C:Hotline:0800/1071020 (CareLine: Privatkundenbetreuung)
-C:Hotline:0800/1073020 (TecLine: Störungsmeldungen)
+C:Hotline:0800/1073020 (TecLine: StÃ¶rungsmeldungen)
 C:Hotline:0800/6000100 (IPLine: Internet)
 C:TarifURL:http://www.privat.arcor.net/arcor_shop/pdf/arcor_isdn_leistungsbeschreibung_preisliste_agb.pdf
 C:TarifChanged:2003-11, erfasst 2004-04-04
@@ -5367,17 +5367,17 @@ C:Maintainer:Swen Kuehnlein <s.kuehnlein@gmx.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
 #
-# Kostenfreie und Sonder-Nummern von Arcor-ISDN 60/60 übernehmen
+# Kostenfreie und Sonder-Nummern von Arcor-ISDN 60/60 Ã¼bernehmen
 R:70,3;0,20-173
 #
-# Orts- und Nahgespräche sowie Festnetz-Wunschrufnummern
+# Orts- und NahgesprÃ¤che sowie Festnetz-Wunschrufnummern
 Z:1-2 Nah
 T:W/07-18=0.02/0,0.045(60)/1 Hauptzeit
 T:W/18-21=0.02/0,0.025(60)/1 Freizeit
 T:E,H/07-21=0.02/0,0.025(60)/1 Freizeit
 T:*/21-07=0.02/0,0.02(60)/1 Nebenzeit
 #
-# Ferngespräche
+# FerngesprÃ¤che
 Z:3-4 Fern
 A:DE
 T:W/07-18=0.02/0,0.09(60)/1 Hauptzeit
@@ -5405,8 +5405,8 @@ T:*/*=0.04/0,0.20(60)/1
 Z:16 Mobilfunk Wunschrufnummer E-Netz
 T:*/*=0.04/0,0.24(60)/1
 #
-# Topländer Mobilfunk
-Z:250 Topländer Mobilfunk
+# ToplÃ¤nder Mobilfunk
+Z:250 ToplÃ¤nder Mobilfunk
 A:_BEMF
 A:_DKMF
 A:_FIMF
@@ -5472,10 +5472,10 @@ A:_MKMF
 #A:_MDMF    # Moldau (Republik) Mobilfunk # FIXME
 A:_ROMF
 A:_RUMF
-##A:_SUMF    # Russland (östlich) Mobilfunk # FIXME?
+##A:_SUMF    # Russland (Ã¶stlich) Mobilfunk # FIXME?
 A:_TNMF
 A:_UAMF
-#A:_BYMF    # Weißrussland Mobilfunk # FIXME
+#A:_BYMF    # WeiÃŸrussland Mobilfunk # FIXME
 T:*/*=0.04/0,0.75(60)/1
 #
 # International 5 Mobilfunk
@@ -5536,7 +5536,7 @@ A:_VNMF
 ###A:_MHMF # Marshallinseln Mobilfunk?
 #A:_FMMF # Mikronesien Mobilfunk
 #A:_TKMF # Tokelan Mobilfunk
-###A:_PFMF # Französisch Polynesien Mobilfunk?
+###A:_PFMF # FranzÃ¶sisch Polynesien Mobilfunk?
 #A:_TVMF # Tuvalu Mobilfunk
 #A:_NCMF # Neukaledonien Mobilfunk
 A:_KIMF
@@ -5568,7 +5568,7 @@ A:_UYMF
 A:_SRMF
 ###A:_MQMF # Martinique / Franz. Antillen Mobilfunk?
 A:_PYMF
-#A:_GFMF # Französisch Guayana Mobilfunk
+#A:_GFMF # FranzÃ¶sisch Guayana Mobilfunk
 A:_ECMF
 A:_GYMF
 A:_BOMF
@@ -5592,12 +5592,12 @@ A:_SVMF
 A:_GTMF
 A:_BZMF
 ###A:_FKMF # Falklandinseln Mobilfunk?
-####A:Sönderjylland Mobilfunk #?
+####A:SÃ¶nderjylland Mobilfunk #?
 A:_IMMF #?
 A:_GGMF #?
 ###A:Nordirland Mobilfunk #?
 A:_AMMF
-###A:Zypern (türk.) Mobilfunk #?
+###A:Zypern (tÃ¼rk.) Mobilfunk #?
 ###A:Azoren Mobilfunk #?
 ###A:Madeira Mobilfunk #?
 ###A:Mallorca Mobilfunk #?
@@ -5638,7 +5638,7 @@ A:_AOMF
 A:_ZRMF
 #A:_CGMF # Kongo Mobilfunk
 A:_GAMF
-#A:_GQMF # Äquatorial-Guinea Mobilfunk
+#A:_GQMF # Ã„quatorial-Guinea Mobilfunk
 #A:_STMF # Sao Tome und Principe Mobilfunk
 #A:_CVMF # Cap Verde Mobilfunk
 A:_CMMF
@@ -5683,8 +5683,8 @@ A:_BBMF
 A:_BSMF
 T:*/*=0.04/0,1.65(60)/1
 #
-# Topländer
-Z:280 Topländer
+# ToplÃ¤nder
+Z:280 ToplÃ¤nder
 A:BE
 A:DK
 A:FI
@@ -5807,7 +5807,7 @@ A:KH
 A:MO
 A:KP
 A:VN
-##A:Russland (östl.) #?
+##A:Russland (Ã¶stl.) #?
 A:_MIDW #?
 A:_CHAT #?
 A:_WAKE #?
@@ -5872,12 +5872,12 @@ A:SV
 A:GT
 A:BZ
 A:FK #?
-###A:Sönderjylland #?
+###A:SÃ¶nderjylland #?
 ###A:Insel Man #?
 ###A:Kanalinseln #?
 ###A:Nordirland #?
 A:AM
-###A:Zypern (türk.) #?
+###A:Zypern (tÃ¼rk.) #?
 ###A:Azoren #?
 ###A:Madeira #?
 ###A:Mallorca #?
@@ -5972,7 +5972,7 @@ T:*/*=0.04/0,1.40(60)/1
 #####################################################################
 # ARCOR ISDN 740 (Minutengenau)
 #
-# Wunschrufnummern müssen in callerid.conf gesetzt werden:
+# Wunschrufnummern mÃ¼ssen in callerid.conf gesetzt werden:
 # - Festnetz auf Zone 2
 # - Mobilfunk T-Mobile/Vodafone auf Zone 15
 # - Mobilfunk E-plus/o2 Germany auf Zone 16
@@ -5983,11 +5983,11 @@ D:dtag
 C:Name:Arcor AG & Co. KG
 C:Address:Arcor AG & Co. KG, Alfred-Herrenhausen-Allee 1, 65760 Eschborn
 C:Homepage:http://www.arcor.de
-C:Hotline:0800/1070800 (InfoLine: Broschüren, CD-ROMs)
-C:Hotline:0800/1070005 (TeleSales: Beratung, Verträge)
-C:Hotline:0800/1071010 (CareLine: Geschäftskundenbetreuung)
+C:Hotline:0800/1070800 (InfoLine: BroschÃ¼ren, CD-ROMs)
+C:Hotline:0800/1070005 (TeleSales: Beratung, VertrÃ¤ge)
+C:Hotline:0800/1071010 (CareLine: GeschÃ¤ftskundenbetreuung)
 C:Hotline:0800/1071020 (CareLine: Privatkundenbetreuung)
-C:Hotline:0800/1073020 (TecLine: Störungsmeldungen)
+C:Hotline:0800/1073020 (TecLine: StÃ¶rungsmeldungen)
 C:Hotline:0800/6000100 (IPLine: Internet)
 C:TarifURL:http://www.privat.arcor.net/arcor_shop/pdf/arcor_isdn_leistungsbeschreibung_preisliste_agb.pdf
 C:TarifChanged:2003-11, erfasst 2004-04-04
@@ -5995,10 +5995,10 @@ C:Maintainer:Swen Kuehnlein <s.kuehnlein@gmx.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
 #
-# Alles außer Inlandsfestnetztarife von Arcor ISDN 60/60 übernehmen
+# Alles auÃŸer Inlandsfestnetztarife von Arcor ISDN 60/60 Ã¼bernehmen
 R:70,3;0,10-
 #
-# Orts- und Nahgespräche sowie Festnetz-Wunschrufnummern
+# Orts- und NahgesprÃ¤che sowie Festnetz-Wunschrufnummern
 Z:1-2 Nah
 T:W/07-18=0.045/60 Hauptzeit
 T:W/18-21=0.025/60 Freizeit
@@ -6006,7 +6006,7 @@ T:W,6/21-07=0.02/60 Nebenzeit
 T:6/07-21=0.025/60 Freizeit
 T:7,H/*=0/60 kostenfrei
 #
-# Ferngespräche
+# FerngesprÃ¤che
 Z:3-4 Fern
 A:DE
 T:W/07-18=0.09/60 Hauptzeit
@@ -6025,11 +6025,11 @@ D:dtag
 C:Name:Arcor AG & Co. KG
 C:Address:Arcor AG & Co. KG, Alfred-Herrenhausen-Allee 1, 65760 Eschborn
 C:Homepage:http://www.arcor.de
-C:Hotline:0800/1070800 (InfoLine: Broschüren, CD-ROMs)
-C:Hotline:0800/1070005 (TeleSales: Beratung, Verträge)
-C:Hotline:0800/1071010 (CareLine: Geschäftskundenbetreuung)
+C:Hotline:0800/1070800 (InfoLine: BroschÃ¼ren, CD-ROMs)
+C:Hotline:0800/1070005 (TeleSales: Beratung, VertrÃ¤ge)
+C:Hotline:0800/1071010 (CareLine: GeschÃ¤ftskundenbetreuung)
 C:Hotline:0800/1071020 (CareLine: Privatkundenbetreuung)
-C:Hotline:0800/1073020 (TecLine: Störungsmeldungen)
+C:Hotline:0800/1073020 (TecLine: StÃ¶rungsmeldungen)
 C:Hotline:0800/6000100 (IPLine: Internet)
 C:TarifURL:http://www.privat.arcor.net/arcor_shop/pdf/arcor_isdn_leistungsbeschreibung_preisliste_agb.pdf
 C:TarifChanged:2003-11, erfasst 2004-04-04
@@ -6037,7 +6037,7 @@ C:Maintainer:Swen Kuehnlein <s.kuehnlein@gmx.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
 #
-# Alles außer Inlandsfestnetztarife von Arcor ISDN 1/1 übernehmen
+# Alles auÃŸer Inlandsfestnetztarife von Arcor ISDN 1/1 Ã¼bernehmen
 # Sondernummern
 R:70,3;0,20-173
 # Mobilfunktarife
@@ -6045,7 +6045,7 @@ R:70,3;10-16
 # Auslandstarife
 R:70,4;250-
 #
-# Orts- und Nahgespräche sowie Festnetz-Wunschrufnummern
+# Orts- und NahgesprÃ¤che sowie Festnetz-Wunschrufnummern
 Z:1-2 Nah
 T:W/07-18=0.02/0,0.045(60)/1 Hauptzeit
 T:W/18-21=0.02/0,0.025(60)/1 Freizeit
@@ -6053,7 +6053,7 @@ T:W,6/21-07=0.02/0,0.02(60)/1 Nebenzeit
 T:6/07-21=0.02/0,0.025(60)/1 Freizeit
 T:7,H/*=0/1 kostenfrei
 #
-# Ferngespräche
+# FerngesprÃ¤che
 Z:3-4 Fern
 A:DE
 T:W/07-18=0.02/0,0.09(60)/1 Hauptzeit
@@ -6077,11 +6077,11 @@ D:dtag
 C:Name:Arcor AG & Co. KG
 C:Address:Arcor AG & Co. KG, Alfred-Herrenhausen-Allee 1, 65760 Eschborn
 C:Homepage:http://www.arcor.de
-C:Hotline:0800/1070800 (InfoLine: Broschüren, CD-ROMs)
-C:Hotline:0800/1070005 (TeleSales: Beratung, Verträge)
-C:Hotline:0800/1071010 (CareLine: Geschäftskundenbetreuung)
+C:Hotline:0800/1070800 (InfoLine: BroschÃ¼ren, CD-ROMs)
+C:Hotline:0800/1070005 (TeleSales: Beratung, VertrÃ¤ge)
+C:Hotline:0800/1071010 (CareLine: GeschÃ¤ftskundenbetreuung)
 C:Hotline:0800/1071020 (CareLine: Privatkundenbetreuung)
-C:Hotline:0800/1073020 (TecLine: Störungsmeldungen)
+C:Hotline:0800/1073020 (TecLine: StÃ¶rungsmeldungen)
 C:Hotline:0800/6000100 (IPLine: Internet)
 C:TarifURL:http://www.privat.arcor.net/arcor_shop/pdf/arcor_isdn_leistungsbeschreibung_preisliste_agb.pdf
 C:TarifChanged:2003-11, erfasst 2004-04-04
@@ -6089,17 +6089,17 @@ C:Maintainer:Swen Kuehnlein <s.kuehnlein@gmx.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
 #
-# Kostenfreie, Sonder-Nummern und International 6 von Arcor-ISDN 60/60 übernehmen
+# Kostenfreie, Sonder-Nummern und International 6 von Arcor-ISDN 60/60 Ã¼bernehmen
 R:70,3;0,20-173,257,287
 #
-# Orts- und Nahgespräche
+# Orts- und NahgesprÃ¤che
 Z:1-2 Nah
 T:W/07-18=0.03/60 Hauptzeit
 T:W/18-07=0.02/60 Nebenzeit
 T:6/*=0.02/60 Nebenzeit
 T:7,H/*=0/60 kostenfrei
 #
-# Ferngespräche
+# FerngesprÃ¤che
 Z:3-4 Fern
 A:DE
 T:W/07-18=0.04/60 Hauptzeit
@@ -6119,8 +6119,8 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.24/60
 #
-# Topländer Mobilfunk
-Z:250 Topländer Mobilfunk
+# ToplÃ¤nder Mobilfunk
+Z:250 ToplÃ¤nder Mobilfunk
 A:_BEMF
 A:_DKMF
 A:_FIMF
@@ -6218,8 +6218,8 @@ T:*/*=1.25/60
 # International 6 Mobilfunk
 # wie in ISDN 60/60
 #
-# Topländer
-Z:280 Topländer
+# ToplÃ¤nder
+Z:280 ToplÃ¤nder
 A:BE
 A:DK
 A:FI
@@ -6331,11 +6331,11 @@ D:dtag
 C:Name:Arcor AG & Co. KG
 C:Address:Arcor AG & Co. KG, Alfred-Herrenhausen-Allee 1, 65760 Eschborn
 C:Homepage:http://www.arcor.de
-C:Hotline:0800/1070800 (InfoLine: Broschüren, CD-ROMs)
-C:Hotline:0800/1070005 (TeleSales: Beratung, Verträge)
-C:Hotline:0800/1071010 (CareLine: Geschäftskundenbetreuung)
+C:Hotline:0800/1070800 (InfoLine: BroschÃ¼ren, CD-ROMs)
+C:Hotline:0800/1070005 (TeleSales: Beratung, VertrÃ¤ge)
+C:Hotline:0800/1071010 (CareLine: GeschÃ¤ftskundenbetreuung)
 C:Hotline:0800/1071020 (CareLine: Privatkundenbetreuung)
-C:Hotline:0800/1073020 (TecLine: Störungsmeldungen)
+C:Hotline:0800/1073020 (TecLine: StÃ¶rungsmeldungen)
 C:Hotline:0800/6000100 (IPLine: Internet)
 C:TarifURL:http://www.privat.arcor.net/arcor_shop/pdf/arcor_isdn_leistungsbeschreibung_preisliste_agb.pdf
 C:TarifChanged:2003-11, erfasst 2004-04-04
@@ -6343,18 +6343,18 @@ C:Maintainer:Swen Kuehnlein <s.kuehnlein@gmx.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
 #
-# Kostenfreie, Sonder-Nummern und International 6 von Arcor-ISDN 1/1 übernehmen
+# Kostenfreie, Sonder-Nummern und International 6 von Arcor-ISDN 1/1 Ã¼bernehmen
 R:70,3;0,20-173
 R:70,4;257,287
 #
-# Orts- und Nahgespräche
+# Orts- und NahgesprÃ¤che
 Z:1-2 Nah
 T:W/07-18=0.02/0,0.03(60)/1 Hauptzeit
 T:W/18-07=0.02/0,0.02(60)/1 Nebenzeit
 T:6/*=0.02/0,0.02(60)/1 Nebenzeit
 T:7,H/*=0/60 kostenfrei
 #
-# Ferngespräche
+# FerngesprÃ¤che
 Z:3-4 Fern
 A:DE
 T:W/07-18=0.02/0,0.04(60)/1 Hauptzeit
@@ -6374,8 +6374,8 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.04/0,0.24(60)/1
 #
-# Topländer Mobilfunk
-Z:250 Topländer Mobilfunk
+# ToplÃ¤nder Mobilfunk
+Z:250 ToplÃ¤nder Mobilfunk
 A:_BEMF
 A:_DKMF
 A:_FIMF
@@ -6473,8 +6473,8 @@ T:*/*=0.04/0,1.25(60)/1
 # International 6 Mobilfunk
 # wie in ISDN 1/1
 #
-# Topländer
-Z:280 Topländer
+# ToplÃ¤nder
+Z:280 ToplÃ¤nder
 A:BE
 A:DK
 A:FI
@@ -6583,8 +6583,8 @@ P:71,0 01071
 B:01071
 D:dtag
 C:Name: 01071 Telecom GmbH
-C:Address:Postfach 50 12 62, 50972 Köln
-C:Address:Ringstr. 38, 50996 Köln
+C:Address:Postfach 50 12 62, 50972 KÃ¶ln
+C:Address:Ringstr. 38, 50996 KÃ¶ln
 C:Homepage:http://www.01071telecom.de/
 C:TarifURL:http://www.01071telecom.de/tarife.php
 C:TarifURL:http://www.01071telecom.de/tarifetextfile.php
@@ -6619,10 +6619,10 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.151/60
 #
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.025/60
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.134/60
 Z:210 China
@@ -6649,7 +6649,7 @@ Z:0 FreeCall
 A:0800*,0801*        # Freephone
 A:031*                # Testrufnummern
 T:*/*=0
-# Ortsgespräche laut FAQ nicht überall möglich.
+# OrtsgesprÃ¤che laut FAQ nicht Ã¼berall mÃ¶glich.
 Z:1-4 Festnetz
 A:DE
 T:*/18-20=0.0100/60 Supertime
@@ -6665,7 +6665,7 @@ P:77,0 01077
 B:01077
 D:dtag
 C:Name:01077 (Callax)
-C:Address:Callax Telecom GmbH, Leopoldstrasse 16, 40211 Düsseldorf
+C:Address:Callax Telecom GmbH, Leopoldstrasse 16, 40211 DÃ¼sseldorf
 C:Telefon:0180-5-701077
 C:Telefax:0180-5-901077
 C:EMail:support@01077.com
@@ -6696,10 +6696,10 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.1450(60)/240
 #
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.029/60
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.158/60
 Z:210 China
@@ -6749,7 +6749,7 @@ T:*/*=0.2240(60)/1
 # nicht erfasste Auslandsziele:
 # - Bolivia - La Paz (0.3480)
 # - Peru Lima (0.2090)
-# - Zypern türk. Mobilfunk (0.2440)
+# - Zypern tÃ¼rk. Mobilfunk (0.2440)
 Z:200 Welt 1
 A:SE
 T:*/*=0.0540(60)/1
@@ -7251,7 +7251,7 @@ P:79,0 star79 CbC
 B:01079
 D:dtag
 C:Name:star79 Call by Call (Ventelo)
-C:Address:Ventelo GmbH, Am Seestern 3, 40547 Düsseldorf
+C:Address:Ventelo GmbH, Am Seestern 3, 40547 DÃ¼sseldorf
 C:Homepage:http://www.star79.de/
 C:TarifURL:http://www.star79.de/html/info/tarifliste.html
 C:TarifChanged:2005-02-26
@@ -7262,7 +7262,7 @@ Z:0 FreeCall
 A:0800*,0801*        # Freephone
 A:031*                # Testrufnummern
 T:*/*=0
-# Ortsgespräche bislang nicht bundesweit verfügbar.
+# OrtsgesprÃ¤che bislang nicht bundesweit verfÃ¼gbar.
 Z:1 Ortsnetz
 T:W/08-18=0.0197/60
 T:W/18-08=0.0144/60
@@ -7284,10 +7284,10 @@ Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.151/60
 #
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.025/60
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.163/60
 Z:210 China
@@ -7303,7 +7303,7 @@ P:80,0 Telegate
 B:01080
 D:dtag
 C:Name:Telegate
-C:Address:Fraunhofer Straße 12a, 82152 München-Martinsried
+C:Address:Fraunhofer StraÃŸe 12a, 82152 MÃ¼nchen-Martinsried
 C:Telefax:089/8954-1010
 C:EMail:info@telegate.de
 C:Homepage:http://www.telegate.de/
@@ -7331,7 +7331,7 @@ A:_DEME2		# E2
 T:*/*=0.2499/60
 #
 # Telegate Auskunft bei DTAG/Arcor (33,0/70,3) eingetragen;
-# Preise sind vom Anschlußbetreiber abhängig.
+# Preise sind vom AnschluÃŸbetreiber abhÃ¤ngig.
 #####################################################################
 #
 #
@@ -7339,7 +7339,7 @@ P:81,0 01081
 B:01081
 D:dtag
 C:Name:01081 Telecom AG
-C:Address:Postfach 10 49 27, 40040 Düsseldorf
+C:Address:Postfach 10 49 27, 40040 DÃ¼sseldorf
 C:Telefax:01805-908060
 C:EMail:info@01081.com
 C:Homepage:http://www.01081.com/
@@ -7786,20 +7786,20 @@ C:TarifChanged:2005-02-25
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
-C:Von Anschlüssen in 23 Großstädten gilt abweichender Tarif (P:86,1)
+C:Von AnschlÃ¼ssen in 23 GroÃŸstÃ¤dten gilt abweichender Tarif (P:86,1)
 #
 Z:0 FreeCall
 A:0800*,0801*	# Freephone
 A:031*		# Testrufnummern
 T:*/*=0
 #
-# Ortsgespräche nicht überall, siehe Liste mit Stand 2003-07-29:
+# OrtsgesprÃ¤che nicht Ã¼berall, siehe Liste mit Stand 2003-07-29:
 # http://www.onetel.de/fileadmin/user_upload/preislisten/OneTel_Call_City_01086_Vorwahlbereiche.pdf
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:*/00-08      =0.0068/60
 T:*/09-12,14-16=0.0168/60
 T:*/08-09,12-14,16-00=0.0289/60
-Z:2-4 Ferngespräche
+Z:2-4 FerngesprÃ¤che
 A:DE
 T:*/00-08      =0.0068/60
 T:*/09-12,14-16=0.0168/60
@@ -7827,9 +7827,9 @@ C:TarifChanged:2005-02-25
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Euro
-C:Tarif gilt nur in 23 Großstädten, siehe Liste bei Zone 5 "City to City".
+C:Tarif gilt nur in 23 GroÃŸstÃ¤dten, siehe Liste bei Zone 5 "City to City".
 #
-# Freecall, Festnetz und Mobilfunk identisch mit Tarif für Rest der Republik.
+# Freecall, Festnetz und Mobilfunk identisch mit Tarif fÃ¼r Rest der Republik.
 R:86,0;0-4,10-
 # 
 Z:5 City to City
@@ -7839,7 +7839,7 @@ A:+49521	# Bielefeld
 A:+49421	# Bremen
 A:+49231	# Dortmund
 A:+49351	# Dresden
-A:+49211	# Düsseldorf
+A:+49211	# DÃ¼sseldorf
 A:+49361	# Erfurt
 A:+49201	# Essen
 A:+4969 	# Frankfurt
@@ -7847,21 +7847,21 @@ A:+4940 	# Hamburg
 A:+49511	# Hannover
 A:+49721	# Karlsruhe
 A:+49431	# Kiel
-A:+49221	# Köln
+A:+49221	# KÃ¶ln
 A:+49341	# Leipzig
 A:+49391	# Magdeburg
 A:+49621	# Mannheim
-A:+4989 	# München
-A:+49911	# Nürnberg
+A:+4989 	# MÃ¼nchen
+A:+49911	# NÃ¼rnberg
 A:+49381	# Rostock
 A:+49711	# Stuttgart
-A:+49391	# Würzburg
+A:+49391	# WÃ¼rzburg
 #--
 T:*/00-08      =0.0068/60
 T:*/09-12,14-16=0.0168/60
 T:*/08-09,12-14,16-00=0.0289/60
 #
-# Außerdem mehrere Preselection bei OneTel im Angebot.
+# AuÃŸerdem mehrere Preselection bei OneTel im Angebot.
 #####################################################################
 #
 #
@@ -7870,20 +7870,20 @@ B:01089
 D:dtag
 C:Name:M"net ISDN privat
 C:Name:(vormals) M'net Klassik
-C:Address:M"net Telekommunikations GmbH, Müllerstraße 7, 80469 München
+C:Address:M"net Telekommunikations GmbH, MÃ¼llerstraÃŸe 7, 80469 MÃ¼nchen
 C:Homepage:http://www.m-net.de/
 C:TarifURL:http://www.m-net.de/pdf/isdn/isdn_privat_a_auto.pdf
 C:TarifChanged:2004-05
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Rabatt ab monatlich 75 Euro Nettoverbindungsentgelt.
-C:Komplettanschluss ab 19,90 EUR/Monat Grundgebühr zuzüglich Aufpreis
-C:von 2 EUR/Monat für sekundengenaue Abrechnung.
-C:Regionales Angebot für Stadtgebiet München und
-C:Landkreise München, Dachau, Starnberg oder Ingolstadt.
+C:Komplettanschluss ab 19,90 EUR/Monat GrundgebÃ¼hr zuzÃ¼glich Aufpreis
+C:von 2 EUR/Monat fÃ¼r sekundengenaue Abrechnung.
+C:Regionales Angebot fÃ¼r Stadtgebiet MÃ¼nchen und
+C:Landkreise MÃ¼nchen, Dachau, Starnberg oder Ingolstadt.
 C:Euro
 # Tarif wird im Februar 2005 offenbar nicht mehr aktiv vermarktet, aktuelles
-# Angebot für Privatkunden ist "Maxi ISDN" mit anderen Preisen.
+# Angebot fÃ¼r Privatkunden ist "Maxi ISDN" mit anderen Preisen.
 #
 Z:0 FreeCall
 A:0800*,0801*        # Freephone
@@ -7908,7 +7908,7 @@ T:W/18-08=0.01|0.0297(60)/60
 T:E,H/*=0.01|0.0297(60)/60
 #
 Z:5 M"net zu M"net
-# ``Alle Gespräche zwischen M.net-Telefonanschlusskunden
+# ``Alle GesprÃ¤che zwischen M.net-Telefonanschlusskunden
 #   im Regierungsbezirk Oberbayern.''
 # Alle bekannten Anschlussinhaber bei M"net in der Form
 # A:+49<Vorwahl><Nummer> eintragen
@@ -7938,18 +7938,18 @@ B:01089
 D:dtag
 C:Name:M"net ISDN business
 C:Name:(vormals) M'net ISDN business Klassik plus
-C:Address:M"net Telekommunikations GmbH, Müllerstraße 7, 80469 München
+C:Address:M"net Telekommunikations GmbH, MÃ¼llerstraÃŸe 7, 80469 MÃ¼nchen
 C:Homepage:http://www.m-net.de/
 C:TarifURL:http://www.m-net.de/pdf/isdn/isdn_business_a_auto.pdf
 C:TarifChanged:2004-05
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Komplettanschluss für ab 25,47 EUR/Monat Grundgebühr.
+C:Komplettanschluss fÃ¼r ab 25,47 EUR/Monat GrundgebÃ¼hr.
 C:Rabatt ab monatlich 75 Euro Nettoverbindungsentgelt.
-C:Regionales Angebot für Stadtgebiet München und
-C:Landkreise München, Dachau, Starnberg oder Ingolstadt.
+C:Regionales Angebot fÃ¼r Stadtgebiet MÃ¼nchen und
+C:Landkreise MÃ¼nchen, Dachau, Starnberg oder Ingolstadt.
 C:Euro
-# FIXME: _nicht_ bundeseinheitliche Feiertage werden nicht unterstützt
+# FIXME: _nicht_ bundeseinheitliche Feiertage werden nicht unterstÃ¼tzt
 #
 Z:0 FreeCall
 A:0800*,0801*        # Freephone
@@ -7965,7 +7965,7 @@ A:DE
 T:*/*=0.01|0.0348(60)/1
 #
 Z:5 M"net zu M"net
-# ``Alle Gespräche zu geografischen Rufnummern von M"net-
+# ``Alle GesprÃ¤che zu geografischen Rufnummern von M"net-
 #   Telefonanschlusskunden im Regierungsbezirk Oberbayern.''
 # Alle bekannten Anschlussinhaber bei M"net in der Form
 # A:+49<Vorwahl><Nummer> eintragen
@@ -7992,20 +7992,20 @@ T:*/*=0.01|0.0097(60)/1
 P:89,2 M'net GGD
 B:01089
 D:dtag
-C:Name:M'net ISDN business GGD (Grüß Gott Deutschland)
-C:Address:M'net Telekommunikations GmbH, Müllerstraße 7, 80469 München
+C:Name:M'net ISDN business GGD (GrÃ¼ÃŸ Gott Deutschland)
+C:Address:M'net Telekommunikations GmbH, MÃ¼llerstraÃŸe 7, 80469 MÃ¼nchen
 C:Homepage:http://www.m-net.de/
 C:TarifURL:http://www.m-net.de/ggd.htm
 C:TarifChanged:2003-04-01
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Rabatt ab monatlich 125 Euro Nettoverbindungsentgelt.
-C:Komplettanschluss ab 25,52 EUR/Monat Grundgebühr.
-C:Regionales Angebot für Stadtgebiet München und
-C:Landkreise München, Dachau, Starnberg oder Ingolstadt.
+C:Komplettanschluss ab 25,52 EUR/Monat GrundgebÃ¼hr.
+C:Regionales Angebot fÃ¼r Stadtgebiet MÃ¼nchen und
+C:Landkreise MÃ¼nchen, Dachau, Starnberg oder Ingolstadt.
 C:Euro
 # Tarif wird nicht mehr aktiv angeboten,
-# Fortgeltung für Bestandskunden ungewiss. 
+# Fortgeltung fÃ¼r Bestandskunden ungewiss. 
 #
 Z:0 FreeCall
 A:0800*,0801*        # Freephone
@@ -8057,16 +8057,16 @@ P:89,3 M"net ISDN privat sekundengenau
 B:01089
 D:dtag
 C:Name:M"net ISDN privat sekundengenau
-C:Address:M"net Telekommunikations GmbH, Müllerstraße 7, 80469 München
+C:Address:M"net Telekommunikations GmbH, MÃ¼llerstraÃŸe 7, 80469 MÃ¼nchen
 C:Homepage:http://www.m-net.de/
 C:TarifURL:http://www.m-net.de/pdf/isdn/isdn_privat_a_auto.pdf
 C:TarifChanged:2004-05
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Rabatt ab monatlich 75 Euro Nettoverbindungsentgelt.
-C:Komplettanschluss ab 21,90 EUR/Monat Grundgebühr.
-C:Regionales Angebot für Stadtgebiet München und
-C:Landkreise München, Dachau, Starnberg oder Ingolstadt.
+C:Komplettanschluss ab 21,90 EUR/Monat GrundgebÃ¼hr.
+C:Regionales Angebot fÃ¼r Stadtgebiet MÃ¼nchen und
+C:Landkreise MÃ¼nchen, Dachau, Starnberg oder Ingolstadt.
 C:Euro
 # Tarif wird im Februar 2005 offenbar nicht mehr aktiv vermarktet, aktuelles
 #
@@ -8089,7 +8089,7 @@ T:W/18-08=0.01|0.0297(60)/1
 T:E,H/*=0.01|0.0297(60)/1
 
 Z:5 M"net zu M"net
-# ``Alle Gespräche zwischen M"net-Telefonanschlusskunden
+# ``Alle GesprÃ¤che zwischen M"net-Telefonanschlusskunden
 #   im Regierungsbezirk Oberbayern.''
 # Alle bekannten Anschlussinhaber bei M"net in der Form
 # A:+49<Vorwahl><Nummer> eintragen
@@ -8120,7 +8120,7 @@ P:90,0 BT Ignite CbC
 B:01090
 D:dtag
 C:Name:BT Ignite CbC
-C:Address:BT (Germany) GmbH & Co. oHG, Barthstr. 22, 80339 München
+C:Address:BT (Germany) GmbH & Co. oHG, Barthstr. 22, 80339 MÃ¼nchen
 C:Telefon:089-2600-0
 C:Telefax:040-2600-2477
 C:Hotline:0800-2255722
@@ -8135,7 +8135,7 @@ Z:0 FreeCall
 A:0800*,0801*        # Freephone
 A:031* 	 	      # Testrufnummern
 T:*/*=0
-# noch nicht bundesweit verfügbar
+# noch nicht bundesweit verfÃ¼gbar
 Z:1 Ortsnetz
 T:[-01.03.2005]W/08-18=0.015/60 Hauptzeit
 T:[-01.03.2005]W/18-08=0.015/60 Nebenzeit
@@ -8163,7 +8163,7 @@ A:_DEME2
 T:[-01.03.2005]*/*=0.16/60 
 T:[01.03.2005]*/*=0.23/60 
 #
-# Aussereuropäische Mobilfunknetze stark unvollständig erfasst.
+# AussereuropÃ¤ische Mobilfunknetze stark unvollstÃ¤ndig erfasst.
 Z:200 EuroSpezial
 A:BE,DK,FR,UK,IE,IT,NL
 A:NO,AT,SE,CH
@@ -8189,7 +8189,7 @@ T:*/*=0.36/60
 #
 Z:204 EuroFern
 A:IL,TR,SU
-# "restliche europäische Länder" ist interpretationsfähig ...
+# "restliche europÃ¤ische LÃ¤nder" ist interpretationsfÃ¤hig ...
 A:AL,BA,BG,EE,FO,GI
 A:HR,LV,LT,MT
 A:MK,MD,RO
@@ -8221,11 +8221,11 @@ A:_AUMF,_HKMF,_JPMF
 A:_KRMF,_MYMF,_NZMF
 A:_SGMF,_TWMF
 T:*/*=0.92/60
-Z:210 Sonstige Länder
+Z:210 Sonstige LÃ¤nder
 A:GU,_HAWA			# sonst USA
 A:+
 T:*/*=0.99/60
-Z:211 Sonstige Länder Mobilfunk
+Z:211 Sonstige LÃ¤nder Mobilfunk
 #FIXME: alle weiteren Codes _[A-Z][A-Z]MF aus country(-de).dat hier:
 A:_GUMF,_USHIM
 T:*/*=1.15/60
@@ -8235,7 +8235,7 @@ T:*/*=1.15/60
 P:94,0 Startec
 B:01094
 C:Name:Startec 01094
-C:Address:Global Communications GmbH, Eupener Straße 57 - 59, 50933 Köln
+C:Address:Global Communications GmbH, Eupener StraÃŸe 57 - 59, 50933 KÃ¶ln
 C:Homepage:http://www.startec.info/
 C:TarifURL:http://www.startec.info/website.php?id=/Produkte/01094/tarife.htm
 C:TarifChanged:2005-02-23
@@ -8265,16 +8265,16 @@ T:*/*=0.269/60
 #
 #
 # Tochtergesellschaften (Adressen und VBN laut RegTP):
-#  01023 -- Versatel Süd-Deutschland GmbH (vormals: tesion)
-#           Kriegsbergstraße 32, 70174 Stuttgart
+#  01023 -- Versatel SÃ¼d-Deutschland GmbH (vormals: tesion)
+#           KriegsbergstraÃŸe 32, 70174 Stuttgart
 #  01032 -- Versatel Berlin GmbH (vormals: BerliKomm)
-#           Fasanenstraße 85, 10623 Berlin
+#           FasanenstraÃŸe 85, 10623 Berlin
 #  01044 -- Versatel West-Deutschland GmbH & Co.KG (vormals: VEW TELNET)
-#           Unterste-Wilms-Straße 29, 44143 Dortmund
+#           Unterste-Wilms-StraÃŸe 29, 44143 Dortmund
 #  01046 -- Versatel Nord-Deutschland GmbH (vormals: KomTel)
-#           Nordstraße 2, 24937 Flensburg
+#           NordstraÃŸe 2, 24937 Flensburg
 # 010005 -- Versatel Germany GmbH (vormals: CompleTel)
-#           Teuchertstraße 2b, 85540 Haar bei München
+#           TeuchertstraÃŸe 2b, 85540 Haar bei MÃ¼nchen
 #
 P:105,0 Versatel NoLimit
 B:010005
@@ -8283,13 +8283,13 @@ C:Name:Versatel NoLimit
 C:Address:Versatel Deutschland Holding GmbH, Aroser Allee 72, 13407 Berlin
 C:Homepage:http://www.versatel.de/
 # Tarif wird nicht mehr aktiv vermarktet.
-# Quelle: Preisliste "Preise & Tarife NoLimit", gültig ab 04/2004;
-#        "Preisliste Weltweit für ... und NoLimit", gültig ab 03/2004;
+# Quelle: Preisliste "Preise & Tarife NoLimit", gÃ¼ltig ab 04/2004;
+#        "Preisliste Weltweit fÃ¼r ... und NoLimit", gÃ¼ltig ab 03/2004;
 #        "Preisliste Sonderrufnummern".
 C:TarifChanged:2004-04
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
-C:Vollanschluss 49 EUR Grundgebühr/Monat, inkl. 20 EUR Gesprächsguthaben
+C:Vollanschluss 49 EUR GrundgebÃ¼hr/Monat, inkl. 20 EUR GesprÃ¤chsguthaben
 #
 Z:0 FreeCall
 A:0800*,0801*        # Freephone
@@ -8311,7 +8311,7 @@ Z:10 Mobil 1 (D-Netze)
 A:_DEMD1
 A:_DEMD2
 T:*/*=0.246/60
-# Mobil 2 nicht in Preisliste für Tarif NoLimit, geschätzt auf Basis Mobil 1
+# Mobil 2 nicht in Preisliste fÃ¼r Tarif NoLimit, geschÃ¤tzt auf Basis Mobil 1
 # und relativen Abstand bei Tarif "Speak+Surf"
 Z:11 Mobil 2 (E-Netze)
 A:_DEME1
@@ -8343,9 +8343,9 @@ Z:35 Thuraya
 A:_THUR
 T:*/*=4.30/60
 #
-# FIXME: Preiswechsel nach Weitervermittlung nicht unterstützt.
+# FIXME: Preiswechsel nach Weitervermittlung nicht unterstÃ¼tzt.
 Z:40 Auskunft DTAG Inland
-A:11833,11836,11837 	# auf deutsch, türkisch und englisch
+A:11833,11836,11837 	# auf deutsch, tÃ¼rkisch und englisch
 T:*/*=0.250/0,0.989/60
 Z:41 Auskunft DTAG Ausland
 A:11834
@@ -8409,7 +8409,7 @@ Z:84 Shared Cost 0180-5
 A:01805
 T:*/*=0.12/60
 #
-# 0190-0 nicht in Versatel Preisliste, 0900 schon, Verfügbarkeit unklar.
+# 0190-0 nicht in Versatel Preisliste, 0900 schon, VerfÃ¼gbarkeit unklar.
 Z:90 Premium Rate 0190-0
 # Entsprechend header ist 01900 keine Sonderrufnummer mehr.
 A:+491900
@@ -8432,7 +8432,7 @@ A:09001,09003,09009
 A:+499005
 T:*/*=30.00|2.00/60 variable Tarifierung - Obergrenzen nach TKG angenommen
 #
-# Z:100 T-Online wird mittels X:-Tag allgemein gültig bei P:33,0 definiert.
+# Z:100 T-Online wird mittels X:-Tag allgemein gÃ¼ltig bei P:33,0 definiert.
 # Versatel berechnet Verbindungen zu T-Online (01910*) und AOL (01914) nicht,
 # allerdings alle anderen Online-Dienste im Bereich 019[123]*.
 #
@@ -8460,7 +8460,7 @@ Z:164 T-VoteCall 0137-[89]
 A:01378,01379
 T:*/*=0.49/0,0/60
 #
-Z:170 Persönliche Rufnummer
+Z:170 PersÃ¶nliche Rufnummer
 A:0700 	# FIXME: zumindest teilw. intern. erreichbar, aber N:0700 in header
 T:W/08-18=0.06/30 Tag
 T:W/18-08=0.06/60 Freizeit
@@ -8470,8 +8470,8 @@ Z:171 Ansagedienste
 A:01162,01191
 T:*/*=0.25/60
 #
-# Funktioniert nur mit isdnlog-4.69 vom 2004-11-09 oder später.
-# Test: "isdnrate -N 01818100027" muss Nummer unverkürzt ausgeben.
+# Funktioniert nur mit isdnlog-4.69 vom 2004-11-09 oder spÃ¤ter.
+# Test: "isdnrate -N 01818100027" muss Nummer unverkÃ¼rzt ausgeben.
 Z:172 Deutsche Bank Servicerufnummer
 A:018181001,01818100027
 T:*/*=0.10/60
@@ -8479,7 +8479,7 @@ T:*/*=0.10/60
 Z:200 Afghanistan
 A:AF
 T:*/*=1.12/60
-Z:202 Ägypten
+Z:202 Ã„gypten
 A:EG
 T:*/*=0.46/60
 Z:204 Alaska
@@ -8512,7 +8512,7 @@ T:*/*=0.25/60
 Z:222 Antigua und Barbuda
 A:AG
 T:*/*=0.46/60
-Z:224 Äquatorialguinea
+Z:224 Ã„quatorialguinea
 A:GQ
 T:*/*=1.02/60
 Z:226 Argentinien
@@ -8533,7 +8533,7 @@ T:*/*=0.71/60
 Z:234 Aserbaidschan
 A:AZ
 T:*/*=0.51/60
-Z:236 Äthiopien
+Z:236 Ã„thiopien
 A:ET
 T:*/*=0.92/60
 Z:238 Australien
@@ -8611,10 +8611,10 @@ T:*/*=1.02/60
 Z:284 Costa Rica
 A:CR
 T:*/*=0.35/60
-Z:286 Dänemark
+Z:286 DÃ¤nemark
 A:DK
 T:*/*=0.08/60
-Z:287 Dänemark Mobilfunk
+Z:287 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.34/60
 Z:288 Dominica
@@ -8635,7 +8635,7 @@ T:*/*=0.35/60
 Z:295 Ecuador Mobilfunk
 A:_ECMF
 T:*/*=0.61/60
-Z:296 Elfenbeinküste
+Z:296 ElfenbeinkÃ¼ste
 A:CI
 T:*/*=0.76/60
 Z:298 El Salvador
@@ -8650,7 +8650,7 @@ T:*/*=0.25/60
 Z:304 Falklandinseln
 A:FK
 T:*/*=0.51/60
-Z:306 Färöer
+Z:306 FÃ¤rÃ¶er
 A:FO
 T:*/*=0.15/60
 Z:308 Fidschi
@@ -8668,10 +8668,10 @@ T:*/*=0.10/60
 Z:313 Frankreich Mobilfunk
 A:_FRMF
 T:*/*=0.36/60
-Z:314 Französisch-Guayana
+Z:314 FranzÃ¶sisch-Guayana
 A:GF
 T:*/*=0.51/60
-Z:316 Französisch-Polynesien
+Z:316 FranzÃ¶sisch-Polynesien
 A:PF
 T:*/*=0.66/60
 Z:318 Gabun
@@ -8698,13 +8698,13 @@ T:*/*=0.66/60
 Z:330 Griechenland
 A:GR
 T:*/*=0.20/60
-Z:332 Grönland
+Z:332 GrÃ¶nland
 A:GL
 T:*/*=0.35/60
-Z:334 Großbritannien
+Z:334 GroÃŸbritannien
 A:UK
 T:*/*=0.10/60
-Z:335 Großbritannien Mobilfunk
+Z:335 GroÃŸbritannien Mobilfunk
 A:_UKMF
 T:*/*=0.36/60
 Z:336 Guadeloupe
@@ -8713,7 +8713,7 @@ T:*/*=0.40/60
 Z:338 Guam
 A:GU
 T:*/*=0.20/60
-Z:340 Guantànamo
+Z:340 GuantÃ namo
 A:_GUAN
 T:*/*=1.43/60
 Z:342 Guatemala
@@ -8836,7 +8836,7 @@ T:*/*=0.61/60
 Z:412 Korea Dem. VR (Nord)
 A:KP
 T:*/*=0.69/60
-Z:414 Korea Rep. (Süd)
+Z:414 Korea Rep. (SÃ¼d)
 A:KR
 T:*/*=0.25/60
 Z:416 Kroatien
@@ -8998,10 +8998,10 @@ T:*/*=0.36/60
 Z:510 Oman
 A:OM
 T:*/*=0.76/60
-Z:512 Österreich
+Z:512 Ã–sterreich
 A:AT
 T:*/*=0.10/60
-Z:513 Österreich Mobilfunk
+Z:513 Ã–sterreich Mobilfunk
 A:_ATMF
 T:*/*=0.36/60
 Z:514 Pakistan
@@ -9034,13 +9034,13 @@ T:*/*=0.15/60
 Z:532 Puerto Rico
 A:PR
 T:*/*=0.15/60
-Z:534 Rèunion
+Z:534 RÃ¨union
 A:RE
 T:*/*=0.51/60
 Z:536 Ruanda
 A:RW
 T:*/*=0.61/60
-Z:538 Rumänien
+Z:538 RumÃ¤nien
 A:RO
 T:*/*=0.35/60
 Z:540 Russland
@@ -9058,7 +9058,7 @@ T:*/*=0.61/60
 Z:548 San Marino
 A:SM
 T:*/*=0.40/60
-Z:550 Sào Tomè und Principe
+Z:550 SÃ o TomÃ¨ und Principe
 A:ST
 T:*/*=1.02/60
 Z:552 Saudi-Arabien
@@ -9124,7 +9124,7 @@ T:*/*=0.35/60
 Z:586 St. Vincent u. Grenadinen
 A:VC
 T:*/*=0.61/60
-Z:588 Südafrika
+Z:588 SÃ¼dafrika
 A:ZA
 T:*/*=0.46/60
 Z:590 Sudan
@@ -9172,10 +9172,10 @@ T:*/*=0.25/60
 Z:618 Tunesien
 A:TN
 T:*/*=0.35/60
-Z:620 Türkei
+Z:620 TÃ¼rkei
 A:TR
 T:*/*=0.25/60
-Z:621 Türkei Mobilfunk
+Z:621 TÃ¼rkei Mobilfunk
 A:_TRMF
 T:*/*=0.51/60
 Z:622 Turkmenistan
@@ -9226,7 +9226,7 @@ T:*/*=0.93/60
 Z:650 Wallis und Futuna
 A:WF
 T:*/*=1.43/60
-Z:652 Weißrussland
+Z:652 WeiÃŸrussland
 A:BY
 T:*/*=0.35/60
 Z:654 Zentralafrik. Rep.
@@ -9243,8 +9243,8 @@ P:112,0 010012 Telecom GmbH
 B:010012
 D:dtag
 C:Name:010012 Telecom GmbH
-C:Address:Postfach 200743, 40104 Düsseldorf
-C:Address:O1OO12 Telecom GmbH, Prinzenallee 7, 40549 Düsseldorf 
+C:Address:Postfach 200743, 40104 DÃ¼sseldorf
+C:Address:O1OO12 Telecom GmbH, Prinzenallee 7, 40549 DÃ¼sseldorf 
 C:Homepage:http://www.010012.com/
 C:TarifURL:http://www.010012.com/info.ctw.tarife.php
 C:TarifChanged:2005-01-29
@@ -9298,20 +9298,20 @@ A:112			# Notruf, Feuerwehr
 T:*/*=0
 Z:2-4 National
 A:DE
-T:1-5/08-18=0.07/0,0.055/60 Geschäftszeit
+T:1-5/08-18=0.07/0,0.055/60 GeschÃ¤ftszeit
 T:1-5/18-08=0.07/0,0.019/60 Freizeit
 T:6-7/*=0.07/0,0.019/60 Freizeit
 Z:10 Mobilfunknetze
 A:_DEMF
 T:*/*=0.07/0,0.219/60
-# außerdem Preselect-Tarif im Angebot
+# auÃŸerdem Preselect-Tarif im Angebot
 #####################################################################
 #
 #
 P:224,0 Pennyphone
 B:0190024
 C:Name:Pennyphone (01058)
-C:Address:Callax Telecom Holding GmbH, Stichwort "PennyPHONE", Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom Holding GmbH, Stichwort "PennyPHONE", Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.pennyphone.de/
 C:TarifURL:http://www.pennyphone.de/tarife.php
 C:TarifChanged:2005-02-27
@@ -9373,7 +9373,7 @@ T:*/*=0.238/60
 P:228,0 maxTEL!
 B:0190028
 C:Name:maxTEL (01058)
-C:Address:Callax Telecom GmbH, Leopoldstraße 16, 40211 Düsseldorf
+C:Address:Callax Telecom GmbH, LeopoldstraÃŸe 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.maxtel.de/
 C:TarifURL:http://www.maxtel.de/tarife.php
 C:TarifChanged:2005-02-05
@@ -9402,7 +9402,7 @@ P:229,0 Telebillig*
 B:0190029
 C:Name:Telebillig (01071)
 C:Address:Telebillig @
-C:Adresss:01071 Telecom GmbH, Ringstr. 38, 50996 Köln
+C:Adresss:01071 Telecom GmbH, Ringstr. 38, 50996 KÃ¶ln
 C:Homepage:http://www.telebillig.de/
 C:TarifURL:http://www.telebillig.de/tarife.php
 C:TarifChanged:2004-06-05
@@ -9429,7 +9429,7 @@ P:231,0 Teledump*
 B:0190031
 C:Name:Teledump (01071)
 C:Address:Teledump @
-C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 Köln
+C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 KÃ¶ln
 C:Homepage:http://www.teledump.de/index2.php
 C:TarifURL:http://www.teledump.de/tarife.php
 C:TarifChanged:2004-09-11
@@ -9454,7 +9454,7 @@ T:*/*=0.200/60 Aktionspreis
 P:232,0 Phonedump
 B:0190032
 C:Name:Phonedump (01058)
-C:Address:Callax Telecom GmbH, Leopoldstraße 16, 40211 Düsseldorf
+C:Address:Callax Telecom GmbH, LeopoldstraÃŸe 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.phonedump.de/index2.php
 C:TarifURL:http://www.phonedump.de/tarife.php
 C:TarifChanged:2005-02-27
@@ -9470,7 +9470,7 @@ T:*/*=0
 Z:1-4 GermanCall
 A:DE
 # Zitat von der Homepage: "Phonedump hat sogar weitere Vorteile: [...]
-# - einfaches und übersichtliches Tarifsystem"
+# - einfaches und Ã¼bersichtliches Tarifsystem"
 # Zeile 1
 T:*/03-04,07-08=0.0070/60
 # Zeile 2
@@ -9499,7 +9499,7 @@ B:0190035
 D:dtag
 C:Name:TeleDiscount (01071)
 C:Address:Telediscount @
-C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 Köln
+C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 KÃ¶ln
 C:Homepage:http://www.telediscount.de/
 C:TarifURL:http://www.telediscount.de/tarife.php
 C:TarifChanged:2005-01-01
@@ -9521,14 +9521,14 @@ Z:10 Deutschland Mobil
 A:_DEMF
 T:*/*=0.145/60
 #
-# Für Auslandspreise wird auf Tarifansage verwiesen.
+# FÃ¼r Auslandspreise wird auf Tarifansage verwiesen.
 #####################################################################
 #
 #
 P:237,0 Fonfux
 B:0190037
 D:dtag
-C:Address:Callax Telecom GmbH, Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom GmbH, Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Name:Fonfux (01058)
 C:Homepage:http://www.fonfux.de/
 C:TarifURL:http://www.fonfux.de/tarife.php
@@ -9567,7 +9567,7 @@ D:dtag
 C:Name:Surprise Telecom (01071)
 C:Name:(vormals) Spar Telecom (TeleDiscount)
 C:Address:Surprise Telecom @
-C:Address:01071 Telecom GmbH, Schillingroter Strasse 38, 50996 Köln
+C:Address:01071 Telecom GmbH, Schillingroter Strasse 38, 50996 KÃ¶ln
 C:Homepage:http://www.surprisetelecom.de/
 C:TarifChanged:2004-09-11
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
@@ -9590,7 +9590,7 @@ T:*/*=0.200/60
 #
 P:249,0 Germanphone!
 B:0190049
-C:Address:Callax Telecom Holding GmbH, Stichwort "GERMANPHONE", Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom Holding GmbH, Stichwort "GERMANPHONE", Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Name:Germanphone (01058)
 C:Homepage:http://www.germanphone.de/
 C:TarifURL:http://www.germanphone.de/tarife.php
@@ -9617,11 +9617,11 @@ T:*/08-18=0.131(60)/300
 T:*/18-08=0.144(60)/300
 #
 # Preisangaben 2005-02-27: Festnetz "ct.", Mobil "1 ct.", falsch geteilt? 
-#Z:208 Dänemark
-#A:Dänemark
+#Z:208 DÃ¤nemark
+#A:DÃ¤nemark
 #T:*/*=0.021(60)/300
-#Z:209 Dänemark Mobilfunk
-#A:Dänemark Mobilfunk
+#Z:209 DÃ¤nemark Mobilfunk
+#A:DÃ¤nemark Mobilfunk
 #T:*/*=0.136(60)/300
 #####################################################################
 #
@@ -9630,7 +9630,7 @@ P:251,0 Junior Telecom*
 B:0190051
 C:Name:Junior Telecom (01071)
 C:Address:Junior Telecom @
-C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 Köln
+C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 KÃ¶ln
 C:Homepage:http://www.junior-telecom.de/
 C:TarifChanged:2004-06-27
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
@@ -9657,7 +9657,7 @@ T:*/*=0.180/60
 P:254,0 Calladin!
 B:0190054
 C:Name:Calladin (01058)
-C:Address:Callax Telecom Holding GmbH, Stichwort "Calladin", Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom Holding GmbH, Stichwort "Calladin", Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.calladin.de/
 C:TarifURL:http://www.calladin.de/tarife.php
 C:TarifChanged:2004-09-11
@@ -9684,7 +9684,7 @@ T:*/*=0.169(60)/180
 #
 P:271,0 RapidCall!
 B:0190071
-C:Address:Callax Telecom Holding GmbH, Stichwort "Rapidcall", Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom Holding GmbH, Stichwort "Rapidcall", Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Name:RapidCall (01058)
 C:Homepage:http://www.rapidcall.de/
 C:TarifURL:http://www.rapidcall.de/tarife.php
@@ -9709,10 +9709,10 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.145(60)/240
 #
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.029(60)/240
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.175(60)/240
 #####################################################################
@@ -9723,7 +9723,7 @@ B:0190076
 D:dtag
 C:Name:Telestunt (01071)
 C:Address:Telestunt @
-C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 Köln
+C:Address:01071 Telecom GmbH, Ringstr. 38, 50996 KÃ¶ln
 C:Homepage:http://www.telestunt.de/
 C:TarifURL:http://www.telestunt.de/index2.php
 C:TarifChanged:2004-09-11
@@ -9748,7 +9748,7 @@ T:*/*=0.200/60
 P:279,0 Ventelo smart79
 B:0190079
 C:Name:Ventelo smart79
-C:Address:smart79 @, Ventelo GmbH, Mathias-Brüggen-Str. 55, 50829 Köln
+C:Address:smart79 @, Ventelo GmbH, Mathias-BrÃ¼ggen-Str. 55, 50829 KÃ¶ln
 C:Homepage:http://www.smart79.de/
 C:TarifURL:http://www.smart79.de/html/info/tariflistemain.html
 C:TarifChanged:2005-02-27
@@ -9772,7 +9772,7 @@ T:*/*=0.173/60
 P:282,0 lightTALK
 B:0190082
 C:Name:lightTALK (01058)
-C:Address:Callax Telecom Holding GmbH, Stichwort "lightTALK", Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom Holding GmbH, Stichwort "lightTALK", Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.lighttalk.de/
 C:TarifURL:http://www.lighttalk.de/tarife.php
 C:TarifChanged:2005-02-05
@@ -9802,7 +9802,7 @@ T:*/*=0.220(60)/1
 P:284,0 maxbell
 B:0190084
 C:Name:maxbell (01058)
-C:Address:Callax Telecom Holding GmbH, Stichwort "MAXBELL", Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom Holding GmbH, Stichwort "MAXBELL", Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.maxbell.de/
 C:TarifURL:http://www.maxbell.de/call-by-call/tarife.php
 C:TarifChanged:2005-02-27
@@ -9815,7 +9815,7 @@ T:*/*=0
 Z:1-4 GermanCall
 A:DE
 T:*/*=0.029/60
-# Separate Preise für Onlineverbindungen.
+# Separate Preise fÃ¼r Onlineverbindungen.
 #
 Z:10 Mobilfunk
 A:_DEMD1
@@ -9830,7 +9830,7 @@ P:287,0 Phonecraft
 B:0190087
 D:dtag
 C:Name:Phonecraft (01058)
-C:Address:Callax Telecom GmbH, Leopoldstr. 16, 40211 Düsseldorf
+C:Address:Callax Telecom GmbH, Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.phonecraft.de/
 C:TarifURL:http://www.phonecraft.de/tarife.php
 C:TarifChanged:2005-02-27
@@ -9866,8 +9866,8 @@ P:295,0 Miniphone
 B:0190095
 C:Name:Miniphone (Callax)
 C:Name:(vormals) superdump (01058)
-C:Address:Callax Telecom Holding GmbH, Leopoldstr. 16, 40211 Düsseldorf
-C:Address:Callax Telecom Holding GmbH, Stichwort "Miniphone", Postfach 24 02 18, 40091 Düsseldorf
+C:Address:Callax Telecom Holding GmbH, Leopoldstr. 16, 40211 DÃ¼sseldorf
+C:Address:Callax Telecom Holding GmbH, Stichwort "Miniphone", Postfach 24 02 18, 40091 DÃ¼sseldorf
 C:Homepage:http://www.miniphone.de/
 C:TarifURL:http://www.miniphone.de/tarife.php
 C:TarifChanged:2005-02-05
@@ -9899,9 +9899,9 @@ C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 #
 # Erste Zone auf 500 festgelegt, damit zumindest vorerst keine
-# Überschneidung mit anderweitig vergebenen Zonennummern, relevant
-# für die Zonenzusammenfassung von isdnrep.   Durch das X-Tag, dass
-# auch hier stehen kann, wird die Nummer für alle Provider gültig.
+# Ãœberschneidung mit anderweitig vergebenen Zonennummern, relevant
+# fÃ¼r die Zonenzusammenfassung von isdnrep.   Durch das X-Tag, dass
+# auch hier stehen kann, wird die Nummer fÃ¼r alle Provider gÃ¼ltig.
 #
 Z:500 SMS Dt. Telekom
 C:TarifURL:
@@ -9924,8 +9924,8 @@ P:321,0 Tele2 iHear
 B:01900732
 C:Name:Tele2 iHear
 C:Address:TELE2 Telecommunications Services GmbH,
-C:Address:In der Steele 39, 40599 Düsseldorf
-C:Quelle:Preisliste 22, gültig ab 2003-07-09 und spätere Änderungen
+C:Address:In der Steele 39, 40599 DÃ¼sseldorf
+C:Quelle:Preisliste 22, gÃ¼ltig ab 2003-07-09 und spÃ¤tere Ã„nderungen
 C:TarifURL:http://www.tele2.de/chap02/c020201b.html
 C:TarifChanged:2003-08-12
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
@@ -9938,20 +9938,20 @@ R:13,1;0-
 P:322,0 Centalk
 B:090050
 C:Name:Centalk
-C:Address:01058 Telecom GmbH, Stichwort "CENTALK", Postfach 24 03 19, 40091 Düsseldorf
-C:Address:01058 Telecom GmbH, Leopoldstr. 16, 40211 Düsseldorf
+C:Address:01058 Telecom GmbH, Stichwort "CENTALK", Postfach 24 03 19, 40091 DÃ¼sseldorf
+C:Address:01058 Telecom GmbH, Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.centalk.de/
 C:TarifURL:http://www.centalk.de/tarife.php
 C:TarifChanged:2005-02-05
 C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 C:Es werden nur Verbindungen in die Mobilfunknetze und ins Ausland angeboten.
-# Anbieter verfügt vermutlich nur über die Bereiche 0900-50-00 und 0900-50-01. 
+# Anbieter verfÃ¼gt vermutlich nur Ã¼ber die Bereiche 0900-50-00 und 0900-50-01. 
 # somit landen hier auch Verbindungen, mit den Centalk nichts zu tun hat,
 # Beispiel 090050 040 987.. ist entgegen der Anzeige in isdnlog keine
 # Nummer in Hamburg, sondern ein normales 0900-5 Angebot.  Als Workaround
-# daher die neuen Obergrenzen für 0900-5 ohne Benutzerlegitimation angenommen.
-# (Telekommunikationsgesetz § 43b (3) nach Änderung am 14. August 2003)
+# daher die neuen Obergrenzen fÃ¼r 0900-5 ohne Benutzerlegitimation angenommen.
+# (Telekommunikationsgesetz Â§ 43b (3) nach Ã„nderung am 14. August 2003)
 Z:4 Premium Rate 0900-5
 A:DE
 T:*/*=30.00|2.00/60 variable Tarifierung - Obergrenzen nach TKG angenommen
@@ -9963,11 +9963,11 @@ A:_DEME1
 A:_DEME2
 T:*/*=0.1790/60
 #
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 # 0.032/60 in "Ausland Top20"
 T:*/*=0.038/60
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.189/60
 #####################################################################
@@ -9978,8 +9978,8 @@ P:323,0 Centel
 B:0900531
 D:dtag
 C:Name:Centel
-C:Address:01058 Telecom GmbH, Stichwort "CENTEL", Postfach 24 03 19, 40091 Düsseldorf
-C:Address:01058 Telecom GmbH, Leopoldstr. 16, 40211 Düsseldorf
+C:Address:01058 Telecom GmbH, Stichwort "CENTEL", Postfach 24 03 19, 40091 DÃ¼sseldorf
+C:Address:01058 Telecom GmbH, Leopoldstr. 16, 40211 DÃ¼sseldorf
 C:Homepage:http://www.centel.de/
 C:TarifURL:http://www.centel.de/s_tarife.php
 C:TarifChanged:2005-02-05
@@ -9987,19 +9987,19 @@ C:Maintainer:Tarif Datenbank Crew <rates4linux-crew@lists.sourceforge.net>
 C:Special:Die Homepage der Tarif-Datenbank Crew: http://rates4linux.sourceforge.net
 #
 # Z:1 wird nur mit D:dtag verwendet
-Z:1 Ortsgespräche
+Z:1 OrtsgesprÃ¤che
 T:*/*=0.0220(60)/240
-Z:2-4 Ferngespräche
+Z:2-4 FerngesprÃ¤che
 A:DE
 T:*/*=0.022(60)/240
 Z:10 Mobilfunk
 A:_DEMF
 T:*/*=0.165(60)/240
 #
-Z:208 Dänemark
+Z:208 DÃ¤nemark
 A:DK
 T:*/*=0.029(60)/240
-Z:209 Dänemark Mobilfunk
+Z:209 DÃ¤nemark Mobilfunk
 A:_DKMF
 T:*/*=0.165(60)/240
 #####################################################################

@@ -10,10 +10,10 @@ W:7		Sonntag
 W:W		Werktag
 W:E		Wochenende
 W:H		Feiertag
-W:*		täglich
+W:*		tÃ¤glich
 
 D:1.1		Neujahr
-D:6.1		Dreikönigstag
+D:6.1		DreikÃ¶nigstag
 D:easter	Ostersonntag
 D:easter+1	Ostermontag
 D:1.5		Staatsfeiertag
@@ -24,6 +24,6 @@ D:easter+60	Fronleichnam
 D:15.8		Maria Himmelfahrt
 D:26.10		Nationalfeiertag
 D:1.11		Allerheiligen
-D:8.12		Maria Empfängnis
+D:8.12		Maria EmpfÃ¤ngnis
 D:25.12		1. Weihnachtsfeiertag
 D:26.12		2. Weihnachtsfeiertag

@@ -4,7 +4,7 @@
 # so do not contribute patches to this file.
 # If possible send patches against the source file rate-at.c
 # Please contact Michael Reinelt <reinelt@eunet.at>
-# or Leo Tˆtsch <lt@toetsch.at> if you have any
+# or Leo T√∂tsch <lt@toetsch.at> if you have any
 # corrections or additions.
 
 # New versions of rate-at.c are available on
@@ -32,22 +32,22 @@ N:144
 S:Bergrettung
 N:140
 
-S:ƒrztenotdienst
+S:√Ñrztenotdienst
 N:141
 
 S:Xxxx
 N:142
 
-S:Arbˆ
+S:Arb√∂
 N:123
 
-S:÷amtc
+S:√ñamtc
 N:120
 
 S:Internet
 N:07189*,19411,19430,19440,019088333,194040, 019331012
 
-S:Stˆrung
+S:St√∂rung
 N:111*
 
 S:Auskuft AT,DE
@@ -75,8 +75,8 @@ P:01,1                             Telekom Austria Min.tarif
 B:1001
 C:Maintainer:                      Michael Reinelt <reinelt@eunet.at>
 C:TarifChanged:                    23.06.2002
-C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist ÷sterreichzone.
-C:Special:                         Variable Taktung, abh‰ngig von Zone und Tageszeit.
+C:Zone:                            Die Regionalzone geht bis zu einer Entfernung von 50 Km, alles andere ist √ñsterreichzone.
+C:Special:                         Variable Taktung, abh√§ngig von Zone und Tageszeit.
 C:Name:                            Telekom Austria
 C:Address:                         Postgasse 8, A-1010 Wien
 C:Homepage:                        http://www.telekom.at
@@ -84,44 +84,44 @@ C:TarifURL:                        http://www.telekom.at/tarife/
 C:Telefon:                         0800 100 100
 # Tarif:                           Min.tarif (EUR 0.067 pro Einheit)
 D:1001                             # Verzonung
-# FIXME: nur Faktor angepasst, Tarife kˆnnten flasch sein
+# FIXME: nur Faktor angepasst, Tarife k√∂nnten flasch sein
 
 Z:0                                FreePhone
 T:*/*=0/72
 A:112,122,133,141,142,144,+43800,+43801,+43802,+43803,+43804
 
 Z:1                                Regionalzone
-T:W/08-18=0.067/72                 Gesch‰ftszeit
+T:W/08-18=0.067/72                 Gesch√§ftszeit
 T:W/18-08=0.067/160                Freizeit
 T:E,H/*=0.067/160                  Freizeit
 A:111*,11820,15*,+437111,+437112,+437113,+437114,+43810,02290
 
-Z:2                                ÷sterreichzone
-T:W/08-18=0.067/25                 Gesch‰ftszeit
+Z:2                                √ñsterreichzone
+T:W/08-18=0.067/25                 Gesch√§ftszeit
 T:W/18-08=0.067/72                 Freizeit
 T:E,H/*=0.067/72                   Freizeit
 A:AT
 
 Z:3                                Mobilfunk A1/D
-T:W/08-18=0.067/20                 Gesch‰ftszeit
+T:W/08-18=0.067/20                 Gesch√§ftszeit
 T:W/18-08=0.067/24                 Freizeit
 T:E,H/*=0.067/24                   Freizeit
 A:+43663,+43664
 
 Z:4                                Mobilfunk Max
-T:W/08-18=0.067/14.4               Gesch‰ftszeit
+T:W/08-18=0.067/14.4               Gesch√§ftszeit
 T:W/18-08=0.067/19.2               Freizeit
 T:E,H/*=0.067/19.2                 Freizeit
 A:+43676
 
 Z:5                                Mobilfunk One
-T:W/08-18=0.067/15                 Gesch‰ftszeit
+T:W/08-18=0.067/15                 Gesch√§ftszeit
 T:W/18-08=0.067/18                 Freizeit
 T:E,H/*=0.067/18                   Freizeit
 A:+43699
 
 Z:6                                Online-Tarif
-T:W/08-18=0.067/180                Gesch‰ftszeit
+T:W/08-18=0.067/180                Gesch√§ftszeit
 T:W/18-08=0.067/360                Freizeit
 T:E,H/*=0.067/360                  Freizeit
 A:07189,194
@@ -131,14 +131,14 @@ T:*/*=0/60                         0-24h
 A:194040
 
 Z:8                                Ausland Zone 1
-T:W/08-18=0.067/15                 Gesch‰ftszeit
+T:W/08-18=0.067/15                 Gesch√§ftszeit
 T:W/18-08=0.067/18                 Freizeit
 T:E,H/*=0.067/18                   Freizeit
 A:DE,IT,LI,CH,SK,SI
 A:CZ,HU
 
 Z:9                                Ausland Zone 2
-T:W/08-18=0.067/12                 Gesch‰ftszeit
+T:W/08-18=0.067/12                 Gesch√§ftszeit
 T:W/18-08=0.067/14.4               Freizeit
 T:E,H/*=0.067/14.4                 Freizeit
 A:AL,AD,BY,BE,BA,BG
@@ -148,7 +148,7 @@ A:NO,RO,SM,SE,ES,UA,VA
 A:CY
 
 Z:10                               Ausland Zone 3
-T:W/08-18=0.067/10.667             Gesch‰ftszeit
+T:W/08-18=0.067/10.667             Gesch√§ftszeit
 T:W/18-08=0.067/12                 Freizeit
 T:E,H/*=0.067/12                   Freizeit
 A:DZ,EE,FO,GE,GI,IS,IL
@@ -156,34 +156,34 @@ A:LV,LT,EH,PT,SU,TJ
 A:TM,UZ
 
 Z:11                               Ausland Zone 4
-T:W/08-18=0.067/7.2                Gesch‰ftszeit
+T:W/08-18=0.067/7.2                Gesch√§ftszeit
 T:W/18-08=0.067/8                  Freizeit
 T:E,H/*=0.067/8                    Freizeit
 A:AQ,AM,AU,AZ,CX
 A:CC
 
 Z:12                               Ausland Zone 5
-T:W/08-18=0.067/6                  Gesch‰ftszeit
+T:W/08-18=0.067/6                  Gesch√§ftszeit
 T:W/18-08=0.067/6.5455             Freizeit
 T:E,H/*=0.067/6.5455               Freizeit
 A:CL,GF,GP,HK,LY,MQ
 A:YT,MD,NZ,RE,PM,ZA
 
 Z:13                               Ausland Zone 6
-T:W/08-18=0.067/4.8                Gesch‰ftszeit
+T:W/08-18=0.067/4.8                Gesch√§ftszeit
 T:W/18-08=0.067/5.1429             Freizeit
 T:E,H/*=0.067/5.1429               Freizeit
 A:JP,KR,MY,AN,PH,MP
 
 Z:14                               Ausland Zone 7
-T:W/08-18=0.067/4.2353             Gesch‰ftszeit
+T:W/08-18=0.067/4.2353             Gesch√§ftszeit
 T:W/18-08=0.067/4.8                Freizeit
 T:E,H/*=0.067/4.8                  Freizeit
 A:AO,BM,BT,BR,CN,EC,IR,MO,MX
 A:SA,VE
 
 Z:15                               Ausland Zone 8
-T:W/08-18=0.067/3.6                Gesch‰ftszeit
+T:W/08-18=0.067/3.6                Gesch√§ftszeit
 T:W/18-08=0.067/4.2353             Freizeit
 T:E,H/*=0.067/4.2353               Freizeit
 A:EG,GQ,AW,BS,BB,BZ,BW
@@ -193,7 +193,7 @@ A:PA,SG,ST,VC
 A:TT,AE
 
 Z:16                               Ausland Zone 9
-T:W/08-18=0.067/3.1304             Gesch‰ftszeit
+T:W/08-18=0.067/3.1304             Gesch√§ftszeit
 T:W/18-08=0.067/3.6                Freizeit
 T:E,H/*=0.067/3.6                  Freizeit
 A:BH,CI,GN,KZ,QA,LA,LS,LR
@@ -202,7 +202,7 @@ A:SH,LC,WS,SD,SZ,SY,TZ
 A:TO,TC,ZM,ZW
 
 Z:17                               Ausland Zone 10
-T:W/08-18=0.067/3                  Gesch‰ftszeit
+T:W/08-18=0.067/3                  Gesch√§ftszeit
 T:W/18-08=0.067/3.1304             Freizeit
 T:E,H/*=0.067/3.1304               Freizeit
 A:AR,ET,BJ,CR,FJ,PF
@@ -211,7 +211,7 @@ A:MN,MZ,MM,NI,NU,OM,RW,SR
 A:TW,TH,TG,UG,VU,CF
 
 Z:18                               Ausland Zone 11
-T:W/08-18=0.067/2.5714             Gesch‰ftszeit
+T:W/08-18=0.067/2.5714             Gesch√§ftszeit
 T:W/18-08=0.067/2.7692             Freizeit
 T:E,H/*=0.067/2.7692               Freizeit
 A:BO,KY,DJ,IN,ID
@@ -219,7 +219,7 @@ A:VG,KP,CU,MU,NGR
 A:PG,PY,SL,LK,UY
 
 Z:19                               Ausland Zone 12
-T:W/08-18=0.067/2.4                Gesch‰ftszeit
+T:W/08-18=0.067/2.4                Gesch√§ftszeit
 T:W/18-08=0.067/2.5                Freizeit
 T:E,H/*=0.067/2.5                  Freizeit
 A:AI,AG,ASI,BD,BF
@@ -229,13 +229,13 @@ A:MS,PK,KN,SN,SC,SB
 A:SO,TD,VN,ZR
 
 Z:20                               Ausland Zone 13
-T:W/08-18=0.067/2                  Gesch‰ftszeit
+T:W/08-18=0.067/2                  Gesch√§ftszeit
 T:W/18-08=0.067/2.1176             Freizeit
 T:E,H/*=0.067/2.1176               Freizeit
 A:CK,MG
 
 Z:21                               Ausland Zone 14
-T:W/08-18=0.067/10.667             Gesch‰ftszeit
+T:W/08-18=0.067/10.667             Gesch√§ftszeit
 T:W/18-08=0.067/12                 Freizeit
 T:E,H/*=0.067/12                   Freizeit
 A:VI,CA,PR,US
@@ -250,7 +250,7 @@ A:AF,AS,_GUAN,MH,_MIDW
 A:FM,PW,PN,TV,_WAKE
 
 Z:24                               Grenznahverkehr
-T:W/08-18=0.067/18                 Gesch‰ftszeit
+T:W/08-18=0.067/18                 Gesch√§ftszeit
 T:W/18-08=0.067/24                 Freizeit
 T:E,H/*=0.067/24                   Freizeit
 

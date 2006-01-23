@@ -10,7 +10,7 @@ W:7		Sonntag
 W:W		Werktag
 W:E		Wochenende
 W:H		Feiertag
-W:*		täglich
+W:*		tÃ¤glich
 
 D:1.1		Neujahr
 #D:6.1		Erscheinungsfest

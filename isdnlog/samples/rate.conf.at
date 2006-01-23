@@ -1,8 +1,8 @@
 #P:01=1		# PTA Minimumtarif     (ATS 1.116 je Einheit)
 P:01=2		# PTA Standardtarif    (ATS 1.056 je Einheit)
-#P:01=3		# PTA Gesch‰ftstarif 1 (ATS 0.996 je Einheit)
-#P:01=4		# PTA Gesch‰ftstarif 2 (ATS 0.936 je Einheit)
-#P:01=5		# PTA Gesch‰ftstarif 3 (ATS 0.816 je Einheit)
+#P:01=3		# PTA Gesch√§ftstarif 1 (ATS 0.996 je Einheit)
+#P:01=4		# PTA Gesch√§ftstarif 2 (ATS 0.936 je Einheit)
+#P:01=5		# PTA Gesch√§ftstarif 3 (ATS 0.816 je Einheit)
 #P:02		# UTA
 #P:03		# Multikom
 #P:04,1		# Globalone

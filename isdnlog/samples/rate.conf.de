@@ -1,9 +1,9 @@
-# rate.conf zur rate-de.dat f¸r Konfiguration der aktiven Provider.
+# rate.conf zur rate-de.dat f√ºr Konfiguration der aktiven Provider.
 # 
-# $Id: rate.conf.de,v 1.40 2005/02/27 22:01:43 tobiasb Exp $
+# $Id: rate.conf.de,v 1.41 2006/01/23 17:07:09 keil Exp $
 # Basiert auf Rev. 1.35 von isdn4k-utils/isdnlog/samples/rate.conf.de
 # zu isdnlog-4.64 im isdn4linux-CVS.
-# ‹blicherweise in /etc/isdn installiert.
+# √úblicherweise in /etc/isdn installiert.
 
 # E = echtes Call by Call, d.h. kann sofort ohne Anmeldung genutzt
 #     werden. Abrechnung erfolgt ueber die Telekom-Rechnung
@@ -34,7 +34,7 @@ P:39=0    #E 01039 CbC
 P:40=0    #E Ventelo
 # P:41=0  #E HanseNet CbC (nur aus Hamburg)
 # P:41=1  #A HanseNet Preselection
-# P:41=2  #A HanseNet allFon 		# auch f¸r Telefonie bei Alice DSL
+# P:41=2  #A HanseNet allFon 		# auch f√ºr Telefonie bei Alice DSL
 # P:41=3  #A HanseNet allFon bestCall
 # P:41=4  #A HanseNet allFon Talk4Free
 P:47=0    #E 01047 CbC
@@ -64,8 +64,8 @@ P:78=0    #E 3U
 P:79=0    #E star79 CbC (Ventelo)
 P:80=0    #E Telegate
 P:81=0    #E 01081
-P:86=0    #E OneTel Call 01086         # aus dem ¸brigen Bundesgebiet
-# P:86=1  #E OneTel 01086 City to City # aus 23 Groﬂst‰dten
+P:86=0    #E OneTel Call 01086         # aus dem √ºbrigen Bundesgebiet
+# P:86=1  #E OneTel 01086 City to City # aus 23 Gro√üst√§dten
 # P:89=0  #A M"net ISDN privat
 # P:89=1  #A M"net ISDN business (vormals M'net Klassik plus)
 # P:89=2  #A M'net GGD
@@ -98,5 +98,5 @@ P:295=0		#E Miniphone	  # -> Callax
 P:300=0		#E Servicerufnummern (SMS u. a.), immer aktiv
 
 P:321=0		#E Tele2 iHear (01900732)
-P:322=0		#E Centalk (090050)  # nur Mobilfunk- und Auslandgespr‰che
+P:322=0		#E Centalk (090050)  # nur Mobilfunk- und Auslandgespr√§che
 P:323=0		#E Centel (0900531)  # VBN zuvor 09005310

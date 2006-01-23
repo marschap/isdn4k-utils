@@ -37,7 +37,7 @@ VBNLEN = 2:3
 PRESELECTED=33
 
 
-# allgemein verfügbare Internet-Zugänge (mit sowie ohne Anmeldung):
+# allgemein verfÃ¼gbare Internet-ZugÃ¤nge (mit sowie ohne Anmeldung):
 # Stand 2000-09-15
 
 [NUMBER]
@@ -151,7 +151,7 @@ COMMENT1 = 010400192343   (User:call; pw:pop) (GTS Esprit)
 [NUMBER]
 NUMBER = 0192361
 ALIAS = LN-Online
-COMMENT1 = 010880192361   (User:LN; pw:online) Lübecker Nachrichten
+COMMENT1 = 010880192361   (User:LN; pw:online) LÃ¼becker Nachrichten
 
 [NUMBER]
 NUMBER = 01924924
