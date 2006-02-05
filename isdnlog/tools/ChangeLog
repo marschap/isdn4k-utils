@@ -1,3 +1,13 @@
+2006-02-05  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* rate.c (initRate, appendArea, get_area1): Remember federal zone for
+	each provider.  The federal or default domestic zone is defined by
+	+49 or DE as area for Germany e.g.  Only with the federal zone as
+	current zone, a query of the zone database with getZone takes place.
+	This restriction is necessary due to the present zone-de-dtag.cdb
+	which gives results for non geographic area codes like +4932 that
+	would overrule a dedicated zone otherwise.
+
 2005-02-23  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* rate_skip.c, rate_skip.h: This implements the new feature of

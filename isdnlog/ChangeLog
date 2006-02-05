@@ -1,3 +1,9 @@
+2006-02-04  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* Makefile.in (VERSION): Increased from 4.70 to 4.71.
+	This reflects the recently change of the character codeset
+	for data files in the source from ISO-8859-15 to UTF8.
+
 2005-02-27  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* Makefile.in (VERSION): Increased from 4.69 to 4.70.

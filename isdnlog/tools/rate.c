@@ -1,6 +1,6 @@
 /* #define DEBUG_REDIRZ */
 
-/* $Id: rate.c,v 1.90 2005/02/23 14:33:40 tobiasb Exp $
+/* $Id: rate.c,v 1.91 2006/02/05 02:44:04 tobiasb Exp $
  *
  * Tarifdatenbank
  *
@@ -21,6 +21,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: rate.c,v $
+ * Revision 1.91  2006/02/05 02:44:04  tobiasb
+ * New version number 4.71.  Change in zone lookup.
+ *
  * Revision 1.90  2005/02/23 14:33:40  tobiasb
  * New feature: provider skipping.
  * Certain providers can be completely ignored (skipped) when loading the
@@ -866,6 +869,7 @@ typedef struct {
   COMMENT *Comment;
   int	   nRedir;
   REDIRZ   *Redir;
+  int      Federal_zone; /* internal index of default domestic zone */
 } PROVIDER;
 
 typedef struct {
@@ -1042,8 +1046,13 @@ static int appendArea (int prefix, char *code, char *name, int zone, int *where,
 
   if (isdigit(*code) || strncmp(code,mycountry,strlen(mycountry))==0 ||
       strcmp(code, mytld) == 0) {
-    if (strcmp(code, mycountry)==0 || strcmp(code, mytld) == 0)
+    if (strcmp(code, mycountry)==0 || strcmp(code, mytld) == 0) {
       *where |= FEDERAL;
+      /* first area equal to mycountry (e.g. +49) or mytld (e.g. DE) sets
+       * Federal_zone to current zone, needed in get_area1 to allow getZone */
+      if (Provider[prefix].Federal_zone == UNKNOWN)  
+        Provider[prefix].Federal_zone = zone;
+    }
   } else if(strlen(code)==2 && strcmp(code,mytld) )
     *where &= ~DOMESTIC;
 
@@ -1748,6 +1757,7 @@ again:
       Provider[prefix].ToDate = prov.to_d;
       Provider[prefix].Name = prov.name;
       Provider[prefix].booked = prov.booked;
+      Provider[prefix].Federal_zone = UNKNOWN;
 
       break;
 
@@ -2493,7 +2503,9 @@ static int get_area1(int prefix, RATE *Rate, char *number, TELNUM *num,
   /* Provider[prefix].Area[Rate->_area] is valid or get_area1 was left above */
   if (Rate->_zone==UNKNOWN) {
     Rate->_zone=Provider[prefix].Area[Rate->_area].Zone;
-    if (Rate->domestic && *(Rate->dst[0])) {
+    /* call getZone only if current zone is federal (= default domestic) zone */
+    if (Rate->domestic && *(Rate->dst[0]) &&
+        Rate->_zone == Provider[prefix].Federal_zone) {
       int z=getZone(prefix, Rate->src[1], Rate->dst[1]);
       Rate->z = z;
       if (z!=UNKNOWN) {
