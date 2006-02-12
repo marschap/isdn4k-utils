@@ -35,6 +35,25 @@ DEST_LANG =
 
 .PHONY: all config distclean dist install uninstall data alldata
 
+# NO_UTF8=1 is set by isdnlog top level makefile or in command line of make
+ifeq ($(NO_UTF8), 1)
+# necessary when called directly (make NO_UTF8=1 data) as needed by makedest
+export NO_UTF8
+
+CSEXT = .latin1
+
+# NO_UTF8-CONV is normally set by isdnlog top level makefile,
+# but make might be called directly called in this directory
+ifndef NO_UTF8_CONV
+# NO_UTF8_CONV will be used as filter command
+NO_UTF8_CONV := iconv -f UTF-8 -t ISO-8859-1
+endif
+
+# pattern rule that does the recoding
+%$(CSEXT): %
+	$(NO_UTF8_CONV) < $< > $@
+endif
+
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -c -o $@ $<
 
@@ -71,6 +90,12 @@ clean:
 
 dataclean:
 	rm -f *.gdbm *.db *.cdb *.cdb.dump
+ifeq ($(NO_UTF8), 1)
+ifneq ($(strip $(CSEXT)),)
+	-rm -f *$(CSEXT) ../zone/??/code$(CSEXT)
+endif
+endif
+
 
 distclean: clean dataclean
 	rm -f config.status config.cache config.log *.man Makefile
@@ -106,6 +131,13 @@ ifeq ($(CONFIG_ISDN_LOG_DEST_CN),y)
 DEST_SRC_NATIONAL	+= ../zone/cn/code
 endif
 
+ifeq ($(NO_UTF8), 1)
+# change source files to recoded ones
+DEST_SRC_GLOBAL := $(patsubst %,%$(CSEXT),$(DEST_SRC_GLOBAL))
+DEST_SRC_ALLNATIONAL := $(patsubst %,%$(CSEXT),$(DEST_SRC_ALLNATIONAL))
+DEST_SRC_NATIONAL := $(patsubst %,%$(CSEXT),$(DEST_SRC_NATIONAL))
+endif
+
 ifeq ($(DBEXT),.cdb)
 data: dest.cdb
 
@@ -117,7 +149,7 @@ else
 data: $(DEST_SRC_GLOBAL) $(DEST_SRC_NATIONAL)
 	@if [ ! -e dest$(DBEXT) ] ; then \
 	./makedest -v $(DEST_LANG) ; \
-	./makedest -v -gcities.dat -a $(DEST_LANG) ; \
+	./makedest -v -gcities.dat$(CSEXT) -a $(DEST_LANG) ; \
 	if [ x$(CONFIG_ISDN_LOG_DEST_AT) = xy ] ; then \
 		./makedest -v -a at ; \
 	fi ; \
@@ -148,7 +180,7 @@ dest.cdb: $(DEST_SRC_GLOBAL) $(DEST_SRC_NATIONAL)
 		rm dest.cdb ; \
 	fi;
 	./makedest -v $(DEST_LANG)
-	./makedest -v -gcities.dat -a $(DEST_LANG)
+	./makedest -v -gcities.dat$(CSEXT) -a $(DEST_LANG)
 ifeq ($(CONFIG_ISDN_LOG_DEST_AT),y)
 	./makedest -v -a at
 endif
@@ -179,7 +211,7 @@ ifeq ($(DBEXT),.cdb)
 	fi
 endif
 	./makedest -v $(DEST_LANG)
-	./makedest -v -gcities.dat -a $(DEST_LANG)
+	./makedest -v -gcities.dat$(CSEXT) -a $(DEST_LANG)
 	@cd ../zone ; all=`ls -d ??` ; cd ../dest ; \
 	for cc in $$all ; do \
 	  	if [ -e ../zone/$$cc/code ] ; then \

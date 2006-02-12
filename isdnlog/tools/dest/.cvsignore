@@ -4,4 +4,5 @@ config.status
 dest
 dest.cdb
 dest.gdbm
+*.latin1
 Makefile

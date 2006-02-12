@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.221 2006/02/05 02:44:04 tobiasb Exp $
+## $Id: Makefile.in,v 1.222 2006/02/12 16:16:36 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.222  2006/02/12 16:16:36  tobiasb
+## Support for pre-UTF8 systems. NO_UTF8=1 in makefile, Makefile.in or the make
+## command line will convert the data files from UTF-8 to ISO-8859-1 (latin1)
+## using iconv.  The distributed source data files in UTF-8 charset remain
+## unchanged.  Without NO_UTF8 set, there shall be no changes at all.
+##
 ## Revision 1.221  2006/02/05 02:44:04  tobiasb
 ## New version number 4.71.  Change in zone lookup.
 ##
@@ -1716,6 +1722,8 @@ LIB         = $(DBMLIB) -lm
 
 SERVICEFILE = /etc/services
 
+# enable following line to convert data files from UTF-8 to ISO-8859-1
+# NO_UTF8=1
 
 ######################################################################
 # DON'T EDIT BELOW THIS LINE
@@ -1728,6 +1736,39 @@ VERSION     = 4.71
 # fallback to I4L-Version as set at configure time
 ifndef (I4LVERSION)
 I4LVERSION := $(STORED_I4LVERSION)
+endif
+
+# CSEXT is the file name suffix added to source files after conversion
+# from UTF-8 to the ISO-8859-1 charset took place.  Empty by default.
+CSEXT =
+
+# all test for NO_UTF8 compare it with 1, so that NO_UTF8=0 works as expected
+ifeq ($(NO_UTF8), 1)
+
+export NO_UTF8
+
+CSEXT = .latin1
+
+# NO_UTF8_CONV will be used as filter command
+export NO_UTF8_CONV := iconv -f UTF-8 -t ISO-8859-1
+
+# files which have to be recoded for make all
+# use .conf.in files for selection; .conf files may not created yet
+# use .*. instead of .??. as there may be .default. some day
+NO_UTF8_FILES := $(wildcard samples/isdn.*.conf.in)
+NO_UTF8_FILES += samples/isdn.conf.in
+NO_UTF8_FILES := $(patsubst %.conf.in,%.conf,$(NO_UTF8_FILES))
+NO_UTF8_FILES += $(wildcard samples/rate.*.conf)
+NO_UTF8_FILES += $(wildcard holiday-*.dat)
+NO_UTF8_FILES += $(wildcard rate-*.dat)
+NO_UTF8_FILES += country-de.dat
+# convert to names of recoded files
+NO_UTF8_FILES := $(patsubst %,%$(CSEXT),$(NO_UTF8_FILES))
+
+# pattern rule that does the recoding
+%$(CSEXT): %
+	$(NO_UTF8_CONV) < $< > $@
+
 endif
 
 # Used for all and distclean, 
@@ -1905,6 +1946,14 @@ endif
 
 all:            depend libs mybin progs $(MANPAGES)
 
+# have data files recoded during make all
+ifeq ($(NO_UTF8), 1)
+all: recode-data
+
+recode-data: $(NO_UTF8_FILES)
+endif
+
+
 ifdef IIOCNETGPN
 ISDNLOG_OBJS += isdnlog/kernel_2_0/iiocnetgpn.o
 isdnlog/kernel_2_0/iiocnetgpn.o:	isdnlog/kernel_2_0/iiocnetgpn.c
@@ -1941,6 +1990,12 @@ clean:
 		set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i clean; done
 ifdef IIOCNETGPN
 	    cd isdnlog/kernel_2_0 && make clean
+endif
+ifeq ($(NO_UTF8), 1)
+# an empty CSEXT would clear the entire directory
+ifneq ($(strip $(CSEXT)),)
+		-rm -f *$(CSEXT) samples/*$(CSEXT)
+endif
 endif
 
 distclean:      clean
@@ -2004,7 +2059,7 @@ install-old-conf:
 
 install-conf:
 		@for f in rate isdn ; do \
-		        if [ ! -f "samples/$$f.conf.$(NATION)" ] ; then \
+		        if [ ! -f "samples/$$f.conf.$(NATION)$(CSEXT)" ] ; then \
 				echo ; \
 				echo It looks like isdnlog doesn\'t know your countries config ; \
 				echo Please read README.Internationalization. ; \
@@ -2012,11 +2067,11 @@ install-conf:
 				echo ; \
 				sleep 3 ; \
 			elif [ ! -f "$(DESTDIR)$(I4LCONFDIR)/$$f.conf" ]; then \
-				$(INSTALL_DATA) samples/$$f.conf.$(NATION) $(DESTDIR)$(I4LCONFDIR)/$$f.conf ; \
+				$(INSTALL_DATA) samples/$$f.conf.$(NATION)$(CSEXT) $(DESTDIR)$(I4LCONFDIR)/$$f.conf ; \
 				echo Please edit $(DESTDIR)$(I4LCONFDIR)/$$f.conf ; \
 				sleep 2 ; \
 			else \
-				$(INSTALL_DATA) samples/$$f.conf.$(NATION) $(DESTDIR)$(I4LCONFDIR)/$$f.conf.new ; \
+				$(INSTALL_DATA) samples/$$f.conf.$(NATION)$(CSEXT) $(DESTDIR)$(I4LCONFDIR)/$$f.conf.new ; \
 			fi ; \
 		done
 		@for f in callerid.conf isdnlog.isdnctrl0.options isdnlog.users ; do \
@@ -2065,9 +2120,9 @@ install-data:
 		$(INSTALL_DATA) tools/isdnrate.1     $(DESTDIR)$(MAN1DIR)/isdnrate$(MAN1EXT)
 		$(INSTALL_DATA) tools/rate-files.5     $(DESTDIR)$(MAN5DIR)/rate-files$(MAN5EXT)
 		$(INSTALL_DATA) tools/rate.conf.5     $(DESTDIR)$(MAN5DIR)/rate.conf$(MAN5EXT)
-		$(INSTALL_DATA) country-de.dat	$(DESTDIR)$(DATADIR)/country.dat
-		$(INSTALL_DATA) rate-$(NATION).dat      $(DESTDIR)$(DATADIR)
-		$(INSTALL_DATA) holiday-$(NATION).dat   $(DESTDIR)$(DATADIR)
+		$(INSTALL_DATA) country-de.dat$(CSEXT)	$(DESTDIR)$(DATADIR)/country.dat
+		$(INSTALL_DATA) rate-$(NATION).dat$(CSEXT)      $(DESTDIR)$(DATADIR)/rate-$(NATION).dat
+		$(INSTALL_DATA) holiday-$(NATION).dat$(CSEXT)   $(DESTDIR)$(DATADIR)/holiday-$(NATION).dat
 		@for f in `ls zone-$(NATION)-*.gdbm zone-$(NATION)-*.db zone-$(NATION)-*.cdb tools/dest/dest.gdbm tools/dest/dest.db tools/dest/dest.cdb 2>/dev/null` ; do \
 		  $(INSTALL_DATA) $$f $(DESTDIR)$(DATADIR); \
 		  echo Installing $(DESTDIR)$(DATADIR)/$$f; \

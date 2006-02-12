@@ -11,6 +11,9 @@
 # When DBEXT in the environment is set to something other than ".cdb"
 # the old gdbm format is used instead of the current standard cdb.
 #
+# When NO_UTF8 in the environment is set to 1, internal source file names
+# like ../../country-de.dat or ../zone/CC/code get .latin1 appended
+#
 # these entries are written as 0-terminated strings
 # vErSiO\0 => 1.0 int[ cc...]
 #
@@ -47,6 +50,8 @@ eval 'use i4lconf; $co_dat = locate_countryfile();';
 unless ($co_dat) {              # old behaviour as last ressort
     $co_dat = '/usr/lib/isdn/country-de.dat';
 }
+# use recoded input files if demanded by NO_UTF8
+my $csext = ($ENV{'NO_UTF8'} == 1) ? '.latin1' : '';
 my $dest_gdbm = './dest.gdbm';
 if (@AnyDBM_File::ISA eq @CDB_File_Dump::ISA) {
   $dest_gdbm = './dest.cdb.dump';
@@ -103,7 +108,7 @@ if (!$tied) {
 unless($append) {
     $db{$vers}="Dest $VERSION int\x00";
     # priority for country-de.dat in source tree against installed countryfile
-    write_global($co_dat, '../../country-de.dat');
+    write_global($co_dat, '../../country-de.dat' . $csext);
 }
 
 foreach $C (@ARGV) {
@@ -248,7 +253,7 @@ sub write_cc {
     }
     else {	
 	open(IN,"/usr/lib/isdn/code-$cc.dat") || 
-	    open(IN,"../zone/$cc/code") || 
+	    open(IN,"../zone/$cc/code" . $csext) || 
 		die("Can't find code file in ../zone/$cc or /usr/lib/idsn");
     }		
     $cc = uc $cc;	    

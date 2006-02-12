@@ -1,0 +1,11 @@
+2006-02-12  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* Makefile.in (NO_UTF8): Added backward compatibility for pre UTF-8
+	installations.  If NO_UTF8 is set to 1, the destination database is
+	created with ISO-8859-1 (latin1) as charset.
+	* makedest (csext): As makedest contains some hard coded file names
+	it must pay attention to the NO_UTF8 environment variable and append
+	.latin1 to the input file names if set to 1.
+
+	* ChangeLog: Started this file.  Pure changes in data files will not
+	be noted herein.

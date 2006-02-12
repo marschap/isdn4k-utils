@@ -1,3 +1,13 @@
+2006-02-12  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* Makefile.in (NO_UTF8): Added backward compatibility for pre UTF-8
+	installations.  If NO_UTF8 is set to 1, intermediate data files are
+	created with .latin1 as extension and ISO-8859-1 (latin1) as charset
+	using iconv und used for installation and destination database
+	generation.  At the moment there is no option in the config dialog
+	for this and there is also no configure check for iconv.  With NO_UTF8
+	to any value other than 1 or not all, there shall be no changes.
+
 2006-02-04  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* Makefile.in (VERSION): Increased from 4.70 to 4.71.
