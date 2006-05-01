@@ -1,3 +1,13 @@
+2006-04-09  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* processor.c (decode): Do not append same digits twice to called
+	number if DUALFIX_SRCNUM and dualmode are enabled and the outgoing
+	call originates from isdn card isdnlog listens to.  In this case,
+	SETUP is received twice and decoded in the same chan.  Double
+	decoding takes place only if the two SETUP messages are not read
+	in succession from /dev/isdnctrl?.  With three or less of these
+	conditions, the error did not occur.
+
 2005-02-23  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* isdnlog.c (read_param_file): Store value for skipProv from

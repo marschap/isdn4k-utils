@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.132 2005/01/02 16:37:27 tobiasb Exp $
+/* $Id: processor.c,v 1.133 2006/05/01 13:52:31 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.133  2006/05/01 13:52:31  tobiasb
+ * Fix for special case with DUALFIX_SRCNUM (-2/dual= includes 0x200).
+ * A more general approach would do reordering of layer 2 frames.
+ *
  * Revision 1.132  2005/01/02 16:37:27  tobiasb
  * Improved utilization of special number information from ratefile.
  *
@@ -2755,7 +2759,22 @@ static void decode(int chan, register char *p, int type, int version, int tei)
                     *pd = 0;
 
                     if (dual && ((type == INFORMATION) || ((type == SETUP) && OUTGOING))) { /* Digit's beim waehlen mit ISDN-Telefon */
-                      strcat(call[chan].digits, s);
+                      /*
+                       * The SETUP for an outgoing call using the isdn card isdnlog listens to may be received
+                       * twice in dualmode.  If DUALFIX_SRCNUM is active both SETUP are decoded in the same chan
+                       * leading to a called number abcabc instead of just abc.  This situation is catched below.
+                       * A more sophisticated approach would not decode more than one outgoing setup or would
+                       * recognize the doubled D channel frame as such ... |TB|20060409|
+                       */
+                      if (dualfix & DUALFIX_SRCNUM && strlen(call[chan].digits) > 1 && !strcmp(call[chan].digits,s)) {
+                        print_msg(PRT_DEBUG_BUGS,
+                            " DEBUG> %s: Not appending already present digits %s from duped SETUP in chan %d\n",
+                            st + 4, s, chan);
+                        /* break causes problems with COLP in later CONNECT and with CHARGEMAX at DISCONNECT */
+                      }
+                      else {
+                        strcat(call[chan].digits, s);
+                      }
                       strcpy(call[chan].onum[CALLED], s);
                       call[chan].oc3 = oc3;
                       if (Q931dmp)
