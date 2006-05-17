@@ -1,0 +1,24 @@
+# List of source files containing translatable strings.
+# Copyright (C) 2003 Roland Stigge
+
+src/ant-phone.c
+src/callerid.c
+src/calleridlexer.l
+src/calleridparser.y
+src/client.c
+src/controlpad.c
+src/fxgenerator.c
+src/gtk.c
+src/gtksettings.c
+src/isdn.c
+src/llcheck.c
+src/mediation.c
+src/isdnlexer.l
+src/isdnparser.y
+src/recording.c
+src/server.c
+src/session.c
+src/settings.c
+src/sound.c
+src/util.c
+

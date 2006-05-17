@@ -1,0 +1,74 @@
+Bugs:
+=====
+* Recording chopped up (only recorded file)
+* Incoming delay
+* Kernel cpu consumption in conversation mode. This is a kernel-internal
+  problem. While reading blocks from kernel OSS devices and ttyI, select(s)
+  seems to consume lot's of cpu time in kernel space while NOT BLOCKING!
+  -> not a big problem for now, just less idle tasks ;)
+  -> The problem doesn't seem to appear with ALSA
+
+Feature requests:
+=================
+* Real time support
+* client/server architecture (ttyI network forward) (Sven Geggus <sven@gegg.us>, Arne Börs <Arne.Boers@gmx.de>, martin@stigge.org)
+* Makeln (Joerg Brueggemann <jb@neviges.net>)
+* database connection (caller id, times of incoming / outgoing, ...)
+
+Christoph Schütz <ch.schuetz@addcom.de>:
+* echo compensation
+* configurable different ringtones (for different callers)
+
+Steffen Barszus <st_barszus@gmx.de>:
+* kde-kicker integration (drag number, pop up menu: number input)
+
+Pinto Joel <joelp@india.hp.com>:
+* recording / scripting
+
+Roel Koelewijn <rl.koelewijn@home.nl>:
+* KDE address book integration
+* TAPI telephone (dialling) support
+* connection to external DB (Phonebook CDs)
+
+Martin Stigge <martin@stigge.org>:
+* sorting callerid list
+* playback soundfiles in converation mode
+
+arnd.feldmueller@t-online.de:
+* answering machine
+* DB, SQL, CSV input/output
+
+Arthur J. Schotgerrits <arthur@rev-img.nl>:
+* answering machine
+
+Matthias Fenner <informix@web.de>:
+* command line interface
+
+Daniel Nöthen <bipak@gmx.net>:
+* mixer support (muting)
+* (configurable?) auto set input to mic (reset on exit)
+* separate configuration of logged / ringing msns
+
+Philipp Thomas <pthomas@suse.de>:
+* CAPI support, native ALSA support (both in Linux 2.6) (needed for SuSE 9.1 prepared for 02/2004)
+
+wolfgang@rohdewald.de:
+* "execute on recorded message" option
+
+* aRTs support
+* IP telephony support
+
+Feature ideas: (tell me to move some of them to "feature requests")
+==============
+* graphical sound visualization
+* compensate sample drift (difference between isdn and oss)
+* BSD (and possibly other) UNIX support
+* H.323 client functionality
+* encryption support
+* adaptive (pre-)amp / echo compensation
+* answering machine
+* website enhancements / maintenance
+* Remove remaining deprecated GTK+ functions, adjust to new API
+* Logarithmical line level meter
+
+* improve calls file finding by parsing /etc/isdn/callerid.conf

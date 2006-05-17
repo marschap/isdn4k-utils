@@ -1,0 +1,9 @@
+For now, to compile ant-phone on your system, use the standard
+procedure and type (without the dollar signs):
+
+$ ./configure
+$ make
+
+after that you may install ant-phone with
+
+$ make install

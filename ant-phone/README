@@ -1,0 +1,132 @@
+ANT - Ant is Not a Telephone
+****************************
+Copyright 2002, 2003, 2004, 2005 Roland Stigge
+
+
+WHAT IT IS
+==========
+
+ANT is a telephone application written for GNU/Linux, I4L (ISDN4Linux,
+integrated in the kernel), GTK+ (GIMP Toolkit) and OSS (Open Sound System).
+
+
+ABOUT ANT
+=========
+
+It directly interfaces OSS and ISDN devices, so there is no need to install
+extra software or hardware like PBX (Private Branch Exchange) or telephony
+cards, if you've got direct access to an audio capable ISDN Card and full
+duplex (or multiple) soundcard.
+
+For the soundcard interface you can use headphones (or speakers) and a
+microphone, or a headset instead of all this.
+
+Currently, there is no direct mixer integration planned for ANT for several
+reasons. For GNU/Linux, there are quite a lot of good mixer programs available
+such as aumix, kmix, smix or tkmixer. The other reason is to make the program
+more general. Not all sound devices have mixer support integrated and many
+don't provide an obvious interface.
+
+NOTE: Currently, this is a work in progress (beta version) and may contain
+      bugs.
+
+
+WHAT YOU WILL NEED
+==================
+to run:
+
+* a computer
+* an ISDN card with audio support for Linux (ISDN4Linux driver)
+  (teles or HiSax drivers are known to work)
+* GNU/Linux (as far as nobody has tried it on another platform yet)
+* OSS support
+* a full duplex sound card or two sound devices
+  (one for input, another for output)
+* a microphone (or your sound source of choice)
+* speakers, or better: headphones
+* instead of the last two points, you could also use a headset
+* GTK+ 2.x
+* libsndfile
+
+to compile:
+
+* GNU make
+* GCC
+* GTK+ 2.x development files
+* OSS development files (actually, it's mostly just one header file)
+* libsndfile development files
+
+
+WHAT YOU MIGHT NEED
+===================
+* possibly a mixer application of your choice (e.g. aumix or smix) to set up
+  your audio devices (check your recording and playback levels to make sure
+  to hear your calling/called party and to be heard by them
+
+
+FEATURES
+========
+* Of course, dialing out and receiving calls
+* Caller id monitor
+* Vanity number dialing support
+* Big / little endian support for processor architecture and sound card
+* Different 8 and 16 bit audio formats supported
+* Different sampling speeds supported (if sound device(s) don't support
+  native ISDN sampling speed)
+* Setting outgoing (identifying) MSN (Multiple Subscriber Number) and
+  MSNs to listen on
+* Line Level Checker
+* Works with ALSA (OSS emulation)
+* Saved config file
+* Saved Caller ID history
+* Option to run an external command on incoming call (useful for external
+  pager programs), add %s in template for calling party number, %n for
+  own number
+* Command line option to make a running instance of ANT make a call to a
+  specific number (useful for external address book applications)
+* Live recording to files
+* Popup on incoming call
+* Configurable preset buttons
+* Isdnlog data import
+* Tracking of unanswered calls
+* Internationalization, native language support (NLS) for Dutch, German, French
+
+
+HOW TO COMPILE ANT INSTALL
+==========================
+
+see INSTALL
+
+
+HOW TO START
+============
+
+run:
+
+   ant-phone
+
+
+FREQUENTLY ASKED QUESTIONS (FAQ)
+================================
+
+For actuality reasons, please look at the FAQ section at http://www.antcom.de/
+
+
+RELEASE CONDITIONS
+==================
+
+ANT is released under the GPL (GNU General Public License). Please read
+the file named COPYING.
+
+
+CONTACT
+=======
+
+Any suggestions, comments and bug reports (which are highly appreciated) go to
+the ant-phone mailing list ant-phone-devel@nongnu.org. For discussion and
+announcements, you can subscribe to the list at
+http://mail.nongnu.org/mailman/listinfo/ant-phone-devel. You can also browse
+the Mailing List Archives at http://mail.gnu.org/archive/html/ant-phone-devel/.
+If this fails or for non-public discussion, contact the maintainer directly:
+Roland Stigge <stigge@antcom.de>. Thanks in advance!
+

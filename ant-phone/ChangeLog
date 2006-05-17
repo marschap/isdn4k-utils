@@ -1,0 +1,140 @@
+ant-phone 0.1.12, 2006-04-18, Roland Stigge <stigge@antcom.de>
+	* Updated Swedish translation
+
+ant-phone 0.1.11, 2005-11-29, Roland Stigge <stigge@antcom.de>
+	* Added Swedish, Turkish and Vietnamese translations
+
+ant-phone 0.1.10, 2004-01-09, Roland Stigge <stigge@antcom.de>
+	* src/session.c: Added debug messages to gtk_handle_isdn_input
+	* Updated po/fr.po
+
+ant-phone 0.1.9, 2004-01-09, Roland Stigge <stigge@antcom.de>
+	* README: Added reference to mailing list and archives
+	* Updated po/fr.po
+
+ant-phone 0.1.8, 2003-11-18, Roland Stigge <stigge@antcom.de>
+	* src/isdn.h: Fixed ISDN_CONFIG_FILENAME to be /etc/isdn/isdn.conf
+	* src/callerid.c: Fixed segfault in cid_calls_merge()
+
+ant-phone 0.1.7, 2003-10-31, Roland Stigge <stigge@antcom.de>
+	* Updated po/nl.po
+
+ant-phone 0.1.6, 2003-10-01, Roland Stigge <stigge@antcom.de>
+	* Fixed yyloc compile warning, updating flex and bison source for
+	  options and callerid (solves parsers location issue)
+	* Applied SuSE (Opteron, ...) porting patches, thanks to
+	  Philipp Thomas <pthomas@suse.de>:
+	    ant-phone-codecleanup.diff
+	    ant-phone-gettext_version.diff
+	    ant-phone-isdn_log_name.diff
+	    ant-phone-makefile.diff
+	* Adjusted to automake-1.7
+	* Added lexer/parser for isdnformat(5) to get name of calls file
+	  from i4l config file
+	* Obsoleted optionslexer in favour of isdnparser (nearly same format)
+	  to conform rc file to isdnformat(5)
+	* Added ro.po translation file (Romanian)
+
+ant-phone 0.1.5, 2003-07-30, Roland Stigge <stigge@antcom.de>
+	* Fixed bad codeset (UTF-8) in localized command line output
+	* Updated po/fr.po
+	* Fixed bug in resampling code for playback
+	* Added xpm icons in src/: 16x16, 32x32, 48x48, 64x64
+	* Added auto detection between /var/lib/isdn/calls and
+	  /var/log/isdn/calls as input file for callerid history
+
+ant-phone 0.1.4, 2003-07-06, Roland Stigge <stigge@antcom.de>
+	* Fixed parse error in src/callerid.c (line 422 in version 0.1.3)
+	* Updated po/nl.po
+	* Coded variable size for buttons (suitable for i18n) in src/gtk.c
+
+ant-phone 0.1.3, 2003-07-06, Roland Stigge <stigge@antcom.de>
+	* Fixed: recording of parts of one session to different files
+	  (now dependent on session->vcon_time)
+	* Added playback / copy / deletion of recorded sessions to context
+	  menu of CallerID rows
+	* Added po/fr.po, thanks to FACORAT Fabrice <f.faber@ifrance.com>
+	* Fixed gettext_noop warning in globals.h (commented out #define)
+	* Fixed default notebook page in settings to first one
+	* Fixed focus on dial combo box after keypad (digit) input
+	* Added po/nl.po, thanks to roel koelewijn <rl.koelewijn@home.nl>
+	* Changed gettext marks for menus (with "_" even for
+	  gtk_item_factory_get_item() requests) to prevent ambiguousness
+	* Settings notebook: leave default page 1 instead of forcing focus
+	  for msn_entry
+
+ant-phone 0.1.2, 2003-06-29, Roland Stigge <stigge@antcom.de>
+	* Created hierarchy in source package structure (doc/, src/, ...)
+	* Port to GTK+ 2.x
+	* New logo, added to "About" window
+	* Added internationalization via GNU gettext; included po/de.po
+
+ant-phone 0.1.1, 2003-05-28, Roland Stigge <stigge@antcom.de>
+	* Code cleanup
+	* Use gtk_window_present() for popup on GTK+ >= 2.0
+	* Let keypad Enter act as Enter in dial combo box
+	* Added %s on substitution in execution string (= caller's number),
+	  fixes problem that %n actually substitutes to own msn
+	* configure.ac: Added complaints on missing library sndfile
+	* Added copying permission statement to all source files
+	  to conform to GNU advice on GPL usage
+
+ant-phone 0.1.0, 2003-04-27, Roland Stigge
+	* Added recording (depends on libsndfile)
+	* Added option to popup on incoming call
+	* Added configurable preset buttons
+	* Added isdnlog data import
+	* Added context menu to CallerID list
+	* Added delete function to CallerID list
+	* Added tracking for unanswered calls in CallerID list and in window
+	  title
+
+ant-phone 0.0.8, 2002-12-09, Roland Stigge
+	* fixed "local bind: No such file or directory" and exit on startup
+
+ant-phone 0.0.7, 2002-12-06, Roland Stigge
+	* fixed include mistake in isdn.c
+	* added caller id saved history patch by
+		Lars Volkhardt <Lars.Volkhardt@uni-konstanz.de>
+	* added lexer/parser for caller id saved history file
+	* ant-phone now doesn't try to open sound device(s) at startup
+		when in audio release mode
+	* made number of caller id entries configurable
+	* added option to start a command when incoming call comes
+	* added command line option to let an already running ant make a call
+
+ant-phone 0.0.6, 2002-11-22, Roland Stigge
+	* made release audio mode default
+	* release audio also in settings
+	* added control pad (for dialing / generating touchtones)
+	* added touchtone generator
+	* added mute function
+
+ant-phone 0.0.5, 2002-11-13, Roland Stigge
+	* autoconf/automake support by Joerg Mayer <jmayer@loplof.de>
+	* added saved options / history files
+	* added "release audio devices on idle"
+
+ant-phone 0.0.4, 2002-11-03, Roland Stigge
+	* fixed gcc-3.2 warnings (session.c, sound.c),
+	    reported by Joerg Mayer <jmayer@loplof.de>
+	* fixed delay problem with ALSA
+
+ant-phone 0.0.3, 2002-11-01, Roland Stigge
+	* fixed "Warning: Got audio input in ready mode."
+	* minor bug fixes
+	* added/improved GUI elements
+	* added installer (make install target)
+	* added man page
+	* added line level checker
+
+ant-phone 0.0.2, 2002-10-16, Roland Stigge
+	* renamed package to prevent "confusion" with ANT (Another Neat Tool)
+	* added caller id support
+	* added vanity number support
+	* added playing sound on incoming and outgoing calls
+	* bug fixes (hanging sound init)
+
+ant 0.0.1, 2002-09-23, Roland Stigge
+	* first release of ANT (ANT is Not a Telephone)
+	* basic functionality

@@ -1,0 +1,662 @@
+# Messages français pour GNU concernant ant-phone.
+# Copyright © 2004 Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# Michel Robitaille <robitail@IRO.UMontreal.CA>, traducteur depuis/since 1996.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GNU ant-phone 0.1.4\n"
+"Report-Msgid-Bugs-To: stigge@antcom.de\n"
+"POT-Creation-Date: 2004-04-03 18:51+0200\n"
+"PO-Revision-Date: 2004-05-10 08:00-0500\n"
+"Last-Translator: Michel Robitaille <robitail@IRO.UMontreal.CA>\n"
+"Language-Team: French <traduc@traduc.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/ant-phone.c:170
+#, c-format
+msgid ""
+"Usage: %s [OPTION...]\n"
+"\n"
+"Options:\n"
+"  -h, --help              Show this help message\n"
+"  -v, --version           Print version information\n"
+"  -r, --cleanup           Remove stale socket file (left by accident by\n"
+"                            previous run)\n"
+"  -d, --debug[=level]     Print additional runtime debugging data to stdout\n"
+"                            level = 1..2\n"
+"  -i, --soundin=DEVICE    OSS compatible device for input (recording),\n"
+"                            default: /dev/dsp\n"
+"  -o, --soundout=DEVICE   OSS compatible device for output (playback),\n"
+"                            default: /dev/dsp\n"
+"  -m, --msn=MSN           identifying MSN (for outgoing calls), 0 for "
+"master\n"
+"                          MSN of this termination/port\n"
+"                            default: 0\n"
+"  -l, --msns=MSNS         MSNs to listen on, semicolon-separated list or "
+"'*'\n"
+"                            default: *\n"
+"  -c, --call=NUMBER       Call specified number\n"
+"\n"
+"Note: If arguments of --soundin and --soundout are equal, a full duplex\n"
+"      sound device is needed.\n"
+msgstr ""
+"Usage: %s [OPTION...]\n"
+"\n"
+"Options:\n"
+"  -h, --help              affichier l'aide-mémoire\n"
+"  -v, --version           affichier la version du logiciel\n"
+"  -r, --cleanup           enlever le fichier du socket figé (laissé lors\n"
+"                            l'exécution précédente)\n"
+"  -d, --debug[=niveau]    afficher des informations additionnelles de mises "
+"au point sur stdout\n"
+"                            niveau = 1..2\n"
+"  -i, --soundin=PERI      PÉRIphérique compatible OSS pour la sortie "
+"(enregistrement),\n"
+"                            par défaut: /dev/dsp\n"
+"  -o, --soundout=PERI     PÉRIphérique compatible OSS pour l'entrée "
+"(écoute),\n"
+"                            par défaut: /dev/dsp\n"
+"  -m, --msn=MSN           identificateur MSN (pour les appels sortant), 0 "
+"pour maître\n"
+"                          MSN de terminaison/port\n"
+"                            par défaut: 0\n"
+"  -l, --msns=MSNS         MSNs d'écoute, liste séparée par des « ; » ou '*'\n"
+"                            par défaut: *\n"
+"  -c, --call=NUMÉRO       numéro d'appel spécifique\n"
+"\n"
+"Note: si les arguments de --soundin et --soundout sont identiques, un "
+"périphérique\n"
+"      de son fonctionnant en mode duplex est nécessaire.\n"
+
+#: src/ant-phone.c:221
+#, c-format
+msgid "Calling %s... "
+msgstr "Appel en cour %s... "
+
+#: src/ant-phone.c:225
+#, c-format
+msgid "successful.\n"
+msgstr "succès.\n"
+
+#: src/callerid.c:131
+msgid "Delete Entry"
+msgstr "Détruire l'entrée"
+
+#: src/callerid.c:143
+msgid ""
+"Are you sure you want to\n"
+"delete this entry?"
+msgstr ""
+"Êtes-vous certains de vouloir\n"
+"détruire cette entrée?"
+
+#: src/callerid.c:148
+msgid "Delete recording"
+msgstr "Destruction de l'enregistrement"
+
+#: src/callerid.c:266
+#, c-format
+msgid "Enter the base filename for %s file"
+msgstr "Fournir le nom de base du fichier %s"
+
+#: src/callerid.c:312
+msgid "Do you really want to delete this recording?"
+msgstr "Désirez-vous réellement détruire cet enregistrement?"
+
+#: src/callerid.c:336 src/callerid.c:362
+msgid "/_Playback"
+msgstr "/_Playback (ré-écoute"
+
+#: src/callerid.c:337 src/callerid.c:366
+msgid "/_Save as..."
+msgstr "/_Sauvagarder sous..."
+
+#: src/callerid.c:338 src/callerid.c:370
+msgid "/Delete _Recording"
+msgstr "/Détruire l'_Enregistrement"
+
+#: src/callerid.c:340 src/callerid.c:374
+msgid "/_Delete Row"
+msgstr "/_Détruire la rangée"
+
+#: src/callerid.c:423 src/gtksettings.c:455
+msgid "Caller ID"
+msgstr "Identificateur de l'appelant"
+
+#: src/callerid.c:426
+msgid "Date/Time"
+msgstr "Date/Heure"
+
+#: src/callerid.c:427
+msgid "Type"
+msgstr "Type"
+
+#: src/callerid.c:428
+msgid "From"
+msgstr "De"
+
+#: src/callerid.c:429
+msgid "To"
+msgstr "À"
+
+#: src/callerid.c:430
+msgid "Duration"
+msgstr "Durée"
+
+#: src/callerid.c:759
+msgid "(UNKNOWN)"
+msgstr "(INCONNU)"
+
+#: src/callerid.c:828
+#, c-format
+msgid "ANT: %d unanswered"
+msgstr "ANT: %d non répondus"
+
+#: src/controlpad.c:101
+#, c-format
+msgid "Preset %c"
+msgstr "Présélection %c"
+
+#: src/controlpad.c:108
+#, c-format
+msgid "Please input new preset data for button %c:"
+msgstr "SVP fournir les nouvelles données de présélection pour le bouton %c:"
+
+#: src/controlpad.c:121
+msgid "Name:"
+msgstr "Nom:"
+
+#: src/controlpad.c:124 src/gtk.c:561
+msgid "Number:"
+msgstr "Numéro:"
+
+#: src/controlpad.c:144 src/gtk.c:212 src/gtk.c:331 src/gtk.c:408
+#: src/gtksettings.c:571 src/llcheck.c:422
+msgid "OK"
+msgstr "OK"
+
+#: src/controlpad.c:157 src/gtksettings.c:616 src/session.c:68
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/controlpad.c:315
+msgid "Backspace"
+msgstr "Espace arrière"
+
+#: src/controlpad.c:315
+msgid "Preset 1"
+msgstr "Présélection 1"
+
+#: src/controlpad.c:316
+msgid "Clear Number"
+msgstr "Effacer le numéro"
+
+#: src/controlpad.c:316
+msgid "Preset 2"
+msgstr "Présélection 2"
+
+#: src/controlpad.c:317
+msgid "Redial"
+msgstr "Recomposer"
+
+#: src/controlpad.c:317
+msgid "Preset 3"
+msgstr "Présélection 3"
+
+#: src/controlpad.c:318
+msgid "Mute Microphone"
+msgstr "Éteindre le microphone"
+
+#: src/controlpad.c:318
+msgid "Preset 4"
+msgstr "Présélection 4"
+
+#: src/controlpad.c:351
+msgid "Control"
+msgstr "Contrôle"
+
+#: src/controlpad.c:423
+msgid "Recording"
+msgstr "Enregistrement en cours"
+
+#: src/controlpad.c:434
+msgid "Record to file"
+msgstr "Enregistrer dans un fichier"
+
+#: src/controlpad.c:445
+msgid "Record local channel"
+msgstr "Enregister sur canal local"
+
+#: src/controlpad.c:456
+msgid "Record remote channel"
+msgstr "Enregistrer sur canal distant"
+
+#: src/gtk.c:230 src/gtksettings.c:229
+msgid "ANT Note"
+msgstr "Note ANT"
+
+#: src/gtk.c:231
+msgid ""
+"Can't open audio device.\n"
+"Please stop other applications using\n"
+"the audio device(s) or check your\n"
+"device settings and try again."
+msgstr ""
+"Ne peut ouvrir le périphérique audio.\n"
+"SVP stopper les autres applications utilisant\n"
+"le périphérique audio ou vérifier la\n"
+"configuration du périphérique et essayer à nouveau."
+
+#: src/gtk.c:260
+msgid "Sound input device:"
+msgstr "Entrée du périphérique de son:"
+
+#: src/gtk.c:261
+msgid "Input speed:"
+msgstr "Vitesse d'entrée"
+
+#: src/gtk.c:261 src/gtk.c:264 src/gtk.c:265 src/gtk.c:267 src/gtk.c:271
+#: src/gtk.c:274 src/gtk.c:275 src/gtk.c:277
+msgid "[inactive]"
+msgstr "[inactif]"
+
+#: src/gtk.c:263
+msgid "Input sample size (bits):"
+msgstr "Taille d'échantillon d'entrée (en bits):"
+
+#: src/gtk.c:265 src/gtk.c:275
+msgid "Input fragment size (samples):"
+msgstr "Taille de fragment d'entrée (échantillons)"
+
+#: src/gtk.c:267
+msgid "Input channels:"
+msgstr "Canaux d'entrée:"
+
+#: src/gtk.c:270
+msgid "Sound output device:"
+msgstr "Sortie du périphérique de son:"
+
+#: src/gtk.c:271
+msgid "Output speed:"
+msgstr "Vitesse de sortie:"
+
+#: src/gtk.c:273
+msgid "Output sample size (bits):"
+msgstr "Taille d'échantillon de sortie (en bits):"
+
+#: src/gtk.c:277
+msgid "Output channels:"
+msgstr "Canaux de sortie:"
+
+#: src/gtk.c:280
+msgid "ISDN device:"
+msgstr "Périphérique ISDN:"
+
+#: src/gtk.c:281
+msgid "ISDN speed (samples):"
+msgstr "Vitesse ISDN (échantillons):"
+
+#: src/gtk.c:282
+msgid "ISDN sample size (bits):"
+msgstr "Taille d'échantillon ISDN (en bits):"
+
+#: src/gtk.c:283
+msgid "ISDN fragment size (bytes):"
+msgstr "Taille de fragment ISDN (en octets):"
+
+#: src/gtk.c:295
+msgid "ANT Info"
+msgstr "Info ANT"
+
+#: src/gtk.c:366
+msgid "About ANT"
+msgstr "À propos de ANT"
+
+#: src/gtk.c:382
+#, c-format
+msgid ""
+"ANT (ANT is Not a Telephone) Version %s\n"
+"Copyright 2002, 2003 Roland Stigge\n"
+"\n"
+"This is an ISDN telephone application\n"
+"written for GNU/Linux and ISDN4Linux for\n"
+"communicating via a full duplex soundcard (or\n"
+"multiple sound devices if you like) and an\n"
+"audio capable ISDN4Linux ISDN device\n"
+"\n"
+"Contact:\n"
+"Roland Stigge, stigge@antcom.de\n"
+"http://www.antcom.de/\n"
+"Mailing list: ant-phone-devel@nongnu.org"
+msgstr ""
+"ANT (ANT est « Not » un Téléphone) Version %s\n"
+"Copyright 2002, 2003 Roland Stigge\n"
+"\n"
+"C'est un logiciel de téléphone ISDN\n"
+"écrit pour GNU/Linux et ISDN4Linux pour\n"
+"communiquer à l'aide d'une carte de son fonctionnant en mode duplex complet\n"
+"( ou de multiples périphériques de son si vous le désirez) et un\n"
+"périphérique audio supportant ISDN4Linux ISDN\n"
+"\n"
+"Contact:\n"
+"Roland Stigge, stigge@antcom.de\n"
+"http://www.antcom.de/\n"
+"Liste de courriel: ant-phone-devel@nongnu.org"
+
+#: src/gtk.c:420
+msgid "ANT License"
+msgstr "Licence ANT"
+
+#: src/gtk.c:421
+msgid ""
+"ANT (ANT is Not a Telephone)\n"
+"Copyright (C) 2002, 2003 Roland Stigge\n"
+"\n"
+"This program is free software; you can redistribute it and/or\n"
+"modify it under the terms of the GNU General Public License\n"
+"as published by the Free Software Foundation; either version 2\n"
+"of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA."
+msgstr ""
+"ANT (ANT est « Not » un Téléphone)\n"
+"Copyright © 2002, 2003 Roland Stigge\n"
+"\n"
+"Ce logiciel est libre; vous pouvez le redistribuer selon les termes de la\n"
+"licence GNU General Public License. AUCUNE garantie n'est donnée.\n"
+"tel que publiée par la Free Software Foundation; tel que la version 2\n"
+"de la licence  ou (selon votre choix) n'importe quelle version subséquente.\n"
+"\n"
+"Ce logiciel est distribué dans l'espoir qu'il soit utile,\n"
+"mais AUCUNE garantie n'est donnée tant pour des raisons COMMERCIALES que\n"
+"pour RÉPONDRE À UN BESOIN PARTICULIER.  Consulter la licence\n"
+"Licence Publique Générale GNU pour plus de détails.\n"
+"\n"
+"Vous devriez avoir reçu copie de la Licence Publique Générale de GNU\n"
+"avec GNU Anubis; sinon, écrire à la Free Software Foundation, Inc.,\n"
+"59 Temple Place - Suite 330, Boston, MA 02111-1307, USA."
+
+#: src/gtk.c:454
+msgid "/Phon_e"
+msgstr "/_Téléphone"
+
+#: src/gtk.c:455
+msgid "/Phone/_Info Window"
+msgstr "/Téléphone/_Fenêtre Info"
+
+#: src/gtk.c:456 src/gtk.c:504
+msgid "/Phone/_Line Level Check"
+msgstr "/Téléphone/_Vérification du niveau de la ligne"
+
+#: src/gtk.c:458
+msgid "/Phone/"
+msgstr "/Téléphone/"
+
+#: src/gtk.c:459
+msgid "/Phone/_Quit"
+msgstr "/Téléphone/_Quitter"
+
+#: src/gtk.c:461
+msgid "/_View"
+msgstr "/_Visionner"
+
+#: src/gtk.c:462 src/gtk.c:492
+msgid "/View/_Caller ID Monitor"
+msgstr "/Visionner/_ID appelant"
+
+#: src/gtk.c:464 src/gtk.c:495
+msgid "/View/_Line Level Meters"
+msgstr "/Visionner/_Niveau de ligne"
+
+#: src/gtk.c:466 src/gtk.c:498
+msgid "/View/Control _Pad"
+msgstr "/Visionner/_Panneau de contrôle"
+
+#: src/gtk.c:468
+msgid "/_Options"
+msgstr "/_Options"
+
+#: src/gtk.c:469 src/gtk.c:501
+msgid "/Options/_Settings"
+msgstr "/Options/_Configurations"
+
+#: src/gtk.c:471
+msgid "/_Help"
+msgstr "/_Aide"
+
+#: src/gtk.c:472
+msgid "/Help/_About"
+msgstr "/AIde/_A propos"
+
+#: src/gtk.c:473
+msgid "/Help/_License"
+msgstr "/Aide/_Licence"
+
+#: src/gtk.c:551 src/gtksettings.c:431 src/session.c:68
+msgid "Dialing"
+msgstr "Composition en cours"
+
+#: src/gtk.c:783 src/gtk.c:784
+msgid "MUTED"
+msgstr "SILENCIEUX"
+
+#: src/gtksettings.c:230
+msgid "Bad isdn/sound device settings, please try again."
+msgstr "Mauvais ISDN/configuration du périphérique, svp essayez à nouveau"
+
+#: src/gtksettings.c:293
+msgid "ANT Settings"
+msgstr "Configurations ANT"
+
+#: src/gtksettings.c:306
+msgid "Application"
+msgstr "Application"
+
+#: src/gtksettings.c:308
+msgid "Options"
+msgstr "Options"
+
+#: src/gtksettings.c:320
+msgid "Save options on exit"
+msgstr "Sauvegarder les options à la fin de l'exécution"
+
+#: src/gtksettings.c:327
+msgid "Popup main window on incoming call"
+msgstr "Popup la fenêtre principale lors de l'arrivée d'un appel"
+
+#: src/gtksettings.c:333
+msgid "Execute on incoming call:"
+msgstr "Éxécuter lors d'un appel entrant:"
+
+#: src/gtksettings.c:344
+msgid "Recording Format"
+msgstr "Formet d'enregistement"
+
+#: src/gtksettings.c:354
+msgid "Microsoft WAV, uLaw"
+msgstr "WAV Microsoft, uLaw"
+
+#: src/gtksettings.c:364
+msgid "Microsoft WAV, 16-bit signed"
+msgstr "WAV Microsoft, 16 bits signés"
+
+#: src/gtksettings.c:374
+msgid "Apple/SGI AIFF, uLaw"
+msgstr "Aple/SGI AIFF, uLaw"
+
+#: src/gtksettings.c:384
+msgid "Apple/SGI AIFF, 16-bit signed"
+msgstr "Apple/SGI AIFF, 16 bits signés"
+
+#: src/gtksettings.c:397
+msgid "Phone"
+msgstr "Téléphone"
+
+#: src/gtksettings.c:399
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/gtksettings.c:411
+msgid "Identifying MSN:"
+msgstr "MSN identifiant:"
+
+#: src/gtksettings.c:421
+msgid "Listen to MSNs:"
+msgstr "Écoute des MSN:"
+
+#: src/gtksettings.c:443
+msgid "Dial history size:"
+msgstr "Taille du fichier hiostorique des appels:"
+
+#: src/gtksettings.c:467
+msgid "Maximum CID rows:"
+msgstr "Maximum de rangées CID:"
+
+#: src/gtksettings.c:475 src/gtksettings.c:503
+msgid "[no limit]"
+msgstr "[pas de limite]"
+
+#: src/gtksettings.c:484
+msgid "Read isdnlog data on startup"
+msgstr "Lire le journal isdnlog lors du démarrage"
+
+#: src/gtksettings.c:491
+msgid "Maximum days to read from isdnlog:"
+msgstr "Nombre de jours maximum pour lire à partir du journal isdnlog:"
+
+#: src/gtksettings.c:520
+msgid "Sound Devices"
+msgstr "Périphérique de son"
+
+#: src/gtksettings.c:522
+msgid "OSS"
+msgstr "OSS"
+
+#: src/gtksettings.c:534
+msgid "Input sound device:"
+msgstr "Périphérique d'entrée de son:"
+
+#: src/gtksettings.c:546
+msgid "Output sound device:"
+msgstr "Périphérique de sortie de son:"
+
+#: src/gtksettings.c:559
+msgid "Release unused devices"
+msgstr "Relâcher les périphériques non utilisés"
+
+#: src/gtksettings.c:609
+msgid "Save"
+msgstr "Sauvegader"
+
+#: src/llcheck.c:371
+msgid "Line Level Check"
+msgstr "Vérification du niveau des lignes"
+
+#: src/llcheck.c:383
+msgid ""
+"Please check the line input level\n"
+"and adjust it using your favorite\n"
+"mixer application.\n"
+"You can also play a sound\n"
+"to test the sound output."
+msgstr ""
+"SVP vérifier le niveau de la ligne d'entrée\n"
+"et ajustez le pour utiliser votre application de mixage favorite.\n"
+"Vous pouvcz aussi faire l'écoute d'un fichier de son pour tester\n"
+"la sortie de son."
+
+#: src/llcheck.c:405
+msgid "Play sound"
+msgstr "Faire entendre le son"
+
+#: src/session.c:65
+msgid "Ready"
+msgstr "Prêt"
+
+#: src/session.c:65
+msgid "Dial"
+msgstr "Composer"
+
+#: src/session.c:65 src/session.c:69 src/session.c:70
+msgid "Hang up"
+msgstr "Raccrocher"
+
+#: src/session.c:66 src/session.c:67
+msgid "RING"
+msgstr "SONERIE"
+
+#: src/session.c:66 src/session.c:67
+msgid "Answer"
+msgstr "Répondre"
+
+#: src/session.c:66 src/session.c:67
+msgid "Reject"
+msgstr "Rejetr"
+
+#: src/session.c:68 src/session.c:69 src/session.c:70 src/session.c:71
+msgid "Pick up"
+msgstr "Décrocher"
+
+#: src/session.c:69
+msgid "B-Channel open"
+msgstr "Canal-B ouvert"
+
+#: src/session.c:70
+msgid "Setup"
+msgstr "Configuration"
+
+#: src/session.c:71
+msgid "Playback"
+msgstr "Ré-écoute"
+
+#: src/session.c:71
+msgid "Stop"
+msgstr "Stopper"
+
+#: src/session.c:377
+#, c-format
+msgid "Preset %d"
+msgstr "Préselection %d"
+
+#: src/session.c:699
+msgid "(HW ERROR)"
+msgstr "(ERREUR matérielle)"
+
+#: src/session.c:1000
+msgid "Audio OFF"
+msgstr "Audio à l'arrêt"
+
+#: src/session.c:1000
+msgid "Audio ON"
+msgstr "Audio en marche"
+
+#: src/session.c:1097
+msgid "(BUSY)"
+msgstr "(OCCUPÉ)"
+
+#: src/session.c:1103
+msgid "(TIMEOUT)"
+msgstr "(MINUTERIE EXPIRÉE)"
+
+#: src/session.c:1139
+msgid "(RUNG)"
+msgstr "(A SONNÉ)"
+
+#: src/session.c:1381
+msgid "(ABORTED)"
+msgstr "(ARRÊT DEMANDÉ)"
+
+#: src/session.c:1389
+msgid "(REJECTED)"
+msgstr "(REJETÉ)"
