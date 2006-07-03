@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.102 2004/12/16 21:30:50 tobiasb Exp $
+/* $Id: isdnrep.c,v 1.103 2006/07/03 15:51:27 keil Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,10 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.103  2006/07/03 15:51:27  keil
+ * - HZ is not used anymore, this value is defined as duration in
+ *   1/100 seconds independ from system HZ value
+ *
  * Revision 1.102  2004/12/16 21:30:50  tobiasb
  * New option -U: default source number for outgoing calls.
  *
@@ -2660,7 +2664,7 @@ static int set_caller_infos(one_call *cur_call, char *string, time_t from)
 								if (dur1 < 0)  /* wrong entry on some incoming voice calls */
 									dur1 = cur_call->duration = 0;
 			          break;
-			case  4 : dur2 = cur_call->duration = strtod(array[i],NULL)/HZ;
+			case  4 : dur2 = cur_call->duration = strtod(array[i],NULL)/100;
 			          break;
 			case  5 : /*cur_call->t = atol(array[i]);*/
 			          break;

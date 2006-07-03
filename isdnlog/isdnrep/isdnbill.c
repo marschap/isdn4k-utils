@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.20 2004/07/13 21:44:18 tobiasb Exp $
+/* $Id: isdnbill.c,v 1.21 2006/07/03 15:51:27 keil Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -1005,7 +1005,7 @@ int main(int argc, char *argv[], char *envp[])
 
             case  3 : dur = atoi(sx);               break;
 
-            case  4 : c.duration = atol(sx) / HZ;
+            case  4 : c.duration = atol(sx) / 100;
                       break;
 
             case  5 : c.connect = atol(sx);         break;
