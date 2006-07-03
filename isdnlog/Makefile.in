@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.222 2006/02/12 16:16:36 tobiasb Exp $
+## $Id: Makefile.in,v 1.223 2006/07/03 19:47:51 tobiasb Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.223  2006/07/03 19:47:51  tobiasb
+## Fix in filelist generation for NO_UTF8=1.
+##
 ## Revision 1.222  2006/02/12 16:16:36  tobiasb
 ## Support for pre-UTF8 systems. NO_UTF8=1 in makefile, Makefile.in or the make
 ## command line will convert the data files from UTF-8 to ISO-8859-1 (latin1)
@@ -1755,13 +1758,15 @@ export NO_UTF8_CONV := iconv -f UTF-8 -t ISO-8859-1
 # files which have to be recoded for make all
 # use .conf.in files for selection; .conf files may not created yet
 # use .*. instead of .??. as there may be .default. some day
-NO_UTF8_FILES := $(wildcard samples/isdn.*.conf.in)
+NO_UTF8_FILES := $(wildcard samples/isdn.conf.*.in)
 NO_UTF8_FILES += samples/isdn.conf.in
-NO_UTF8_FILES := $(patsubst %.conf.in,%.conf,$(NO_UTF8_FILES))
-NO_UTF8_FILES += $(wildcard samples/rate.*.conf)
+NO_UTF8_FILES := $(patsubst %.in,%,$(NO_UTF8_FILES))
+NO_UTF8_FILES += $(wildcard samples/rate.conf.*)
 NO_UTF8_FILES += $(wildcard holiday-*.dat)
 NO_UTF8_FILES += $(wildcard rate-*.dat)
 NO_UTF8_FILES += country-de.dat
+# discard already recoded files
+NO_UTF8_FILES := $(filter-out %$(CSEXT),$(NO_UTF8_FILES))
 # convert to names of recoded files
 NO_UTF8_FILES := $(patsubst %,%$(CSEXT),$(NO_UTF8_FILES))
 
