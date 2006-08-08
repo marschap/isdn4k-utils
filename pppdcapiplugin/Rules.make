@@ -11,7 +11,7 @@
 vpath %.c $(TOPDIR)
 
 CC	= gcc
-INC     = -I$(TOPDIR) -I$(CAPIINC) -Ipppd
+INC     = -I$(TOPDIR) -I$(CAPIINC) -I$(PPPINC)
 DEFS    = -DPPPVER=$(shell $(TOPDIR)/pversion $(PPPVERSION))
 MYCFLAGS= -O2 -Wall -fPIC $(DEFS) $(INC) -L$(CAPILIB)
 LDFLAGS	= -shared -L$(CAPILIB)

@@ -14,11 +14,11 @@ export CAPILIB=$(TOPDIR)/../capi20
 export INSTALL=$(TOPDIR)/install-sh -c
 export INSTALLDATA=$(TOPDIR)/install-sh -c -o root -m 600
 export MKDIR=$(TOPDIR)/mkinstalldirs
+export PPPINC=/usr/include/pppd
 
-PPPSRCDIRS=/src/isdn/pppd
-
-ifeq ($(PPPVERSIONS),)
-PPPVERSIONS = 2.3.11 2.4.0 2.4.1 2.4.1b1 2.4.1b2 2.4.2b3 2.4.2 2.4.3
+ifeq ($(PPPVERSION),)
+PPPVERSION_XX=$(shell grep VERSION $(PPPINC)/patchlevel.h)
+PPPVERSION=$(word 3,$(PPPVERSION_XX))
 endif
 
 PEERDIR=${DESTDIR}/etc/ppp/peers/isdn
@@ -28,20 +28,26 @@ DRDSLFILES = adsl.conf
 
 ALL = capiplugin.so userpass.so
 
-all: pversion
-	@for i in $(PPPVERSIONS) ; do \
-	    echo $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
-	    $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
-	done
+#all: pversion
+#	@for i in $(PPPVERSIONS) ; do \
+#	    echo $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
+#	    $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
+#	done
+
+all: pversion ppp-$(PPPVERSION)
+	echo $(MAKE) -C ppp-$(PPPVERSION) PPPVERSION=$(PPPVERSION)
+	$(MAKE) -C ppp-$(PPPVERSION) PPPVERSION=$(PPPVERSION)
+
+ppp-$(PPPVERSION):
+	$(MKDIR) ppp-$(PPPVERSION)
+	echo created ppp-$(PPPVERSION)
+	cp Makefile.template ppp-$(PPPVERSION)/Makefile
 
 distclean: clean
 
 clean:
-	@for i in $(PPPVERSIONS) ; do \
-	    echo $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
-	    $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
-	done
-	$(RM) comperr pversion
+	echo $(MAKE) -C ppp-$(PPPVERSION) PPPVERSION=$(PPPVERSION) $@ ;
+	$(MAKE) -C ppp-$(PPPVERSION) PPPVERSION=$(PPPVERSION) $@ ;
 
 install-peers:
 	$(MKDIR) $(PEERDIR)
@@ -69,11 +75,9 @@ install-man:
 		fi ; \
 	done
 
-install: pversion
-	@for i in $(PPPVERSIONS) ; do \
-	    echo $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
-	    $(MAKE) -C ppp-$$i PPPVERSION=$$i $@ ; \
-	done
+install:
+	echo $(MAKE) -C ppp-$(PPPVERSION) PPPVERSION=$(PPPVERSION) $@ ;
+	$(MAKE) -C ppp-$(PPPVERSION) PPPVERSION=$(PPPVERSION) $@ ;
 	$(MAKE) install-peers
 	$(MAKE) install-drdsl
 	$(MAKE) install-man
