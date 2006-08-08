@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.12 2005/03/04 10:55:52 calle Exp $
+/* $Id: capiinfo.c,v 1.13 2006/08/08 13:23:29 keil Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -17,6 +17,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.13  2006/08/08 13:23:29  keil
+ * some endian fixes for BIGENDIAN systems
+ *
  * Revision 1.12  2005/03/04 10:55:52  calle
  * changes for 64 bit arch
  *
@@ -157,8 +160,8 @@ int main(int argc, char **argv)
       return 2;
    }
 
-   CAPI20_GET_PROFILE(0, (CAPI_MESSAGE)&cprofile);
-   ncontr = cprofile.ncontroller;
+   CAPI20_GET_PROFILE(0, (CAPI_MESSAGE)buf);
+   ncontr = CAPIMSG_U16(buf, 0);
    printf("Number of Controllers : %d\n", ncontr);
 
    //err = CAPI20_REGISTER(1, 1, 2048, &ApplId);
@@ -171,10 +174,16 @@ int main(int argc, char **argv)
    for (i = 1; i <= ncontr; i++) {
        isAVM = 0;
        printf("Controller %d:\n", i);
-       CAPI20_GET_MANUFACTURER (i, buf);
+       if (!CAPI20_GET_MANUFACTURER (i, buf)) {
+           fprintf(stderr, "could not get manufacturer info for controller %d\n", i);
+           return 1;
+       }
        printf("Manufacturer: %s\n", buf);
        if (strstr((char *)buf, "AVM") != 0) isAVM = 1;
-       CAPI20_GET_VERSION (i, buf);
+       if (!CAPI20_GET_VERSION (i, buf)) {
+           fprintf(stderr, "could not get capi version info for controller %d\n", i);
+           return 1;
+       }
        vbuf = (unsigned int *)buf;
        printf("CAPI Version: %u.%u\n",vbuf[0], vbuf[1]);
        if (isAVM) {
@@ -187,9 +196,21 @@ int main(int argc, char **argv)
        } else {
           printf("Manufacturer Version: %u.%u\n",vbuf[2], vbuf[3]);
        }
-       CAPI20_GET_SERIAL_NUMBER (i, buf);
+       if (!CAPI20_GET_SERIAL_NUMBER (i, buf)) {
+           fprintf(stderr, "could not get serial number info for controller %d\n", i);
+           return 1;
+       }
        printf("Serial Number: %s\n", (char *)buf);
-       CAPI20_GET_PROFILE(i, (CAPI_MESSAGE)&cprofile);
+       err = CAPI20_GET_PROFILE(i, (CAPI_MESSAGE)buf);
+       if (err != CapiNoError) {
+           fprintf(stderr, "could not get profile info for controller %d - %s (%#x)\n", i, capi_info2str(err), err);
+           return 1;
+       }
+       cprofile.nbchannel = CAPIMSG_U16(buf, 2);
+       cprofile.goptions = CAPIMSG_U32(buf, 4);
+       cprofile.support1 = CAPIMSG_U32(buf, 8);
+       cprofile.support2 = CAPIMSG_U32(buf, 12);
+       cprofile.support3 = CAPIMSG_U32(buf, 16);
        printf("BChannels: %u\n", cprofile.nbchannel);
        printf("Global Options: 0x%08x\n", cprofile.goptions);
        showbitvalues(goptions, cprofile.goptions);
@@ -199,7 +220,7 @@ int main(int argc, char **argv)
        showbitvalues(b2support, cprofile.support2);
        printf("B3 protocols support: 0x%08x\n", cprofile.support3);
        showbitvalues(b3support, cprofile.support3);
-       for (j=0, s = (unsigned char *)&cprofile; j < sizeof(cprofile); j++) {
+       for (j=0, s = buf; j < sizeof(cprofile); j++) {
            switch (j) {
 	      case 0: printf("\n  "); break;
 	      case 2: printf("\n  "); break;
