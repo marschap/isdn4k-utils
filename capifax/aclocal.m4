@@ -29,7 +29,7 @@ AC_DEFUN([CS_TEST_ALERT],
 #
 #
 AC_DEFUN([CS_TEST_GLOBALCONFIG],
-[AC_MSG_CHECKING([for capi20 ALERT with sending complete])
+[AC_MSG_CHECKING([for capi20 BProtocol with global configuration])
   AC_TRY_COMPILE([#include <capiutils.h>],
     [_cmsg cm;void *p; p=CONNECT_REQ_GLOBALCONFIGURATION(&cm);],
     [
