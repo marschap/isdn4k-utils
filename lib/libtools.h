@@ -1,4 +1,4 @@
-/* $Id: libtools.h,v 1.8 1998/10/13 22:17:25 luethje Exp $
+/* $Id: libtools.h,v 1.9 2007/01/05 03:45:50 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -19,6 +19,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libtools.h,v $
+ * Revision 1.9  2007/01/05 03:45:50  tobiasb
+ * - replaced prototype for basename() by #include <libgen.h>
+ * - include <linux/limits.h> only if __linux__ is defined, try
+ *   <limits.h> otherwise
+ *
  * Revision 1.8  1998/10/13 22:17:25  luethje
  * isdnlog: evaluate the variable PATH for program starts.
  *
@@ -44,11 +49,15 @@
 #ifndef _LIB_TOOLS_H_
 #define _LIB_TOOLS_H_
 
+#ifdef __linux__
 #include <linux/limits.h>
+#else
+#include <limits.h>
+#endif
 
 /****************************************************************************/
 
-extern char *basename __P((__const char *__name));
+#include <libgen.h>
 
 /****************************************************************************/
 

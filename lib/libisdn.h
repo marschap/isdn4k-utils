@@ -1,5 +1,5 @@
 
-/* $Id: libisdn.h,v 1.14 2002/01/31 20:03:59 paul Exp $
+/* $Id: libisdn.h,v 1.15 2007/01/05 03:45:50 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,11 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: libisdn.h,v $
+ * Revision 1.15  2007/01/05 03:45:50  tobiasb
+ * - replaced prototype for basename() by #include <libgen.h>
+ * - include <linux/limits.h> only if __linux__ is defined, try
+ *   <limits.h> otherwise
+ *
  * Revision 1.14  2002/01/31 20:03:59  paul
  * Add "#define CCODE_OTHER 9999" for defining behaviour in
  * non-specified countries.
@@ -78,7 +83,11 @@
 #ifndef _LIB_H_
 #define _LIB_H_
 
+#ifdef __linux__
 #include <linux/limits.h>
+#else
+#include <limits.h>
+#endif
 
 #include "policy.h"
 #include "conffile.h"
@@ -90,7 +99,7 @@
 
 /****************************************************************************/
 
-extern char *basename __P((__const char *__name));
+#include <libgen.h>
 
 /****************************************************************************/
 
