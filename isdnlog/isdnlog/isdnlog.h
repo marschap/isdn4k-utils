@@ -1,4 +1,4 @@
-/* $Id: isdnlog.h,v 1.29 2004/09/05 22:04:56 tobiasb Exp $
+/* $Id: isdnlog.h,v 1.30 2007/01/05 04:23:58 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: isdnlog.h,v $
+ * Revision 1.30  2007/01/05 04:23:58  tobiasb
+ * Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
+ *
  * Revision 1.29  2004/09/05 22:04:56  tobiasb
  * New parameter file entry "ignoreUPD" for suppressing "Unexpected
  * discrimator (...)" messages, demanded by Günther J. Niederwimmer
@@ -333,7 +336,7 @@
 
 /****************************************************************************/
 
-#include <tools.h>
+#include <tools.h> /* includes linux/isdn.h for __linux__ */
 #include <holiday.h>
 #include <rate.h>
 #include "socket.h"

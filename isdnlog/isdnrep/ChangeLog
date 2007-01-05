@@ -1,3 +1,10 @@
+2007-01-05  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnrep.c: Do not include <linux/limits.h>, this is already done
+	by ../../lib/libisdn.h.
+
+	* isdnbill.c: Do not include <asm/param.h>, it is no longer needed.
+
 2005-01-22  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* opt_time.c (get_ytime): New function for setting time relative

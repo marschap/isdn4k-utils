@@ -1,4 +1,4 @@
-/* $Id: isdnbill.c,v 1.21 2006/07/03 15:51:27 keil Exp $
+/* $Id: isdnbill.c,v 1.22 2007/01/05 04:23:58 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Billing-module)
  *
@@ -26,7 +26,6 @@
 #include "isdnlog.h"
 #include "tools/zone.h"
 #include <unistd.h>
-#include <asm/param.h>
 #include <math.h>
 #include "dest.h"
 

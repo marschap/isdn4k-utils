@@ -1,4 +1,4 @@
-/* $Id: tools.c,v 1.54 2005/01/12 16:28:05 tobiasb Exp $
+/* $Id: tools.c,v 1.55 2007/01/05 04:23:58 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Utilities)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.c,v $
+ * Revision 1.55  2007/01/05 04:23:58  tobiasb
+ * Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
+ *
  * Revision 1.54  2005/01/12 16:28:05  tobiasb
  * Fixed processing of numbers without an entry in dest.cdb like +8.
  *
@@ -1092,7 +1095,7 @@ static char *ltoa(register unsigned long num, register char *p, register int rad
 
 /****************************************************************************/
 
-int iprintf(char *obuf, int chan, register char *fmt, ...)
+int il_printf(char *obuf, int chan, register char *fmt, ...)
 {
   register char     *p, *s;
   register int       c, i, who;
@@ -1349,7 +1352,7 @@ go:   	         if (!ndigit)
     } /* while */
   } /* for */
 
-} /* iprintf */
+} /* il_printf */
 
 /****************************************************************************/
 

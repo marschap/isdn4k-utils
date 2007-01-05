@@ -1,4 +1,4 @@
-/* $Id: functions.c,v 1.33 2002/01/26 20:43:31 akool Exp $
+/* $Id: functions.c,v 1.34 2007/01/05 04:23:58 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * along with this program; if not, write to the Free Software
  *
  * $Log: functions.c,v $
+ * Revision 1.34  2007/01/05 04:23:58  tobiasb
+ * Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
+ *
  * Revision 1.33  2002/01/26 20:43:31  akool
  * isdnlog-4.56:
  *  - dont set the Provider-field of the MySQL DB to "?*? ???" on incoming calls
@@ -673,7 +676,7 @@ void info(int chan, int reason, int state, char *msg)
     if (allflags & PRT_DEBUG_INFO)
       print_msg(PRT_DEBUG_INFO, "%d INFO> ", chan);
 
-  (void)iprintf(s, chan, call[chan].dialin ? ilabel : olabel, left, msg, right);
+  (void)il_printf(s, chan, call[chan].dialin ? ilabel : olabel, left, msg, right);
 
   print_msg(PRT_DEBUG_INFO, "%s", s);
 
@@ -704,7 +707,7 @@ void showmsg(const char *fmt, ...)
   (void)vsnprintf(s, BUFSIZ, fmt, ap);
   va_end(ap);
 
-  (void)iprintf(s1, -1, mlabel, "", s, "");
+  (void)il_printf(s1, -1, mlabel, "", s, "");
   print_msg(PRT_SHOWNUMBERS, "%s", s1);
 } /* showmsg */
 

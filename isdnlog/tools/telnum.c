@@ -95,6 +95,14 @@
 
 /* #define DEBUG 1 */
 
+#ifdef _NEWLIB_VERSION
+/* provide missing stpcpy, lines taken from dietlibc-0.30/libcompat/stpcpy.c */
+static char * stpcpy (char *dst, const char *src) {
+  while ((*dst++ = *src++));
+  return (dst-1);
+}
+#endif
+
 static TELNUM defnum;
 
 TELNUM *getMynum(void)

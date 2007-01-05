@@ -1,4 +1,4 @@
-/* $Id: isdnrep.c,v 1.103 2006/07/03 15:51:27 keil Exp $
+/* $Id: isdnrep.c,v 1.104 2007/01/05 04:23:58 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (Report-module)
  *
@@ -24,6 +24,9 @@
  *
  *
  * $Log: isdnrep.c,v $
+ * Revision 1.104  2007/01/05 04:23:58  tobiasb
+ * Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
+ *
  * Revision 1.103  2006/07/03 15:51:27  keil
  * - HZ is not used anymore, this value is defined as duration in
  *   1/100 seconds independ from system HZ value
@@ -216,7 +219,7 @@
 #include <sys/param.h>
 #include <dirent.h>
 #include <search.h>
-#include <linux/limits.h>
+/* included by libisdn.h: #include <linux/limits.h> */
 #include <string.h>
 
 #include "dest.h"

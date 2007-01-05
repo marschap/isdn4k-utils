@@ -1,3 +1,10 @@
+2007-01-05  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* Makefile.in (NO_UTF8_CONV): Made this variable overwriteable.
+
+	* Makefile.in (NO_ISDNLOG): New, set to 1 in order to build
+	everything but isdnlog itself.
+
 2006-07-03  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* Makefile.in (NO_UTF8_FILES): Fixed an error in the generation of

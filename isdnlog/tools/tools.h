@@ -1,4 +1,4 @@
-/* $Id: tools.h,v 1.64 2005/02/23 14:33:40 tobiasb Exp $
+/* $Id: tools.h,v 1.65 2007/01/05 04:23:58 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux.
  *
@@ -20,6 +20,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: tools.h,v $
+ * Revision 1.65  2007/01/05 04:23:58  tobiasb
+ * Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
+ *
  * Revision 1.64  2005/02/23 14:33:40  tobiasb
  * New feature: provider skipping.
  * Certain providers can be completely ignored (skipped) when loading the
@@ -644,7 +647,7 @@
 #include <math.h>
 #include <syslog.h>
 #include <sys/ioctl.h>
-#ifdef linux
+#ifdef __linux__
 #include <sys/kd.h>
 #include <linux/isdn.h>
 #else
@@ -710,6 +713,9 @@
 
 /****************************************************************************/
 
+#ifndef ISDN_MSNLEN /* if linux undefined and <linux/isdn.h> not included */
+#define ISDN_MSNLEN 32
+#endif
 #define NUMSIZE    (ISDN_MSNLEN + 1)
 #define	FNSIZE	      64
 #define RETSIZE      128
@@ -1281,7 +1287,7 @@ _EXTERN char  *time2str(time_t sec);
 _EXTERN char  *double2clock(double n);
 _EXTERN char  *vnum(int chan, int who);
 _EXTERN char  *i2a(int n, int l, int base);
-_EXTERN int    iprintf(char *obuf, int chan, register char *fmt, ...);
+_EXTERN int    il_printf(char *obuf, int chan, register char *fmt, ...);
 _EXTERN char  *qmsg(int type, int version, int val);
 _EXTERN char  *Myname;
 _EXTERN	char  *zonen[MAXZONES];

@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.133 2006/05/01 13:52:31 tobiasb Exp $
+/* $Id: processor.c,v 1.134 2007/01/05 04:23:58 tobiasb Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.134  2007/01/05 04:23:58  tobiasb
+ * Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
+ *
  * Revision 1.133  2006/05/01 13:52:31  tobiasb
  * Fix for special case with DUALFIX_SRCNUM (-2/dual= includes 0x200).
  * A more general approach would do reordering of layer 2 frames.
@@ -2291,7 +2294,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 		      }
                       if (n == AOC_OTHER) {
                         if (asnm && *asnm) {
-                          (void)iprintf(s1, -1, mlabel, "", asnm, "\n");
+                          (void)il_printf(s1, -1, mlabel, "", asnm, "\n");
                           print_msg(PRT_SHOWNUMBERS, "%s", s1);
                         } /* if */
                       }
@@ -2731,7 +2734,7 @@ static void decode(int chan, register char *p, int type, int version, int tei)
 		    info(chan, PRT_SHOWNUMBERS, STATE_RING, s1);
 
 		      if (cl != NULL) {
-			iprintf(s1, chan, callfmt);
+			il_printf(s1, chan, callfmt);
 			fprintf(cl, "%s\n", s1);
 			fclose(cl);
 		      } /* if */

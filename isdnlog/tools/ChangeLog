@@ -1,3 +1,16 @@
+2007-01-05  Tobias Becker  <tobiasb@isdn4linux.de>
+
+        * tools.h, tools.c (iprintf, il_printf): Renamed iprintf to
+	il_printf because of the integer printf function iprintf in the
+	newlib C library.
+
+	* tools.h: Replaced linux by __linux as condition for inclusion
+	of <sys/kd.h> and <linux/isdn.h>.  Set ISDN_MSNLEN to 32 if
+	<linux/isdn.h> is unavailable.
+
+	* telnum.c (stpcpy): Added this non IEEE 1003.1 function if
+	_NEWLIB_VERSION is defined and indicates the newlib C library.
+
 2006-02-05  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* rate.c (initRate, appendArea, get_area1): Remember federal zone for

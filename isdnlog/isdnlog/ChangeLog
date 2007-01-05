@@ -1,3 +1,13 @@
+2007-01-05  Tobias Becker  <tobiasb@isdn4linux.de>
+
+	* isdnlog.c: Do no longer include <linux/limits.h> directly,
+	it is included through isdnlog.h -> ../tools/tools.h ->
+	../../lib/libisdn.h.
+
+	* processor.c (decode), functions.c (info, showmsg): Renamed
+	iprintf to il_printf because of the integer printf function
+	iprintf in the newlib C library.
+
 2006-04-09  Tobias Becker  <tobiasb@isdn4linux.de>
 
 	* processor.c (decode): Do not append same digits twice to called
