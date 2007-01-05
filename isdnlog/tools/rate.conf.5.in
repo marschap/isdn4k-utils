@@ -1,5 +1,5 @@
-.\" $Id: rate.conf.5.in,v 1.1 2005/02/23 14:33:40 tobiasb Exp $
-.\" CHECKIN $Date: 2005/02/23 14:33:40 $
+.\" $Id: rate.conf.5.in,v 1.2 2007/01/05 02:40:54 tobiasb Exp $
+.\" CHECKIN $Date: 2007/01/05 02:40:54 $
 .TH rate.conf 5 "@MANDATE_RATE_CONF@" "ISDN 4 Linux @I4LVERSION@" "isdnlog @ISDNLOG_VERSION@"
 
 .SH NAME
@@ -76,9 +76,10 @@ carrier selection prefix and no exceptions matching.
 
 .SS Exceptions to Provider Selection
 
+.nf
 .BI X: number = pnum
-.br
 .BI X: number = pnum z zone
+.fi
 
 Connections to
 .I number

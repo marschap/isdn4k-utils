@@ -1,5 +1,5 @@
-.\" $Id: isdnrep.1.in,v 1.10 2005/01/22 18:47:16 tobiasb Exp $
-.\" CHECKIN $Date: 2005/01/22 18:47:16 $
+.\" $Id: isdnrep.1.in,v 1.11 2007/01/05 02:40:54 tobiasb Exp $
+.\" CHECKIN $Date: 2007/01/05 02:40:54 $
 .TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
@@ -32,7 +32,7 @@ option is given twice, the summaries per day are hidden too. Don't use with
 There will be no header for each day, nor will the summary at the end
 of each day and at the end of the report be generated. This is useful
 if the output is to be processed by another program.
-.br
+.sp
 This option doesn't work if the
 .B \-wX
 is also given.
@@ -156,23 +156,23 @@ only hours matching
 all hours not matching
 .I timelist
 .RE
-
-.in +7
+.sp
 .I daylist
 and
 .I timelist
 have the same syntax as described in
 .IR rate-files(5) .
 If a day or an hour is included and excluded it will be excluded.
-
-Example
-.br
+.sp
+Example:
+.sp
+.RS
 -xd2-4:DH:h9-17:H12-15
-.br
+.RE
+.sp
 This will display all calls on Tuesdays, Wednesdays, or Thursdays
 that are no holidays with a start time between 09:00 and 12:00 or
 15:00 and 17:00.
-.in -7
 
 .TP
 .B \-u	unknown caller
@@ -204,14 +204,12 @@ providers of outgoing calls
 m,M
 MSNs (own subscriber numbers) of outgoing calls
 .RE
-
-.in +7
+.sp
 Upper case letters deselect, lower case letters select a summary.
 With at least one lower case letter, only the selected
 summaries are shown, as long as they are not also deselected.
 -LiI for example will show no summary at all.
 Per default all summaries are displayed.
-.in -7
 
 .TP
 .B \-rPROV recompute
@@ -281,28 +279,23 @@ be given):
 .RS
 .TP 4
 %X
-time without date
-.br
+time without date,
 e.g. 23:54:06
 .TP
 %x
-the date
-.br
+the date,
 e.g. 25/07/97
 .TP
 %y
-date without year
-.br
+date without year,
 e.g. Sun May 04
 .TP
 %Y
-year, in four digits
-.br
+year, in four digits,
 e.g. 1997
 .TP
 %D
-duration of connection
-.br
+duration of connection,
 e.g. 00:03:34
 .TP
 %\fBx\fRH
@@ -334,26 +327,22 @@ an arrow indicating the direction of the connection, reversed
 the local MSN should be displayed on the right side of this.
 .TP
 %\fBx\fRu
-the charge units, if known
-.br
+the charge units, if known,
 e.g. 6 EH
 .TP
 %U
-the cost, if known
-.br
+the cost, if known,
 e.g. 2,28 DM
 .TP
 %\fBx\fRj
 the name of the used provider
 .TP
 %v
-the VBN (carrier selection prefix) of the provider
-.br
+the VBN (carrier selection prefix) of the provider,
 e.g. 01012
 .TP
 %V
-the VBN and variant of the provider
-.br
+the VBN and variant of the provider,
 e.g. 01012_3
 .TP
 %I
@@ -374,7 +363,7 @@ Service Indicator
 %G
 displays a HTTP link to the corresponding fax, when a fax was received
 by mgetty. This fax can be displayed by using the link in a HTTP browser.
-.br
+.sp
 This option is only valid when used with -wx, see below for more information.
 .TP
 %C
@@ -382,36 +371,33 @@ displays a HTTP link to the corresponding voice file, when a call was
 recorded by vbox.
 This option is only valid when used with -wx, see below for more information.
 .RE
-
-.in +7
+.sp
 The default format string for (non-HTML output) is
-
-.in +4
+.RS
 "  %X %D %15.15H %T %-15.15F %7u %U %I %O"
-.in -4
-
+.RE
+.sp
 With the following string all the important data is displayed while
 keeping the total length to 80:
-
-.in +4
+.sp
+.RS
 "%X%D %10.10H%T%-14.14F%U%I %O"
-.in -4
-
+.RE
+.sp
 The above string is put into @CONFFILE@ at installation as
 .B REPFMTSHORT
 and can be used with
 .B -Fshort.
 
 Without showing the transfered bytes, this string also fits into 80 chars:
-
-.in +4
+.sp
+.RS
 "  %X %D %16.16H %T %-25.25F %U"
-.in -4
-
+.RE
+.sp
 It is included as
 .B REPFMTNIO.
 
-.in -7
 .TP
 .B \-FX	format
 format strings can be specified in @CONFFILE@; this option
@@ -475,8 +461,7 @@ which version created the recording.
 The program must first output a line with the content-type, followed
 by the data itself. To convert the ZyXEL format into a WAV file, the
 following script may be used:
-
-.in +4
+.RS
 .nf
 #! /bin/sh
 ##
@@ -505,7 +490,7 @@ cat $FILENAME2
 rm -f $FILENAME1 $FILENAME2
 
 .fi
-.in -4
+.RE
 The script above needs the packages sox and pvftools.
 Additionally, the browser needs to be told how to handle "audio/x-wav".
 This is done by adding the following lines to the files listed:
@@ -587,7 +572,7 @@ VBOXCMD = /usr/bin/g3tojpeg # example
 
 The script g3tojpeg can be something like this:
 
-.in +4
+.RS
 .nf
 #! /bin/sh
 ##
@@ -603,7 +588,7 @@ echo
 
 g3topbm < $1 | convert pbm:- jpeg:-
 .fi
-.in -4
+.RE
 
 The packages ImageMagick and mgetty are needed. Mgetty is probably
 already installed if you want to use this feature :-)
@@ -634,8 +619,8 @@ connected to the wrong isdn connection.
 With the default configuration the following output can be generated
 on stdout (whitespace slightly edited for clarity):
 
+.RS
 .nf
-.in -4
 $ isdnrep -v -t 6/1/96
 I S D N  Connection Report  -  Tue Aug 26 22:21:19 1997
 
@@ -670,7 +655,7 @@ Zone 1 : City              2 call(s)  2:23:13     50 EH    6,00 DM       \fB(13)
 Zone x : UNKNOWN          11 call(s)  0:17:00     20 EH    2,40 DM
 
 .fi
-.in +4
+.RE
 
 .B Notes
 .RS 1
@@ -772,11 +757,11 @@ October 16th 1998
 specifies an exact time. Unspecified parts are defined as 0 when
 interpreted as a begin time, and 23 or 59 when interpreted as an
 end time.
-.br
+.sp
 If a year is to be specified, the hours and minutes
 .B must
 also be specified.
-.br
+.sp
 The format is copied from the date command.
 
 Examples:
@@ -796,10 +781,9 @@ January 7th 1996 17:31:00 (or 17:31:59)
 error: \fBnot\fR December 12th 1995, but December 12th of the current
 year at 19:95, so it's garbage.
 .RE
-
-.in +7
+.sp
+.RS
 Examples of time spans and their meaning:
-
 .RS
 .TP
 6/95-081214381996.25
@@ -821,6 +805,7 @@ September 8th in the current year 23:59:59
 .TP
 3
 third day of the current month
+.RE
 .RE
 
 .TP
@@ -870,7 +855,6 @@ the day before yesterday,
 three days ago and so on.
 For time spans these can also be used in conjunction
 with the notations explained above.
-.in -7
 
 .SH "FILES"
 .TP
