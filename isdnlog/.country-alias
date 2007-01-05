@@ -44,6 +44,7 @@ cook inseln mobilfunk	cookinseln mobilfunk
 cook-inseln	cookinseln
 costa-rica mobilfunk	costa rica mobilfunk
 cote d´ivory	elfenbeinküste cote de ivoire
+côte d'ivoire	cote d'ivoire
 côte d'ivoire mobilfunk	elfenbeinküste cote de ivoire mobilfunk
 deutschland bündelfunk dolphin	deutschland bündelfunk dolphin telecom
 deutschland mobil	deutschland mobilfunk
@@ -63,6 +64,7 @@ eritea	eritrea
 faeroer	färöer-inseln
 falkland inseln	falklandinseln
 falkland-inseln	falklandinseln
+faröerinseln	faröer inseln
 fidschi-inseln	fidschi
 fidschiinseln	fidschi
 finland mobilfunk	finnland mobilfunk
@@ -134,9 +136,8 @@ island mobilfunk	irland mobilfunk
 jamaica mobilfunk	jamaika mobilfunk
 jemen arab. rep. mobilfunk	jemen mobilfunk
 jemen arab. republik	jemen (arab. republik)
-jugoslawien (rest-)	serbien und montenegro
-jugoslawien (rest-) mobilfunk	serbien und montenegro mobilfunk
-jugoslawien (serbien und montenegro)	serbien und montenegro
+jugoslawien	serbien
+jugoslawien mobilfunk	serbien mobilfunk
 jungfern inseln britisch	britische jungferninseln
 jungferninseln (us)	amerikanische jungferninseln
 kaiman inseln	kaimaninseln
@@ -156,6 +157,7 @@ kongo demokr. republik	kongo (demokratische republik)
 kongo mobilfunk	kongo (republik) mobilfunk
 kongo republik	kongo (republik)
 korea	südkorea
+korea (demokratische volksrepublik)	korea (demokratische republik)
 korea (republik) mobilfunk	korea (süd) mobilfunk
 korea dem. vr (nord)	korea (demokratische republik)
 korea nord	nordkorea
@@ -166,6 +168,8 @@ korea rep.(south) mobilfunk	korea rep. (south) mobilfunk
 korea süd	südkorea
 korea süd mobilfunk	korea (süd) mobilfunk
 kuwait-mobilfunk	kuwait mobilfunk
+laos (demokratische volksrepublik)	laos
+liberien	liberia
 libyien	libyen
 libysch-arabische dschamahirija mobilfunk	libyen mobilfunk
 libysch-arabische dschamahrija	libyen
@@ -192,6 +196,7 @@ midway inseln	midway-inseln
 midway island	midway-inseln
 midway islands	midway-inseln
 midwayinseln	midway-inseln
+mikronesien (föderierte staaten)	mikronesien
 moldau-republik	moldau (republik)
 moldau-republik mobilfunk	moldau (republik) mobilfunk
 moldavien mobilfunk	moldawien mobilfunk
@@ -221,6 +226,8 @@ osttimor	ost timor
 osttimor mobilfunk	ost timor mobilfunk
 palau (=belau)	palau /belau
 palau-inseln	palau /belau
+palestinian territory	palestina
+palestinian territory mobile	palestina cellphone
 palästina mobilfunk	palestina mobilfunk
 palästinensische autonomie	palestinensisches autonomiegebiet
 palästinensische autonomie mobilfunk	palestina mobilfunk
@@ -249,6 +256,7 @@ russland	russische forderation (ostl.)
 russland (westlich)	russische föderat. (westl.)
 russland (östlich)	russische forderation (ostl.)
 russland mobilfunk	rußland mobilfunk
+russland moscow	rußland moskau
 russland moskau	rußland moskau
 russland st petersburg	rußland st. petersburg
 russland st. petersburg	rußland st. petersburg
@@ -274,12 +282,14 @@ saudi - arabien	saudi arabien
 saudi-arabien	saudi arabien
 saudi-arabien mobilfunk	saudi arabien mobilfunk
 saudiarabien	saudi arabien
-serbien / montenegro	serbien und montenegro
-serbien / montenegro mobilfunk	serbien und montenegro mobilfunk
-serbien-montenegro	serbia and montenegro
-serbien-montenegro mobilfunk	serbien und montenegro mobilfunk
-serbien/montenegro	serbien und montenegro
-serbien/montenegro mobilfunk	serbien und montenegro mobilfunk
+serbien und montenegro	serbien
+serbien und montenegro mobilfunk	serbien mobilfunk
+serbien-montenegro	serbien
+serbien-montenegro mobilfunk	serbien mobilfunk
+slovakische republik	slowakische republik
+slovakische republik mobilfunk	slowakische republik mobilfunk
+slovenien	slowenien
+slovenien mobilfunk	slowenien mobilfunk
 slowak. republik	slowakische republik
 slowak. republik mobilfunk	slowakische republik mobilfunk
 slowakai	slowakische republik
@@ -310,11 +320,17 @@ st.-pierre und miquelon	st. pierre und miquelon
 surinam mobilfunk	suriname mobilfunk
 syrien (arabische repubik)	syrien
 sào tomè und principe	sao tome und principe
+são tomé und príncipe	sao tome und principe
+süd afrika	südafrika
+süd afrika mobilfunk	südafrika mobilfunk
+süd korea	südkorea
+süd korea mobilfunk	korea (süd) mobilfunk
 süd-korea	südkorea
 südafrika-mobilfunk	südafrika mobilfunk
 südkorea mobilfunk	korea (süd) mobilfunk
 takelau	tokelau
 tansani	tansania
+tansania (vereinigte republik)	tansania
 thuraya / emsat	thuraya
 tokelau mobilfunk	tokelan mobilfunk
 trinidad/tobago	trinidad und tobago

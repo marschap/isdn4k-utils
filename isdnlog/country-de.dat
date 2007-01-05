@@ -1,10 +1,8 @@
-V:1.60 Int [03-Jan-2005 01:02:00]
+V:1.61 Int [05-Jan-2007 01:01:00]
 #
+# $Id: country-de.dat,v 1.51 2007/01/05 03:03:32 tobiasb Exp $
 # This version of country.dat originates from rates4linux:
-# $Id: country-de.dat,v 1.50 2006/01/23 17:07:09 keil Exp $
 # The rates4linux homepage: http://www.sourceforge.net/projects/rates4linux/
-# It bases on Rev. 1.39 of isdn4k-utils/isdnlog/country-de.dat 
-# in the CVS at http://www.isdn4linux.de.
 #
 # Countries have a 2 letter ISO-Code
 # Towns have a 3 letter airportcode or
@@ -22,7 +20,7 @@ V:1.60 Int [03-Jan-2005 01:02:00]
 # lines.  Entries for the same country should be separated by one blank line.
 # The entry for the whole county should be first, followed by the cellphone
 # ("Mobilfunk" in German) entry of this country, followed by further national
-# destinations if present. 
+# destinations if present.
 #
 # Due to ratefile generation considerations, each real country (regular alpha-2
 # code) should have an cellphone entry, even if the cellphone numbering range
@@ -32,8 +30,8 @@ V:1.60 Int [03-Jan-2005 01:02:00]
 # and vice versa.  Until further evolution code changes should be avoided.
 #
 # International Country Codes according to: 
-# List of ITU-T Recommendation E.164 Assigned Country Codes (2004-02-01)
-# http://www.itu.int/itudoc/itu-t/ob-lists/icc/e164_763.html
+# List of ITU-T Recommendation E.164 Assigned Country Codes (2006-10-15)
+# http://www.itu.int/dms_pub/itu-t/opb/sp/T-SP-E.164D-2006-PDF-E.pdf
 # 
 # Partial source for national numbering plans (2004-09-17):
 # http://www.itu.int/ITU-T/inr/nnp/index.html
@@ -44,7 +42,8 @@ V:1.60 Int [03-Jan-2005 01:02:00]
 # Decoding table for ISO 3166-1 alpha-2 codes (2004-09-17)
 # http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/iso_3166-1_decoding_table.html
 #
-# Last code change was new entry for Âland Islands (AX) on 2004-02-13.
+# Last code change were new entries for Serbia (RS) and Montenegro (ME)
+# on 2006-09-26.
 #
 # User-assigned code elements: AA, QM..QZ, XA..XZ, ZZ
 # Should be used for numerical country codes not related to a country and
@@ -52,8 +51,8 @@ V:1.60 Int [03-Jan-2005 01:02:00]
 #
 # Airportcodes: http://www.TravelDesk.com/airports.html
 #
-# Offical German language country names (2004-08-20):
-# http://www.auswaertiges-amt.de/www/de/infoservice/download/pdf/publikationen/staatennamen.pdf
+# Offical German language country names (2006-18-10):
+# http://www.auswaertiges-amt.de/diplo/de/Infoservice/Terminologie/Staatennamen.pdf
 #
 # Note: The information in this file gets included in the destination database
 # usually /usr/lib/isdn/dest.cdb.  As of August 2002 there is a limit of 1024
@@ -1807,9 +1806,8 @@ R:FK
 T:_FKMF
 
 
-# Source (2003-03-55):
-# http://www.regtp.de/reg_tele/start/in_05-06-01-01-00_m/index.html
-# http://www.regtp.de/reg_tele/start/in_05-06-01-00-00_m/index.html
+# Source (2006-01-18):
+# http://www.bundesnetzagentur.de/enid/0,0/Nummernverwaltung/Uebersicht_Nummernraum_1hz.html
 N:Deutschland
 E:Germany
 C:+49
@@ -1817,9 +1815,10 @@ T:DE
 
 N:Deutschland Mobilfunk
 E:Germany cellphone
-C:+491511,+49160,+49170,+49171,+49175	# D1
+C:+491511,+491515,+49160,+49170,+49171,+49175	# D1
 C:+491520,+49162,+49172,+49173,+49174	# D2
-C:+49163,+49177,+49178		# Eplus
+C:+491577,+49163,+49177,+49178		# Eplus
+C:+491570		# vistream
 C:+49176,+49179		# E2
 C:+491505		# Quam
 C:+491566		# Mobilcom
@@ -1829,7 +1828,7 @@ T:_DEMF
 N:Deutschland Mobilfunk D1
 E:Germany cellphone D1
 A:D1, Deutschland Mobilfunk T-Mobile
-C:+491511,+49160,+49170,+49171,+49175	# reserved (2002-07-12): +49151
+C:+491511,+491515,+49160,+49170,+49171,+49175	# reserved (2002-07-12): +49151
 R:_DEMF
 T:_DEMD1
 
@@ -1843,9 +1842,17 @@ T:_DEMD2
 N:Deutschland Mobilfunk E1
 E:Germany cellphone E1
 A:E1, Eplus, Deutschland Mobilfunk E-Plus
-C:+49163,+49177,+49178	# reserved (2002-07-12): +49155
+C:+491577,+49163,+49177,+49178	# reserved (2002-07-12): +49157
+C:+491570			# treat vistream (_DEMFV) as subsidary
 R:_DEMF
 T:_DEME1
+
+N:Deutschland Mobilfunk vistream
+E:Germany cellphone vistream
+C:+491570			# registered to E-Plus (_DEME1)
+R:_DEME1
+T:_DEMV
+
 
 N:Deutschland Mobilfunk E2
 E:Germany cellphone E2
@@ -1856,8 +1863,8 @@ T:_DEME2
 
 N:Deutschland Mobilfunk Quam
 E:Germany cellphone Quam
-A:Quam
-C:+491505		# reserved (2002-07-12): +49151
+A:Quam, Deutschland Mobilfunk Group 3G
+C:+491505		# reserved (2002-07-12): +49150
 R:_DEMF
 T:_DEMQ
 
@@ -1876,7 +1883,6 @@ T:_DEBD
 N:Deutschland Premium Rate
 E:Germany premium rate
 A:Deutschland Mehrwertdienste, Deutschland Premium Rate Dienste
-C:+49190 		# will be out of service after 2005-12-31
 C:+49900
 R:DE
 T:_DESO
@@ -2055,6 +2061,8 @@ T:_SOEN
 
 
 # nofix: code assigned is GB, UK is exceptionally reserved
+# TODO: new url, new numbering plan:
+# http://www.ofcom.org.uk/telecoms/ioi/numbers/num_plan_0904.pdf
 # Source (2003-07-22):
 # http://www.oftel.gov.uk/publications/numbering/2003/ntnp_final_c0703.pdf
 N:Großbritannien
@@ -2101,6 +2109,7 @@ C:+44131
 R:UK
 T:EDI
 
+# fixme: code should be IM ("Isle Of Man"),
 # Source (2001-09-17):
 # http://www.warwick.ac.uk/search/Phones/nng_list.txt
 N:Insel Man (Großbritannien)
@@ -2126,6 +2135,7 @@ C:+44808162
 R:_UKIM
 T:_IMFF
 
+# fixme: codes should be GG ("Gurnsey") and JE ("Jersey")
 # Source see Isle of Man
 N:Kanalinseln (Großbritannien)
 A:Kanalinseln, Kanalinseln (GB), Guernsey und Jersey
@@ -2411,28 +2421,37 @@ R:HR
 T:_HRMF
 
 
-# +382 .. +384 -- Spare codes
+# +383 .. +384 -- Spare codes
 
+
+N:Montenegro
+A:Republik Montenegro
+A:Republic of Montenegro
+C:+382
+T:ME
+
+N:Montenegro Mobilfunk
+E:Montenegro cellphone
+R:ME
+T:_MEMF
 
 # fixme: code YU ("Yugoslawia") was deleted 2003-07,
-# should be CS ("Serbia and Montenegro")
-# Source (2002-12-05):
-# http://www.itu.int/itudoc/itu-t/number/y/yug/82105_ww2.doc
-N:Serbien und Montenegro
-A:Jugoslawien
-A:Jugoslawien (Serbien/Montenegro), Serbien, Montenegro, Yugoslavia (Servia & Montenegro)
-A:Jugoslawien Montenegro, Jugoslawien Serbien und Montenegro, Jugoslawien-Serbien
-E:Serbia and Montenegro
-A:Yugoslavia
+# should be RS ("Serbia")
+# Source (2006-10-19):
+# http://www.itu.int/dms_pub/itu-t/oth/02/02/T02020000B90001MSWE.doc
+N:Serbien
+E:Serbia
+A:Republik Serbien
+A:Republic of Serbia
 C:+381
+# +381-8x for geopraphic numbers in Montenegro
 T:YU
 
-N:Serbien und Montenegro Mobilfunk
-A:Jugoslawien Mobilfunk
-E:Serbia and Montenegro cellphone
-A:Yugoslavia cellphone
-C:+38161, +38163, +38164, +38165, +38167, +38169
-C:+381663, +381664, +381665, +381666, +381667
+N:Serbien Mobilfunk
+E:Serbia cellphone
+C:+38161		# "temporarily not in use"
+C:+38162, +38163, +38164, +38165
+C:+38167, +38169	# operators in Montenegro
 R:YU
 T:_YUMF
 
