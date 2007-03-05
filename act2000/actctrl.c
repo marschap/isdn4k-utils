@@ -1,4 +1,4 @@
-/* $Id: actctrl.c,v 1.3 2002/01/31 18:50:51 paul Exp $
+/* $Id: actctrl.c,v 1.4 2007/03/05 18:04:34 keil Exp $
 
  * IBM Active 2000 ISDN driver for Linux. (Control-Utility)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: actctrl.c,v $
+ * Revision 1.4  2007/03/05 18:04:34  keil
+ * Small fixes to avoid warnings with newer gcc
+ *
  * Revision 1.3  2002/01/31 18:50:51  paul
  * #include <stdlib.h> for prototypes against warnings.
  *
@@ -73,7 +76,7 @@ main(int argc, char **argv)
 	act2000_cdef newcard;
 
 	cmd = strrchr(argv[0], '/');
-	cmd = (cmd == NULL) ? argv[0] : ++cmd;
+	cmd = (cmd == NULL) ? argv[0] : cmd + 1;
 	if (argc > 1) {
 		if (!strcmp(argv[1], "-d")) {
 			strcpy(ioctl_s.drvid, argv[2]);

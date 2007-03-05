@@ -1,4 +1,4 @@
-/* $Id: tdu_log.c,v 1.2 2001/03/01 14:59:12 paul Exp $ */
+/* $Id: tdu_log.c,v 1.3 2007/03/05 18:04:35 keil Exp $ */
 /*
   Copyright 1997 by Henner Eisen
 
@@ -169,7 +169,7 @@ int tdu_log_prefix(const char * id_fmt, const char *tm_fmt)
 
 int tdu_printf( int context, char * fmt, ... )
 {
-	int ret, nl, i;
+	int ret = 0, nl, i;
 	va_list ap;
 	char tst[20];
 
@@ -409,7 +409,8 @@ unsigned char * tdu_print_par( int ct, unsigned char *pkt, unsigned char *end, i
 	if( pkt >= end )  goto  packet_too_small; 
 	if( (len = *(pkt++)) == 0xff ) {
 		if( pkt+2 > end )  goto packet_too_small; 
-		len = 0x100 * *(pkt++)  +  *(pkt++);
+		len = 0x100 * pkt[0] + pkt[1];
+		pkt += 2;
 	}
 	tdu_printf(ct,"len=%d)", len);
 	ret = pkt + len;

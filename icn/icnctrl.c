@@ -1,4 +1,4 @@
-/* $Id: icnctrl.c,v 1.5 2002/01/31 18:55:45 paul Exp $
+/* $Id: icnctrl.c,v 1.6 2007/03/05 18:04:35 keil Exp $
 
  * ICN-ISDN driver for Linux. (Control-Utility)
  *
@@ -22,6 +22,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: icnctrl.c,v $
+ * Revision 1.6  2007/03/05 18:04:35  keil
+ * Small fixes to avoid warnings with newer gcc
+ *
  * Revision 1.5  2002/01/31 18:55:45  paul
  * #include <stdlib.h> for prototypes against warnings.
  *
@@ -223,7 +226,7 @@ main(int argc, char **argv)
 	icn_cdef newcard;
 
 	cmd = strrchr(argv[0], '/');
-	cmd = (cmd == NULL) ? argv[0] : ++cmd;
+	cmd = (cmd == NULL) ? argv[0] : cmd + 1;
 	if (argc > 1) {
 		if (!strcmp(argv[1], "-d")) {
 			strcpy(ioctl_s.drvid, argv[2]);
