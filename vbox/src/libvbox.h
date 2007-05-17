@@ -1,5 +1,5 @@
 /*
-** $Id: libvbox.h,v 1.8 1998/03/26 13:10:33 keil Exp $
+** $Id: libvbox.h,v 1.9 2007/05/17 15:02:43 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -8,6 +8,7 @@
 #define _VBOX_LIBVBOX_H 1
 
 #include <stdio.h>
+#include <asm/types.h>
 
 /**************************************************************************/
 /** VBOXD                                                                **/
@@ -116,8 +117,8 @@ extern char *compressions[];
 typedef struct
 {
 	char					magic[4];
-	unsigned long int	time;
-	unsigned long int	compression;
+	__u32	time;
+	__u32	compression;
 	char					callerid[VAH_MAX_CALLERID + 1];
 	char					name[VAH_MAX_NAME + 1];
 	char					phone[VAH_MAX_PHONE + 1];
