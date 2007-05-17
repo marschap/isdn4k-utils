@@ -1,5 +1,5 @@
 /*
-** $Id: vbox.c,v 1.11 2002/01/31 20:10:20 paul Exp $
+** $Id: vbox.c,v 1.12 2007/05/17 21:10:29 keil Exp $
 **
 ** Copyright (C) 1996, 1997 Michael 'Ghandi' Herold
 */
@@ -261,7 +261,7 @@ int main(int argc, char **argv)
 		fflush(stdout);
 	}
 
-	if ((!loginname) || (!*loginname) || (!loginpass) || (!*loginpass))
+	if ((*loginname == 0) || (*loginpass == 0))
 	{
 		fprintf(stderr, "%s: you must enter a login name and a password.\n", vbasename);
 

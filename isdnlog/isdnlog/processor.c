@@ -1,4 +1,4 @@
-/* $Id: processor.c,v 1.134 2007/01/05 04:23:58 tobiasb Exp $
+/* $Id: processor.c,v 1.135 2007/05/17 21:10:29 keil Exp $
  *
  * ISDN accounting for isdn4linux. (log-module)
  *
@@ -19,6 +19,9 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: processor.c,v $
+ * Revision 1.135  2007/05/17 21:10:29  keil
+ * fix compiler warnings
+ *
  * Revision 1.134  2007/01/05 04:23:58  tobiasb
  * Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
  *
@@ -5570,7 +5573,8 @@ doppelt:break;
             strcat(sx, " ");
             strcat(sx, qmsg(TYPE_CAUSE, version, call[chan].cause));
 
-            if (((p = location(call[chan].loc)) != "")) {
+            p = location(call[chan].loc);
+            if (p && *p) {
               strcat(sx, " (");
               strcat(sx, p);
               strcat(sx, ")");
