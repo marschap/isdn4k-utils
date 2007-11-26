@@ -1,7 +1,10 @@
 /*
- * $Id: capi20.h,v 1.10 2000/04/03 14:27:15 calle Exp $
+ * $Id: capi20.h,v 1.11 2007/11/26 13:13:00 keil Exp $
  *
  * $Log: capi20.h,v $
+ * Revision 1.11  2007/11/26 13:13:00  keil
+ * newer gcc do not include stdlib.h by default (needed for size_t)
+ *
  * Revision 1.10  2000/04/03 14:27:15  calle
  * non CAPI2.0 standard functions now named capi20ext not capi20.
  * Extentionfunctions will work with actual driver version.
@@ -20,11 +23,12 @@
 #ifndef __CAPI20_H__
 #define __CAPI20_H__
 
-#include <sys/time.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <stdlib.h>
+#include <sys/time.h>
 
 /* standard CAPI2.0 functions */
 
