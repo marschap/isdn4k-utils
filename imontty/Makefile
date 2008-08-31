@@ -2,7 +2,7 @@
 #
 # (c) 1995-97 Volker Götz
 #
-# $Id: Makefile,v 1.8 2006/01/15 15:08:55 keil Exp $
+# $Id: Makefile,v 1.9 2008/08/31 10:49:38 keil Exp $
 
 ifeq (../.config,$(wildcard ../.config))
 	#
@@ -52,10 +52,10 @@ install-man: $(MANPAGE)
 	mkdir -p $(DESTDIR)$(MAN8DIR)
 	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
-install: $(PROGS) rootperm install-man
-	install -s -o 0 -g 0 -m 0755 $(PROGS) $(DESTDIR)$(CONFIG_SBINDIR)
+install: $(PROGS) install-man
+	install -m 0755 $(PROGS) $(DESTDIR)$(CONFIG_SBINDIR)
 
-uninstall: rootperm
+uninstall:
 	for i in $(PROGS) ; do rm -f $(DESTDIR)$(CONFIG_SBINDIR)/$$i; done
 
 clean:

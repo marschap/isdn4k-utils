@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.63 2007/11/26 13:13:44 keil Exp $
+# $Id: Makefile,v 1.64 2008/08/31 10:49:37 keil Exp $
 #
 # Toplevel Makefile for isdn4k-utils
 #
@@ -8,6 +8,8 @@
 export I4LVERSION = 3.12
 
 all:	do-it-all
+
+LIBDIR:=/usr/lib
 
 #
 # Make "config" the default target if there is no configuration file.
@@ -130,9 +132,9 @@ rootperm:
 		exit 1; \
 	fi
 
-install: rootperm
+install:
 	set -e; for i in `echo $(SUBDIRS)`; do $(MAKE) -C $$i install; done
-	@if [ -c $(DESTDIR)/dev/isdnctrl0 ] && ls -l $(DESTDIR)/dev/isdnctrl0 | egrep "[[:space:]]45,[[:space:]]+64[[:space:]]" > /dev/null; \
+	@: || if [ -c $(DESTDIR)/dev/isdnctrl0 ] && ls -l $(DESTDIR)/dev/isdnctrl0 | egrep "[[:space:]]45,[[:space:]]+64[[:space:]]" > /dev/null; \
 	then \
 		/bin/echo -e '(some) ISDN devices already exist, not creating them.\nUse scripts/makedev.sh manually if necessary.'; \
 	else \
@@ -202,7 +204,7 @@ subconfig: scripts/autoconf.h
 	@set -e; for i in `echo $(BUILD_ONLY) $(SUBDIRS)`; do \
 		if [ -x $$i/configure ] ; then \
 			/bin/echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
-			(cd $$i; ./configure --sbindir=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --mandir=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
+			(cd $$i; ./configure --sbindir=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --mandir=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) --libdir=$(LIBDIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
 		elif [ -f $$i/Makefile.in ] ; then \
 			/bin/echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
 			$(MAKE) -C $$i -f Makefile.in config; \

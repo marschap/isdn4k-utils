@@ -1,6 +1,6 @@
 #
 # ipppd makefile for Linux
-# $Id: Makefile.in,v 1.20 2006/01/15 15:11:52 keil Exp $
+# $Id: Makefile.in,v 1.21 2008/08/31 10:49:38 keil Exp $
 #
 
 HAVE_LIBSSL   := @HAVE_LIBSSL@
@@ -72,7 +72,7 @@ HEADERS := $(HEADERS) .depend
 endif
 
 DEBUG_FLAGS   = @CONFIG_IPPPD_DEBUGFLAGS@
-COMPILE_FLAGS = 
+COMPILE_FLAGS = @CFLAGS@
 CFLAGS        = -O2 -fomit-frame-pointer -Wall
 VER           = 2.2.0
 

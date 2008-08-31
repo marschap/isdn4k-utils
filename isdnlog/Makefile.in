@@ -1,4 +1,4 @@
-## $Id: Makefile.in,v 1.224 2007/01/05 04:23:57 tobiasb Exp $
+## $Id: Makefile.in,v 1.225 2008/08/31 10:49:38 keil Exp $
 ##
 ## ISDN accounting for isdn4linux.
 ##
@@ -19,6 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 ## $Log: Makefile.in,v $
+## Revision 1.225  2008/08/31 10:49:38  keil
+## - fix library directories
+## - build without root permissions
+##
 ## Revision 1.224  2007/01/05 04:23:57  tobiasb
 ## Made isdnrep and isdnrate buildable under cygwin. See ChangeLog for details.
 ##
@@ -2036,7 +2040,7 @@ ifneq ($(NO_ROOTPERM), 1)
 	fi
 endif
 
-uninstall: rootperm
+uninstall:
 		if ps x | fgrep $(ISDNLOG) >/dev/null; then kill `cat $(RUNDIR)/isdnlog.isdnctrl0.pid` 2>/dev/null; fi
 		rm -f	$(DESTDIR)$(SBINDIR)/$(ISDNLOG) \
 			$(DESTDIR)$(BINDIR)/$(ISDNREP)	\
@@ -2058,7 +2062,7 @@ uninstall: rootperm
 			$(DESTDIR)$(DATADIR)/dest.cdb
 
 
-installdirs: rootperm
+installdirs:
 		$(INSTALL_DIR) $(DESTDIR)$(I4LCONFDIR)
 		$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 		$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
@@ -2067,7 +2071,7 @@ installdirs: rootperm
 		$(INSTALL_DIR) $(DESTDIR)$(MAN8DIR)
 		$(INSTALL_DIR) $(DESTDIR)$(DATADIR)
 
-install: all rootperm installdirs install-conf install-data install-progs
+install: all installdirs install-conf install-data install-progs
 
 install-old-conf:
 		@if [ -n "$(DESTDIR)$(OLDCONFDIR)" -a "$(DESTDIR)$(OLDCONFDIR)" != '/' ] ; then \
@@ -2150,7 +2154,7 @@ install-data:
 		  $(INSTALL_DATA) $$f $(DESTDIR)$(DATADIR); \
 		  echo Installing $(DESTDIR)$(DATADIR)/$$f; \
 		done
-		@(grep isdnlog $(SERVICEFILE) >/dev/null) || \
+		@: || (grep isdnlog $(SERVICEFILE) >/dev/null) || \
 		(echo "";echo "";echo "Add a line to the file $(SERVICEFILE)" ;echo "";echo ""; \
 		echo "isdnlog $(SERV_PORT)/tcp        isdnlog" >> $(SERVICEFILE))
 
