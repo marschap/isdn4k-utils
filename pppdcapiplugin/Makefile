@@ -12,7 +12,7 @@ export TOPDIR=$(shell pwd)
 export CAPIINC=$(TOPDIR)/../capi20
 export CAPILIB=$(TOPDIR)/../capi20
 export INSTALL=$(TOPDIR)/install-sh -c
-export INSTALLDATA=$(TOPDIR)/install-sh -c -o root -m 600
+export INSTALLDATA=$(TOPDIR)/install-sh -c -m 600
 export MKDIR=$(TOPDIR)/mkinstalldirs
 export PPPINC=/usr/include/pppd
 

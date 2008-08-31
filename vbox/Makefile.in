@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.24 2002/01/31 20:05:40 paul Exp $
+# $Id: Makefile.in,v 1.25 2008/08/31 10:59:55 keil Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -14,33 +14,33 @@
 # [*] Program to install binaries to the sbin directory (eg vboxgetty):      #
 #----------------------------------------------------------------------------#
 
-INSTALL_SBIN	= @INSTALL@ -m 750 -o root -g root -s
+INSTALL_SBIN	= @INSTALL@ -m 750
 
 #----------------------------------------------------------------------------#
 # [*] Program to install binaries to the bin directory (eg vboxconvert):     #
 #----------------------------------------------------------------------------#
 
-INSTALL_BIN	= @INSTALL@ -m 755 -o root -g root -s
+INSTALL_BIN	= @INSTALL@ -m 755
 
 #----------------------------------------------------------------------------#
 # [*] Program to install bash scripts to the bin directory (eg vboxplay):    #
 #----------------------------------------------------------------------------#
 
-INSTALL_SHBIN	= @INSTALL@ -m 755 -o root -g root
+INSTALL_SHBIN	= @INSTALL@ -m 755
 
 #----------------------------------------------------------------------------#
 # [*] Program to install binaries to the bin directory and set the suid bit  #
 #     (eg vboxbeep):                                                         #
 #----------------------------------------------------------------------------#
 
-INSTALL_UBIN	= @INSTALL@ -m 4755 -o root -g root -s
+INSTALL_UBIN	= @INSTALL@ -m 4755
 
 #----------------------------------------------------------------------------#
 # [*] Program to install configurations to sysconf directory                 #
 #     (eg vboxgetty.conf):                                                   #
 #----------------------------------------------------------------------------#
 
-INSTALL_SYSCONF	= @INSTALL@ -m 640 -o root -g root
+INSTALL_SYSCONF	= @INSTALL@ -m 640
 
 #----------------------------------------------------------------------------#
 # [*] Program to create missing directories:                                 #
@@ -80,8 +80,8 @@ prefix		= @prefix@
 exec_prefix	= @exec_prefix@
 mandir		= @CONFIG_MANDIR@
 bindir		= @CONFIG_BINDIR@
-sbindir		= @CONFIG_SBINDIR@
-sysconfdir	= @CONFIG_I4LCONFDIR@
+sbindir		= /usr/sbin
+sysconfdir	= /etc/vbox
 
 LOGFILEDIR	= @VBOX_LOGDIR@
 PIDFILEDIR	= @VBOX_PIDDIR@
@@ -119,6 +119,7 @@ endif
 
 export CC
 export CFLAGS
+export VBOX_CFLAGS
 export LDFLAGS
 export AR
 export RANLIB
