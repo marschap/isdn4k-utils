@@ -7,7 +7,7 @@ LOCAL_LIBRARIES = XawClientLibs
            OBJS = xmonisdn.o Net.o
         HEADERS = NetP.h Net.h
 
-   INSTPGMFLAGS = -m 0755 -s
+   INSTPGMFLAGS = -m 0755
 
 ComplexProgramTarget(xmonisdn)
 

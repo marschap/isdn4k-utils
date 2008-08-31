@@ -44,7 +44,7 @@ if [ ! -x $PLAY ]; then	# try aplay (from alsautils) instead
 		# if anyone has a better suggestion,
 		# send email to isdnutils@packages.debian.org!
                 # thankfully, aplay understands '-' to mean stdin
-		DOPLAY="$PLAY -q -u -"
+		DOPLAY="$PLAY -q -"
 	fi
 fi
 if [ ! -x $PLAY ]; then	# use play (from sox) instead
