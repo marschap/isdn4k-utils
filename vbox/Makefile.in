@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.in,v 1.25 2008/08/31 10:59:55 keil Exp $
+# $Id: Makefile.in,v 1.26 2008/08/31 11:35:55 keil Exp $
 
 #----------------------------------------------------------------------------#
 # Things you can change to personalize the Makefile for your own site. Some  #
@@ -53,7 +53,7 @@ INSTALL_DIRS	= @INSTALL@ -d
 #----------------------------------------------------------------------------#
 
 CC		= @CC@
-CFLAGS		= @CFLAGS@ @LINK_NCURSES_INCL@ @LINK_TCL_INCL@
+VBOX_CFLAGS	= @CFLAGS@ @LINK_NCURSES_INCL@ @LINK_TCL_INCL@
 LDFLAGS		= @LDFLAGS@
 
 #----------------------------------------------------------------------------#
