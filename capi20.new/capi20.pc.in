@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: capi20
+Description: CAPI 2.0 library
+Version: @VERSION@
+Libs: -L${libdir} -lcapi20
+Cflags: -I${includedir}/

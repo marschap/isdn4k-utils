@@ -1,0 +1,10 @@
+#ifndef CAPI_MOD_FRITZBOX_H
+#define CAPI_MOD_FRITZBOX_H
+
+#define CAPI20_FB_MANUF 		"AVM Berlin"
+#define CAPI20_FB_SERIAL 		"0004711"
+
+#define CAPI20_FB_VERSION_MAJOR 0 
+#define CAPI20_FB_VERSION_MINOR 5    
+
+#endif
