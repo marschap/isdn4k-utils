@@ -1,8 +1,17 @@
-Modified libcapi20 by Jan-Michael Brummer.
+Modular libcapi20 by Jan-Michael Brummer.
 
-For remote configuration the library looks for
+Patches by:
+	 Whoopie
+
+----------------------------------------------------
+-- Configuration -----------------------------------
+----------------------------------------------------
+
+libcapi20 features autodetection of connected CAPI
+devices. In case you need to select a special device
+use the remote configuration file:
   ~/.capi20rc
-and if it doesn't exist it looks for
+if it doesn't exist look for
   /etc/capi20.conf
 
 To set the remote machine, the above file need to have
@@ -14,4 +23,4 @@ Drivers:
 	* rcapi		- Melware Remote CAPI
 
 If this doesn't exist, the library tries the old, normal way
-of using the local /dev/capi20.
+of using the local /dev/isdn/capi20.
