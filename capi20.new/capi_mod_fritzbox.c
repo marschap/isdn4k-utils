@@ -273,10 +273,10 @@ static unsigned fritzboxPutMessage( int nSock, unsigned nApplId, unsigned char *
 
 	if ( nCommand == CAPI_DATA_B3 && nSubCommand == CAPI_REQ ) {
 		/* Special case: Set buffer address to zero */
-		/*pnMsg[ 12 ] = 0x00;
+		pnMsg[ 12 ] = 0x00;
 		pnMsg[ 13 ] = 0x00;
 		pnMsg[ 14 ] = 0x00;
-		pnMsg[ 15 ] = 0x00;*/
+		pnMsg[ 15 ] = 0x00;
 	}
 
 	/* attach capi message after header */
