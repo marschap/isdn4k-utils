@@ -1,4 +1,4 @@
-/* $Id: capiinfo.c,v 1.13 2006/08/08 13:23:29 keil Exp $
+/* $Id: capiinfo.c,v 1.14 2009/07/22 11:52:54 keil Exp $
  *
  * A CAPI application to get infomation about installed controllers
  *
@@ -17,6 +17,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  * $Log: capiinfo.c,v $
+ * Revision 1.14  2009/07/22 11:52:54  keil
+ * Some CAPI implementations do not accept 0 for MaxLogicalConnection or
+ * MaxBDataBlocks (return 0x1002 "Logical block size too small" error)
+ *
  * Revision 1.13  2006/08/08 13:23:29  keil
  * some endian fixes for BIGENDIAN systems
  *
@@ -164,8 +168,8 @@ int main(int argc, char **argv)
    ncontr = CAPIMSG_U16(buf, 0);
    printf("Number of Controllers : %d\n", ncontr);
 
-   //err = CAPI20_REGISTER(1, 1, 2048, &ApplId);
-   err = CAPI20_REGISTER(0, 0, 2048, &ApplId);
+   err = CAPI20_REGISTER(1, 1, 2048, &ApplId);
+   //err = CAPI20_REGISTER(0, 0, 2048, &ApplId);
    if (err != CapiNoError) {
        fprintf(stderr, "could not register - %s (%#x)\n", capi_info2str(err), err);
        return 1;
