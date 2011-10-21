@@ -4,7 +4,7 @@ Date: Thu, 24 Oct 1996 22:47:17 +0200 (MET DST) Sender: owner-isdn4linux@hub-wue
 Hello Emil & Mogens!
 
 > Hello Mogens,
-> 
+>
 > You wrote:
 > > isdnctrl addif ippp0
 > > isdnctrl pppbind ippp0
@@ -13,7 +13,7 @@ Hello Emil & Mogens!
 > > route add -net 194.192.159.0 metric 1 netmask 255.255.255.224 ippp0
 > > ipppd user XXX1 /dev/ippp0 193.89.84.10:193.89.84.11 file
 > > /etc/ppp/options.ippp0
-> 
+>
 > > isdnctrl addif ippp1
 > > isdnctrl pppbind ippp1
 > > ifconfig ippp0 193.89.84.10 p-t-p 193.89.84.13
@@ -22,7 +22,7 @@ Hello Emil & Mogens!
 > > route add -net 192.168.1.0 metric 1 netmask 255.255.255.0 ippp1
 > > ipppd user XXX2 /dev/ippp1 193.89.84.10:193.89.84.11 file
 > > /etc/ppp/options.ippp1
-> 
+>
 > Compare the two ifconfig commands, they are for the same interface.
 > And AFAIK the two interfaces need different ip-adresses.
 
@@ -108,6 +108,6 @@ Regards,
   Torsten
 
 
--- 
+--
   /\                                     Delta Internet GmbH  /  \     DI Delta Internet GmbH         von-Siemens-Str. 12 /____\   Netzwerkdienst & Vertrieb       59757 Arnsberg
     ALLES NUR AUS LINUX                  Tel. +49 2932 916 132  Fax 191 --------------------------------------------------- To remove yourself from this mailing list send email to majordomo@hub-wue.franken.de containing "unsubscribe isdn4linux <your_email_address>" in the message body [-vg]

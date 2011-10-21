@@ -52,20 +52,20 @@ Gruesse,
 
 > Ich habe ein rechner mit 3 netzkarten ( eth0..eth2 ). Jetzt will ich mit
 > ipfwadm einen specielen rechner vom eth0 nach eth1 routen ( wie ein gateway ).
-> 
+>
 > Kann jemand mich helpfen?
-> 
-> 
+>
+>
 > ---------------------------------------------------
 > To remove yourself from this mailing list send
 > email to majordomo@hub-wue.franken.de containing
 > "unsubscribe isdn4linux <your_email_address>" in
 > the message body [-vg]
-> 
+>
 
 
--- 
+--
                                         http://www.DInet.de/
-    /\                                  von-Siemens-Str. 12 
+    /\                                  von-Siemens-Str. 12
    /  \       Delta Internet GmbH       59757 Arnsberg
   /    \   Netzwerkdienst & Vertrieb    Tel. +49 2932 91 61 32  /______\                               Fax. +49 2932 91 61 91 --------------------------------------------------- To remove yourself from this mailing list send email to majordomo@hub-wue.franken.de containing "unsubscribe isdn4linux <your_email_address>" in the message body [-vg]

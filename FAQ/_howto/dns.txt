@@ -43,13 +43,13 @@ All this example refer to the following configuration --------------------------
    |   metahtml [local http]|        |                            |
    +------------------------+        +----------------------------+
        200.200.200.1                     200.200.200.1
-             |                                 | +----------------------------------------------|---------------------------+      
+             |                                 | +----------------------------------------------|---------------------------+
         Unregistered 200.200.200" network, "domain sene.bzh"
-            
-Note: 
+
+Note:
 
 1)    This configuration give to all Slaves computer the impression
-      to be officially onto Internet without really be registrated.    
+      to be officially onto Internet without really be registrated.
 
 2)    It allows to run a cache even when INTERNET dial-up connection
       is down.
@@ -79,15 +79,15 @@ Running on an official Internet network does not change anything except that you
 - copy etc/named.boot file in  /etc adapt it to your site
   primary & forwarders lines syntax is:
 
-         PRIMARY myDomainename [here sene.bzh] headerPathName [here:sene.bzh.header.db] 
+         PRIMARY myDomainename [here sene.bzh] headerPathName [here:sene.bzh.header.db]
          FORWARDERS IP_NUMBER for your DNS parent [usually your provider].
 
   example
          primary    sene.bzh    /var/etc/named/DNS/sene.bzh.header.db
          forwarders 194.51.217.1 194.51.3.49
 
-- Normally /etc/resolv.conf is not mandatory, nevertheless 
-  I place my local domain name in with the following line.  
+- Normally /etc/resolv.conf is not mandatory, nevertheless
+  I place my local domain name in with the following line.
 
          domain sene.bzh
 
@@ -96,10 +96,10 @@ Running on an official Internet network does not change anything except that you
 
          cache . /var/etc/named/DNS/named.root
 
-    NOTE: You can retrieve a more update named.root file true FTP  
+    NOTE: You can retrieve a more update named.root file true FTP
           FTP.RS.INTERNIC.NET. (But for this named should work !!!)
 
-- Build/update your /etc/hosts file. WARNING: all your local hosts  
+- Build/update your /etc/hosts file. WARNING: all your local hosts
   should have as main name   host.YourDomainName INCLUDING localhost.YourDomainName
           [see example in etc/hosts]
 
@@ -110,7 +110,7 @@ Running on an official Internet network does not change anything except that you
           make_db            YourDomainName             [ex: make_db sene.bzh]
           make_in-addr.arpa  Net_Value.._in-addr.arpa   [ex: make_in-addr.arpa 200.200.200._in-addr.arpa]
 
-  nota: These two commands should generate you the two following files 
+  nota: These two commands should generate you the two following files
         YourDomainName.db & Net_Value.in-addr.arpa.db
         in /var/etc/named/DNS. Both file are include from your
         header.db files.
@@ -124,26 +124,26 @@ Running on an official Internet network does not change anything except that you
   WARNING:  NameServer should be an IP number and not a symbolic name
             and this even if it is declare in your /etc/hosts.
 
-- It is now time to start your name server, by just typing in:   
+- It is now time to start your name server, by just typing in:
 
          named
 
 - Check your name server is effectively working
 
-         dnsquery -h your_host_name 
+         dnsquery -h your_host_name
 
-WARNING:   Even if your dialup line with INTERNET is broken your 
-           name server should answer you. The only time it should   
+WARNING:   Even if your dialup line with INTERNET is broken your
+           name server should answer you. The only time it should
            timeout is when you type in a wrong name, it with case it
            should try reaching a forwarder.
 
-Good Luck   
+Good Luck
 
 Kenavo
 
 phillf@iu-vannes.fr
 
 ps: Sorry for the English, if someone want to set it up in real english
-    I will be please to replace my own README with a better one. 
+    I will be please to replace my own README with a better one.
 
 --------------------------------------------------- To remove yourself from this mailing list send email to majordomo@hub-wue.franken.de containing "unsubscribe isdn4linux <your_email_address>" in the message body [-vg]

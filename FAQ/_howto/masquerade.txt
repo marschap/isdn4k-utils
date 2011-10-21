@@ -3,7 +3,7 @@ Subject: i4l und Masquerading
 X-Flags: MN
 Sender: owner-isdn4linux@hub-wue.franken.de Reply-To: isdn4linux@hub-wue.franken.de
 
-Nachdem ich leichtsinnig genug irgendwo mal verkuendet hatte, dass ich hier ein LAN hinter einem Linux-Server mit i4l bei meinem Provider einspeise, platzte mein Postfach aus den Naehten. Bevor ich alles immer wieder aufs Neue abtippe, hab' ich das Procedere in einer Art FAQ aufgeschrieben. 
+Nachdem ich leichtsinnig genug irgendwo mal verkuendet hatte, dass ich hier ein LAN hinter einem Linux-Server mit i4l bei meinem Provider einspeise, platzte mein Postfach aus den Naehten. Bevor ich alles immer wieder aufs Neue abtippe, hab' ich das Procedere in einer Art FAQ aufgeschrieben.
 
 Vielleicht interessiert sich ja wer dafuer. Wer den Text in irgendwelche Webpages aufnehmen, ausdrucken und aufs Klo haengen oder sonstwas damit machen will, meinen Segen hat er.
 
