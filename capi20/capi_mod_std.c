@@ -118,7 +118,7 @@ static unsigned standardRegister( unsigned nMaxB3Connection, unsigned nMaxB3Blks
 				close( nHandle );
 				return -6;
 			}
-			nApplId = alloc_applid( nHandle );
+			nApplId = capi_alloc_applid(nHandle);
 		}
 	}
 
@@ -347,7 +347,7 @@ static unsigned standardGetProfile( int nHandle, unsigned nController, unsigned 
  * \return error code
  */
 static int standardGetFlags( unsigned nApplId, unsigned *pnFlags ) {
-	if ( ioctl( applid2fd( nApplId ), CAPI_GET_FLAGS, pnFlags ) < 0 ) {
+	if ( ioctl(capi_applid2fd( nApplId ), CAPI_GET_FLAGS, pnFlags) < 0) {
 		return CapiMsgOSResourceErr;
 	}
 
@@ -361,7 +361,7 @@ static int standardGetFlags( unsigned nApplId, unsigned *pnFlags ) {
  * \return error code
  */
 static int standardSetFlags( unsigned nApplId, unsigned nFlags ) {
-	if ( ioctl( applid2fd( nApplId ), CAPI_SET_FLAGS, &nFlags ) < 0 ) {
+	if ( ioctl(capi_applid2fd( nApplId ), CAPI_SET_FLAGS, &nFlags) < 0) {
 		return CapiMsgOSResourceErr;
 	}
 
@@ -375,7 +375,7 @@ static int standardSetFlags( unsigned nApplId, unsigned nFlags ) {
  * \return error code
  */
 static int standardClearFlags( unsigned nApplId, unsigned nFlags ) {
-	if ( ioctl( applid2fd( nApplId ), CAPI_CLR_FLAGS, &nFlags ) < 0 ) {
+	if ( ioctl(capi_applid2fd( nApplId ), CAPI_CLR_FLAGS, &nFlags) < 0) {
 		return CapiMsgOSResourceErr;
 	}
 
@@ -393,7 +393,7 @@ static int standardClearFlags( unsigned nApplId, unsigned nFlags ) {
 static char *standardGetTtyDeviceName( unsigned nApplId, unsigned nNcci, char *pnBuffer, size_t nSize ) {
 	int nUnit;
 
-	nUnit = ioctl( applid2fd( nApplId ), CAPI_NCCI_GETUNIT, &nNcci );
+	nUnit = ioctl(capi_applid2fd( nApplId ), CAPI_NCCI_GETUNIT, &nNcci);
 	if ( nUnit < 0 ) {
 		return NULL;
 	}
@@ -414,7 +414,7 @@ static char *standardGetTtyDeviceName( unsigned nApplId, unsigned nNcci, char *p
 static char *standardGetRawDeviceName( unsigned nApplId, unsigned nNcci, char *pnBuffer, size_t nSize ) {
 	int nUnit;
 
-	nUnit = ioctl( applid2fd( nApplId ), CAPI_NCCI_GETUNIT, &nNcci );
+	nUnit = ioctl(capi_applid2fd( nApplId ), CAPI_NCCI_GETUNIT, &nNcci);
 	if ( nUnit < 0 ) {
 		return NULL;
 	}
@@ -431,7 +431,7 @@ static char *standardGetRawDeviceName( unsigned nApplId, unsigned nNcci, char *p
  * \return error code
  */
 static int standardGetNcciOpenCount( unsigned nApplId, unsigned nNcci ) {
-	return ioctl( applid2fd( nApplId ), CAPI_NCCI_OPENCOUNT, &nNcci );
+	return ioctl(capi_applid2fd( nApplId ), CAPI_NCCI_OPENCOUNT, &nNcci);
 }
 
 /** Module operations structure */

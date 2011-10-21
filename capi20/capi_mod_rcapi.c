@@ -257,7 +257,7 @@ static unsigned rcapiRegister( unsigned nMaxB3Connection, unsigned nMaxB3Blks, u
 	nErrCode = get_word( &pnPtr );
 	if ( nErrCode == CapiNoError ) {
 		/* No error, allocate new applid and set it to pnApplId */
-		*pnApplId = alloc_applid( nSock );
+		*pnApplId = capi_alloc_applid(nSock);
 	} else {
 		/* wuhh, error occured, close socket and return -1 */
 		close( nSock );

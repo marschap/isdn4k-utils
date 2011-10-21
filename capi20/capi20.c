@@ -267,7 +267,7 @@ void setHostName( char *pnHostName ) {
 
 static int applidmap[MAX_APPL];
 
-static inline int remember_applid(unsigned applid, int fd)
+int capi_remember_applid(unsigned applid, int fd)
 {
 	if (applid >= MAX_APPL)
 		return -1;
@@ -276,7 +276,7 @@ static inline int remember_applid(unsigned applid, int fd)
 	return 0;
 }
 
-static inline unsigned alloc_applid(int fd)
+unsigned capi_alloc_applid(int fd)
 {
 	unsigned applid;
 
@@ -289,18 +289,18 @@ static inline unsigned alloc_applid(int fd)
 	return 0;
 }
 
-static inline void freeapplid(unsigned applid)
+void capi_freeapplid(unsigned applid)
 {
 	if (applid < MAX_APPL)
 		applidmap[applid] = -1;
 }
 
-static inline int validapplid(unsigned applid)
+int capi_validapplid(unsigned applid)
 {
 	return ((applid > 0) && (applid < MAX_APPL) && (applidmap[applid] >= 0));
 }
 
-inline int applid2fd(unsigned applid)
+int capi_applid2fd(unsigned applid)
 {
 	if (applid < MAX_APPL)
 		return applidmap[applid];
@@ -381,7 +381,7 @@ unsigned char *get_buffer(unsigned applid, size_t *sizep, unsigned *handle)
 	struct applinfo *ap;
 	struct recvbuffer *buf;
 
-	assert(validapplid(applid));
+	assert(capi_validapplid(applid));
 	ap = applinfo[applid];
 	if ((buf = ap->firstfree) == 0)
 		return 0;
@@ -405,7 +405,7 @@ void save_datahandle(
 	struct applinfo *ap;
 	struct recvbuffer *buf;
 
-	assert(validapplid(applid));
+	assert(capi_validapplid(applid));
 	ap = applinfo[applid];
 	assert(offset < ap->maxbufs);
 	buf = ap->buffers+offset;
@@ -418,7 +418,7 @@ unsigned return_buffer(unsigned char applid, unsigned offset)
 	struct applinfo *ap;
 	struct recvbuffer *buf;
 
-	assert(validapplid(applid));
+	assert(capi_validapplid(applid));
 	ap = applinfo[applid];
 	assert(offset < ap->maxbufs);
 	buf = ap->buffers+offset;
@@ -443,7 +443,7 @@ void cleanup_buffers_for_ncci(unsigned char applid, unsigned ncci)
 	struct applinfo *ap;
 	unsigned i;
 
-	assert(validapplid(applid));
+	assert(capi_validapplid(applid));
 	ap = applinfo[applid];
 
 	for (i = 0; i < ap->maxbufs; i++) {
@@ -461,7 +461,7 @@ void cleanup_buffers_for_plci(unsigned char applid, unsigned plci)
 	struct applinfo *ap;
 	unsigned i;
 
-	assert(validapplid(applid));
+	assert(capi_validapplid(applid));
 	ap = applinfo[applid];
 
 	for (i = 0; i < ap->maxbufs; i++) {
@@ -540,7 +540,9 @@ static int LoadModule( char *pnName ) {
 	/* Try to open module */
 	pHandle = dlopen( pnName, RTLD_GLOBAL | RTLD_LAZY );
 	if ( pHandle == NULL ) {
-		CapiDebug( 1, "Could not open module!\n" );
+		char etxt[1024];
+		snprintf(etxt, 1024, "Could not open module %s - %s!\n", pnName, dlerror());
+		CapiDebug(1, etxt);
 		return -1;
 	}
 
@@ -716,7 +718,7 @@ unsigned capi20_register( unsigned MaxB3Connection, unsigned MaxB3Blks, unsigned
 		return CapiRegOSResourceErr;
 	}
 
-	if (remember_applid(applid, fd) < 0) {
+	if (capi_remember_applid(applid, fd) < 0) {
 		close(fd);
 		return CapiRegOSResourceErr;
 	}
@@ -735,15 +737,15 @@ capi20_release (unsigned ApplID)
 	if (capi20_isinstalled() != CapiNoError)
 		return CapiRegNotInstalled;
 
-	if (!validapplid(ApplID))
+	if (!capi_validapplid(ApplID))
 		return CapiIllAppNr;
 
-	if ( psModule -> psOperations -> Release != NULL ) {
-		psModule -> psOperations -> Release( applid2fd( ApplID ), ApplID );
+	if (psModule -> psOperations -> Release != NULL) {
+		psModule -> psOperations -> Release(capi_applid2fd(ApplID), ApplID);
 	}
 
-	(void)close(applid2fd(ApplID));
-	freeapplid(ApplID);
+	(void)close(capi_applid2fd(ApplID));
+	capi_freeapplid(ApplID);
 	free_buffers(applinfo[ApplID]);
 	applinfo[ApplID] = 0;
 
@@ -818,21 +820,21 @@ unsigned capi20_put_message( unsigned ApplID, unsigned char *Msg ) {
 		return CapiRegNotInstalled;
 	}
 
-	if (!validapplid(ApplID)) {
+	if (!capi_validapplid(ApplID)) {
 		return CapiIllAppNr;
 	}
 
-	return psModule -> psOperations -> PutMessage( applid2fd(ApplID), ApplID, Msg );
+	return psModule->psOperations->PutMessage(capi_applid2fd(ApplID), ApplID, Msg);
 }
 
 unsigned capi20_get_message( unsigned ApplID, unsigned char **Buf ) {
 	if (capi20_isinstalled() != CapiNoError)
 		return CapiRegNotInstalled;
 
-	if (!validapplid(ApplID))
+	if (!capi_validapplid(ApplID))
 		return CapiIllAppNr;
 
-	return psModule -> psOperations -> GetMessage( applid2fd(ApplID), ApplID, Buf );
+	return psModule->psOperations->GetMessage(capi_applid2fd(ApplID), ApplID, Buf);
 }
 
 unsigned char *capi20_get_manufacturer( unsigned Ctrl, unsigned char *Buf ) {
@@ -883,10 +885,10 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 	if (capi20_isinstalled() != CapiNoError)
 		return CapiRegNotInstalled;
 
-	if (!validapplid(ApplID))
+	if (!capi_validapplid(ApplID))
 		return CapiIllAppNr;
 
-	fd = applid2fd(ApplID);
+	fd = capi_applid2fd(ApplID);
 
 	FD_SET(fd, &rfds);
 
@@ -899,7 +901,7 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 int
 capi20_fileno(unsigned ApplID)
 {
-	return applid2fd(ApplID);
+	return capi_applid2fd(ApplID);
 }
 
 /*

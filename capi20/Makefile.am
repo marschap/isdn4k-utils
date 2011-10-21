@@ -5,7 +5,7 @@ CLEANFILES              = *~ comperr
 DISTCLEANFILES			= intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in config.h.in
 			  stamp-h.in
-include_HEADERS = capi20.h capiutils.h capicmd.h
+include_HEADERS = capi20.h capiutils.h capicmd.h capi_mod.h
 lib_LTLIBRARIES = libcapi20.la
 lib_LIBRARIES   = libcapi20dyn.a
 

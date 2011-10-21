@@ -34,6 +34,12 @@ char *getTraceFile( void );
 int getTraceLevel( void );
 unsigned char *get_buffer( unsigned applid, size_t *sizep, unsigned *handle );
 
+int capi_remember_applid(unsigned, int);
+unsigned capi_alloc_applid(int);
+void capi_freeapplid(unsigned);
+int capi_validapplid(unsigned);
+int capi_applid2fd(unsigned);
+
 #define MODULE_LOADER_VERSION		0x01
 
 #define MODULE_INIT( NAME, OPS )\
