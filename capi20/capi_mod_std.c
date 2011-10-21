@@ -445,6 +445,7 @@ static struct sModuleOperations sStandard = {
 	standardGetVersion,
 	standardGetSerialNumber,
 	standardGetProfile,
+	NULL,
 	standardGetFlags,
 	standardSetFlags,
 	standardClearFlags,

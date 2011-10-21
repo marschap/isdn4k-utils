@@ -554,6 +554,7 @@ static struct sModuleOperations sFritzBox = {
 	NULL,
 	NULL,
 	NULL,
+	NULL,
 	NULL
 };
 

@@ -11,7 +11,7 @@ struct sModuleOperations {
 	unsigned char *( *GetVersion )( int nHandle, unsigned nController, unsigned char *pnBuffer );
 	unsigned char *( *GetSerialNumber )( int nHandle, unsigned nController, unsigned char *pnBuffer );
 	unsigned ( *GetProfile )( int nHandle, unsigned nController, unsigned char *pnBuffer );
-
+	unsigned ( *waitformessage)(int nHandle, unsigned ApplID, struct timeval *TimeOut);
 	/* The following parts are only used on the standard capi device */
 	int ( *GetFlags )( unsigned nApplId, unsigned *pnFlagsPtr );
 	int ( *SetFlags )( unsigned nApplId, unsigned nFlags );
@@ -40,7 +40,7 @@ void capi_freeapplid(unsigned);
 int capi_validapplid(unsigned);
 int capi_applid2fd(unsigned);
 
-#define MODULE_LOADER_VERSION		0x01
+#define MODULE_LOADER_VERSION		0x02
 
 #define MODULE_INIT( NAME, OPS )\
 	int InitModule( struct sModule *psModule ) {\

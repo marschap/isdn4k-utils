@@ -493,6 +493,7 @@ static struct sModuleOperations sRemoteCapi = {
 	NULL,
 	NULL,
 	NULL,
+	NULL,
 	NULL
 };
 

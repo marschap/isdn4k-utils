@@ -880,16 +880,19 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 	int fd;
 	fd_set rfds;
 
-	FD_ZERO(&rfds);
-
 	if (capi20_isinstalled() != CapiNoError)
 		return CapiRegNotInstalled;
 
 	if (!capi_validapplid(ApplID))
 		return CapiIllAppNr;
 
+	/* default method */
 	fd = capi_applid2fd(ApplID);
 
+	if (psModule->psOperations->waitformessage)
+		return psModule->psOperations->waitformessage(fd, ApplID, TimeOut);
+
+	FD_ZERO(&rfds);
 	FD_SET(fd, &rfds);
 
 	if (select(fd + 1, &rfds, NULL, NULL, TimeOut) < 1)
