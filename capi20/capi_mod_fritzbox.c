@@ -257,7 +257,7 @@ static unsigned fritzboxRelease( int nSock, int nApplId ) {
  * \param pnMsg message pointer
  * \return error code (CapiNoError or CapiMsgOSResourceErr on error)
  */
-static unsigned fritzboxPutMessage( int nSock, unsigned nApplId, unsigned char *pnMsg ) {    
+static unsigned fritzboxPutMessage( int nSock, unsigned nApplId, unsigned char *pnMsg ) {
 	unsigned char anSendBuffer[ SEND_BUFSIZ ];
 	int nNum;
 	int nLen = CAPIMSG_LEN( pnMsg );
@@ -283,7 +283,7 @@ static unsigned fritzboxPutMessage( int nSock, unsigned nApplId, unsigned char *
 	memcpy( anSendBuffer + 3, pnMsg, sizeof( anSendBuffer ) - 3 );
 	nLen += 3;
 
-	/* write data to socket */    
+	/* write data to socket */
 	nNum = write( nSock, anSendBuffer, nLen );
 	if ( nNum != nLen ) {
 		CapiDebug( 3, "Error: Unable send CAPI_PUT_MESSAGE (nApplId: %d, Ctrl: %d, Cmd: %d, SubCmd: %d)", nApplId, anSendBuffer[ 11 ] & 0x7F, CAPIMSG_COMMAND( pnMsg ), CAPIMSG_SUBCOMMAND( pnMsg ) );
@@ -322,18 +322,18 @@ static int readSocket( int nSock, unsigned char *pnBuffer, int nLen ) {
 				nTotLen -= nActLen;
 				nReadLen += nActLen;
 			}
-	
+
 			nActLen = 0;
 		}
-	
+
 		if ( nActLen > 0 ) {
 			nReadLen += nActLen;
 		}
-	
+
 		if ( nReadLen != nOrigLen ) {
 			return 0;
 		}
-	
+
 		if ( nLen == 0 ) {
 			nLen = nOrigLen;
 		}
@@ -410,7 +410,7 @@ static unsigned fritzboxGetMessage( int nSock, unsigned nApplId, unsigned char *
 				pnBuffer[ 29 ] = ( nData >> 56 ) & 0xFF;
 			}
 
-			CapiDebug( 3, "CAPI_GET_MESSAGE (nApplId: %d, Ctrl: %d)", nApplId, pnBuffer[ 8 ] & 0x7F ); 
+			CapiDebug( 3, "CAPI_GET_MESSAGE (nApplId: %d, Ctrl: %d)", nApplId, pnBuffer[ 8 ] & 0x7F );
 
 			/* keep buffer */
 			return CapiNoError;

@@ -343,7 +343,7 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
-libcapi20dyn.a: $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_DEPENDENCIES) 
+libcapi20dyn.a: $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_DEPENDENCIES)
 	-rm -f libcapi20dyn.a
 	$(libcapi20dyn_a_AR) libcapi20dyn.a $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_LIBADD)
 	$(RANLIB) libcapi20dyn.a
@@ -401,13 +401,13 @@ clean-modulesLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-lib_capi_mod_fritzbox.la: $(lib_capi_mod_fritzbox_la_OBJECTS) $(lib_capi_mod_fritzbox_la_DEPENDENCIES) 
+lib_capi_mod_fritzbox.la: $(lib_capi_mod_fritzbox_la_OBJECTS) $(lib_capi_mod_fritzbox_la_DEPENDENCIES)
 	$(lib_capi_mod_fritzbox_la_LINK) -rpath $(modulesdir) $(lib_capi_mod_fritzbox_la_OBJECTS) $(lib_capi_mod_fritzbox_la_LIBADD) $(LIBS)
-lib_capi_mod_rcapi.la: $(lib_capi_mod_rcapi_la_OBJECTS) $(lib_capi_mod_rcapi_la_DEPENDENCIES) 
+lib_capi_mod_rcapi.la: $(lib_capi_mod_rcapi_la_OBJECTS) $(lib_capi_mod_rcapi_la_DEPENDENCIES)
 	$(lib_capi_mod_rcapi_la_LINK) -rpath $(modulesdir) $(lib_capi_mod_rcapi_la_OBJECTS) $(lib_capi_mod_rcapi_la_LIBADD) $(LIBS)
-lib_capi_mod_std.la: $(lib_capi_mod_std_la_OBJECTS) $(lib_capi_mod_std_la_DEPENDENCIES) 
+lib_capi_mod_std.la: $(lib_capi_mod_std_la_OBJECTS) $(lib_capi_mod_std_la_DEPENDENCIES)
 	$(lib_capi_mod_std_la_LINK) -rpath $(modulesdir) $(lib_capi_mod_std_la_OBJECTS) $(lib_capi_mod_std_la_LIBADD) $(LIBS)
-libcapi20.la: $(libcapi20_la_OBJECTS) $(libcapi20_la_DEPENDENCIES) 
+libcapi20.la: $(libcapi20_la_OBJECTS) $(libcapi20_la_DEPENDENCIES)
 	$(libcapi20_la_LINK) -rpath $(libdir) $(libcapi20_la_OBJECTS) $(libcapi20_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:

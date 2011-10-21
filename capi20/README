@@ -17,7 +17,7 @@ if it doesn't exist look for
 To set the remote machine, the above file need to have
 the following line
   REMOTE <driver> <remote hostname|ip-address> <remote port>
- 
+
 Drivers:
 	* fritzbox	- Remote CAPI via FRITZ!Box
 	* rcapi		- Melware Remote CAPI

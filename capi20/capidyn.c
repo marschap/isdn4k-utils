@@ -1,6 +1,6 @@
 /*
  * $Id: capidyn.c,v 1.1 2009/05/08 21:02:02 buzz Exp $
- * 
+ *
  * $Log: capidyn.c,v $
  * Revision 1.1  2009/05/08 21:02:02  buzz
  * Add new libcapi20
@@ -123,7 +123,7 @@ capi20_get_version(unsigned Ctrl, unsigned char *Buf)
 static unsigned char *
 (*fptr_capi20_get_serial_number)(unsigned, unsigned char *);
 
-unsigned char * 
+unsigned char *
 capi20_get_serial_number(unsigned Ctrl, unsigned char *Buf)
 {
 	if (loadlib() < 0)

@@ -1,6 +1,6 @@
 /*
  *
- * This program is free software and may be modified and 
+ * This program is free software and may be modified and
  * distributed under the terms of the GNU Public License.
  *
  */

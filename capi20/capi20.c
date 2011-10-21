@@ -1,10 +1,10 @@
 /*
  * CAPI 2.0 library
- * 
+ *
  * 2002-03-27 - Added remote capi features.
  *              Armin Schindler <armin@melware.de>
  *
- * This program is free software and may be modified and 
+ * This program is free software and may be modified and
  * distributed under the terms of the GNU Public License.
  *
  */
@@ -24,11 +24,11 @@
 #include <stdarg.h>
 #define _LINUX_LIST_H
 #include <linux/capi.h>
- 
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
- 
+
 #include "capi20.h"
 #include "capi_mod.h"
 
@@ -179,7 +179,7 @@ static char *skip_nonwhitespace(char *s)
 {
 	while (*s && !isspace(*s)) s++;
 		return s;
-} 
+}
 
 /*
  * read config file
@@ -207,7 +207,7 @@ static int read_config(void)
 					continue;
 		if (!(strncmp(s, "REMOTE", 6))) {
 			s = skip_nonwhitespace(s);
-			
+
 			t = skip_whitespace(s);
 			s = skip_nonwhitespace(t);
 			if (*s) *s++ = 0;
@@ -442,7 +442,7 @@ void cleanup_buffers_for_ncci(unsigned char applid, unsigned ncci)
 {
 	struct applinfo *ap;
 	unsigned i;
-	
+
 	assert(validapplid(applid));
 	ap = applinfo[applid];
 
@@ -460,7 +460,7 @@ void cleanup_buffers_for_plci(unsigned char applid, unsigned plci)
 {
 	struct applinfo *ap;
 	unsigned i;
-	
+
 	assert(validapplid(applid));
 	ap = applinfo[applid];
 
@@ -474,7 +474,7 @@ void cleanup_buffers_for_plci(unsigned char applid, unsigned plci)
 	}
 }
 
-/* 
+/*
  * CAPI2.0 functions
  */
 
@@ -656,7 +656,7 @@ unsigned capi20_isinstalled( void ) {
 		/* backwards-compatible: check standard interface fist */
 		psList = psModuleList;
 		while ( psList != NULL ) {
-			
+
 			if ( !strcasecmp( psList -> psMod -> pnName, "standard" ) ) {
 				psModule = psList -> psMod;
 				capi_fd = psModule -> psOperations -> IsInstalled();
@@ -851,7 +851,7 @@ capi20_get_version(unsigned Ctrl, unsigned char *Buf)
 	return psModule -> psOperations -> GetVersion( capi_fd, Ctrl, Buf );
 }
 
-unsigned char * 
+unsigned char *
 capi20_get_serial_number(unsigned Ctrl, unsigned char *Buf)
 {
 	if (capi20_isinstalled() != CapiNoError)
@@ -885,14 +885,14 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 
 	if (!validapplid(ApplID))
 		return CapiIllAppNr;
-  
+
 	fd = applid2fd(ApplID);
 
 	FD_SET(fd, &rfds);
 
 	if (select(fd + 1, &rfds, NULL, NULL, TimeOut) < 1)
 		return CapiReceiveQueueEmpty;
-  
+
 	return CapiNoError;
 }
 

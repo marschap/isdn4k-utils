@@ -1,7 +1,7 @@
 /*
  * CAPI 2.0 library
  *
- * This program is free software and may be modified and 
+ * This program is free software and may be modified and
  * distributed under the terms of the GNU Public License.
  *
  */
@@ -78,4 +78,3 @@ int capi20ext_ncci_opencount(unsigned applid, unsigned ncci);
 #endif
 
 #endif /* __CAPI20_H */
-

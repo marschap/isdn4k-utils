@@ -59,7 +59,7 @@ static int rcapiOpenSocket( void ) {
 		if ( !connect( nHandle, ( struct sockaddr * ) &sAddr, sizeof( sAddr ) ) ) {
 			/* no errors, return handle */
 			return nHandle;
-		}	
+		}
 	}
 
 	close( nHandle );
@@ -290,7 +290,7 @@ static unsigned rcapiPutMessage( int nSock, unsigned nApplId, unsigned char *pnM
 	/* write data to socket */
 	nNum = write( nSock, anSendBuffer, nLen );
     if ( nNum != nLen ) {
-    	return CapiMsgOSResourceErr;
+	return CapiMsgOSResourceErr;
 	}
 
     return CapiNoError;
