@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <linux/capi.h>
 #include <errno.h>
+#include <unistd.h>
 #include "capi20.h"
 #include "capi_mod.h"
 #include "capi_mod_fritzbox.h"

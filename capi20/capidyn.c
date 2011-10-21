@@ -27,6 +27,7 @@
 #include <linux/capi.h>
 #endif
 #include <string.h>
+#include <unistd.h>
 #include "capi20.h"
 #include <dlfcn.h>
 

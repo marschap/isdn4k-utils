@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <linux/capi.h>
+#include <unistd.h>
 #include "capi20.h"
 #include "capi_mod.h"
 
