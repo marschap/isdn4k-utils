@@ -1,10 +1,10 @@
 /*
  * $Id: capicmd.h,v 1.1 2000/05/18 15:02:26 calle Exp $
- * 
+ *
  * CAPI 2.0 Interface for Linux
- * 
+ *
  * Copyright 1997 by Carsten Paeth (calle@calle.in-berlin.de)
- * 
+ *
  * $Log: capicmd.h,v $
  * Revision 1.1  2000/05/18 15:02:26  calle
  * Updated _cmsg handling added new functions need by "capiconn".
@@ -29,7 +29,7 @@
  * Revision 1.1  1997/01/31 10:32:20  calle
  * Initial revision
  *
- * 
+ *
  */
 #ifndef __CAPICMD_H__
 #define __CAPICMD_H__

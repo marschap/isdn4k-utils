@@ -1,6 +1,6 @@
 /*
  * $Id: capi20.c,v 1.28 2006/08/08 13:23:29 keil Exp $
- * 
+ *
  * $Log: capi20.c,v $
  * Revision 1.28  2006/08/08 13:23:29  keil
  * some endian fixes for BIGENDIAN systems
@@ -331,7 +331,7 @@ static void cleanup_buffers_for_ncci(unsigned char applid, unsigned ncci)
 {
    struct applinfo *ap;
    unsigned i;
-	
+
    assert(validapplid(applid));
    ap = applinfo[applid];
 
@@ -348,7 +348,7 @@ static void cleanup_buffers_for_plci(unsigned char applid, unsigned plci)
 {
    struct applinfo *ap;
    unsigned i;
-	
+
    assert(validapplid(applid));
    ap = applinfo[applid];
 
@@ -362,7 +362,7 @@ static void cleanup_buffers_for_plci(unsigned char applid, unsigned plci)
    }
 }
 
-/* 
+/*
  * CAPI2.0 functions
  */
 
@@ -504,11 +504,11 @@ capi20_put_message (unsigned ApplID, unsigned char *Msg)
               _cdword data;
               data = CAPIMSG_U32(Msg, 12);
               if (data != 0)
-              	  dataptr = (void *)(unsigned long)data;
+		  dataptr = (void *)(unsigned long)data;
               else
                   dataptr = Msg + len; /* Assume data after message */
 	  }
- 	  if (len + datalen > SEND_BUFSIZ)
+	  if (len + datalen > SEND_BUFSIZ)
              return CapiMsgOSResourceErr;
           memcpy(sndbuf+len, dataptr, datalen);
           len += datalen;
@@ -519,7 +519,7 @@ capi20_put_message (unsigned ApplID, unsigned char *Msg)
    }
 
    if (cmd == CAPI_DISCONNECT_B3 && subcmd == CAPI_RESP)
-      cleanup_buffers_for_ncci(ApplID, CAPIMSG_U32(sndbuf, 8));   
+      cleanup_buffers_for_ncci(ApplID, CAPIMSG_U32(sndbuf, 8));
 
    ret = CapiNoError;
    errno = 0;
@@ -610,7 +610,7 @@ capi20_get_message (unsigned ApplID, unsigned char **Buf)
         return_buffer(ApplID, offset);
         if (   CAPIMSG_COMMAND(rcvbuf) == CAPI_DISCONNECT
 	    && CAPIMSG_SUBCOMMAND(rcvbuf) == CAPI_IND)
-           cleanup_buffers_for_plci(ApplID, CAPIMSG_U32(rcvbuf, 8));   
+           cleanup_buffers_for_plci(ApplID, CAPIMSG_U32(rcvbuf, 8));
         return CapiNoError;
     }
 
@@ -658,7 +658,7 @@ capi20_get_version(unsigned Ctrl, unsigned char *Buf)
     return Buf;
 }
 
-unsigned char * 
+unsigned char *
 capi20_get_serial_number(unsigned Ctrl, unsigned char *Buf)
 {
     if (capi20_isinstalled() != CapiNoError)
@@ -709,14 +709,14 @@ capi20_waitformessage(unsigned ApplID, struct timeval *TimeOut)
 
   if(!validapplid(ApplID))
     return CapiIllAppNr;
-  
+
   fd = applid2fd(ApplID);
 
   FD_SET(fd, &rfds);
-  
+
   if (select(fd + 1, &rfds, NULL, NULL, TimeOut) < 1)
 	return CapiReceiveQueueEmpty;
-  
+
   return CapiNoError;
 }
 

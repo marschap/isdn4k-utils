@@ -1,6 +1,6 @@
 /*
  * $Id: capidyn.c,v 1.4 2004/01/16 15:27:11 calle Exp $
- * 
+ *
  * $Log: capidyn.c,v $
  * Revision 1.4  2004/01/16 15:27:11  calle
  * remove several warnings.
@@ -118,7 +118,7 @@ capi20_get_version(unsigned Ctrl, unsigned char *Buf)
 static unsigned char *
 (*fptr_capi20_get_serial_number)(unsigned, unsigned char *);
 
-unsigned char * 
+unsigned char *
 capi20_get_serial_number(unsigned Ctrl, unsigned char *Buf)
 {
 	if (loadlib() < 0)

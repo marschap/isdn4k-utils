@@ -270,7 +270,7 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
-libcapi20dyn.a: $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_DEPENDENCIES) 
+libcapi20dyn.a: $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_DEPENDENCIES)
 	-rm -f libcapi20dyn.a
 	$(libcapi20dyn_a_AR) libcapi20dyn.a $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_LIBADD)
 	$(RANLIB) libcapi20dyn.a
@@ -301,7 +301,7 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libcapi20.la: $(libcapi20_la_OBJECTS) $(libcapi20_la_DEPENDENCIES) 
+libcapi20.la: $(libcapi20_la_OBJECTS) $(libcapi20_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libcapi20_la_LDFLAGS) $(libcapi20_la_OBJECTS) $(libcapi20_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:

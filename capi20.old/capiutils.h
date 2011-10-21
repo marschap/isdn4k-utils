@@ -219,7 +219,7 @@ typedef struct {
 	_cdword Function;
 #ifndef CAPI_LIBRARY_V2
 	_cstruct Globalconfiguration;
-#endif 
+#endif
 	_cstruct HLC;
 	_cword Info;
 	_cstruct InfoElement;
@@ -236,7 +236,7 @@ typedef struct {
 	_cstruct Useruserdata;
 #ifndef CAPI_LIBRARY_V2
 	_cstruct SendingComplete;
-#endif 
+#endif
 	unsigned char *Data;
 
 	/* intern */
@@ -380,7 +380,7 @@ char *capi_message2str(_cbyte * msg);
 #ifndef CAPI_LIBRARY_V2
 #define CONNECT_REQ_GLOBALCONFIGURATION(x) ((x)->Globalconfiguration)
 		 /* all layer parameter */
-#endif 
+#endif
 #define CONNECT_REQ_BC(x) ((x)->BC)
 		 /* Bearer Capability */
 #define CONNECT_REQ_LLC(x) ((x)->LLC)

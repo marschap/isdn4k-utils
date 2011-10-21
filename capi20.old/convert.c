@@ -170,58 +170,58 @@ char *capi_info2str(_cword reason)
 /*-- error information concerning requested services  -----*/
 	case 0x3001:
 	   return "B1 protocol not supported";
-	case 0x3002: 
+	case 0x3002:
 	   return "B2 protocol not supported";
-	case 0x3003: 
+	case 0x3003:
 	   return "B3 protocol not supported";
-	case 0x3004: 
+	case 0x3004:
 	   return "B1 protocol parameter not supported";
-	case 0x3005: 
+	case 0x3005:
 	   return "B2 protocol parameter not supported";
-	case 0x3006: 
+	case 0x3006:
 	   return "B3 protocol parameter not supported";
-	case 0x3007: 
+	case 0x3007:
 	   return "B protocol combination not supported";
-	case 0x3008: 
+	case 0x3008:
 	   return "NCPI not supported";
-	case 0x3009: 
+	case 0x3009:
 	   return "CIP Value unknown";
-	case 0x300A: 
+	case 0x300A:
 	   return "Flags not supported (reserved bits)";
-	case 0x300B: 
+	case 0x300B:
 	   return "Facility not supported";
-	case 0x300C: 
+	case 0x300C:
 	   return "Data length not supported by current protocol";
-	case 0x300D: 
+	case 0x300D:
 	   return "Reset procedure not supported by current protocol";
 
 /*-- informations about the clearing of a physical connection -----*/
-	case 0x3301: 
+	case 0x3301:
 	   return "Protocol error layer 1 (broken line or B-channel removed by signalling protocol)";
-	case 0x3302: 
+	case 0x3302:
 	   return "Protocol error layer 2";
-	case 0x3303: 
+	case 0x3303:
 	   return "Protocol error layer 3";
-	case 0x3304: 
+	case 0x3304:
 	   return "Another application got that call";
 /*-- T.30 specific reasons -----*/
-	case 0x3311: 
+	case 0x3311:
 	   return "Connecting not successful (remote station is no FAX G3 machine)";
-	case 0x3312: 
+	case 0x3312:
 	   return "Connecting not successful (training error)";
-	case 0x3313: 
+	case 0x3313:
 	   return "Disconnected before transfer (remote station does not support transfer mode, e.g. resolution)";
-	case 0x3314: 
+	case 0x3314:
 	   return "Disconnected during transfer (remote abort)";
-	case 0x3315: 
+	case 0x3315:
 	   return "Disconnected during transfer (remote procedure error, e.g. unsuccessful repetition of T.30 commands)";
-	case 0x3316: 
+	case 0x3316:
 	   return "Disconnected during transfer (local tx data underrun)";
-	case 0x3317: 
+	case 0x3317:
 	   return "Disconnected during transfer (local rx data overflow)";
-	case 0x3318: 
+	case 0x3318:
 	   return "Disconnected during transfer (local abort)";
-	case 0x3319: 
+	case 0x3319:
 	   return "Illegal parameter coding (e.g. SFF coding error)";
 
 /*-- disconnect causes from the network according to ETS 300 102-1/Q.931 -----*/
@@ -229,7 +229,7 @@ char *capi_info2str(_cword reason)
 	case 0x3482: return "No route to specified transit network";
 	case 0x3483: return "No route to destination";
 	case 0x3486: return "Channel unacceptable";
-	case 0x3487: 
+	case 0x3487:
 	   return "Call awarded and being delivered in an established channel";
 	case 0x3490: return "Normal call clearing";
 	case 0x3491: return "User busy";
