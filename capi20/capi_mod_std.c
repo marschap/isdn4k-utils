@@ -179,7 +179,7 @@ static unsigned standardGetMessage( int nHandle, unsigned nApplId, unsigned char
 	int nRet;
 	size_t nBufSize;
 
-	if ( ( *ppnBuffer = pnBuffer = ( unsigned char * ) get_buffer( nApplId, &nBufSize, &nOffset ) ) == 0 ) {
+	if ( ( *ppnBuffer = pnBuffer = ( unsigned char * ) capi_get_buffer( nApplId, &nBufSize, &nOffset ) ) == 0 ) {
 		return CapiMsgOSResourceErr;
 	}
 
@@ -189,7 +189,7 @@ static unsigned standardGetMessage( int nHandle, unsigned nApplId, unsigned char
 		CAPIMSG_SETAPPID( pnBuffer, nApplId );
 
 		if ( ( CAPIMSG_COMMAND( pnBuffer ) == CAPI_DATA_B3 ) && ( CAPIMSG_SUBCOMMAND( pnBuffer ) == CAPI_IND ) ) {
-			save_datahandle( nApplId, nOffset, CAPIMSG_U16( pnBuffer, 18 ), CAPIMSG_U32( pnBuffer, 8 ) );
+			capi_save_datahandle( nApplId, nOffset, CAPIMSG_U16( pnBuffer, 18 ), CAPIMSG_U32( pnBuffer, 8 ) );
 			/* patch datahandle */
 			capimsg_setu16( pnBuffer, 18, nOffset );
 
@@ -225,7 +225,7 @@ static unsigned standardGetMessage( int nHandle, unsigned nApplId, unsigned char
 			return CapiNoError;
 		}
 
-		return_buffer( nApplId, nOffset );
+		capi_return_buffer( nApplId, nOffset );
 
 		if ( ( CAPIMSG_COMMAND( pnBuffer ) == CAPI_DISCONNECT) && ( CAPIMSG_SUBCOMMAND( pnBuffer ) == CAPI_IND ) ) {
 			cleanup_buffers_for_plci( nApplId, CAPIMSG_U32( pnBuffer, 8 ) );
@@ -234,7 +234,7 @@ static unsigned standardGetMessage( int nHandle, unsigned nApplId, unsigned char
 		return CapiNoError;
 	}
 
-	return_buffer( nApplId, nOffset );
+	capi_return_buffer( nApplId, nOffset );
 	if ( nRet == 0 ) {
 		return CapiReceiveQueueEmpty;
 	}

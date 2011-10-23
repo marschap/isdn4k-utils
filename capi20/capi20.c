@@ -376,7 +376,7 @@ static void free_buffers(struct applinfo *ap)
 
 static struct applinfo *applinfo[MAX_APPL];
 
-unsigned char *get_buffer(unsigned applid, size_t *sizep, unsigned *handle)
+unsigned char *capi_get_buffer(unsigned applid, size_t *sizep, unsigned *handle)
 {
 	struct applinfo *ap;
 	struct recvbuffer *buf;
@@ -396,11 +396,7 @@ unsigned char *get_buffer(unsigned applid, size_t *sizep, unsigned *handle)
 	return buf->buf;
 }
 
-void save_datahandle(
-	unsigned char applid,
-	unsigned offset,
-	unsigned datahandle,
-	unsigned ncci)
+void capi_save_datahandle(unsigned applid, unsigned offset, unsigned datahandle, unsigned ncci)
 {
 	struct applinfo *ap;
 	struct recvbuffer *buf;
@@ -413,7 +409,7 @@ void save_datahandle(
 	buf->ncci = ncci;
 }
 
-unsigned return_buffer(unsigned char applid, unsigned offset)
+unsigned capi_return_buffer(unsigned applid, unsigned offset)
 {
 	struct applinfo *ap;
 	struct recvbuffer *buf;
@@ -438,7 +434,7 @@ unsigned return_buffer(unsigned char applid, unsigned offset)
 	return buf->datahandle;
 }
 
-void cleanup_buffers_for_ncci(unsigned char applid, unsigned ncci)
+void cleanup_buffers_for_ncci(unsigned applid, unsigned ncci)
 {
 	struct applinfo *ap;
 	unsigned i;
@@ -450,13 +446,13 @@ void cleanup_buffers_for_ncci(unsigned char applid, unsigned ncci)
 		if (ap->buffers[i].used) {
 			assert(ap->buffers[i].ncci != 0);
 			if (ap->buffers[i].ncci == ncci) {
-				return_buffer(applid, i);
+				capi_return_buffer(applid, i);
 			}
 		}
 	}
 }
 
-void cleanup_buffers_for_plci(unsigned char applid, unsigned plci)
+void cleanup_buffers_for_plci(unsigned applid, unsigned plci)
 {
 	struct applinfo *ap;
 	unsigned i;
@@ -468,7 +464,7 @@ void cleanup_buffers_for_plci(unsigned char applid, unsigned plci)
 		if (ap->buffers[i].used) {
 			assert(ap->buffers[i].ncci != 0);
 			if ((ap->buffers[i].ncci & 0xffff) == plci) {
-				return_buffer(applid, i);
+				capi_return_buffer(applid, i);
 			}
 		}
 	}
@@ -586,12 +582,14 @@ static void InitModules( char *pnModuleDir ) {
 	DIR *psDir;
 	struct dirent *psEntry;
 	char *pnFullName;
-	int nLen;
+	int nLen, pf_len;
+	char mod_vers[8];
 
 	/* try to open module directory */
 	psDir = opendir( pnModuleDir );
 	if ( psDir != NULL ) {
 		/* read entry by entry */
+		pf_len = snprintf(mod_vers, 8, ".so.%d", MODULE_LOADER_VERSION);
 		while ( ( psEntry = readdir( psDir ) ) != NULL )  {
 			/* skip ".", ".." and files which do not end with "so" */
 			nLen = strlen( psEntry -> d_name );
@@ -608,7 +606,7 @@ static void InitModules( char *pnModuleDir ) {
 					}
 					break;
 				default:
-					if ( strncmp( psEntry -> d_name + nLen - 3, ".so", nLen ) ) {
+					if ( strcmp( psEntry -> d_name + nLen - pf_len, mod_vers) ) {
 						continue;
 					}
 					break;
@@ -761,7 +759,7 @@ capi20_release (unsigned ApplID)
  * \param nLen len of message
  * \return length of full packet
  */
-int processMessage( unsigned char *pnMsg, int nApplId, int nCommand, int nSubCommand, int nLen ) {
+int processMessage( unsigned char *pnMsg, unsigned nApplId, unsigned nCommand, unsigned nSubCommand, int nLen ) {
 	/* DATA_B3_REQ specific:
 	 * we have to copy  the buffer and patch the buffer address!
 	 */
@@ -804,7 +802,7 @@ int processMessage( unsigned char *pnMsg, int nApplId, int nCommand, int nSubCom
 			memcpy( pnMsg + nLen, pDataPtr, nDataLen );
 			nLen += nDataLen;
 		} else if ( nSubCommand == CAPI_RESP ) {
-			capimsg_setu16( pnMsg, 12, return_buffer( nApplId, CAPIMSG_U16( pnMsg, 12 ) ) );
+			capimsg_setu16( pnMsg, 12, capi_return_buffer( nApplId, CAPIMSG_U16( pnMsg, 12 ) ) );
 		}
 	}
 

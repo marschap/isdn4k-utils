@@ -32,7 +32,9 @@ char *getHostName( void );
 int getPort( void );
 char *getTraceFile( void );
 int getTraceLevel( void );
-unsigned char *get_buffer( unsigned applid, size_t *sizep, unsigned *handle );
+unsigned char *capi_get_buffer( unsigned , size_t *, unsigned * );
+void capi_save_datahandle(unsigned, unsigned, unsigned, unsigned);
+unsigned capi_return_buffer(unsigned, unsigned);
 
 int capi_remember_applid(unsigned, int);
 unsigned capi_alloc_applid(int);
@@ -40,7 +42,8 @@ void capi_freeapplid(unsigned);
 int capi_validapplid(unsigned);
 int capi_applid2fd(unsigned);
 
-#define MODULE_LOADER_VERSION		0x02
+unsigned capi_return_buffer(unsigned applid, unsigned);
+#define MODULE_LOADER_VERSION		2
 
 #define MODULE_INIT( NAME, OPS )\
 	int InitModule( struct sModule *psModule ) {\

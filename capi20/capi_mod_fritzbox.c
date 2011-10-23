@@ -364,7 +364,7 @@ static unsigned fritzboxGetMessage( int nSock, unsigned nApplId, unsigned char *
 	size_t nBufSize;
 
 	/* try to get a new buffer from queue */
-	if ( ( *ppnBuffer = pnBuffer = ( unsigned char * ) get_buffer( nApplId, &nBufSize, &nOffset ) ) == 0 ) {
+	if ( ( *ppnBuffer = pnBuffer = ( unsigned char * ) capi_get_buffer( nApplId, &nBufSize, &nOffset ) ) == 0 ) {
 		CapiDebug( 1, "[%s]: could not get buffer\n", __FUNCTION__ );
 		return CapiMsgOSResourceErr;
 	}
@@ -377,7 +377,7 @@ static unsigned fritzboxGetMessage( int nSock, unsigned nApplId, unsigned char *
 
 		/* DATA_B3? Then set buffer address */
 		if ( CAPIMSG_COMMAND( pnBuffer ) == CAPI_DATA_B3 && CAPIMSG_SUBCOMMAND( pnBuffer ) == CAPI_IND ) {
-			save_datahandle( nApplId, nOffset, CAPIMSG_U16( pnBuffer, 18 ), CAPIMSG_U32( pnBuffer, 8 ) );
+			capi_save_datahandle( nApplId, nOffset, CAPIMSG_U16( pnBuffer, 18 ), CAPIMSG_U32( pnBuffer, 8 ) );
 			/* patch datahandle */
 			capimsg_setu16( pnBuffer, 18, nOffset );
 
@@ -418,7 +418,7 @@ static unsigned fritzboxGetMessage( int nSock, unsigned nApplId, unsigned char *
 		}
 
 		/* buffer is not needed, return it */
-		return_buffer( nApplId, nOffset );
+		capi_return_buffer( nApplId, nOffset );
 
 		if ( ( CAPIMSG_COMMAND( pnBuffer ) == CAPI_DISCONNECT ) && ( CAPIMSG_SUBCOMMAND( pnBuffer ) == CAPI_IND ) ) {
 			/* we got a disconnect, cleanup buffers */
@@ -429,7 +429,7 @@ static unsigned fritzboxGetMessage( int nSock, unsigned nApplId, unsigned char *
 	}
 
 	/* uh, error occured while reading capi message, return buffer and check for errors */
-	return_buffer( nApplId, nOffset );
+	capi_return_buffer( nApplId, nOffset );
 	if ( nRet == 0 ) {
 		return CapiReceiveQueueEmpty;
 	}

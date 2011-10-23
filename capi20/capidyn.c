@@ -357,7 +357,7 @@ static void *handle;
 
 #define	resolv_sym(x)	\
     if ((fptr_##x = dlsym(handle, #x)) == 0) { \
-	write(2, "Can't resolv " #x, sizeof("Can't resolv " #x)-1); \
+	int __wret = write(2, "Can't resolv " #x, sizeof("Can't resolv " #x)-1); \
 	dlclose(handle); \
 	handle = 0; \
 	return -1; \
@@ -372,13 +372,14 @@ static int loadlib(void)
 		return 0;
 	handle = dlopen(LIBCAPI, RTLD_GLOBAL | RTLD_NOW);
 	if (handle == 0) {
+		int wret;
 		err = dlerror();
-		write(2, emsg, sizeof(emsg)-1);
-		write(2, LIBCAPI, sizeof(LIBCAPI)-1);
-		write(2, "\n", 1);
+		wret = write(2, emsg, sizeof(emsg)-1);
+		wret = write(2, LIBCAPI, sizeof(LIBCAPI)-1);
+		wret = write(2, "\n", 1);
 		if (err) {
-			write(2, err, strlen(err));
-			write(2, "\n", 1);
+			wret = write(2, err, strlen(err));
+			wret = write(2, "\n", 1);
 		}
 		return -1;
 	}
