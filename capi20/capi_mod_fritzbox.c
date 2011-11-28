@@ -265,7 +265,7 @@ static unsigned fritzboxPutMessage( int nSock, unsigned nApplId, unsigned char *
 	int nCommand = CAPIMSG_COMMAND( pnMsg );
 	int nSubCommand = CAPIMSG_SUBCOMMAND( pnMsg );
 
-	nLen = processMessage( pnMsg, nApplId, nCommand, nSubCommand, nLen );
+	nLen = capi_processMessage( pnMsg, nApplId, nCommand, nSubCommand, nLen );
 
 	/* Create capi over tcp header (0x80, 2 bytes length) */
 	anSendBuffer[ 0 ] = 0x80;

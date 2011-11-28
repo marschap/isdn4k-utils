@@ -142,7 +142,7 @@ static unsigned standardPutMessage( int nHandle, unsigned nApplId, unsigned char
 	int nSubCommand = CAPIMSG_SUBCOMMAND( pnMsg );
 	int nNum;
 
-	nLen = processMessage( pnMsg, nApplId, nCommand, nSubCommand, nLen );
+	nLen = capi_processMessage( pnMsg, nApplId, nCommand, nSubCommand, nLen );
 
 	nNum = write( nHandle, pnMsg, nLen );
 	if ( nNum != nLen ) {

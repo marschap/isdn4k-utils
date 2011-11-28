@@ -5,12 +5,12 @@ CLEANFILES              = *~ comperr
 DISTCLEANFILES			= intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES    = configure aclocal.m4 Makefile.in config.h.in
 			  stamp-h.in
-include_HEADERS = capi20.h capiutils.h capicmd.h capi_mod.h
+include_HEADERS = capi20.h capiutils.h capicmd.h capi_mod.h capi_debug.h
 lib_LTLIBRARIES = libcapi20.la
 lib_LIBRARIES   = libcapi20dyn.a
 
 libcapi20_la_SOURCES = capi20.c capifunc.c convert.c
-libcapi20_la_LDFLAGS = -version-info ${LIBCAPI_VERSION}:${LIBCAPI_VERSION_RELEASE}:${LIBCAPI_VERSION_AGE} -lc -ldl -rdynamic
+libcapi20_la_LDFLAGS = -version-info ${LIBCAPI_VERSION}:${LIBCAPI_VERSION_RELEASE}:${LIBCAPI_VERSION_AGE} -lrt -lc -ldl -rdynamic
 libcapi20_la_CFLAGS = -fno-strict-aliasing -DLIBDIR=\"$(libdir)/capi\"
 
 modulesdir = $(libdir)/capi

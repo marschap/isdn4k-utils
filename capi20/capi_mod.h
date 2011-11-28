@@ -30,11 +30,12 @@ struct sModule {
 
 char *getHostName( void );
 int getPort( void );
-char *getTraceFile( void );
-int getTraceLevel( void );
 unsigned char *capi_get_buffer( unsigned , size_t *, unsigned * );
 void capi_save_datahandle(unsigned, unsigned, unsigned, unsigned);
 unsigned capi_return_buffer(unsigned, unsigned);
+void cleanup_buffers_for_ncci(unsigned, unsigned);
+void cleanup_buffers_for_plci(unsigned, unsigned);
+int capi_processMessage(unsigned char *, unsigned, unsigned, unsigned, int);
 
 int capi_remember_applid(unsigned, int);
 unsigned capi_alloc_applid(int);
@@ -43,6 +44,7 @@ int capi_validapplid(unsigned);
 int capi_applid2fd(unsigned);
 
 unsigned capi_return_buffer(unsigned applid, unsigned);
+
 #define MODULE_LOADER_VERSION		2
 
 #define MODULE_INIT( NAME, OPS )\

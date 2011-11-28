@@ -282,7 +282,7 @@ static unsigned rcapiPutMessage( int nSock, unsigned nApplId, unsigned char *pnM
 	int nSubCommand = CAPIMSG_SUBCOMMAND( pnMsg );
 	int nNum;
 
-	nLen = processMessage( pnMsg, nApplId, nCommand, nSubCommand, nLen );
+	nLen = capi_processMessage( pnMsg, nApplId, nCommand, nSubCommand, nLen );
 	nLen += 2;
 
 	put_netword( &pnSendBuffer, nLen );
