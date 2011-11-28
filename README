@@ -1,6 +1,4 @@
-#
-# $Id: README,v 1.15 2000/06/20 10:30:39 keil Exp $
-#
+
 This is the README file for the "isdn4k-utils" package from "The i4l-crew".
 
 This package contains the following stuff:
@@ -16,7 +14,15 @@ This package contains the following stuff:
   eiconctrl   setup utility for the eicon driver.
   divertctrl  setup utility for dss1 diversion services
 
-2. Tools for monitoring activity:
+2. Libraries for applications
+
+  libcapi20   a modular CAPI20 library which supports modules for different
+              Controller types such as native CAPI20 kernel drivers and
+              different remote CAPI versions. A CAPI library module for
+              mISDNv2 is available in the mISDNuser project.
+
+3. Tools for monitoring activity:
+
   imon,       a ncurses based utility for monitoring ISDN-activities.
   imontty,    a tty based utility for monitoring ISDN-activities.
   isdnlog,    a set of utilities for connection logging.
@@ -25,14 +31,17 @@ This package contains the following stuff:
   xmonisdn,   a utility for monitoring and controlling ISDN-activity.
   isdnmon,    a Tcl/Tk based utility for monitoring ISDN-activities.
 
-3. Applications:
+4. Applications:
+
   vbox,       an answering machine/voice mailbox.
   ipppd,      daemon need for syncPPP and MPP.
 
-4. Miscellaneous:
+5. Miscellaneous:
+
   scripts/makedev.sh   for creating the ISDN device files under /dev .
 
-5. Documentation:
+6. Documentation:
+
   A very detailed FAQ and the generic manpages ttyI.4, isdninfo.4,
   isdn_audio.4 and isdn_cause.7.
   Manpages for the above utilities:
@@ -41,6 +50,7 @@ This package contains the following stuff:
   isdnrate.1, rate-files.5, xisdnload.1x and xmonisdn.1x
 
 IMPORTANT:
+
   This will be the last release of isdn4k-utils as is. From now 
   (February 2000) on, the package will be splitted into the 
   following packages:
@@ -68,16 +78,20 @@ COPYRIGHT/COPYING:
   redistributed and/or modified under the terms of the GNU General
   Public License as published by the Free Software Foundation; either
   version 2, or (at your option) any later version.
+  (see gpl-2.0.txt)
+
+  Some parts (e.g libraries) are covered by the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+  (see lgpl-2.1.txt)
 
   This package is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details. (File: COPYING)
+  GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- 
+  You will find detatils about which license apply in the README files
+  of the subdirectories.
 
 System prerequisites:
 
