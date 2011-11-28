@@ -34,6 +34,13 @@
 #define RCAPI_AUTH_USER_REQ                     CAPICMD(0xff, 0x00)
 #define RCAPI_AUTH_USER_CONF                    CAPICMD(0xff, 0x01)
 
+/* add a fixed trace file for now */
+static char *rcapiTraceFile = "/tmp/rcapiTraceFile";
+static char *getTraceFile(void)
+{
+	return rcapiTraceFile;
+}
+
 /**
  * \brief Create a socket to hostname:port
  * \return socket number
