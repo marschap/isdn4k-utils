@@ -1,9 +1,19 @@
 /*
- * CAPI 2.0 library
+ * capi20.h
  *
- * This program is free software and may be modified and
- * distributed under the terms of the GNU Public License.
+ * Author		Carsten Paeth <calle@calle.de>
+ * Copyright 1997,2000	Carsten Paeth <calle@calle.de>
  *
+ * Author		Karsten Keil <kkeil@linux-pingi.de>
+ * Copyright 2011	Karsten Keil <kkeil@linux-pingi.de>
+ *
+ * it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE
+ * version 2.1 as published by the Free Software Foundation.
+ *
+ * This code is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU LESSER GENERAL PUBLIC LICENSE for more details.
  */
 #ifndef __CAPI20_H__
 #define __CAPI20_H__
