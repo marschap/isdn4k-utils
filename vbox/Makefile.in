@@ -53,7 +53,7 @@ INSTALL_DIRS	= @INSTALL@ -d
 #----------------------------------------------------------------------------#
 
 CC		= @CC@
-VBOX_CFLAGS	= @CFLAGS@ @LINK_NCURSES_INCL@ @LINK_TCL_INCL@
+VBOX_CFLAGS	= @CFLAGS@ @LINK_NCURSES_INCL@ @LINK_TCL_INCL@ -Wall -fno-strict-aliasing
 LDFLAGS		= @LDFLAGS@
 
 #----------------------------------------------------------------------------#
@@ -288,6 +288,7 @@ DISTCLEANOBJS	= $(TOPDIR)/Makefile \
 		  $(TOPDIR)/config.status \
 		  $(TOPDIR)/src/Makefile \
 		  $(TOPDIR)/src/config.h \
+		  $(TOPDIR)/autom4te.cache/*
 
 clean:		  ignore
 		  @find $(TOPDIR)/ -name '*~' -exec $(RM) {} ';'
@@ -297,7 +298,8 @@ clean:		  ignore
 distclean:	  clean programs-d scripts-d manuals-d
 		  @set -e; for i in `echo $(DISTCLEANOBJS)`; do \
 		     $(RM) -f $$i; \
-		  done
+		  done; \
+		  $(RM) -rf $(TOPDIR)/autom4te.cache
 
 #----------------------------------------------------------------------------#
 #                                                                            #

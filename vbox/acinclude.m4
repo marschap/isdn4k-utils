@@ -36,9 +36,9 @@ AC_DEFUN(GND_PACKAGE_TCL,
 
       if (test "${gnd_use_tcl_lib}" = "")
       then
-         gnd_1st_tcl_lib_test="tcl8.5"
-         gnd_2nd_tcl_lib_test="tcl8.4"
-         gnd_3rd_tcl_lib_test="tcl8.3"
+         gnd_1st_tcl_lib_test="tcl"
+         gnd_2nd_tcl_lib_test="tcl8.5"
+         gnd_3rd_tcl_lib_test="tcl8.4"
       else
          gnd_1st_tcl_lib_test="${gnd_use_tcl_lib}"
          gnd_2nd_tcl_lib_test="tcl8.5"
@@ -47,7 +47,7 @@ AC_DEFUN(GND_PACKAGE_TCL,
 
       AC_CHECK_LIB(m,
          cos,
-         AC_CHECK_LIB(dl,
+         [AC_CHECK_LIB(dl,
             dlerror,
             [AC_CHECK_LIB(${gnd_1st_tcl_lib_test},
                Tcl_CreateInterp,
@@ -91,11 +91,21 @@ AC_DEFUN(GND_PACKAGE_TCL,
 
                HAVE_TCL_INCL="y"
                LINK_TCL_INCL="${gnd_tcl_inc_dir}"
-      else
+            else
                AC_MSG_RESULT("no")
             fi
+         else
+            AC_CHECK_HEADER(${gnd_1st_tcl_lib_test}/tcl.h, LINK_TCL_INCL="-I/usr/include/${gnd_1st_tcl_lib_test}";HAVE_TCL_INCL="y",
+                [ AC_CHECK_HEADER(${gnd_2nd_tcl_lib_test}/tcl.h, LINK_TCL_INCL="-I/usr/include/${gnd_2nd_tcl_lib_test}";HAVE_TCL_INCL="y",
+                    [ AC_CHECK_HEADER(${gnd_3rd_tcl_lib_test}/tcl.h, LINK_TCL_INCL="-I/usr/include/${gnd_3rd_tcl_lib_test}";HAVE_TCL_INCL="y")
+                    ])
+                ])
          fi
       fi
+
+         # gnd_1st_tcl_lib_test="tcl8.4"
+         # gnd_2nd_tcl_lib_test="tcl8.3"
+         # gnd_3rd_tcl_lib_test="tcl8.0"
 
       if (test "${HAVE_TCL_LIBS}" = "y")
       then
