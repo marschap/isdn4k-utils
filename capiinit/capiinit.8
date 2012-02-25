@@ -1,0 +1,76 @@
+.\" $Id: $
+.\"
+.\" CHECKIN $Date: $
+.\"
+.TH capiinit 8
+.SH NAME
+capiinit \- start or stop CAPI-capable ISDN cards
+.SH SYNOPSIS
+capiinit [OPTIONS] start | stop | show | status | prepare | reload | activate | deactivate
+.P
+capiinit [OPTIONS] activate|deactivate  cardname
+.P
+capiinit [OPTIONS] activate|deactivate  driver [cardname]
+.SH DESCRIPTION
+.B capiinit
+is called with one of the following actions:
+.TP
+\fBstart\fR
+Load all modules and initialize all cards (loading the firmware), which are
+configured in \fI/etc/capi.conf\fR.
+.TP
+\fBstop\fR
+Reset all cards and unload modules.
+.TP
+\fBshow\fR
+Show the current configuration.
+.TP
+\fBstatus\fR
+Show the current status.
+.TP
+\fBprepare\fR
+Load all modules.
+.TP
+\fBactivate\fR
+Initialize all cards.
+.TP
+\fBactivate\fR \fIcardname\fR
+Initialize one card (i.e.: c4-ec00).
+.TP
+\fBactivate\fR \fIdriver\fR [\fIcardnumber\fR]
+Initialize one card.
+.TP
+\fBdeactivate\fR
+Reset all cards.
+.TP
+\fBdeactivate\fR \fIcardname\fR
+Reset one card (i.e.: c4-ec00).
+.TP
+\fBdeactivate\fR \fIdriver\fR [\fIcardnumber\fR]
+Reset one card.
+.TP
+\fBreload\fR
+Reset all cards and initialize them again.
+.PP
+Firmware files are searched in this order in the following directories:
+\fI/usr/share/isdn/`uname\ -r`\fR,
+\fI/usr/share/isdn\fR,
+\fI/usr/lib/isdn\fR,
+\fI/lib/isdn\fR.
+.PP
+There is a sample config in /etc/capi.conf.
+
+.SH OPTIONS
+.PP
+.TP
+\fB-c\fR \fIfilename\fR, \fB--config\fR \fIfilename\fR
+Use \fIfilename\fP as config file (default is /etc/capi.conf).
+.TP
+\fB-d\fR, \fB--debug\fR
+Save patch values for debugging purposes.
+.TP
+\fB-s\fR, \fB--silent\fR
+Don't show status information.
+.SH AUTHOR
+Manpage written from C source by Paul Slootman <paul@debian.org>, updated
+by Matthias Klose <m@klose.in-berlin.de>.
