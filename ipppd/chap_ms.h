@@ -1,5 +1,5 @@
 /*
- * chap.h - Cryptographic Handshake Authentication Protocol definitions.
+ * chap.h - Challenge Handshake Authentication Protocol definitions.
  *
  * Copyright (c) 1995 Eric Rosenquist, Strata Software Limited.
  * http://www.strataware.com/
@@ -19,12 +19,14 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Id: chap_ms.h,v 1.1 1997/03/07 16:01:15 hipp Exp $
+ * $Id: chap_ms.h,v 1.2 1997/11/27 06:08:10 paulus Exp $
  */
 
 #ifndef __CHAPMS_INCLUDE__
 
+#define MD4_SIGNATURE_SIZE	16	/* 16 bytes in a MD4 message digest */
 #define MAX_NT_PASSWORD	256	/* Maximum number of (Unicode) chars in an NT password */
+#define MS_CHAP_RESPONSE_LEN	49
 
 void ChapMS __P((chap_state *, char *, int, char *, int));
 

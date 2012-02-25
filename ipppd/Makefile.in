@@ -73,7 +73,7 @@ endif
 
 DEBUG_FLAGS   = @CONFIG_IPPPD_DEBUGFLAGS@
 COMPILE_FLAGS = @CFLAGS@
-CFLAGS        = -O2 -fomit-frame-pointer -Wall
+CFLAGS        = -O2 -fomit-frame-pointer -Wall -DREQ_SYSOPTIONS=0
 VER           = 2.2.0
 
 # it's a hack

@@ -3,6 +3,8 @@ PPP Client Support for Microsoft's CHAP-80
 
 Eric Rosenquist          rosenqui@strataware.com
 
+(NOTE: ipppd now supports MS-CHAP out of the box -- Paul Slootman 2002-06-25)
+
 
 INTRODUCTION
 
