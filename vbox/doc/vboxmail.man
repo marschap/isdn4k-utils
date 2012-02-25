@@ -16,6 +16,26 @@ is used by
 to send notification of a new voice message via email. It is not meant
 to be called directly by any user.
 
+You can make local modifications to this script by copying it from
+/usr/sbin/vboxmail to /etc/isdn/vboxmail, and editing the copy there.
+
+Note that there is an enhanced version of this script available as
+/usr/share/doc/isdnvboxserver/vboxmail.enhanced . To use it, copy it
+to /etc/isdn/vboxmail .  This enhanced version will send the recorded message
+as a MIME attachment in the email notification.
+If lame or xingmp3enc are installed in /usr/local/bin, then the message will
+be converted to MP3 format; otherwise, it will be sent as a WAV file.
+For this to work, you also need the following packages installed:
+.br
+.B mime-construct sox
+.br
+and of course an MP3 encoder if you want MP3 format. Note that the MP3 format
+will only be 50% smaller (instead of the 90% you might otherwise expect),
+because of the relatively bad sound quality to begin with (8kHz sampling, mono).
+If you want to use another MP3 encoder than lame or xingmp3enc, you'll have to
+make patches to the script. I'll be happy to implement your changes. Send them
+as a wishlist bug report on isdnvboxserver.
+
 .SH SEE ALSO
 .B vboxgetty(8), vboxgetty.conf(5)
 

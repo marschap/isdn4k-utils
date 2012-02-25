@@ -67,9 +67,10 @@ path relative to SPOOLDIR.
 this configuration file
 
 .TP
-.B /usr/doc/isdnutils/examples/vboxd.conf
+.B /usr/share/doc/isdnvboxserver/examples/vboxd.conf
 an example
 
 .SH AUTHOR
 This manual page was written by Andreas Jellinghaus <aj@dungeon.inka.de>,
 for Debian GNU/Linux and isdn4linux.
+Now maintained by Paul Slootman <paul@debian.org>.

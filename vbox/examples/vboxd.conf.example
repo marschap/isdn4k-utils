@@ -13,7 +13,9 @@ L:*:N
 # All hosts in the full access list (begins with 'A') are checked if the
 # server gets the 'login' command.
 
-A:localhost:RW:michael:xxx:/var/spool/vbox/michael:incoming
-A:localhost:RW:nicole:xxx:/var/spool/vbox/nicole:incoming
+# One user in this file can be configured by the `debconf' system, the next one.
+# Remove this comment if you don't want any configuration to happen.
+A:localhost:RW:username:*invalid*password*:/var/spool/vbox/ttyI6:incoming
+# A:localhost:RW:nicole:xxx:/var/spool/vbox/nicole:incoming
 
 A:*:!:!:!:!:!

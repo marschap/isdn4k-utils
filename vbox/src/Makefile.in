@@ -40,7 +40,7 @@ lists.o:	$(HEADERS) lists.c
 		$(CC) $(CFLAGS) -c lists.c
 
 script.o:	$(HEADERS) script.c
-		$(CC) $(CFLAGS) -DBINDIR='"$(VBOX_BINDIR)"' -c script.c
+		$(CC) $(CFLAGS) -DBINDIR='"$(VBOX_SBINDIR)"' -c script.c
 
 voice.o:	$(HEADERS) voice.c
 		$(CC) $(CFLAGS) $(VBOX_SUSPEND_DEF) -c voice.c
@@ -149,7 +149,7 @@ vboxbeep:	  $(VBOXBEEPOBJS)
 VBOXDOBJS	= vboxd.o streamio.o
 
 vboxd:		  $(VBOXDOBJS)
-		  $(CC) $(CFLAGS) $(VBOXDOBJS) -o vboxd -L. -lvbox
+		  $(CC) $(CFLAGS) $(VBOXDOBJS) -o vboxd -L. -lvbox -lcrypt
 
 distclean: clean
 

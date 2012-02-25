@@ -21,17 +21,17 @@ debuglevel		FEWIDJ
 # Settings for port ttyI6
 
 port /dev/ttyI6
-  modeminit		ATZ&B512&E7830022
-  user			nicole
+  modeminit		ATZ&B512&E000000
+  user			vboxdaemonuser
   group			users
-  spooldir		/var/spool/vbox/nicole
-
+  spooldir		/var/spool/vbox/ttyI6
+  vboxconfig		/home/vboxdaemonuser/.vbox.conf
 
 # Settings for port ttyI7
 
-port /dev/ttyI7
-  modeminit		ATZ&B512&E7850413
-  user			michael
-  group			users
-  spooldir		/var/spool/vbox/michael
+#port /dev/ttyI7
+#  modeminit		ATZ&B512&E7850413
+#  user			michael
+#  group			users
+#  spooldir		/var/spool/vbox/michael
 

@@ -2,7 +2,7 @@
 .\" CHECKIN $Date: 2001/03/01 14:45:07 $
 .TH vbox 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
-vbox files \- file format
+vbox \- file format
 .SH FORMAT
 With version 2.0.0 of vbox the recorded files have a new header, that
 does not only include compression mode and connection information, but

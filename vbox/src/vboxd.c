@@ -6,6 +6,9 @@
 
 #include "config.h"
 
+#define _GNU_SOURCE   /* for crypt() */
+#include <unistd.h>
+
 #if TIME_WITH_SYS_TIME
 #   include <sys/time.h>
 #   include <time.h>
@@ -21,7 +24,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#include <unistd.h>
 #include <errno.h>
 #include <dirent.h>
 #include <fnmatch.h>
@@ -96,7 +98,7 @@ static struct servercmds commands[] =
 	{ "list"      , srv_list       },
 	{ "noop"      , srv_noop       },
 	{ "count"     , srv_count      },
-   { "login"     , srv_login      },
+        { "login"     , srv_login      },
 	{ "header"    , srv_header     },
 	{ "message"   , srv_message    },
 	{ "toggle"    , srv_toggle     },
@@ -109,11 +111,11 @@ static struct servercmds commands[] =
 
 static struct option arguments[] =
 {
-	{ "version"		, no_argument			, NULL, 'v' },
-	{ "help"			, no_argument			, NULL, 'h' },
-	{ "timeout"		, required_argument	, NULL, 't' },
-	{ "file"       , required_argument  , NULL, 'f' },
-	{ NULL			, 0						, NULL, 0   }
+	{ "version"	, no_argument		, NULL, 'v' },
+	{ "help"	, no_argument		, NULL, 'h' },
+	{ "timeout"	, required_argument     , NULL, 't' },
+	{ "file"        , required_argument     , NULL, 'f' },
+	{ NULL		, 0			, NULL, 0   }
 };
 
 /**************************************************************************/
@@ -251,7 +253,7 @@ static void usage(void)
 	fprintf(stderr, "Usage: %s [ OPTION ] [ ... ]\n", vbasename);
 	fprintf(stderr, "\n");
 	fprintf(stderr, "-f, --file FILE      Overwrites \"%s\".\n", VBOXDRC);
-   fprintf(stderr, "-t, --timeout SECS   Close connection after SECS idle time (default 600).\n");
+        fprintf(stderr, "-t, --timeout SECS   Close connection after SECS idle time (default 600).\n");
 	fprintf(stderr, "-v, --version        Displays program version.\n");
 	fprintf(stderr, "-h, --help           Displays this message.\n");
 	fprintf(stderr, "\n");
@@ -425,7 +427,7 @@ static int get_next_command(char *line, int linelen, int timeout)
 		{
 			syslog(LOG_ERR, "can't read (%s).", strerror(errno));
 
-         message("%s can't read (%s).\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
+                        message("%s can't read (%s).\r\n", VBOXD_VAL_TEMPERROR, strerror(errno));
 
 			return(VBOXD_ERR_TIMEOUT);
 		}
@@ -522,51 +524,51 @@ static int check_client_access_start(char *name, char *addr)
 
    while (streamio_gets(line, VBOXD_LEN_ACCESSLINE, accesslist))
    {
-		if ((line[0] != 'L') || (line[1] != ':')) continue;
+        if ((line[0] != 'L') || (line[1] != ':')) continue;
 
-      /*
-       * Split the current line into seperate fields.
-       */
+        /*
+         * Split the current line into seperate fields.
+         */
 
-      for (list[0] = line, i = 0, p = line; ((*p) && (i < 3)); p++)
-      {
-         if (*p == ':')
-         {
-            *p = '\0';
+        for (list[0] = line, i = 0, p = line; ((*p) && (i < 3)); p++)
+        {
+            if (*p == ':')
+            {
+                *p = '\0';
 
-            list[++i] = (p + 1);
-         }
-      }
+                list[++i] = (p + 1);
+            }
+        }
 
-		if (i != 2) continue;
+        if (i != 2) continue;
 
-		/*
-		 * Check if the hostname or the hosts ip address matchs the current
-		 * pattern.
-		 */
+        /*
+         * Check if the hostname or the hosts ip address matchs the current
+         * pattern.
+         */
 
-		if ((name) || (addr))
-		{
-			if (!wildmat(name, list[1]))
-			{
-				if (!wildmat(addr, list[1])) continue;
-			}
-		}
+        if ((name) || (addr))
+        {
+            if (!wildmat(name, list[1]))
+            {
+                if (!wildmat(addr, list[1])) continue;
+            }
+        }
 
-		/*
-		 * Check if the client has access to count new messages. If true,
-		 * the "login" is correct.
-		 */
+        /*
+         * Check if the client has access to count new messages. If true,
+         * the "login" is correct.
+         */
 
-		if ((strcasecmp(list[2], "yes")) == 0 || (strcasecmp(list[2], "y") == 0))
-		{
-			client_access |= VBOXD_ACC_COUNT;
+        if ((strcasecmp(list[2], "yes")) == 0 || (strcasecmp(list[2], "y") == 0))
+        {
+            client_access |= VBOXD_ACC_COUNT;
 
-			returnok();
-		}
-	}
+            returnok();
+        }
+    }
 
-	returnerror();
+    returnerror();
 }
 
 /**************************************************************************/
@@ -634,7 +636,20 @@ static int check_client_access_login(char *name, char *addr, char *user, char *p
 
 			if (strcmp(list[4], "-" ) == 0) continue;
 			if (strcmp(list[4], "!" ) == 0) continue;
-			if (strcmp(list[4], pass) != 0) continue;
+                        if (strncmp(list[4], "DES ", 4) == 0 && strlen(list[4]) == 17) {
+                            /* This is a DES-encrypted password */
+                            char salt[3];
+                            salt[0] = list[4][4];
+                            salt[1] = list[4][5];
+                            salt[2] = 0;
+                            if (strcmp(&(list[4][4]), crypt(pass, salt)) != 0)
+                                continue;       /* no match, next line */
+                        }
+                        else {
+                            if (strcmp(list[4], pass) != 0)
+                                continue;
+                        }
+                        /* fallthrough case: password accepted */
 		}
 
 		/*
@@ -712,7 +727,7 @@ static void message(char *fmt, ...)
 
 	va_start(arg, fmt);
 	vfprintf(stdout, fmt, arg);
-   va_end(arg);
+        va_end(arg);
 }
 
 /**************************************************************************/
@@ -849,7 +864,7 @@ static void srv_message(int argc, char **argv)
 						if (read(fd, block, status.st_size) == status.st_size)
 						{
 							message("%s %d\r\n", VBOXD_VAL_MESSAGE, status.st_size);
-                     pullmsg(stdout);
+                                                        pullmsg(stdout);
 
 							write(STDOUT_FILENO, block, status.st_size);
 
@@ -972,20 +987,20 @@ static void srv_login(int argc, char **argv)
 
 static void srv_help(int argc, char **argv)
 {
-   message("%s Commands require special access:\r\n"                                , VBOXD_VAL_HELP);
-   message("%s \r\n"                                                                , VBOXD_VAL_HELP);
+        message("%s Commands require special access:\r\n"                                , VBOXD_VAL_HELP);
+        message("%s \r\n"                                                                , VBOXD_VAL_HELP);
 	message("%s LIST                               List all messages.\r\n"           , VBOXD_VAL_HELP);
 	message("%s COUNT                              Count new messages.\r\n"          , VBOXD_VAL_HELP);
-   message("%s DELETE     <message>               Delete a message.\r\n"            , VBOXD_VAL_HELP);
+        message("%s DELETE     <message>               Delete a message.\r\n"            , VBOXD_VAL_HELP);
 	message("%s MESSAGE    <message>               Get a message.\r\n"               , VBOXD_VAL_HELP);
-   message("%s HEADER     <message>               Get a message header.\r\n"        , VBOXD_VAL_HELP);
-   message("%s TOGGLE     <message>               Toggle message new flag.\r\n"     , VBOXD_VAL_HELP);
-   message("%s STATUSCTRL <control>               Check if control exists.\r\n"     , VBOXD_VAL_HELP);
-   message("%s CREATECTRL <control>               Create a control file.\r\n"       , VBOXD_VAL_HELP);
-   message("%s REMOVECTRL <control>               Remove a control file.\r\n"       , VBOXD_VAL_HELP);
-   message("%s \r\n"                                                                , VBOXD_VAL_HELP);
-   message("%s Commands available for all clients:\r\n"                             , VBOXD_VAL_HELP);
-   message("%s \r\n"                                                                , VBOXD_VAL_HELP);
+        message("%s HEADER     <message>               Get a message header.\r\n"        , VBOXD_VAL_HELP);
+        message("%s TOGGLE     <message>               Toggle message new flag.\r\n"     , VBOXD_VAL_HELP);
+        message("%s STATUSCTRL <control>               Check if control exists.\r\n"     , VBOXD_VAL_HELP);
+        message("%s CREATECTRL <control>               Create a control file.\r\n"       , VBOXD_VAL_HELP);
+        message("%s REMOVECTRL <control>               Remove a control file.\r\n"       , VBOXD_VAL_HELP);
+        message("%s \r\n"                                                                , VBOXD_VAL_HELP);
+        message("%s Commands available for all clients:\r\n"                             , VBOXD_VAL_HELP);
+        message("%s \r\n"                                                                , VBOXD_VAL_HELP);
 	message("%s LOGIN      <username> [password]   Login as user (gives access).\r\n", VBOXD_VAL_HELP);
 	message("%s NOOP                               Does nothing.\r\n"                , VBOXD_VAL_HELP);
 	message("%s HELP                               Display command list.\r\n"        , VBOXD_VAL_HELP);
