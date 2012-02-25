@@ -1205,7 +1205,7 @@ int vfmtmsg(char *buf,int buflen,char *fmt,va_list args)
     unsigned long val=0;
     char *str, *f, *buf0;
     unsigned char *p;
-    void *a;
+    va_list a;
     char num[32];
     time_t t;
     static char hexchars[] = "0123456789abcdef";
@@ -1297,11 +1297,7 @@ int vfmtmsg(char *buf,int buflen,char *fmt,va_list args)
         break;
     case 'r':
         f = va_arg(args, char *);
-        /*
-         * XXX We assume a va_list is either a pointer or an array, so
-         * what gets passed for a va_list is like a void * in some sense.
-         */
-        a = va_arg(args, void *);
+        a = va_arg(args, va_list);
 #ifdef __alpha__       /* always do this? */
 	n = fmtmsg(buf, buflen + 1, f, a);
 #else
