@@ -16,7 +16,7 @@ DIVALOADPROGRAM		= divaload
 DIVALOGDPROGRAM		= divalogd
 DIVALOGPROGRAM		= divalog
 DIVAPROGRAMS		= $(DIVALOADPROGRAM) $(DIVALOGDPROGRAM) $(DIVALOGPROGRAM)
-MANPAGE			= eiconctrl.8
+MANPAGES		= eiconctrl divaload divalog divalogd
 INSTALL			= @INSTALL@
 CARDSBINDIR		= @CONFIG_CARD_SBINDIR@
 SBINDIR			= @CONFIG_SBINDIR@
@@ -94,9 +94,11 @@ install-data:
 	mkdir -p $(DESTDIR)$(DATA_DIR)
 	tar xpCfz $(DESTDIR)$(DATA_DIR) firmware/eicon_firm.tgz
 
-install-man: $(PROGRAM).man
+install-man: $(PROGRAM).man $(DIVALOADPROGRAM).man $(DIVALOGPROGRAM).man $(DIVALOGDPROGRAM).man
 	mkdir -p $(DESTDIR)$(MAN8DIR)
-	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
+	for i in $(MANPAGES); do \
+	    $(INSTALL_MAN) $$i.man $(DESTDIR)$(MAN8DIR)/$$i.8; \
+	done
 
 install: all install-man install-data
 	$(INSTALL_PROGRAM) $(PROGRAM) $(DESTDIR)$(CARDSBINDIR)/$(PROGRAM)
@@ -115,7 +117,10 @@ ifeq ("@HAVE_NATIVE@","n")
 endif
 
 uninstall:
-	rm -f $(DESTDIR)$(CARDSBINDIR)/$(PROGRAM) $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
+	for i in $(MANPAGES); do \
+	    rm -f $(DESTDIR)$(MAN8DIR)/$$i.8; \
+	done
+	rm -f $(DESTDIR)$(CARDSBINDIR)/$(PROGRAM)
 ifeq ("@HAVE_NATIVE@","n")
 	rm -f $(DESTDIR)$(CARDSBINDIR)/$(DIVALOADPROGRAM)
 	rm -f $(DESTDIR)$(SBINDIR)/$(DIVALOGDPROGRAM)

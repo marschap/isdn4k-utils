@@ -1,0 +1,186 @@
+.\" $Id: $
+.\"
+.\" CHECKIN $Date: $
+.\"
+.\" Process this file with
+.\" groff -man -Tascii divaload.man for ASCII output, or
+.\" groff -man -Tps divaload.man for PostScript output
+.\"
+.TH DIVALOAD 8 "2000/12/02" divaload "Linux System Administration"
+.SH NAME
+divaload \- configure Eicon Diva active ISDN card 
+.SH SYNOPSIS
+divaload controller protocol [options]
+.SH DESCRIPTION
+.B divaload
+is used to setup the Eicon Diva card for the proper configuration.
+.SH OPTIONS
+.TP
+.BI controller
+selects the controller (card). This can be either:
+.br
+.B -c n
+.br
+where
+.B n
+is the controller number, or
+.br
+.B -all
+.br
+to operate on all cards.
+
+.TP
+.BI protocol
+can be one of the following:
+.nf
+  -f 1TR6     Germany, old protocol for PABX................ PRI & BRI
+  -f ETSI     DSS1, Europe (Germany, ...)................... PRI & BRI
+  -f FRANC    VN3, France, old protocol for PABX............ PRI & BRI
+  -f BELG     NET3, Belgien, old protocol for PABX.......... PRI & BRI
+  -f SWED     DSS1 with CRC4 off, Sweden, Benelux........... PRI
+  -f NI       NI1, NI2, North America, National ISDN........ PRI & BRI
+  -f 5ESS     5ESS, North America, AT&T..................... PRI & BRI
+  -f JAPAN    Japan, INS-NET64.............................. PRI & BRI
+  -f ATEL     ATEL, Australia, old TPH1962.................. PRI & BRI
+  -f US       North America, Auto Detect....................       BRI
+  -f ITALY    DSS1, Italy................................... PRI & BRI
+  -f TWAN     DSS1, Taiwan.................................. PRI & BRI
+  -f AUSTRAL  Australia, Microlink (TPH1962), On Ramp ETSI.. PRI & BRI
+  -f 4ESS_SDN 4ESS Software Defined Network................. PRI
+  -f 4ESS_SDS 4ESS Switched Digital Service................. PRI
+  -f 4ESS_LDS 4ESS Long Distance Service.................... PRI
+  -f 4ESS_MGC 4ESS Megacom.................................. PRI
+  -f 4ESS_MGI 4ESS Megacom International.................... PRI
+  -f HONGKONG Hongkong...................................... PRI & BRI
+  -f RBSCAS   Robbed Bit Signaling, CAS..................... PRI
+  -f QSIG     QSIG, Intra PABX link protocol................ PRI & BRI
+.fi
+
+.LP
+The following options
+may be given to
+.BR divaload .
+.TP
+.BI "-e [" "1,2,3" ]
+set Layer 1 framing on PRI Adapter
+.LP
+.RS
+.B 1
+- doubleframing (NO CRC4)
+.br
+.B 2
+- multiframing (CRC4)
+.br
+.B 3
+- autodetection
+.RE
+.TP
+.BI -x
+set PRI Adapter in NT mode;
+default mode is TE
+.TP
+.BI -z
+set PRI Adapter in High Impedance state
+until first user application does request
+interface activation
+.TP
+.BI "-l [" "1...30" ]
+set starting channel number on PRI Adapter.
+By default the allocation of channels is made
+on a high-to-low basis.
+By specifying -l you select a low-to-high
+allocation policy (in addition)
+.TP
+.BI "-q [" "0..3" ]
+select QSIG options
+.LP
+.RS
+.B 0
+- CR and CHI 2 Bytes long (default)
+.br
+.B 1
+- CR 1 byte, CHI 2 bytes
+.br
+.B 2
+- CR is 2 bytes, CHI is 1 byte
+.br
+.B 3
+- CR and CHI 1 byte
+.br
+(CR - Call Reference, CHI - B-Channel Ident.)
+.RE
+.TP
+.BI "-n [" "0...20" ]
+select NT2 mode and default length of DIDN
+(DIDN - Direct Inward Dial Number)
+.TP
+.BI -o
+turn off order checking of information elements
+.TP
+.BI "-p [" "1,2" ]
+establish a permanent connection
+(e.g. leased line configuration)
+.LP
+.RS
+.B 1
+- TE <-> TE mode, structured line
+.br
+.B 2
+- NT <-> TE mode, raw line
+.RE
+.TP
+.BI "-s [" "0,1,2,3" ]
+D-Channel Layer 2 activation policy on BRI Adapter
+.LP
+.RS
+.B 0
+- On demand
+.br
+.B 1
+- Deactivation only by NT side, preferred, default
+.br
+.B 2
+- Always active
+.br
+.B 3
+- Always active, mode 2
+.RE
+
+.TP
+.BI "-t [" "0...63" ]
+specifies a fixed TEI value
+(Default is a automatic TEI assignment)
+
+.TP
+.BI -u
+select point to point mode on BRI Adapter;
+uses default TEI '0',
+NT2 mode is on
+
+.TP
+.BI "-[" "1...8" ]oad|osa|spid
+BRI Adapter B-Channel options
+Specify the Originating Address (OAD),
+Originating Sub-address (OSA) and/or
+Service Profile Identifier (SPID)
+for each B-channel (1 or 2 by BRI, 1...8 by 4BRI)
+.br
+Example: -1oad 123456 -1spid 1234560001
+
+.TP
+.BI -d
+display protocol options summary
+
+.TP
+.BI -w
+select alternative protocol code directory.
+.br
+default directory: "/usr/share/isdn"
+
+.TP
+.BI "-h "\fRor\fB " -?"
+help
+
+
+.SH AUTHOR
+manpage written from -h output by Paul Slootman <paul@debian.org>.
