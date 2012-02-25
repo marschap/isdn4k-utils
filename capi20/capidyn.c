@@ -32,7 +32,7 @@
 #include <dlfcn.h>
 
 
-#define LIBCAPI	"libcapi20.so"
+#define LIBCAPI	"libcapi20.so.3"
 static int loadlib(void);
 
 /* ---------------------------------------------------------------------- */
