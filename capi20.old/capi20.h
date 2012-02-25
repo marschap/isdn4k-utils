@@ -28,6 +28,7 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
+#include <stddef.h>
 #include <sys/time.h>
 
 /* standard CAPI2.0 functions */

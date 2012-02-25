@@ -23,6 +23,7 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
+#include <stddef.h>
 #include <sys/time.h>
 
 #define SEND_BUFSIZ		(128+2048)
