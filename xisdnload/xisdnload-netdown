@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Example netdown script for xmonisdn
+# Do with it what you want.
+
+# Note that xisdnload looks at the routing table to determine if a connection
+# is "up" or not:
+# - if there is _ANY_ route to an isdn or ippp interface, clicking on xisdnload
+#   will cause the netdown script to be run.
+# - if there is _NO_ route to any isdn or ippp interface, clicking on xisdnload
+#   will cause the netup script to be run.
+#
+# As the example netdown script only hangs up the connection (and leaves the
+# routes alone), another click will simply try to hang up again (i.e. run this
+# script again). So, putting "isdnctrl dialmode all off" here is not that
+# useful, as you have to do "isdnctrl dialmode all auto" manually...
+
+# Feel free to modify the scripts so that the routes are deleted and added.
+
+egrep -s '^ i(sdn|ppp)' /proc/net/dev > /dev/null || exit 0
+/usr/sbin/isdnctrl hangup ippp0 > /dev/null

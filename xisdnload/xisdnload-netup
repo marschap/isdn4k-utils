@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Example netup script for xisdnload
+# Do with it what you want.
+
+# Note that xisdnload looks at the routing table to determine if a connection
+# is "up" or not:
+# - if there is _ANY_ route to an isdn or ippp interface, clicking on xisdnload
+#   will cause the netdown script to be run. 
+# - if there is _NO_ route to any isdn or ippp interface, clicking on xisdnload
+#   will cause the netup script to be run.
+#
+# As the example netdown script only hangs up the connection (and leaves the
+# routes alone), another click will simply try to hang up again.  So, this
+# netup script will never be executed...
+# Feel free to modify the scripts so that the routes are deleted and added.
+
+exit 0
