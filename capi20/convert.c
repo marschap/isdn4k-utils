@@ -842,10 +842,14 @@ static char *p = 0;
 static void bufprint(char *fmt,...)
 {
 	va_list f;
+	size_t space = buf + sizeof(buf) - p, len;
 	va_start(f, fmt);
-	vsprintf(p, fmt, f);
+	len = vsnprintf(p, space, fmt, f);
 	va_end(f);
-	p += strlen(p);
+	if (len < space - 1)
+		p += len;
+	else
+		p += space - 1;
 }
 
 static void printstructlen(_cbyte * m, unsigned len)

@@ -322,6 +322,10 @@ char *capi_info2str(_cword reason);
 #define capi20_cmd2str	capi_cmd2str
 char *capi_cmd2str(_cbyte cmd, _cbyte subcmd);
 
+/*
+ * WARNING: The following two functions use a single static buffer and
+ * are not thread-safe.
+ */
 #define capi20_cmsg2str	capi_cmsg2str
 char *capi_cmsg2str(_cmsg * cmsg);
 
