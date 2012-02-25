@@ -523,7 +523,8 @@ static int _getZ(struct sth *sthp, char *from, char *sto) {
 		from=sto;
 		sto=temp;
 	}
-	strncpy(newfrom, from, LENGTH-1);
+	if (newfrom != from)
+            memmove(newfrom, from, LENGTH-1);
 	while (strlen(newfrom)) {
 		UL lifrom = (UL) atol(newfrom); /* keys could be long */
 		US ifrom = (US) lifrom;

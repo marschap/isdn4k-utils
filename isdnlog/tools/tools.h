@@ -622,6 +622,13 @@
 
 #define _GNU_SOURCE 1
 
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/times.h>
+#include <sys/stat.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
+#include <sys/socket.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -630,12 +637,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <unistd.h>
-#include <sys/time.h>
-#include <sys/times.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>

@@ -1,0 +1,18 @@
+V:-0.1 default [2001/10/10]
+
+W:1		Monday
+W:2		Tuesday
+W:3		Wednesday
+W:4		Thursday
+W:5		Friday
+W:6		Saturday
+W:7		Sunday
+W:W		weekday
+W:E		weekend
+W:H		holiday
+W:*		everyday
+
+D:1.1		New Year's Day
+D:easter	Easter
+D:1.5		May Day
+D:25.12		Christmas

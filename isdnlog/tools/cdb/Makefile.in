@@ -43,15 +43,15 @@ distclean: clean
 	-rm config.{status,log,h,cache} Makefile .depend
 
 install-dirs:
-	install -d -m0755 $(MAN1DIR) $(MAN3DIR) $(LIBDIR) $(BINDIR) \
-		$(INCDIR)
+	install -d -m0755 $(MAN1DIR) $(MAN3DIR) $(LIBDIR) $(BINDIR) $(INCDIR)
 
 install:
-	install -m0755 $(BINS) $(BINDIR)
-	install -m0644 $(MAN1) $(MAN1DIR)
-	install -m0644 $(MAN3) $(MAN3DIR)
-	install -m0644 $(LIBS) $(LIBDIR)
-	install -m0644 freecdb.h freecdbmake.h $(INCDIR)
+	true
+	# install -m0755 $(BINS) $(BINDIR)
+	# install -m0644 $(MAN1) $(MAN1DIR)
+	# install -m0644 $(MAN3) $(MAN3DIR)
+	# install -m0644 $(LIBS) $(LIBDIR)
+	# install -m0644 freecdb.h freecdbmake.h $(INCDIR)
 
 cdbdump: cdbdump.o cdb_unpack.o
 

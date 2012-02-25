@@ -1,0 +1,12 @@
+V:0.01-default [2001/10/10]
+
+U:%.3f UNITS
+
+P:10            .
+B:1234
+D:x
+
+# 1 currency unit per minute
+Z:1		.
+A:*
+T:*/*=1.00/60

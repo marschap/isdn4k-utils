@@ -145,8 +145,9 @@ Connect to a running isdnrate daemon. This avoids long startup times.
 .P
 .B \-D
 Start as a daemon, waiting for connections from a client. The socket
-.I /tmp/isdnrate
-is created, which clients can connect to.
+.I /var/run/isdnrate/socket
+is created, which clients can connect to
+(the socket can be changed by using the -O option).
 .P
 .B \-D2
 Start as a daemon and go background.
@@ -171,8 +172,8 @@ Show info about following numbers. If no provider is given, the preselected
 provider is used.
 .P
 .BI \-O socketfile
-Write socket to given filename on start of daemon. Default is
-.IR tmp/isdnrate .
+Use given filename as the socket on start of daemon. Default is
+.IR /var/run/isdnrate/socket .
 .P
 .BI \-P piddir
 Write own PID to
