@@ -379,6 +379,7 @@ int imon_draw_status(int color, time_t *current_time) {
   int  flags[ISDN_MAX_DRIVERS];
   int  line;
   int  len;
+  static int no_channels = 0;
    
   ptr_idmap = idmap_line + 7;
   ptr_chmap = chmap_line + 7;
@@ -390,9 +391,30 @@ int imon_draw_status(int color, time_t *current_time) {
   /*
    * get flags for all drivers
    */   
+  flags[0] = -1;
   for(line=0; line<ISDN_MAX_DRIVERS; line++) {
-      sscanf(ptr_flags, "%d %n", &flags[line], &len);
-      ptr_flags += len;
+    if (sscanf(ptr_flags, "%d %n", &flags[line], &len) < 2)
+      break;
+    ptr_flags += len;
+  }
+
+  if (no_channels == 0) {
+    if (flags[0] < 0) {
+      no_channels++;
+      if (color) {
+	attron(COLOR_PAIR(RED_ON_BLUE));
+      }
+      mvaddstr(1, 16, " No channels found! ");
+    }
+  }
+  else if (flags[0] >= 0) { /* a driver loaded in the meantime, perhaps? */
+   if (no_channels) {
+     no_channels = 0;
+      if (color) {
+	attron(COLOR_PAIR(YELLOW_ON_BLUE));
+      }
+      mvaddstr(1, 16, "                    ");
+    }
   }
 
   /*
@@ -560,7 +582,7 @@ int main(int argc, char **argv) {
     FD_SET(fileno(isdninfo),&fdset);
     timeout.tv_sec = 10;
     timeout.tv_usec = 0;
-    switch (select(32,&fdset,(fd_set *)0,(fd_set *)0,NULL)) {
+    switch (select(fileno(isdninfo)+1,&fdset,(fd_set *)0,(fd_set *)0,NULL)) {
     case 0:
       fprintf(stderr,"timeout\n");
       break;
