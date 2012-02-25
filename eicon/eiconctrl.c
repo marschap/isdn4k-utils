@@ -1970,7 +1970,7 @@ int main(int argc, char **argv) {
 				val = strtol(p, &q, 16);
 				p = q;
 				val = strtol(p, &q, 16);
-				(unsigned short) *buffer = (unsigned short) val;
+				*((unsigned short*)buffer) = (unsigned short) val;
 				pos = 2;
 				while ((p != q) && (*q != 0)) {
 					p = q;
