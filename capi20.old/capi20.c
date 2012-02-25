@@ -175,7 +175,7 @@ static inline int remember_applid(unsigned applid, int fd)
    return 0;
 }
 
-static inline unsigned alloc_applid(int fd)
+unsigned alloc_applid(int fd)
 {
    unsigned applid;
    for (applid=1; applid < MAX_APPL; applid++) {
