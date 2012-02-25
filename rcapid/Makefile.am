@@ -13,5 +13,6 @@ LDFLAGS = -L../capi20/.libs -L../capi20 $(all_libraries)
 LDADD = -lcapi20
 
 sbin_PROGRAMS = rcapid
+man_MANS = rcapid.8
 
 rcapid_SOURCES = rcapid.c
