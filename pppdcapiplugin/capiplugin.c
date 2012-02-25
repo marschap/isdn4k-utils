@@ -1807,7 +1807,7 @@ static void makeleasedline(void)
 	     if (status != EXIT_OK)
 		die(status);
 
-	} while (++retry < opt_dialmax);
+        } while ((++retry < opt_dialmax) || (opt_dialmax == 0));
 
 connected:
         if (conn_isconnected(cp)) {
@@ -1874,7 +1874,7 @@ again:
 		   if (status != EXIT_OK)
 		      die(status);
 	   }
-	} while (++retry < opt_dialmax);
+        } while ((++retry < opt_dialmax) || (opt_dialmax == 0));
 
 connected:
         if (conn_isconnected(cp)) {
@@ -1964,7 +1964,7 @@ again:
 			info("capiplugin: callback failed (no call)");
 		}
 	   }
-	} while (++retry < opt_dialmax);
+        } while ((++retry < opt_dialmax) || (opt_dialmax == 0));
 
 	fatal("capiplugin: callback failed (no call)");
 }

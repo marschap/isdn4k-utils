@@ -304,6 +304,10 @@ On an outcoming call the remote party will reject the call and callback.
 .B dialmax \fI<times>
 Maximum number of times the list of phone numbers is tried before giving up.
 Default value is 4.
+.br
+If dialmax is set to 0,
+the list is retried infinitely until a connection is made
+(or the process is stopped).
 
 .TP
 .B dialtimeout \fI<seconds>
