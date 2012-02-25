@@ -1,0 +1,56 @@
+.\" $Id: capifaxrcvd.8,v 1.1 2002/07/04 11:30:59 paul Exp $
+.\"
+.\" CHECKIN $Date: 2002/07/04 11:30:59 $
+.\"
+.TH capifaxrcvd 8
+.SH NAME
+capifaxrcvd \- a FAX receive daemon for CAPI
+.SH SYNOPSIS
+capifaxrcvd [-i stationID] [-h header] [-c controller] [-l listenNumber] [-n notifyCmd] rcvDirectory
+.SH DESCRIPTION
+.B capifaxrcvd
+is a daemon to receive faxes via CAPI; you need a CAPI capable ISDN
+card with the appropriate drivers.
+
+The final argument must be the directory in which the
+received faxes are to be placed.
+The filenames of the received faxes are of the form:
+.br
+f[fn]xxxtttttttt
+.br
+[fn] indicates the resolution (fine or normal),
+.br
+xxx indicated the number of pages,
+.br
+tttttttt is the (hexadecimal) timestamp of the fax
+(seconds since the Unix epoch, 00:00 on January 1st, 1970 UTC).
+
+The daemon will fork itself into the background.
+
+This stuff is based heavily on AVM's CAPI-adk for linux.
+
+.SH OPTIONS
+.TP
+.BI "-l" " listenNumber"
+the phone number on which to receive faxes, i.e. the number to listen on.
+
+.TP
+.BI "-c" " controller"
+Specify a specific controller number to use for receiving the faxes.
+
+.TP
+.BI "-i" " station_ID"
+the station ID. Typically the company name or similar.
+
+.TP
+.BI "-h" " headline"
+title of sent document. (?)
+
+.TP
+.BI "-n" " notifyCmd"
+command to execute when a fax has been received.
+It will be called with one argument, namely
+the filename of the received fax (without the directory name).
+
+.SH AUTHOR
+manpage written from C source by Paul Slootman <paul@debian.org>.
