@@ -389,7 +389,7 @@ static int get_next_command(char *line, int linelen, int timeout)
 	fd_set         rmask;
 	char          *stop;
 	int            p;
-	int            c;
+	char           c;
 	int            rc;
 
 	*line = '\0';
