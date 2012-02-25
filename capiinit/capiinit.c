@@ -161,10 +161,11 @@ static int is_module_loaded(char *module)
 	return 0;
 }
 
-static int load_module(char *module)
+static int load_module(char *module, int silently)
 {
 	char buf[1024];
-	snprintf(buf, sizeof(buf), "%s %s", MODPROBE, module);
+	snprintf(buf, sizeof(buf), "%s %s %s", MODPROBE, module,
+		 silently ? "2>/dev/null" : "");
 	return system(buf);
 }
 
@@ -368,7 +369,7 @@ static int load_driver(char *driver)
 		driver = "b1pci";
 	if (strcmp(driver, "c2") == 0)
 		driver = "c4";
-	return load_module(driver);
+	return load_module(driver, 0);
 }
 
 static int unload_driver(char *driver)
@@ -410,7 +411,7 @@ static int filesystem_available(char *fstype)
 
 static int load_filesystem(char *fstype)
 {
-	return load_module(fstype);
+	return load_module(fstype, 1);
 }
 
 static int unload_filesystem(char *fstype)
@@ -1154,7 +1155,7 @@ static int check_for_kernelcapi(void)
 {
 	if (access("/proc/capi/applications", 0) == 0)
 		return 0;
-	load_module("kernelcapi");
+	load_module("kernelcapi", 0);
 	if (access("/proc/capi/applications", 0) == 0)
 		return 0;
 	fprintf(stderr, "ERROR: cannot load module kernelcapi\n");
@@ -1165,7 +1166,7 @@ static int check_for_capi(void)
 {
 	if (access("/proc/capi/capi20", 0) == 0)
 		return 0;
-	load_module("capi");
+	load_module("capi", 0);
 	if (access("/proc/capi/capi20", 0) == 0)
 		return 0;
 	fprintf(stderr, "ERROR: cannot load module capi20\n");
@@ -1200,10 +1201,6 @@ static int check_for_capifs(void)
 	if (filesystem_available("devfs"))
 		return 0;
 #endif
-	load_filesystem("capifs");
-	if (filesystem_available("capifs")) 
-		return 0;
-	fprintf(stderr, "WARNING: filesystem capifs not available\n");
 	return -1;
 }
 
