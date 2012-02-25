@@ -71,7 +71,7 @@ AC_DEFUN(AC_PATH_TCL,
                AC_CHECKING([whether tcl is installed in a standard location...])
 
                AC_CHECK_LIB(tcl, Tcl_CreateInterp,
-                  [ tcl_library="-ltcl -lm -ldl" ],
+                  [ tcl_library="-ltcl" ],
                   [
                      AC_CHECKING([whether tcl is installed in a special locations...])
 
@@ -82,12 +82,12 @@ AC_DEFUN(AC_PATH_TCL,
                      if (test ! "$searchresult" = "NO")
                      then
                         AC_CHECK_LIB(tcl, Tcl_CreateInterp,
-                           [ tcl_library="-L$searchresult -ltcl -lm -ldl" ],
+                           [ tcl_library="-L$searchresult -ltcl" ],
                            ,
-                           -L$searchresult -lm -ldl)
+                           -L$searchresult)
                      fi
                   ],
-                  -lm -ldl)
+                  )
             ])
       ])
 
