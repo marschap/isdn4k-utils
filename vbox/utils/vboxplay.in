@@ -15,7 +15,7 @@ fi
 
 SAMPLE=$1
 VOLUME=$2
-if [ "$VOLUME" == "" ]; then
+if [ -z "$VOLUME" ]; then
    VOLUME=5;
 fi
 
