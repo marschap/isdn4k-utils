@@ -1,5 +1,5 @@
 .\" based on: $XConsortium: xload.man,v 1.29 94/04/17 20:43:44 matt Exp $
-.TH XISDNLOAD 1 "Release 6" "X Version 11"
+.TH XISDNLOAD 1x "Release 6" "X Version 11"
 .SH NAME
 xisdnload \- ISDN load average display for X
 .SH SYNOPSIS

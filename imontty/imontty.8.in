@@ -6,7 +6,7 @@
 .\" groff -man -Tascii imontty.8 for ASCII output, or
 .\" groff -man -Tps imontty.8 for PostScript output
 .\"
-.TH IMONTTY 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.TH IMONTTY 1 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .SH NAME
 imontty \- display status of all ISDN lines
 .SH SYNOPSIS
