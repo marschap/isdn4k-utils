@@ -73,7 +73,7 @@ vboxctrl.o:	$(HEADERS) vboxctrl.c
 		$(CC) $(CFLAGS) -c vboxctrl.c
 
 vboxbeep.o:	$(HEADERS) vboxbeep.c
-		$(CC) $(CFLAGS) -c vboxbeep.c
+		$(CC) $(CFLAGS) -fPIC -fPIE -c vboxbeep.c
 
 vboxd.o:	$(HEADERS) vboxd.c
 		$(CC) $(CFLAGS) -DVBOXDRC='"$(VBOX_VBOXDCONF)"' -c vboxd.c
@@ -140,7 +140,7 @@ vboxctrl:	  $(VBOXCTRLOBJS)
 VBOXBEEPOBJS	= vboxbeep.o
 
 vboxbeep:	  $(VBOXBEEPOBJS)
-		  $(CC) $(CFLAGS) $(VBOXBEEPOBJS) -o vboxbeep -L. -lvbox
+		  $(CC) $(CFLAGS) $(VBOXBEEPOBJS) -pie -o vboxbeep -L. -lvbox
 
 #----------------------------------------------------------------------------#
 # Compiling vboxd                                                            #

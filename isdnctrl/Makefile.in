@@ -4,10 +4,10 @@
 # (C) 1997 Fritz Elfert
 #
 #
-SHELL			  = /bin/sh
+SHELL			= /bin/sh
 CFLAGS			= -Wall -O2
 INCLUDES		= -I.
-LDFLAGS			= @LIBS@ 
+LDFLAGS			= @LIBS@
 PROGRAM			= isdnctrl
 MODULES			= isdnctrl.o
 MANPAGES		= isdnctrl.8
@@ -15,9 +15,9 @@ SBINDIR			= @CONFIG_SBINDIR@
 MANDIR			= @CONFIG_MANDIR@
 MAN8DIR			= $(MANDIR)/man8
 INSTALL			= @INSTALL@
-INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
+INSTALL_PROGRAM		= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
-CC				= @CC@ -DVERSION=\"@I4LVERSION@\"
+CC			= @CC@ -DVERSION=\"@I4LVERSION@\"
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
 
@@ -50,7 +50,7 @@ all: $(PROGRAM)
 endif
 
 %.o: %.c Makefile
-	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $(COPTS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEFS) $(COPTS) -fPIE -fPIC -c -o $@ $<
 
 all: $(PROGRAM)
 
@@ -74,7 +74,7 @@ endif
 	rm -f $<.tmp
 
 $(PROGRAM):	$(MODULES)
-	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -o $@
+	$(CC) $(CFLAGS) $(MODULES) $(LDFLAGS) -pie -o $@
 
 install-man: $(MANPAGES)
 	$(INSTALL) -d $(DESTDIR)$(MAN8DIR)

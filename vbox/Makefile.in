@@ -53,8 +53,8 @@ INSTALL_DIRS	= @INSTALL@ -d
 #----------------------------------------------------------------------------#
 
 CC		= @CC@
-VBOX_CFLAGS	= @CFLAGS@ @LINK_NCURSES_INCL@ @LINK_TCL_INCL@ -Wall -fno-strict-aliasing
-LDFLAGS		= @LDFLAGS@
+VBOX_CFLAGS	= @CFLAGS@ @LINK_NCURSES_INCL@ @LINK_TCL_INCL@ -Wall -fno-strict-aliasing -fpie
+LDFLAGS		= @LDFLAGS@ -pie
 
 #----------------------------------------------------------------------------#
 # [*] Some needed programs:                                                  #
