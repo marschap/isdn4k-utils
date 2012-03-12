@@ -37,6 +37,16 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 AC_CHECK_HEADERS(linux/capi.h)
 
+AC_COMPUTE_INT([CAPI_MODULE_LOADER_VERSION], [[MODULE_LOADER_VERSION]],
+	[
+		#include <sys/types.h>
+		#include "capi_mod.h"
+	],
+	[AC_MSG_ERROR([capi library MODULE_LOADER_VERSION cannot be calculated])]
+)
+AC_MSG_RESULT([Capi library module loader version ${CAPI_MODULE_LOADER_VERSION} detected]) 
+AC_SUBST(CAPI_MODULE_LOADER_VERSION)
+
 dnl Checks for library functions.
 AC_CHECK_FUNCS(select)
 

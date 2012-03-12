@@ -40,8 +40,9 @@ host_triplet = @host@
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(include_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/capi20.pc.in $(top_srcdir)/configure config.guess \
-	config.sub install-sh ltmain.sh missing
+	$(srcdir)/capi20.pc.in $(top_srcdir)/configure COPYING \
+	COPYING.LIB config.guess config.sub install-sh ltmain.sh \
+	missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -82,7 +83,7 @@ libcapi20dyn_a_LIBADD =
 am_libcapi20dyn_a_OBJECTS = libcapi20dyn_a-capidyn.$(OBJEXT)
 libcapi20dyn_a_OBJECTS = $(am_libcapi20dyn_a_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(modules_LTLIBRARIES)
-lib_capi_mod_fritzbox_la_LIBADD =
+lib_capi_mod_fritzbox_la_DEPENDENCIES = libcapi20.la
 am_lib_capi_mod_fritzbox_la_OBJECTS =  \
 	lib_capi_mod_fritzbox_la-capi_mod_fritzbox.lo
 lib_capi_mod_fritzbox_la_OBJECTS =  \
@@ -91,7 +92,7 @@ lib_capi_mod_fritzbox_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(lib_capi_mod_fritzbox_la_CFLAGS) $(CFLAGS) \
 	$(lib_capi_mod_fritzbox_la_LDFLAGS) $(LDFLAGS) -o $@
-lib_capi_mod_rcapi_la_LIBADD =
+lib_capi_mod_rcapi_la_DEPENDENCIES = libcapi20.la
 am_lib_capi_mod_rcapi_la_OBJECTS =  \
 	lib_capi_mod_rcapi_la-capi_mod_rcapi.lo
 lib_capi_mod_rcapi_la_OBJECTS = $(am_lib_capi_mod_rcapi_la_OBJECTS)
@@ -99,7 +100,7 @@ lib_capi_mod_rcapi_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(lib_capi_mod_rcapi_la_CFLAGS) $(CFLAGS) \
 	$(lib_capi_mod_rcapi_la_LDFLAGS) $(LDFLAGS) -o $@
-lib_capi_mod_std_la_LIBADD =
+lib_capi_mod_std_la_DEPENDENCIES = libcapi20.la
 am_lib_capi_mod_std_la_OBJECTS = lib_capi_mod_std_la-capi_mod_std.lo
 lib_capi_mod_std_la_OBJECTS = $(am_lib_capi_mod_std_la_OBJECTS)
 lib_capi_mod_std_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -155,6 +156,7 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+CAPI_MODULE_LOADER_VERSION = @CAPI_MODULE_LOADER_VERSION@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -277,13 +279,16 @@ modulesdir = $(libdir)/capi
 modules_LTLIBRARIES = lib_capi_mod_std.la lib_capi_mod_fritzbox.la lib_capi_mod_rcapi.la
 lib_capi_mod_std_la_SOURCES = capi_mod_std.c
 lib_capi_mod_std_la_CFLAGS = -fno-strict-aliasing
-lib_capi_mod_std_la_LDFLAGS = -shared -version-info 2:0:0
+lib_capi_mod_std_la_LDFLAGS = -shared -version-info @CAPI_MODULE_LOADER_VERSION@:0:0
+lib_capi_mod_std_la_LIBADD = libcapi20.la
 lib_capi_mod_fritzbox_la_SOURCES = capi_mod_fritzbox.c
 lib_capi_mod_fritzbox_la_CFLAGS = -fno-strict-aliasing
-lib_capi_mod_fritzbox_la_LDFLAGS = -shared -version-info 2:0:0
+lib_capi_mod_fritzbox_la_LDFLAGS = -shared -version-info @CAPI_MODULE_LOADER_VERSION@:0:0
+lib_capi_mod_fritzbox_la_LIBADD = libcapi20.la
 lib_capi_mod_rcapi_la_SOURCES = capi_mod_rcapi.c
 lib_capi_mod_rcapi_la_CFLAGS = -fno-strict-aliasing
-lib_capi_mod_rcapi_la_LDFLAGS = -shared -version-info 2:0:0
+lib_capi_mod_rcapi_la_LDFLAGS = -shared -version-info @CAPI_MODULE_LOADER_VERSION@:0:0
+lib_capi_mod_rcapi_la_LIBADD = libcapi20.la
 libcapi20dyn_a_SOURCES = capidyn.c
 libcapi20dyn_a_CFLAGS = -fPIC
 # libcapi20_la_LIBADD = $(LIBADD_DL)
@@ -361,7 +366,7 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
-libcapi20dyn.a: $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_DEPENDENCIES)
+libcapi20dyn.a: $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_DEPENDENCIES) 
 	-rm -f libcapi20dyn.a
 	$(libcapi20dyn_a_AR) libcapi20dyn.a $(libcapi20dyn_a_OBJECTS) $(libcapi20dyn_a_LIBADD)
 	$(RANLIB) libcapi20dyn.a
@@ -427,13 +432,13 @@ clean-modulesLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-lib_capi_mod_fritzbox.la: $(lib_capi_mod_fritzbox_la_OBJECTS) $(lib_capi_mod_fritzbox_la_DEPENDENCIES)
+lib_capi_mod_fritzbox.la: $(lib_capi_mod_fritzbox_la_OBJECTS) $(lib_capi_mod_fritzbox_la_DEPENDENCIES) 
 	$(lib_capi_mod_fritzbox_la_LINK) -rpath $(modulesdir) $(lib_capi_mod_fritzbox_la_OBJECTS) $(lib_capi_mod_fritzbox_la_LIBADD) $(LIBS)
-lib_capi_mod_rcapi.la: $(lib_capi_mod_rcapi_la_OBJECTS) $(lib_capi_mod_rcapi_la_DEPENDENCIES)
+lib_capi_mod_rcapi.la: $(lib_capi_mod_rcapi_la_OBJECTS) $(lib_capi_mod_rcapi_la_DEPENDENCIES) 
 	$(lib_capi_mod_rcapi_la_LINK) -rpath $(modulesdir) $(lib_capi_mod_rcapi_la_OBJECTS) $(lib_capi_mod_rcapi_la_LIBADD) $(LIBS)
-lib_capi_mod_std.la: $(lib_capi_mod_std_la_OBJECTS) $(lib_capi_mod_std_la_DEPENDENCIES)
+lib_capi_mod_std.la: $(lib_capi_mod_std_la_OBJECTS) $(lib_capi_mod_std_la_DEPENDENCIES) 
 	$(lib_capi_mod_std_la_LINK) -rpath $(modulesdir) $(lib_capi_mod_std_la_OBJECTS) $(lib_capi_mod_std_la_LIBADD) $(LIBS)
-libcapi20.la: $(libcapi20_la_OBJECTS) $(libcapi20_la_DEPENDENCIES)
+libcapi20.la: $(libcapi20_la_OBJECTS) $(libcapi20_la_DEPENDENCIES) 
 	$(libcapi20_la_LINK) -rpath $(libdir) $(libcapi20_la_OBJECTS) $(libcapi20_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
