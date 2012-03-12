@@ -19,14 +19,17 @@ modules_LTLIBRARIES = lib_capi_mod_std.la lib_capi_mod_fritzbox.la lib_capi_mod_
 lib_capi_mod_std_la_SOURCES = capi_mod_std.c
 lib_capi_mod_std_la_CFLAGS = -fno-strict-aliasing
 lib_capi_mod_std_la_LDFLAGS = -shared -version-info 2:0:0
+lib_capi_mod_std_la_LIBADD = libcapi20.la
 
 lib_capi_mod_fritzbox_la_SOURCES = capi_mod_fritzbox.c
 lib_capi_mod_fritzbox_la_CFLAGS = -fno-strict-aliasing
 lib_capi_mod_fritzbox_la_LDFLAGS = -shared -version-info 2:0:0
+lib_capi_mod_fritzbox_la_LIBADD = libcapi20.la
 
 lib_capi_mod_rcapi_la_SOURCES = capi_mod_rcapi.c
 lib_capi_mod_rcapi_la_CFLAGS = -fno-strict-aliasing
 lib_capi_mod_rcapi_la_LDFLAGS = -shared -version-info 2:0:0
+lib_capi_mod_rcapi_la_LIBADD = libcapi20.la
 
 libcapi20dyn_a_SOURCES = capidyn.c
 libcapi20dyn_a_CFLAGS = -fPIC
