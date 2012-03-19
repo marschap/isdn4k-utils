@@ -43,10 +43,10 @@
  * We will use shared memory to allow unique application IDs in the system
  *
  */
-#define CAPI20_SHARED_MEM_VERSION	0x01000009
+#define CAPI20_SHARED_MEM_VERSION	0x01000010
 #define CAPI20_SHARED_MEM_NAME		"/CAPI20_shared_memory"
 #define CAPI20_SEMAPHORE_NAME		"/CAPI20_shared_sem"
-#define CAPI20_SHARED_MEM_MODE		(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+#define CAPI20_SHARED_MEM_MODE		(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
 
 #define MAX_APPL 1024
 
