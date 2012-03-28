@@ -809,7 +809,7 @@ and the hardware address of the network interface found.
 .SH DIAGNOSTICS
 .LP
 Messages are sent to the syslog daemon using facility LOG_DAEMON.
-(This can be overriden by recompiling \fIipppd\fR with the macro
+(This can be overridden by recompiling \fIipppd\fR with the macro
 LOG_PPP defined as the desired facility.)  In order to see the error
 and debug messages, you will need to edit your /etc/syslog.conf file
 to direct the messages to the desired output device or file.

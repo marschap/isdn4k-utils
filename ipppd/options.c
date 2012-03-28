@@ -1322,7 +1322,7 @@ static int setcallbacktype(int slot,char **argv)
   case CB_NAME:
     break;
   default:
-    option_error("unkown callback type: %d", type);
+    option_error("unknown callback type: %d", type);
     return 0;
   }
   lcp_wantoptions[slot].cbopt.type = type;

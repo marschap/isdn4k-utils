@@ -449,6 +449,6 @@ void cbcp_recvack(cbcp_state *us, char *pckt, int len)
 void cbcp_up(cbcp_state *us)
 {
 	int linkunit = us->us_unit;
-    lcp_close( lns[linkunit].lcp_unit ,"callback initiated sucessfully");
+    lcp_close( lns[linkunit].lcp_unit ,"callback initiated successfully");
 	lns[linkunit].phase = PHASE_TERMINATE;
 }
