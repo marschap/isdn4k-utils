@@ -4,7 +4,7 @@
  * Copyright (c) 1995 Pedro Roque Marques
  * All rights reserved.
  *
- * 2000-07-25 Callback improvements by richard.kunze@web.de 
+ * 2000-07-25 Callback improvements by richard.kunze@web.de
  *
  * Redistribution and use in source and binary forms are permitted
  * provided that the above copyright notice and this paragraph are
@@ -92,7 +92,7 @@ struct protent cbcp_protent = {
 };
 
 
-cbcp_state cbcp[NUM_PPP];	
+cbcp_state cbcp[NUM_PPP];
 
 /* internal prototypes */
 
@@ -109,7 +109,7 @@ static void cbcp_init(int cbcp_unit)
 
     us = &cbcp[cbcp_unit];
     memset(us, 0, sizeof(cbcp_state));
-    us->us_unit = -1;    
+    us->us_unit = -1;
     us->us_type |= (1 << CB_CONF_NO);
     us->us_type |= (1 << CB_CONF_USER);
     us->us_type |= (1 << CB_CONF_LIST);
@@ -168,7 +168,7 @@ static void cbcp_input(int cbcp_unit, u_char *inpacket, int pktlen)
 #endif
 
     len -= CBCP_MINLEN;
- 
+
     switch(code) {
     case CBCP_REQ:
         us->us_id = id;
@@ -223,7 +223,7 @@ static int cbcp_printpkt(u_char *p, int plen,
     if (code >= 1 && code <= sizeof(cbcp_codenames) / sizeof(char *))
 	printer(arg, " %s", cbcp_codenames[code-1]);
     else
-	printer(arg, " code=0x%x", code); 
+	printer(arg, " code=0x%x", code);
 
     printer(arg, " id=0x%x", id);
     len -= HEADERLEN;
@@ -246,7 +246,7 @@ static int cbcp_printpkt(u_char *p, int plen,
 	    if (opt >= 1 && opt <= sizeof(cbcp_optionnames) / sizeof(char *))
 	    	printer(arg, " %s", cbcp_optionnames[opt-1]);
 	    else
-	        printer(arg, " option=0x%x", opt); 
+	        printer(arg, " option=0x%x", opt);
 
 	    if (olen > 2) {
 	        GETCHAR(delay, p);
@@ -337,7 +337,7 @@ void cbcp_resp(cbcp_state *us)
 	struct callback_opts *cbopt;
 
 	cbopt = &lcp_wantoptions[ lns[us->us_unit].lcp_unit ].cbopt;
-	
+
 	/* Always allow "no callback" and admin defined callback */
 	us->us_type |= (1 << CB_CONF_NO);
 	us->us_type |= (1 << CB_CONF_ADMIN);
@@ -407,13 +407,13 @@ void cbcp_send(cbcp_state *us, u_char code, u_char *buf, int len)
     outp = outpacket_buf;
 
     outlen = 4 + len;
-    
+
     MAKEHEADER(outp, PPP_CBCP);
 
     PUTCHAR(code, outp);
     PUTCHAR(us->us_id, outp);
     PUTSHORT(outlen, outp);
-    
+
     if (len)
         BCOPY(buf, outp, len);
 
@@ -429,7 +429,7 @@ void cbcp_recvack(cbcp_state *us, char *pckt, int len)
     if (len) {
         GETCHAR(type, pckt);
 	GETCHAR(opt_len, pckt);
-     
+
 	if (opt_len > 2)
 	    GETCHAR(delay, pckt);
 
@@ -452,6 +452,3 @@ void cbcp_up(cbcp_state *us)
     lcp_close( lns[linkunit].lcp_unit ,"callback initiated sucessfully");
 	lns[linkunit].phase = PHASE_TERMINATE;
 }
-
-
-
