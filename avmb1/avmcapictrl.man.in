@@ -138,7 +138,7 @@ can be selected from the following values:
 memory address if needed by driver
 .br
 .I cardnr
-only usefull with driver t1isa
+only useful with driver t1isa
 
 .SH AUTHOR
 Carsten Paeth <calle@calle.in-berlin.de>
