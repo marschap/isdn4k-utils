@@ -29,7 +29,7 @@ subsystem, the cause messages visible to the user are unified to avoid
 confusion. All user visible cause messages are displayed as hexadecimal
 strings. These strings always have the location coded in the first byte,
 regardless if using 1TR6 or EDSS1. When using EDSS1, these strings are
-preceeded by the character 'E'.
+preceded by the character 'E'.
 .SH CAUSE MESSAGES WITH EDSS1
 .SS LOCATION
 The following location codes are defined when using EDSS1:

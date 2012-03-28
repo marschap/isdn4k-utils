@@ -169,7 +169,7 @@ data transfer is stopped by a remote hangup,
 is sent to the application, while stopping data transfer with one
 of the DLE sequences,
 .B VCON
-is sent. In any case, the message is preceeded by the appropriate
+is sent. In any case, the message is preceded by the appropriate
 DLE sequence for end of audio data and/or abort respectively.
 
 On outgoing voice calls, the emulator responds with
