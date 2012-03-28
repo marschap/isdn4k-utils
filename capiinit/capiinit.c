@@ -3,8 +3,8 @@
  *
  * $Log: capiinit.c,v $
  * Revision 1.17  2005/02/21 17:52:00  keil
- * * have a seperate config directory for firmware
- * * have a seperate config directory for card tools
+ * * have a separate config directory for firmware
+ * * have a separate config directory for card tools
  *
  * Revision 1.16  2004/01/19 09:15:57  calle
  * Always use capifs, don't trust devfs.

@@ -41,7 +41,7 @@ on top of this library:
 
 - An EUROFILE server which can serve multiple connections
   simulatneously and supports navigation (i.e. changing directories).
-  User authentification is provided by a seperate
+  User authentification is provided by a separate
   authentification library derived from wu-ftpd which allows for fine
   grained access control based on user-id, password, and remote isdn
   phone number. The design allows for easily exchanging the

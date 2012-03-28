@@ -91,7 +91,7 @@ entry2 = blabla2
   ...
   }
 # ^-------------- Hier wird das Ende von Eintrag "ENTRY3" eingeleitet.
-#                 Das Zeichen "}" muss in einer seperaten Zeile alleine
+#                 Das Zeichen "}" muss in einer separaten Zeile alleine
 #                 stehen.
 
 [SECTION2]

@@ -288,7 +288,7 @@ static void usage(void)
 	fprintf(stderr, "-h, --help             Displays this help text.\n");
 	fprintf(stderr, "-v, --version          Displays program version.\n");
 	fprintf(stderr, "\n");
-	fprintf(stderr, "Hours to play sound with the pc speaker must be specified in 24-hour-format.\nyou can use ',' or '-' to seperate hours or specify time ranges (eg 9,17-22).\nA '--sound=\"*\"' means at every time and '--sound=\"-\"' means at no time.\n\nThe option '--messagebox' can be used more than one time, so you can watch\nmax. %d seperate directories.\n", MAX_MESSAGE_BOXES);
+	fprintf(stderr, "Hours to play sound with the pc speaker must be specified in 24-hour-format.\nyou can use ',' or '-' to separate hours or specify time ranges (eg 9,17-22).\nA '--sound=\"*\"' means at every time and '--sound=\"-\"' means at no time.\n\nThe option '--messagebox' can be used more than one time, so you can watch\nmax. %d separate directories.\n", MAX_MESSAGE_BOXES);
 	fprintf(stderr, "\n");
 
 	free_resources();

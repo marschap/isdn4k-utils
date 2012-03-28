@@ -527,7 +527,7 @@ static int check_client_access_start(char *name, char *addr)
         if ((line[0] != 'L') || (line[1] != ':')) continue;
 
         /*
-         * Split the current line into seperate fields.
+         * Split the current line into separate fields.
          */
 
         for (list[0] = line, i = 0, p = line; ((*p) && (i < 3)); p++)
@@ -596,7 +596,7 @@ static int check_client_access_login(char *name, char *addr, char *user, char *p
 	while (streamio_gets(line, VBOXD_LEN_ACCESSLINE, accesslist))
 	{
 		/*
-		 * Split the current line into seperate fields.
+		 * Split the current line into separate fields.
 		 */
 
 		if ((line[0] != 'A') || (line[1] != ':')) continue;

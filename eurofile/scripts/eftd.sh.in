@@ -67,7 +67,7 @@ X25ROUTE=x25route
 # The MSN (without your local area code) where eftd shall listen for
 # connections.
 EFT_SERVER_MSN=xxxxx
-# It is possible to put several, blank-seperated, MSNs in this variable
+# It is possible to put several, blank-separated, MSNs in this variable
 # which are assigned cyclically to the isdn interfaces below. This might be
 # useful if you want to accept connections from several S0_intrafaces that
 # cannot be configured for the same MSNs. In that case, use something like

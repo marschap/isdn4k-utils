@@ -45,7 +45,7 @@ eftp supports the following command line options:
 	-u USER[/PASSWORD]
 			The user identity used to login to the
 			remote EUROFILE server. The password can
-			be appended to the user id seperated by a
+			be appended to the user id separated by a
 			'/' character. If no '/' is present in the
 			paramater of the -u option, eftp will prompt
 			for a password.

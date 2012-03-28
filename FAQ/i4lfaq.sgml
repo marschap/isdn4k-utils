@@ -590,7 +590,7 @@ stuff.
 Yes, isdn4linux does support subaddressing (available in France).
 To configure it, give HiSax the number in this format:
 <tt>&lt;number&gt;.&lt;subaddress&gt;</tt>. However, you may have to order
-it seperately and pay extra for receiving it (sending is free), depeding
+it separately and pay extra for receiving it (sending is free), depeding
 on your ISDN provider.
 Additionally, please note that if you are connected through a PBX, it will
 most likely filter out all the subaddressing stuff.
@@ -5062,7 +5062,7 @@ ipppd. Please note these hints from NOTES.IPPPD:
   ie: 'callback 0'       -> simple callback (info via auth. etc.)
       'callback 3,12346' -> us E.164 (tel) number 123456 for callback
       'callback 6' is different. This value means, that the whole negotiation
-  is done with a seperate protocol after the authentification phase. Currently
+  is done with a separate protocol after the authentification phase. Currently
   it's not possible to set any options in this case. The ipppd accepts
   everything from the remote side.
 </verb>
