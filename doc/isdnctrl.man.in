@@ -193,7 +193,7 @@ This call initiates dialing of an
 network interface, if it is not connected. Normally, this ioctl is not
 needed, because
 .SM ISDN
-network interface perform dial on demand by deafult.
+network interface perform dial on demand by default.
 .TP
 Argument:
 .I arg
