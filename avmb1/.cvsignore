@@ -1,6 +1,0 @@
-config.*
-*.o
-*.8
-avmcapictrl
-avmcapictrl.man
-Makefile

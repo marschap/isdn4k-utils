@@ -1,8 +1,0 @@
-config.log
-config.status
-.depend
-*.latin1
-Makefile
-policy.h
-zone-??-*.cdb
-zone-default-x.cdb
