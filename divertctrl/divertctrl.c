@@ -556,7 +556,7 @@ static void do_command(void)
                               }
                            }
                           if (read_char_count == 18)
-                             puts("unkown");
+                             puts("unknown");
                         }
                      }
                      while (*read_ptr && (*read_ptr != '\r'))

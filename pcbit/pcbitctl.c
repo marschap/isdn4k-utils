@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 			force = 1;
 			break;
 		default:
-			fprintf(stderr, "unkown option %c\n", c);
+			fprintf(stderr, "unknown option %c\n", c);
 			break;
 		}
 		if (choice)
