@@ -98,7 +98,7 @@
  *    ignored (controlled by ignore_unknown_IE in isdnlog/isdnlog.h).
  *  - Added some information elements to isdnlog/messages.c.
  *  - Increased the length of msn (local number) in struct telnum.
- *  - Fixed seperation of country and area code for long numbers
+ *  - Fixed separation of country and area code for long numbers
  *    in getDest, tools/dest.c.
  *  - Changed broken (with gcc 2.95.2) generation of .depend.  The old
  *    output did not consider the location of objectfiles in subdirs.
@@ -508,7 +508,7 @@
  *
  * Revision 1.85  1999/10/29 19:46:00  akool
  * isdnlog-3.60
- *  - sucessfully ported/tested to/with:
+ *  - successfully ported/tested to/with:
  *      - Linux-2.3.24 SMP
  *      - egcs-2.91.66
  *    using -DBIG_PHONE_NUMBERS

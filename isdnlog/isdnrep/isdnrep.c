@@ -2589,7 +2589,7 @@ static void repair(one_call *cur_call)
 					} 
 				} /* if zone name first time */
 			} /* if valid zones_.. index */
-    } /* if getRate sucessful */
+    } /* if getRate successful */
   } /* if DIALOUT && duration > && num[CALLED] */
   if (is_defsrc && defsrc.mode == 2) /* do not display default source number */
     *cur_call->num[CALLING] = 0;

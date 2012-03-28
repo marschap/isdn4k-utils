@@ -810,7 +810,7 @@ third day of the current month
 
 .TP
 [CC]YY\-MM\-DDThh:mm:ss
-specifies a year, a moment, or something between.  Each seperator
+specifies a year, a moment, or something between.  Each separator
 \'-', 'T', and ':' can be omitted or not.  If the first '-' is
 missing, the century must be given.
 

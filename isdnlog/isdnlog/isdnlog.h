@@ -62,7 +62,7 @@
  *    ignored (controlled by ignore_unknown_IE in isdnlog/isdnlog.h).
  *  - Added some information elements to isdnlog/messages.c.
  *  - Increased the length of msn (local number) in struct telnum.
- *  - Fixed seperation of country and area code for long numbers
+ *  - Fixed separation of country and area code for long numbers
  *    in getDest, tools/dest.c.
  *  - Changed broken (with gcc 2.95.2) generation of .depend.  The old
  *    output did not consider the location of objectfiles in subdirs.

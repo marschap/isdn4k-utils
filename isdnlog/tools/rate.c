@@ -2255,7 +2255,7 @@ again:
       warning (dat, "Unknown tag '%c'", *s);
       break;
     } /* /switch tag */
-  } /* /while read from current ratefile sucessful */
+  } /* /while read from current ratefile successful */
   fclose(stream);
   if (include) {
     free(files[include]);

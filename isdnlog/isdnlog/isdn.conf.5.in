@@ -157,7 +157,7 @@ month. Optional.
 .B REPOPTIONS
 General commandline options for isdnrep. The options noted here have
 the same effect as appended to each isdnrep commandline. Options are
-seperated by
+separated by
 .B ;
 instead of the usual space.
 .br
