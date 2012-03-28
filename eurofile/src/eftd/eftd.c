@@ -109,11 +109,11 @@ static int eft_check_user( struct eft *eft, char* user, char* pass, char *isdn_n
 	verified = wuftp_check_user(user, pass, isdn_no);
 	printf("user check: ruid=%d, euid=%d\n",getuid(),geteuid());
 	/* 
-	 * Be paranoid about buggy authentification functions that claim
+	 * Be paranoid about buggy authentication functions that claim
 	 * success but are still running with super user priviliges.
 	 */
 	if (verified && !geteuid()){
-		tdu_printf(TDU_LOG_ERR, "eftd: BUG in authentification procedure.\n (claims success, but process runs still with root priviliges).\nRejecting login for security reasons.\n");
+		tdu_printf(TDU_LOG_ERR, "eftd: BUG in authentication procedure.\n (claims success, but process runs still with root priviliges).\nRejecting login for security reasons.\n");
 		verified=0;
 	}
 

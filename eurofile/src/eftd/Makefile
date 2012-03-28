@@ -33,7 +33,7 @@ AUTH_LIB = -lwuauth
 ifdef EFT_AUTHDIR
 EFT_LIBDIR_FLAGS += -L $(EFT_AUTHDIR) 
 eftd: $(EFT_AUTHDIR)/libwuauth.a 
-# there is no header file for interfacing the authentification library yet
+# there is no header file for interfacing the authentication library yet
 endif
 endif
 

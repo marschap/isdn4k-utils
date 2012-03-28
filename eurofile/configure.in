@@ -27,7 +27,7 @@ fi
 # Default config options to be applied when configuring stand-alone
 #
 CONFIG_EFTD=${CONFIG_EFTD:-y}
-# Shall eurofile daemon use authentification modules from wu-ftpd?
+# Shall eurofile daemon use authentication modules from wu-ftpd?
 CONFIG_EFTD_WUAUTH=${CONFIG_EFTD_WUAUTH:-y}
 CONFIG_EFTP=${CONFIG_EFTP:-y}
 # This will be redefined to "n" by the configure script if no readline

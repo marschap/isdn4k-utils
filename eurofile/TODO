@@ -93,7 +93,7 @@ if anybody is interested:
 	  GUI file managers) or write an eft-http gateway by means
           of the eftp4linux core library.
 
-   Support other authentification methods (PAM comes to mind) 
+   Support other authentication methods (PAM comes to mind) 
 
 
    And the "to do" list is incomplete as well.

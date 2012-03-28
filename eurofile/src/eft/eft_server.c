@@ -110,7 +110,7 @@ static int assoc_ind( struct tdu_user *usr, struct tdu_param *par)
 		 * passwd database.
 		 *
 		 * FIXME:
-		 * This check might be inappropriate if other authentification
+		 * This check might be inappropriate if other authentication
 		 * methods (not based on /etc/passwd) are used.
 		 */
 		
@@ -126,7 +126,7 @@ static int assoc_ind( struct tdu_user *usr, struct tdu_param *par)
 			
 			if( ! pw ){
 				/* user is unknown (not in /etc/passwd).*/
-				tdu_printf(TDU_LOG_LOG, "user %s not known, trying alternate authentification as user \"%s\" instead\n",
+				tdu_printf(TDU_LOG_LOG, "user %s not known, trying alternate authentication as user \"%s\" instead\n",
 					   user, eft_map_to_user);
 				user = eft_map_to_user;
 				pass = "";

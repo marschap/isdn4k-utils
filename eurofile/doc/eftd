@@ -134,7 +134,7 @@ OPTIONS
 		limits might be imposed by the mumber of physically
 		available isdn B-channels, the number of running
 		incoming isdn network interfaces configured with
-		"encap x25iface", or by the authentification procedure
+		"encap x25iface", or by the authentication procedure
 		(i.e. group limits configured in /etc/isdn/eftaccess).
 	
 		When multi mode is activated, the server forks an

@@ -51,7 +51,7 @@ glibc2 compatibility and misc other cleanups
 
 - [chg] src/eft* #include <stdlib.h> where needed for realpath()
 	(for glibc2 support)
-- [imp] added paranoia check in eftd.c authentification handling.
+- [imp] added paranoia check in eftd.c authentication handling.
 - [imp] wuauth/{main,access,acl}.c: reject login if access file is required
 	but opening or reading fails
 - [imp] wuauth/{*.c,config.h}: changed ordering of #include's and added
@@ -218,8 +218,8 @@ integrated changes provided by ms@msdatec.de
   - [new] eftd.c, option '-h/-?' 
   - [new] eftd.c, eft_check_user(), main(), show_help()
     user mapping (option -n)
-    if authentification fails and "eft_map_to_user" is not null, 
-	"eft_map_to_user" is tried for authentification (a password isn't
+    if authentication fails and "eft_map_to_user" is not null, 
+	"eft_map_to_user" is tried for authentication (a password isn't
 	supported yet)
   - [imp] eft_dir, eft_store_slist()
           hardcoded ".++eft_flat" replaced by eft_flat_dir_name

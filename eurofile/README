@@ -41,11 +41,11 @@ on top of this library:
 
 - An EUROFILE server which can serve multiple connections
   simulatneously and supports navigation (i.e. changing directories).
-  User authentification is provided by a separate
-  authentification library derived from wu-ftpd which allows for fine
+  User authentication is provided by a separate
+  authentication library derived from wu-ftpd which allows for fine
   grained access control based on user-id, password, and remote isdn
   phone number. The design allows for easily exchanging the
-  authentification routines by user-supplied versions.
+  authentication routines by user-supplied versions.
 
 This is all still alpha test software.
 That means it does certain tasks well at my site, but I know that
@@ -284,7 +284,7 @@ EUROfile project and I'd like to mention them explicitly:
 
  Point of Presence GmbH provided ftp server space.
 
- Georg v.Zezschwitz adapted the authentification code from the wu-ftpd
+ Georg v.Zezschwitz adapted the authentication code from the wu-ftpd
  which is now used inside the eft server.
 
  Martin Maurer provided protocol traces in the initial phase of development.

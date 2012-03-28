@@ -347,7 +347,7 @@ static void network_phase(int linkunit)
 			  syslog(LOG_INFO,"ipppd[%d]: passed 2\n",linkunit);
 			case 0:
 			   /* 
-				* login check when peer has authentification
+				* login check when peer has authentication
 				*/
 			  if(go->neg_chap)
 			  {
