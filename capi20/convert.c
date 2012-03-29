@@ -207,7 +207,7 @@ char *capi_info2str(_cword reason)
 
 	case 0x3500: return "Normal end of connection";
 	case 0x3501: return "Carrier lost";
-	case 0x3502: return "Error in negotation, i.e. no modem with error correction at the other end";
+	case 0x3502: return "Error in negotiation, i.e. no modem with error correction at the other end";
 	case 0x3503: return "No answer to protocol request";
 	case 0x3504: return "Remote modem only works in synchronous mode";
 	case 0x3505: return "Framing fails";
