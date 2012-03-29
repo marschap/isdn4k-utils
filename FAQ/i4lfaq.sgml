@@ -1798,7 +1798,7 @@ modprobe -v hisax protocol=2,2 type=28,28
 </code>
 <item>Driver ID: the HiSax driver uses 'HiSax' as the default for a driver
 id if you have only one card. For more cards you have to set the id
-explicitely, e.g. for two cards in the form of
+explicitly, e.g. for two cards in the form of
 <code>
 id="contr0%contr1"
 </code>

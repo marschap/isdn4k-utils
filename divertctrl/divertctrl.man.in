@@ -26,7 +26,7 @@ The diversion services for i4l may be used in two independent ways:
 .SH 1. Static call diversion   
 First possibility to handle diversions of incoming calls is to use static diversion
 provided inside the providers exchange.
-A static diversion once activated inside the providers exchange requires no interaction with i4l. The machine may even be shut down, but the diversion keeps active until it is explicitely deactivated.     
+A static diversion once activated inside the providers exchange requires no interaction with i4l. The machine may even be shut down, but the diversion keeps active until it is explicitly deactivated.     
 The divertctrl tool allows one to set/reset and query such static rules if the service is supported and has been subscribed at the providers side.
 This services are only available in some countries like germany. In other countries (like the netherlands) keypad control is used to de/activate such static rules.    
 Static rules may be set/reset and queried independently by MSN (multiple subscriber number), basic service (telephony, digital data, ..) and diversion procedure. Three diversion procedures are defined in the ETSI specs and may be used with the i4l diversion services:

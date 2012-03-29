@@ -125,7 +125,7 @@ static int comp = 0;
  */
 
 /* The history number in mode 3 (seqno) reset requests MUST be specified
-   explicitely, even if 1 */
+   explicitly, even if 1 */
 #define LZS_TW_M3_RSRQ_EXP_HIST	0x00000001
 
 /* The history number in mode 3 (seqno) reset acks MUST NOT be reflected
@@ -133,7 +133,7 @@ static int comp = 0;
 #define LZS_TW_M3_RSAK_NO_HIST	0x00000002
 
 /* The history number in mode 4 (ext) reset requests MUST be specified
-   explicitely, despite the fact that it cannot be anything but 1 */
+   explicitly, despite the fact that it cannot be anything but 1 */
 #define LZS_TW_M4_RSRQ_NO_HIST	0x00000004
 
 /* My Ascend will not recongnize mode 3 reset requests if no history is
@@ -972,7 +972,7 @@ static int lzsCompress(void *state, struct sk_buff *skbin,
    ohlen++;
   break;
  default:
-  /* Nothing to do - history is not sent explicitely */
+  /* Nothing to do - history is not sent explicitly */
  }
 
  switch(s->cmode) {
@@ -1547,7 +1547,7 @@ static __inline u32 get8(LZSState *s)
 }
 
 /* Get eleven bits - we just get 7 and then another 4 or we had to code
-   this explicitely */
+   this explicitly */
 
 static __inline u32 get11(LZSState *s)
 {
