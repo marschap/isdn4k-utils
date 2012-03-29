@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 
 	if (access(device, W_OK|R_OK|F_OK) != 0)
 	{
-		log(L_STDERR, "%s: device \"%s\" is not accessable.\n", vbasename, device);
+		log(L_STDERR, "%s: device \"%s\" is not accessible.\n", vbasename, device);
 
 		exit(5);
 	}

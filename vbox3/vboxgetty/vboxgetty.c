@@ -180,7 +180,7 @@ void main(int argc, char **argv)
 		
 		if (access(temppathname, F_OK|R_OK|W_OK) != 0)
 		{
-			fprintf(stderr, "\n%s: error: \"%s\" doesn't exist or is not accessable!\n\n", progbasename, temppathname);
+			fprintf(stderr, "\n%s: error: \"%s\" doesn't exist or is not accessible!\n\n", progbasename, temppathname);
 
 			quit_program(100);
 		}

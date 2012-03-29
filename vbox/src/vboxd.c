@@ -784,7 +784,7 @@ static void srv_header(int argc, char **argv)
 
 	if (chdir(client_spool) != 0)
 	{
-		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+		message("%s Access denied (messagebox inaccessible).\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		return;
 	}
@@ -840,7 +840,7 @@ static void srv_message(int argc, char **argv)
 
 	if (chdir(client_spool) != 0)
 	{
-		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+		message("%s Access denied (messagebox inaccessible).\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		return;
 	}
@@ -909,7 +909,7 @@ static void srv_list(int argc, char **argv)
 
 	if (chdir(client_spool) != 0)
 	{
-		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+		message("%s Access denied (messagebox inaccessible).\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		return;
 	}
@@ -1029,7 +1029,7 @@ static void srv_count(int argc, char **argv)
 
 	if (chdir(client_spool) != 0)
 	{
-		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+		message("%s Access denied (messagebox inaccessible).\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		return;
 	}
@@ -1084,7 +1084,7 @@ static void srv_toggle(int argc, char **argv)
 
 	if (chdir(client_spool) != 0)
 	{
-		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+		message("%s Access denied (messagebox inaccessible).\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		return;
 	}
@@ -1133,7 +1133,7 @@ static void srv_delete(int argc, char **argv)
 
 	if (chdir(client_spool) != 0)
 	{
-		message("%s Access denied (messagebox unaccessable).\r\n", VBOXD_VAL_ACCESSDENIED);
+		message("%s Access denied (messagebox inaccessible).\r\n", VBOXD_VAL_ACCESSDENIED);
 
 		return;
 	}
