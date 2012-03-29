@@ -590,7 +590,7 @@ stuff.
 Yes, isdn4linux does support subaddressing (available in France).
 To configure it, give HiSax the number in this format:
 <tt>&lt;number&gt;.&lt;subaddress&gt;</tt>. However, you may have to order
-it separately and pay extra for receiving it (sending is free), depeding
+it separately and pay extra for receiving it (sending is free), depending
 on your ISDN provider.
 Additionally, please note that if you are connected through a PBX, it will
 most likely filter out all the subaddressing stuff.
