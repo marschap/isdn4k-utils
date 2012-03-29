@@ -86,7 +86,7 @@ for example the value 123 only matches an incoming call to msn 123, but specifyi
 If your isdn line supports subaddressing it is advisable to terminate all msn values with a - because the msn check includes a possibly available subadress which then may be reported as 123.456 for msn 123 with subaddresses 456 for example.
 Subaddressing is a special DSS1 feature not available in most countries and normally needs to be specially subscribed. So most people need not to think about it.
 The value of si1 represents the numeric code of the desired and checked basic service for the incoming call. This value may be selected from the table below or just the value 0 specified for all services to match.
-The value of si2 represents an additional service indicator for high layer compatibilty and is only included for completeness. Just set it to 0 at the moment.
+The value of si2 represents an additional service indicator for high layer compatibility and is only included for completeness. Just set it to 0 at the moment.
 The callerid must match the number of the caller including the subaddress if available. Again the special wildcard - may be used to match specific groups of numbers. 
 Additionally a simple value of 0 may be specified. In this case the rule will match only calls coming in without a caller indentification. This will be the case if the caller originates from a network not supporting callerids or the caller suppressed the identification.
 The option parameter may take the values 0 to 2 and specifies whether the rule applies only during special local busy states.

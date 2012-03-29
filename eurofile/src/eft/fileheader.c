@@ -236,7 +236,7 @@ static time_t fh2timet(unsigned char *ts, int len){
 		tmp = 10*(ts[0]-'0') + (ts[1]-'0');
 		ts +=2;
 		len-=2;
-		/* y2k compatibilty hack */
+		/* y2k compatibility hack */
 		if( tmp < y2k_wrap ) tmp += 100;
 		t.tm_year = tmp;
 	}
