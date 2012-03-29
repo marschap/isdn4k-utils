@@ -596,10 +596,10 @@ void check_auth_options()
 		wo->neg_upap = 0;
 #ifdef RADIUS
 	if (ao->neg_chap && !ask_passwd && !fdpasswd &&
-		!have_chap_secret(our_name, remote_name) && !useradius ) {
+		!have_chap_secret(user, remote_name) && !useradius ) {
 #else
 	if (ao->neg_chap && !ask_passwd && !fdpasswd &&
-		!have_chap_secret(our_name, remote_name)) {
+		!have_chap_secret(user, remote_name)) {
 #endif
 		syslog(LOG_INFO,"info: no CHAP secret entry for this user!\n");
 		ao->neg_chap = 0;
