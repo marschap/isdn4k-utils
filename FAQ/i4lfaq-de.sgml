@@ -1502,8 +1502,7 @@ url="ftp://calle.in-berlin.de/pub/capi4linux/">.<BR>
 
 Zum Downloaden der Firmware ben&ouml;tigen Sie die beiden Perl-Scripts von:
 <url url="ftp://calle.in-berlin.de/pub/capi4linux/firmware/">.
-Diese Scripts bewirken den Download und das Auspacken der Firmware vom AVM
-FTP-Server: <url url="ftp://ftp.avm.de/cardware/b1/linux/">.
+Diese Scripts bewirken den Download und das Auspacken der Firmware: <url url="ftp://ftp.in-berlin.de/pub/capi4linux/firmware/b1/">.
 
 Zum Gebrauch der AVM an einem Anlagenanschluss musst Du 'DSS1 P2P' zum
 Ladebefehl der Firmware hinzuf&uuml;gen:

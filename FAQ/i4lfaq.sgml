@@ -1453,8 +1453,7 @@ CAPI 2.0 interface. You can get the newest driver from:
 <url url="ftp://ftp.in-berlin.de/pub/capi4linux/">.
 To get the firmware download the two perl scripts from:
 <url url="ftp://ftp.in-berlin.de/pub/capi4linux/firmware/">
-They will download and extract the firmware from tar files on the avm
-ftp server on: <url url="ftp://ftp.avm.de/cardware/b1/linux/">.
+They will download and extract the firmware from: <url url="ftp://ftp.in-berlin.de/pub/capi4linux/firmware/b1/3-11-03/">.
 
 To use the AVM on a point-to-point connection (&dquot;Anlagenanschluss&dquot;)
 add &dquot;DSS1 P2P&dquot; to the load command for the firmware, like:
