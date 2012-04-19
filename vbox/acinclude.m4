@@ -3,7 +3,10 @@ dnl # Test if all needed libraries for vboxgetty are installed. We will end  #
 dnl # the configure script if one is missing!                                #
 dnl #------------------------------------------------------------------------#
 
-AC_DEFUN(GND_PACKAGE_TCL,
+AC_LANG([C])
+
+
+AC_DEFUN([GND_PACKAGE_TCL],
    [
       HAVE_TCL_LIBS="n"
       HAVE_TCL_INCL="n"
@@ -37,12 +40,12 @@ AC_DEFUN(GND_PACKAGE_TCL,
       if (test "${gnd_use_tcl_lib}" = "")
       then
          gnd_1st_tcl_lib_test="tcl"
-         gnd_2nd_tcl_lib_test="tcl8.5"
-         gnd_3rd_tcl_lib_test="tcl8.4"
+         gnd_2nd_tcl_lib_test="tcl8.6"
+         gnd_3rd_tcl_lib_test="tcl8.5"
       else
          gnd_1st_tcl_lib_test="${gnd_use_tcl_lib}"
-         gnd_2nd_tcl_lib_test="tcl8.5"
-         gnd_3rd_tcl_lib_test="tcl8.4"
+         gnd_2nd_tcl_lib_test="tcl"
+         gnd_3rd_tcl_lib_test="tcl8.6"
       fi
 
       AC_CHECK_LIB(m,
@@ -134,7 +137,7 @@ dnl #------------------------------------------------------------------------#
 dnl # Checks if the ncurses package is installed:                            #
 dnl #------------------------------------------------------------------------#
 
-AC_DEFUN(GND_PACKAGE_NCURSES,
+AC_DEFUN([GND_PACKAGE_NCURSES],
    [
       LINK_NCURSES_LIBS=""
       LINK_NCURSES_INCL=""
@@ -164,7 +167,7 @@ AC_DEFUN(GND_PACKAGE_NCURSES,
 
          AC_CHECK_LIB(ncurses,
             resizeterm,
-            AC_DEFINE(HAVE_RESIZETERM)
+            AC_DEFINE(HAVE_RESIZETERM, [], [resizeterm() available in ncurses])
 )
       fi
 

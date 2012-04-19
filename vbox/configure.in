@@ -5,7 +5,7 @@ dnl     to configure the system for the local environment.
 dnl #------------------------------------------------------------------------#
 dnl # Version of the vbox package. Theres no need to change this ;-)         #
 dnl #------------------------------------------------------------------------#
-AC_INIT(vbox,'2.0.0BETA5')
+AC_INIT(vbox,[2.0.0BETA5])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(src/config.h)
 AC_CONFIG_SRCDIR(src/vboxgetty.h)
@@ -18,9 +18,9 @@ dnl #------------------------------------------------------------------------#
 
 AC_PREFIX_DEFAULT()
 
-AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE_NAME}")
-AC_DEFINE_UNQUOTED(VERSION, "${PACKAGE_VERSION}")
-AC_DEFINE_UNQUOTED(VERDATE, "${VERDATE}")
+AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE_NAME}", [Name of package])
+AC_DEFINE_UNQUOTED(VERSION, "${PACKAGE_VERSION}", [Version number of package])
+AC_DEFINE_UNQUOTED(VERDATE, "${VERDATE}", [date the version was created])
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -88,7 +88,7 @@ AC_ARG_WITH(spooldir,
 
 AC_MSG_RESULT(${VBOX_SPOOLDIR})
 
-AC_DEFINE_UNQUOTED(SPOOLDIR, "${VBOX_SPOOLDIR}")
+AC_DEFINE_UNQUOTED(SPOOLDIR, "${VBOX_SPOOLDIR}", [vbox spool directory])
 AC_SUBST(VBOX_SPOOLDIR)
 
    dnl #===============#
@@ -106,7 +106,7 @@ AC_ARG_WITH(logdir,
 
 AC_MSG_RESULT(${VBOX_LOGDIR})
 
-AC_DEFINE_UNQUOTED(LOGFILEDIR, "${VBOX_LOGDIR}")
+AC_DEFINE_UNQUOTED(LOGFILEDIR, "${VBOX_LOGDIR}", [vbox log directory])
 AC_SUBST(VBOX_LOGDIR)
 
    dnl #===============#
@@ -124,7 +124,7 @@ AC_ARG_WITH(piddir,
 
 AC_MSG_RESULT(${VBOX_PIDDIR})
 
-AC_DEFINE_UNQUOTED(PIDFILEDIR, "${VBOX_PIDDIR}")
+AC_DEFINE_UNQUOTED(PIDFILEDIR, "${VBOX_PIDDIR}", [vbox pid file directory])
 AC_SUBST(VBOX_PIDDIR)
 
    dnl #================#
@@ -142,7 +142,7 @@ AC_ARG_WITH(lockdir,
 
 AC_MSG_RESULT(${VBOX_LCKDIR})
 
-AC_DEFINE_UNQUOTED(LCKFILEDIR, "${VBOX_LCKDIR}")
+AC_DEFINE_UNQUOTED(LCKFILEDIR, "${VBOX_LCKDIR}", [vbox lock directory])
 AC_SUBST(VBOX_LCKDIR)
 
    dnl #===================#
@@ -160,7 +160,7 @@ AC_ARG_WITH(confdir,
 
 AC_MSG_RESULT(${ISDN_GLOBAL_CONFIG})
 
-AC_DEFINE_UNQUOTED(I4LCONFDIR, "${ISDN_GLOBAL_CONFIG}")
+AC_DEFINE_UNQUOTED(I4LCONFDIR, "${ISDN_GLOBAL_CONFIG}", [global i4l config directory])
 
 dnl #------------------------------------------------------------------------#
 dnl # Check and optimize compiler flags:                                     #
