@@ -24,14 +24,14 @@ dnl Optional sbin directory
 AC_ARG_WITH(sbin,
 	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
 	CONFIG_SBINDIR="${withval}"
-	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
+	AC_DEFINE(CONFIG_SBINDIR,"${withval}", [capifax sbin directory]),
 )
 
 dnl Optional man directory
 AC_ARG_WITH(man,
 	[  --with-man=DIR          Set manpage dir. [/usr/man]],
 	CONFIG_MANDIR="${withval}"
-	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
+	AC_DEFINE(CONFIG_MANDIR,"${withval}", [capifax manual directory]),
 )
 
 AC_CHECK_FILE([../capi20/capi20.h],CPPFLAGS="-I ../capi20 $CPPFLAGS")

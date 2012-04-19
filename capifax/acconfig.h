@@ -1,5 +1,0 @@
-
-#undef VERSION
-#undef PACKAGE
-#undef CONFIG_SBINDIR
-#undef CONFIG_MANDIR
