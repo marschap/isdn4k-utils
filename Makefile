@@ -178,13 +178,17 @@ distclean: clean
 		if [ -f $$i/Makefile ]; then $(MAKE) -i -C $$i distclean; fi; \
 	done;
 	-rm -f *~ .config .config.old scripts/autoconf.h .menuconfig \
-		Makefile.tmp .menuconfig.log scripts/defconfig.old
+		Makefile.tmp .menuconfig.log scripts/defconfig.old \
+		scripts/autoconf.mk \
 	find . -name '.#*' -exec rm -f {} \;
 
 scripts/lxdialog/lxdialog:
 	@$(MAKE) -C scripts/lxdialog all
 
 scripts/autoconf.h: .config
+	perl scripts/mk_autoconf.pl
+
+scripts/autoconf.mk: .config
 	perl scripts/mk_autoconf.pl
 
 cfgerror:
@@ -199,7 +203,7 @@ cfgerror:
 #  - if a Makefile.in exists, make -f Makefile.in config
 #  - if a Makefile already exists, make config
 #
-subconfig: scripts/autoconf.h
+subconfig: scripts/autoconf.h scripts/autoconf.mk
 	@echo Selected subdirs: $(BUILD_ONLY) $(SUBDIRS)
 	@set -e; for i in `echo $(BUILD_ONLY) $(SUBDIRS)`; do \
 		if [ $$i = eicon ] ; then \
