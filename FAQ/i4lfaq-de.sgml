@@ -1498,7 +1498,8 @@ und wird von ihrem Linuxtreiber sehr gut unterst&uuml;tzt. Sie ist zur
 Zeit eine der wenigen ISDN Karten mit denen Du unter ISDN4LINUX Faxe
 versenden kannst oder die das CAPI 2.0 Interface unterst&uuml;tzen. Die
 neuesten Treiber bekommst Du auf <url
-url="ftp://calle.in-berlin.de/pub/capi4linux/">.<BR>
+url="ftp://calle.in-berlin.de/pub/capi4linux/">.
+<p>
 
 Zum Downloaden der Firmware ben&ouml;tigen Sie die beiden Perl-Scripts von:
 <url url="ftp://calle.in-berlin.de/pub/capi4linux/firmware/">.
