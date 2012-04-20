@@ -5,8 +5,8 @@
 #
 
 EDEF=$(CFLAGS)
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
+ifeq (../scripts/autoconf.mk,$(wildcard ../scripts/autoconf.mk))
+	include ../scripts/autoconf.mk
 	MAN1DIROPT = MANDIR=$(CONFIG_MANDIR)/man1
 	MAN3DIROPT = LIBMANDIR=$(CONFIG_MANDIR)/man3
 	MAN5DIROPT = FILEMANDIR=$(CONFIG_MANDIR)/man5
