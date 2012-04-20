@@ -5,12 +5,14 @@
 #
 #
 SHELL			= /bin/sh
-AWK				= @AWK@
-SED				= @SED@
+AWK			= @AWK@
+SED			= @SED@
 MANDIR			= @CONFIG_MANDIR@
 MANPAGES		= ttyI.4 isdninfo.4 isdn_audio.4 isdnctrl.4 isdn_cause.7
 INSTALL_MAN		= @INSTALL@ -o 0 -g 0 -m 0644
 prefix			= @prefix@
+datarootdir		= @datarootdir@
+datadir			= @datadir@
 
 %.1: %.man
 	cp $< $@
