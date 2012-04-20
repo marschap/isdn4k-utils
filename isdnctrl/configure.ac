@@ -1,12 +1,15 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(isdnctrl.c)
+
+AC_PREREQ([2.68])
+
+AC_INIT([isdnctrl], [?.?])
 AC_PREFIX_DEFAULT(/usr)
 
-I4LCONFDIR=`eval echo ${CONFIG_I4LCONFDIR:-"/etc/isdn"}`
-I4LCONFFILE=`eval echo ${CONFIG_CONFFILE:-"/etc/isdn"}`
+I4LCONFDIR=${CONFIG_I4LCONFDIR:-"/etc/isdn"}
+I4LCONFFILE=${CONFIG_CONFFILE:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
-CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
-CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
+CONFIG_SBINDIR=${sbindir:-"/sbin"}
+CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_ISDNCTRL_CONF=${CONFIG_ISDNCTRL_CONF:-"n"}
 CONFIG_ISDNCTRL_DWABC_UDP_INFO=${CONFIG_ISDNCTRL_DWABC_UDP_INFO:-"n"}
 MANDATE=`grep CHECKIN isdnctrl.man.in | awk '{print $4}'`
@@ -22,32 +25,15 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(sys/ioctl.h unistd.h)
 
-dnl Checks for typedefs, structures, and compiler characteristics.
-
-dnl Checks for library functions.
-
-dnl Optional sbin directory
-AC_ARG_WITH(sbin,
-	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
-	CONFIG_SBINDIR="${withval}"
-	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
-)
-
-dnl Optional man directory
-AC_ARG_WITH(man,
-	[  --with-man=DIR          Set manpage dir. [/usr/man]],
-	CONFIG_MANDIR="${withval}"
-	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
-)
 
 dnl Optional config-file-option
 AC_ARG_ENABLE(cfile,
 	[  --enable-cfile          Enable configfile option [no]],
 	CONFIG_ISDNCTRL_CONF=y
-	AC_DEFINE(CONFIG_ISDNCTRL_CONF,y),
+	AC_DEFINE(CONFIG_ISDNCTRL_CONF, [y], [Enable configfile option]),
 )
 
-AC_SUBST(INSTALL)
+dnl Define which variables to substitute & which files to generate
 AC_SUBST(MANDATE)
 AC_SUBST(I4LCONFDIR)
 AC_SUBST(I4LCONFFILE)
@@ -56,5 +42,6 @@ AC_SUBST(CONFIG_ISDNCTRL_CONF)
 AC_SUBST(CONFIG_ISDNCTRL_DWABC_UDP_INFO)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
-AC_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS(config.h)
+
 AC_OUTPUT(Makefile isdnctrl.man .isdnctrl_conf.man)
