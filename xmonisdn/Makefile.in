@@ -21,13 +21,13 @@
 #    docs where the problems with setuid programs are explained :-)
 
 I4LU_DEFINES := $(CFLAGS) -DPARANOIA_CHECK -I.
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
+ifeq (../scripts/autoconf.mk,$(wildcard ../scripts/autoconf.mk))
+	include ../scripts/autoconf.mk
 	ifneq ($(CONFIG_XMONISDN_UPCMD),"")
-		I4LU_DEFINES += -DNETUP_COMMAND=\\\"'$(shell echo $(CONFIG_XMONISDN_UPCMD))'\\\"
+		I4LU_DEFINES += -DNETUP_COMMAND='\"$(CONFIG_XMONISDN_UPCMD)\"'
 	endif
 	ifneq ($(CONFIG_XMONISDN_DOWNCMD),"")
-		I4LU_DEFINES += -DNETDOWN_COMMAND=\\\"'$(shell echo $(CONFIG_XMONISDN_DOWNCMD))'\\\"
+		I4LU_DEFINES += -DNETDOWN_COMMAND='\"$(CONFIG_XMONISDN_DOWNCMD)\"'
 	endif
     MAN1DIROPT = MANDIR=$(CONFIG_MANDIR)/man1
     MAN3DIROPT = LIBMANDIR=$(CONFIG_MANDIR)/man3
@@ -53,8 +53,8 @@ xmonisdn:
 
 xmonisdn.man: xmonisdn.man.in Makefile
 	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
-	XUP=`echo ${CONFIG_XMONISDN_UPCMD}|sed 's/&/\\\&/g'`; \
-	XDOWN=`echo ${CONFIG_XMONISDN_DOWNCMD}|sed 's/&/\\\&/g'`; \
+	XUP=`echo '$(CONFIG_XMONISDN_UPCMD)' | sed 's/&/\\\&/g'`; \
+	XDOWN=`echo '$(CONFIG_XMONISDN_DOWNCMD)' | sed 's/&/\\\&/g'`; \
 	sed \
 	   -e "s#\@MANDATE\@#$${MANDATE}#g" \
 	   -e "s#\@I4LVERSION\@#${I4LVERSION}#g" \
