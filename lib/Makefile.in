@@ -4,8 +4,8 @@
 # the original Makefile, it is called GNUmakefile.
 #
 
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
+ifeq (../scripts/autoconf.mk,$(wildcard ../scripts/autoconf.mk))
+	include ../scripts/autoconf.mk
 	BUILDOPTS   :=
 	#
 	# Install as root with numeric Id's, since these are the
