@@ -1,5 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
+AC_PREREQ([2.68])
+
 AC_INIT(capi20.c)
 AC_ARG_ENABLE([V2],
   AS_HELP_STRING([--enable-V2],[build libcapi20 version 2 compatible library]),
@@ -7,7 +9,7 @@ AC_ARG_ENABLE([V2],
        yes) LIBCAPI_VERSION=2
 	    LIBCAPI_VERSION_AGE=0
 	    LIBCAPI_VERSION_RELEASE=12
-	    AC_DEFINE([CAPI_LIBRARY_V2],1)
+	    AC_DEFINE([CAPI_LIBRARY_V2],1, [build libcapi20 version 2 compatible library])
 	    ;;
        no) LIBCAPI_VERSION=3
 	    LIBCAPI_VERSION_AGE=0
@@ -21,16 +23,14 @@ AC_ARG_ENABLE([V2],
 	LIBCAPI_VERSION_RELEASE=6
 ])
 
-AM_INIT_AUTOMAKE(libcapi20,${LIBCAPI_VERSION}.${LIBCAPI_VERSION_RELEASE})
-AC_PREFIX_DEFAULT(/usr)
+AM_INIT_AUTOMAKE([libcapi20],${LIBCAPI_VERSION}.${LIBCAPI_VERSION_RELEASE})
+AC_PREFIX_DEFAULT([/usr])
 
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
 AM_PROG_LIBTOOL
-AC_SUBST(LIBTOOL_DEPS)
-AC_OBJEXT
-AC_PATH_PROG(SED,sed)
+AC_PROG_SED
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -50,8 +50,11 @@ AC_SUBST(CAPI_MODULE_LOADER_VERSION)
 dnl Checks for library functions.
 AC_CHECK_FUNCS(select)
 
-AC_SUBST(INSTALL)
+dnl Define which variables to substitute & which files to generate
+AC_SUBST(CAPI_LIBRARY_V2)
 AC_SUBST(LIBCAPI_VERSION)
 AC_SUBST(LIBCAPI_VERSION_AGE)
 AC_SUBST(LIBCAPI_VERSION_RELEASE)
+AC_CONFIG_HEADERS(config.h)
+
 AC_OUTPUT(Makefile capi20.pc)
