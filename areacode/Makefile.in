@@ -4,9 +4,9 @@
 # the original Makefile, it is called GNUmakefile.
 #
 
-ifeq (../.config,$(wildcard ../.config))
-	include ../.config
-	DATAOPTS := DATATARGET=$(shell echo $(DESTDIR)$(CONFIG_DATADIR))/areacodes
+ifeq (../scripts/autoconf.mk,$(wildcard ../scripts/autoconf.mk))
+	include ../scripts/autoconf.mk
+	DATAOPTS := DATATARGET=$(DESTDIR)$(CONFIG_DATADIR)/areacodes
 	#
 	# Install as root with numeric Id's, since these are the
 	# only ones that _really_ exist on _every_ system.
@@ -42,4 +42,4 @@ ifeq ($(CONFIG_LIB_AREACODE),y)
 endif
 
 uninstall:
-	rm -f $(shell echo $(DESTDIR)$(CONFIG_DATADIR))/areacodes
+	rm -f $(DESTDIR)$(CONFIG_DATADIR)/areacodes
