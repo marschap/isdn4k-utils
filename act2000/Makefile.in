@@ -23,7 +23,9 @@ INSTALL_DATA	= $(INSTALL) -o 0 -g 0 -m 0644
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-CC				= @CC@
+datarootdir		= @datarootdir@
+datadir			= @datadir@
+CC			= @CC@
 
 .SUFFIXES:
 .SUFFIXES: .c .o
