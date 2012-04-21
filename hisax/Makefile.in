@@ -45,18 +45,22 @@ hisaxctrl:	$(MODULES)
 	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
 
 install: $(PROGRAMS) $(MANPAGES)
-	mkdir -p $(DESTDIR)$(SBINDIR)
-	$(INSTALL_PROGRAM) $(PROGRAMS) $(DESTDIR)$(SBINDIR)
 	mkdir -p $(DESTDIR)$(DATADIR)
 	$(INSTALL_DATA) ISAR.BIN $(DESTDIR)$(DATADIR)/ISAR.BIN
+ifeq ("@CONFIG_HISAXCTRL@","y")
+	mkdir -p $(DESTDIR)$(SBINDIR)
+	$(INSTALL_PROGRAM) $(PROGRAMS) $(DESTDIR)$(SBINDIR)
 	mkdir -p $(DESTDIR)$(MAN8DIR)
 	$(INSTALL_MAN) $(MANPAGES) $(DESTDIR)$(MAN8DIR)
+endif
 
 install-strip: $(PROGRAMS) $(MANPAGES)
+ifeq ("@CONFIG_HISAXCTRL@","y")
 	mkdir -p $(DESTDIR)$(SBINDIR)
 	$(INSTALL_PROGRAM) -s $(PROGRAMS) $(DESTDIR)$(SBINDIR)
 	mkdir -p $(DESTDIR)$(MAN8DIR)
 	$(INSTALL_MAN) $(MANPAGES) $(DESTDIR)$(MAN8DIR)
+endif
 
 uninstall:
 	@for i in `echo $(PROGRAMS)` ; do \
