@@ -1,21 +1,94 @@
-/* define if we have XLOG capability */
-#undef HAVE_XLOG
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* eicon firmware directory */
+#undef CONFIG_DATADIR
+
+/* Define to 1 if you have the <curses.h> header file. */
+#undef HAVE_CURSES_H
+
+/* Define to 1 if you have the <curses/ncurses.h> header file. */
+#undef HAVE_CURSES_NCURSES_H
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#undef HAVE_FCNTL_H
+
+/* Define to 1 if you have the `getpagesize' function. */
+#undef HAVE_GETPAGESIZE
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the `curses' library (-lcurses). */
+#undef HAVE_LIBCURSES
+
+/* Define to 1 if you have the `ncurses' library (-lncurses). */
+#undef HAVE_LIBNCURSES
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if you have a working `mmap' system call. */
+#undef HAVE_MMAP
+
+/* Define to 1 if you have the <ncurses/curses.h> header file. */
+#undef HAVE_NCURSES_CURSES_H
+
+/* Define to 1 if you have the <ncurses.h> header file. */
+#undef HAVE_NCURSES_H
+
+/* NPCI supported */
+#undef HAVE_NPCI
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#undef HAVE_SYS_IOCTL_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#undef HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
 
 /* define if we have TRACE capability */
 #undef HAVE_TRACE
 
-/* define if we have PCI code in native driver */
-#undef HAVE_NPCI
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
 
-/* Define if you have the <curses.h> header file.  */
-#undef HAVE_CURSES_H
+/* define if we have XLOG capability */
+#undef HAVE_XLOG
 
-/* Define if you have the <curses/ncurses.h> header file.  */
-#undef HAVE_CURSES_NCURSES_H
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
 
-/* Define if you have the <ncurses.h> header file.  */
-#undef HAVE_NCURSES_H
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
 
-/* Define if you have the <ncurses/curses.h> header file.  */
-#undef HAVE_NCURSES_CURSES_H
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
 
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
