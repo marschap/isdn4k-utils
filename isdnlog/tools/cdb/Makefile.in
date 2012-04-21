@@ -19,6 +19,8 @@ MAN3DIR:=$(MANDIR)/man3
 LIBDIR:=$(DESTDIR)@prefix@/lib
 BINDIR:=$(DESTDIR)@prefix@/bin
 INCDIR:=$(DESTDIR)@prefix@/include
+datarootdir		= @datarootdir@
+datadir			= @datadir@
 
 CFLAGS:=-Wall -O2
 
