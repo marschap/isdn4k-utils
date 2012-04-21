@@ -25,7 +25,10 @@ ifeq ("@CONFIG_HISAXCTRL@","y")
 	PROGRAMS	+= hisaxctrl
 	MANPAGES	+= hisaxctrl.8
 endif
-CC				= @CC@
+CC			= @CC@
+datarootdir		= @datarootdir@
+datadir			= @datadir@
+
 
 #.SUFFIXES:
 #.SUFFIXES: .c .o
