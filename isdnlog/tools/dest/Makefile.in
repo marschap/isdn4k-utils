@@ -3,7 +3,8 @@
 #
 # (C) 1999 l.toetsch <lt@toetsch.at>
 #
--include ../../../.config
+-include ../../../scripts/autoconf.mk
+
 BZIP2			= @BZIP2@
 SHELL			= /bin/sh
 CFLAGS			= -Wall -g
