@@ -1,9 +1,12 @@
 dnl Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.68])
+
 AC_INIT(ipppstats.c)
 
 I4LVERSION=${I4LVERSION:-"?.?"}
-CONFIG_SBINDIR=${CONFIG_SBINDIR:-"/sbin"}
-CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
+CONFIG_SBINDIR=${sbindir:-"/sbin"}
+CONFIG_MANDIR=${mandir:-"/usr/man"}
 MANDATE=`grep CHECKIN ipppstats.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -17,29 +20,16 @@ dnl Checks for header files.
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_SIGNAL
 
 dnl Checks for library functions.
-AC_PROG_GCC_TRADITIONAL
 AC_HEADER_STDC
-AC_TYPE_SIGNAL
 AC_CHECK_FUNCS(socket)
 
-dnl Optional sbin directory
-AC_ARG_WITH(sbin,
-	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
-	CONFIG_SBINDIR="${withval}"
-	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
-)
-
-dnl Optional man directory
-AC_ARG_WITH(man,
-	[  --with-man=DIR          Set manpage dir. [/usr/man]],
-	CONFIG_MANDIR="${withval}"
-	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
-)
-
+dnl Define which variables to substitute & which files to generate
 AC_SUBST(I4LVERSION)
 AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
+
 AC_OUTPUT(Makefile ipppstats.man)
