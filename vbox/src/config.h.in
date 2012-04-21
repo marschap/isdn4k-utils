@@ -1,54 +1,94 @@
+/* src/config.h.in.  Generated from configure.ac by autoheader.  */
 
-#ifndef _VBOX_CONFIG_H
-#define _VBOX_CONFIG_H 1
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
 
-/*
- * Define to include both, <time.h> *and* <sys/time.h>:
- */
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
 
-#undef TIME_WITH_SYS_TIME
-
-/*
- * Define if you have the <sys/time.h> header file:
- */
-
-#undef HAVE_SYS_TIME_H
-
-/*
- * Define if you have the vsnprintf() function:
- */
-
-#undef HAVE_VSNPRINTF
-
-/*
- * Define if libncurses has a resizeterm() function:
- */
-
+/* resizeterm() available in ncurses */
 #undef HAVE_RESIZETERM
 
-/*
- * Define to empty if the keyword does not work:
- */
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
 
-#undef const
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
 
-/*
- * Do not change any of the options below by hand - use the configure script
- * insteed! The directory pathes are stored in other files too!
- */
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
 
-#undef SPOOLDIR
-#undef LOGFILEDIR
-#undef PIDFILEDIR
-#undef LCKFILEDIR
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#undef HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `vsnprintf' function. */
+#undef HAVE_VSNPRINTF
+
+/* global i4l config directory */
 #undef I4LCONFDIR
 
-/*
- * No need to change anything below this line!
- */
+/* vbox lock directory */
+#undef LCKFILEDIR
 
-#undef VERSION
-#undef VERDATE
+/* vbox log directory */
+#undef LOGFILEDIR
+
+/* Name of package */
 #undef PACKAGE
 
-#endif /* _VBOX_CONFIG_H */
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* vbox pid file directory */
+#undef PIDFILEDIR
+
+/* vbox spool directory */
+#undef SPOOLDIR
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#undef TIME_WITH_SYS_TIME
+
+/* date the version was created */
+#undef VERDATE
+
+/* Version number of package */
+#undef VERSION
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#undef const
+
+/* Define to `__inline__' or `__inline' if that's what the C compiler
+   calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifndef __cplusplus
+#undef inline
+#endif
