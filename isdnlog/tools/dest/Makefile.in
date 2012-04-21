@@ -26,8 +26,9 @@ INSTALL_DATA		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
 DATADIR			= @datadir@
-#CC			= @CC@ -V2.7.2.3
 CC			= @CC@
+datarootdir		= @datarootdir@
+datadir			= @datadir@
 DEST_LANG =
 
 .SUFFIXES:
