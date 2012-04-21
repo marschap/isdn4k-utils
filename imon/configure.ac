@@ -1,11 +1,13 @@
 dnl Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.68])
+
 AC_INIT(imon.c)
-AC_CONFIG_HEADER(config.h)
-AC_PREFIX_DEFAULT(/usr)
+AC_PREFIX_DEFAULT([/usr])
 
 I4LVERSION=${I4LVERSION:-"?.?"}
-CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
-CONFIG_SBINDIR=`eval echo ${CONFIG_SBINDIR:-"/sbin"}`
+CONFIG_MANDIR=${mandir:-"/usr/man"}
+CONFIG_SBINDIR=${sbindir:-"/sbin"}
 MANDATE=`grep CHECKIN imon.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
@@ -34,23 +36,11 @@ dnl Checks for library functions.
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS(select)
 
-dnl Optional sbin directory
-AC_ARG_WITH(sbin,
-	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
-	CONFIG_SBINDIR="${withval}"
-	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
-)
-
-dnl Optional man directory
-AC_ARG_WITH(man,
-	[  --with-man=DIR          Set manpage dir. [/usr/man]],
-	CONFIG_MANDIR="${withval}"
-	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
-)
-
-AC_SUBST(INSTALL)
+dnl Define which variables to substitute & which files to generate
 AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(I4LVERSION)
+AC_CONFIG_HEADERS(config.h)
+
 AC_OUTPUT(Makefile imon.man)
