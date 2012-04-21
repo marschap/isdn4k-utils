@@ -37,16 +37,16 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* libbsd available */
+/* Define to 1 if you have the `bsd' library (-lbsd). */
 #undef HAVE_LIBBSD
 
-/* libcrypt available */
+/* Define to 1 if you have the `crypt' library (-lcrypt). */
 #undef HAVE_LIBCRYPT
 
-/* libdes available */
+/* Define to 1 if you have the `des' library (-ldes). */
 #undef HAVE_LIBDES
 
-/* libssl available */
+/* Define to 1 if you have the `ssl' library (-lssl). */
 #undef HAVE_LIBSSL
 
 /* Define to 1 if you have the <limits.h> header file. */

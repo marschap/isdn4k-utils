@@ -61,6 +61,8 @@ struct isdn_ppp_comp_data {
 #endif
 #endif
 
+#include "config.h"
+
 #ifndef PPP_LINK_CCP
 #define PPP_LINK_CCP 0x80fb
 #endif

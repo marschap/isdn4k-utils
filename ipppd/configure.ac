@@ -22,15 +22,11 @@ AC_PROG_CC
 
 dnl Checks for libraries.
 AC_CHECK_LIB(bsd, daemon,
-	HAVE_LIBBSD=1; AC_DEFINE(HAVE_LIBBSD, [], [libbsd available]),
+	,
 	[AC_MSG_WARN(Could not find libbsd, build disabled)])
-dnl Replace `main' with a function in -lcrypt:
-AC_CHECK_LIB(crypt, main,
-	[HAVE_LIBCRYPT=1; AC_DEFINE(HAVE_LIBCRYPT, [], [libcrypt available])])
-AC_CHECK_LIB(des, des_ecb_encrypt,
-	[HAVE_LIBDES=1; AC_DEFINE(HAVE_LIBDES, [], [libdes available])])
-AC_CHECK_LIB(ssl, DES_ecb_encrypt,
-	[HAVE_LIBSSL=1; AC_DEFINE(HAVE_LIBSSL, [], [libssl available])])
+AC_CHECK_LIB(crypt, setkey)
+AC_CHECK_LIB(des, des_ecb_encrypt)
+AC_CHECK_LIB(ssl, DES_ecb_encrypt)
 
 dnl Checks for header files.
 AC_HEADER_STDC

@@ -3118,17 +3118,20 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_bsd_daemon" >&5
 $as_echo "$ac_cv_lib_bsd_daemon" >&6; }
 if test "x$ac_cv_lib_bsd_daemon" = xyes; then :
-  HAVE_LIBBSD=1;
-$as_echo "#define HAVE_LIBBSD /**/" >>confdefs.h
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBBSD 1
+_ACEOF
+
+  LIBS="-lbsd $LIBS"
 
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find libbsd" >&5
 $as_echo "$as_me: WARNING: Could not find libbsd" >&2;}
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lcrypt" >&5
-$as_echo_n "checking for main in -lcrypt... " >&6; }
-if ${ac_cv_lib_crypt_main+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for setkey in -lcrypt" >&5
+$as_echo_n "checking for setkey in -lcrypt... " >&6; }
+if ${ac_cv_lib_crypt_setkey+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -3136,29 +3139,38 @@ LIBS="-lcrypt  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char setkey ();
 int
 main ()
 {
-return main ();
+return setkey ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_crypt_main=yes
+  ac_cv_lib_crypt_setkey=yes
 else
-  ac_cv_lib_crypt_main=no
+  ac_cv_lib_crypt_setkey=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_crypt_main" >&5
-$as_echo "$ac_cv_lib_crypt_main" >&6; }
-if test "x$ac_cv_lib_crypt_main" = xyes; then :
-  HAVE_LIBCRYPT=1;
-$as_echo "#define HAVE_LIBCRYPT /**/" >>confdefs.h
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_crypt_setkey" >&5
+$as_echo "$ac_cv_lib_crypt_setkey" >&6; }
+if test "x$ac_cv_lib_crypt_setkey" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBCRYPT 1
+_ACEOF
+
+  LIBS="-lcrypt $LIBS"
 
 fi
 
@@ -3199,8 +3211,11 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_des_des_ecb_encrypt" >&5
 $as_echo "$ac_cv_lib_des_des_ecb_encrypt" >&6; }
 if test "x$ac_cv_lib_des_des_ecb_encrypt" = xyes; then :
-  HAVE_LIBDES=1;
-$as_echo "#define HAVE_LIBDES /**/" >>confdefs.h
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBDES 1
+_ACEOF
+
+  LIBS="-ldes $LIBS"
 
 fi
 
@@ -3241,8 +3256,11 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ssl_DES_ecb_encrypt" >&5
 $as_echo "$ac_cv_lib_ssl_DES_ecb_encrypt" >&6; }
 if test "x$ac_cv_lib_ssl_DES_ecb_encrypt" = xyes; then :
-  HAVE_LIBSSL=1;
-$as_echo "#define HAVE_LIBSSL /**/" >>confdefs.h
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBSSL 1
+_ACEOF
+
+  LIBS="-lssl $LIBS"
 
 fi
 

@@ -3,22 +3,24 @@
 # $Id: Makefile.in,v 1.21 2008/08/31 10:49:38 keil Exp $
 #
 
-HAVE_LIBSSL   := @HAVE_LIBSSL@
-HAVE_LIBDES   := @HAVE_LIBDES@
-HAVE_LIBCRYPT := @HAVE_LIBCRYPT@
-HAVE_SHADOW_H := @HAVE_SHADOW_H@
-HAVE_LZSCOMP_H:= @HAVE_LZSCOMP_H@
-HAVE_PCAP_BPF_H := @HAVE_PCAP_BPF_H@
-HAVE_NET_BPF_H:= @HAVE_NET_BPF_H@
-IPPP_FILTER   := @CONFIG_IPPP_FILTER@
-SBINDIR       := @CONFIG_SBINDIR@
-MANDIR        := @CONFIG_MANDIR@
-CC            := @CC@
-INSTALL       := @INSTALL@
-INSTALL_DIR   := $(INSTALL) -m 0755 -o 0 -g 0 -d
-INSTALL_SBIN  := $(INSTALL) -m 0700 -o 0 -g 0
-INSTALL_BIN   := $(INSTALL) -m 0755 -o 0 -g 0
-INSTALL_DATA  := $(INSTALL) -m 0644 -o 0 -g 0
+HAVE_LIBSSL		:= @HAVE_LIBSSL@
+HAVE_LIBDES		:= @HAVE_LIBDES@
+HAVE_LIBCRYPT		:= @HAVE_LIBCRYPT@
+HAVE_SHADOW_H		:= @HAVE_SHADOW_H@
+HAVE_LZSCOMP_H		:= @HAVE_LZSCOMP_H@
+HAVE_PCAP_BPF_H		:= @HAVE_PCAP_BPF_H@
+HAVE_NET_BPF_H		:= @HAVE_NET_BPF_H@
+HAVE_LZSCOMP_H		:= @HAVE_LZSCOMP_H@
+IPPP_FILTER		:= @CONFIG_IPPP_FILTER@
+SBINDIR			:= @CONFIG_SBINDIR@
+MANDIR			:= @CONFIG_MANDIR@
+LIBS			:= @LIBS@
+CC			:= @CC@
+INSTALL			:= @INSTALL@
+INSTALL_DIR 		:= $(INSTALL) -m 0755 -o 0 -g 0 -d
+INSTALL_SBIN		:= $(INSTALL) -m 0700 -o 0 -g 0
+INSTALL_BIN		:= $(INSTALL) -m 0755 -o 0 -g 0
+INSTALL_DATA		:= $(INSTALL) -m 0644 -o 0 -g 0
 RADIUS_CLIENT_CONFIG_FILE := @RADIUS_CLIENT_CONFIG_FILE@
 datarootdir		= @datarootdir@
 datadir			= @datadir@
@@ -43,7 +45,7 @@ MANPAGES = ipppd.8
 PPPDOBJS = main.o magic.o fsm.o lcp.o ipcp.o upap.o chap.o md5.o ccp.o \
 	   auth.o options.o sys-linux.o cbcp.o ipxcp.o environ.o readpw.o
 
-all: ipppd
+all: ipppd $(MANPAGES)
 
 %.8: %.man
 	cp $< $@
@@ -78,10 +80,6 @@ COMPILE_FLAGS = @CFLAGS@
 CFLAGS        = -O2 -fomit-frame-pointer -Wall -DREQ_SYSOPTIONS=0
 VER           = 2.2.0
 
-# it's a hack
-ifeq ($(HAVE_LIBCRYPT),1)
-LIBS        = -lcrypt -lutil
-endif
 
 ifeq ($(IPPP_FILTER),y)
 COPTS      += -DIPPP_FILTER
@@ -127,18 +125,6 @@ PPPDOBJS += isexpired.o
 PPPDSRCS += isexpired.c
 endif
 
-ifeq ($(HAVE_LZSCOMP_H),1)
-	COPTS += -DHAVE_LZSCOMP_H
-endif
-
-ifeq ($(HAVE_PCAP_BPF_H),1)
-	COPTS += -DHAVE_PCAP_BPF_H
-endif
-
-ifeq ($(HAVE_NET_BPF_H),1)
-	COPTS += -DHAVE_NET_BPF_H
-endif
-
 %.8: %.man
 	cp $< $@
 
@@ -149,8 +135,7 @@ config.status: configure
 	./config.status --recheck
 
 #
-# Makefile in depencies forces rebuild after running
-# configure.
+# Makefile in depencies forces rebuild after running configure.
 #
 %.o: %.c Makefile
 	$(CC) $(CFLAGS) $(COPTS) $(DEBUG_FLAGS) $(COMPILE_FLAGS) -c -o $@ $<

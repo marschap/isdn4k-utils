@@ -35,6 +35,8 @@ char options_rcsid[] = "$Id: options.c,v 1.27 2005/08/07 13:47:50 keil Exp $";
 #include <arpa/inet.h>
 #include <ctype.h>
 
+#include "config.h"
+
 #ifdef RADIUS
 #include <radiusclient.h>
 #endif
