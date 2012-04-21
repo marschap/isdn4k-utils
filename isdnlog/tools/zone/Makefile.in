@@ -24,9 +24,11 @@ INSTALL_PROGRAM		= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-#CC			= @CC@ -V2.7.2.3
 CC			= @CC@
-ifeq ($(BIGENDIAN), yes)
+datarootdir		= @datarootdir@
+datadir			= @datadir@
+
+ifeq ($(BIGENDIAN), 1)
 ZONEFILES=zonefiles
 endif
 
