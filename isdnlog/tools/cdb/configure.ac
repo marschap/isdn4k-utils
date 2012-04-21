@@ -1,9 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(cdb.c)
-AC_CONFIG_HEADER(config.h)
-AC_PREFIX_DEFAULT(/usr)
 
-CONFIG_MANDIR=`eval echo ${CONFIG_MANDIR:-"/usr/man"}`
+AC_PREREQ([2.68])
+
+AC_INIT(cdb.c)
+AC_PREFIX_DEFAULT([/usr])
+
+CONFIG_MANDIR=${mandir:-"/usr/man"}
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -17,12 +19,12 @@ dnl Only look for uint32
 AC_CHECK_SIZEOF(long,4)
 AC_CHECK_SIZEOF(int,4)
 AC_C_BIGENDIAN
-if test $ac_cv_c_bigendian = yes; then
-	WORDS_BIGENDIAN=yes
-fi
 
+dnl Define which variables to substitute & which files to generate
 AC_SUBST(CC)
 AC_SUBST(INSTALL)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(WORDS_BIGENDIAN)
+AC_CONFIG_HEADER(config.h)
+
 AC_OUTPUT(Makefile)
