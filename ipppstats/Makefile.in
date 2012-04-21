@@ -9,6 +9,8 @@ INSTALL      = @INSTALL@
 INSTALL_SBIN = $(INSTALL) -m 755 -o 0 -g 0
 INSTALL_DATA = $(INSTALL) -m 644 -o 0 -g 0
 INSTALL_DIR  = $(INSTALL) -m 755 -o 0 -g 0 -d
+datarootdir		= @datarootdir@
+datadir			= @datadir@
 
 PPPSTATSRCS  = ipppstats.c
 PPPSTATOBJS  = ipppstats.o
