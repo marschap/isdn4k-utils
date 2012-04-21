@@ -2,7 +2,7 @@ dnl
 dnl Check for postgres
 dnl
 
-AC_DEFUN(AC_CHECK_POSTGRES, [
+AC_DEFUN([AC_CHECK_POSTGRES], [
 	POSTGRESDIR=""
 	pqdir="no"
 	tst_postgresdir="$CONFIG_ISDNLOG_POSTGRESDIR"
@@ -45,13 +45,13 @@ AC_DEFUN(AC_CHECK_POSTGRES, [
 	if test "$pqdir" != "no" ; then
 		AC_MSG_RESULT("yes")
 		POSTGRES=1
-		AC_DEFINE_UNQUOTED(POSTGRES,1)
+		AC_DEFINE_UNQUOTED(POSTGRES, 1 ,[use Postgres])
 	else
 		AC_MSG_RESULT("no POSTGRES DISABLED")
 		pqdir=""
 	fi
 	POSTGRESDIR="$pqdir"
-	AC_DEFINE_UNQUOTED(POSTGRESDIR,"$pqdir")
+	AC_DEFINE_UNQUOTED(POSTGRESDIR, ["$pqdir"], [postgres directory])
 	AC_SUBST(POSTGRES)
 	AC_SUBST(POSTGRESDIR)
 ])
@@ -59,7 +59,7 @@ dnl
 dnl Check for mysql
 dnl
 
-AC_DEFUN(AC_CHECK_MYSQLDB, [
+AC_DEFUN([AC_CHECK_MYSQLDB], [
 	MYSQLDIR=""
 	mydir="no"
 	tst_mysqldir="$CONFIG_ISDNLOG_MYSQLDIR"
@@ -108,13 +108,13 @@ AC_DEFUN(AC_CHECK_MYSQLDB, [
 	if test "$mydir" != "no" ; then
 		AC_MSG_RESULT("yes")
 		MYSQLDB=1
-		AC_DEFINE_UNQUOTED(MYSQLDB,1)
+		AC_DEFINE_UNQUOTED(MYSQLDB,1, [use MySQL])
 	else
 		AC_MSG_RESULT("no MYSQL DISABLED")
 		mydir=""
 	fi
 	MYSQLDIR="$mydir"
-	AC_DEFINE_UNQUOTED(MYSQLDIR,"$mydir")
+	AC_DEFINE_UNQUOTED(MYSQLDIR, ["$mydir"], [MySQL directory])
 	AC_SUBST(MYSQLDB)
 	AC_SUBST(MYSQLDIR)
 ])
@@ -123,7 +123,7 @@ dnl
 dnl Check for Oracle
 dnl
 
-AC_DEFUN(AC_CHECK_ORACLE, [
+AC_DEFUN([AC_CHECK_ORACLE], [
 	oradir="no"
 	if test "$ORACLE_HOME" != "" && test "$CONFIG_ISDNLOG_ORACLE" = "y" ; then
 		AC_MSG_CHECKING([for Oracle in ${ORACLE_HOME}])
@@ -134,7 +134,7 @@ AC_DEFUN(AC_CHECK_ORACLE, [
 	if test "$oradir" != "no" ; then
 		AC_MSG_RESULT("yes")
 		ORACLE=1
-		AC_DEFINE_UNQUOTED(ORACLE,1)
+		AC_DEFINE_UNQUOTED(ORACLE, 1, [use Oracle])
 	else
 		AC_MSG_RESULT("no ORACLE DISABLED")
 	fi

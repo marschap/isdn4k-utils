@@ -1650,6 +1650,8 @@ MAN1EXT			:= .1
 MAN5EXT			:= .5
 MAN8EXT			:= .8
 SRCDIR			:= @srcdir@
+datarootdir		= @datarootdir@
+datadir			= @datadir@
 
 #
 # end of autoconf generic stuff
