@@ -1,13 +1,14 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(hisaxctrl.c)
-AC_PREFIX_DEFAULT(/usr)
 
-I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
+AC_PREREQ([2.68])
+
+AC_INIT(hisaxctrl.c)
+AC_PREFIX_DEFAULT([/usr])
+
 I4LVERSION=${I4LVERSION:-"?.?"}
-CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
+CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
-CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
-CONFIG_TELESCTRL=${CONFIG_TELESCTRL:-"n"}
+CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_HISAXCTRL=${CONFIG_HISAXCTRL:-"n"}
 MANDATE=`grep CHECKIN hisaxctrl.man.in | awk '{print $4}'`
 
@@ -26,36 +27,21 @@ dnl Find current kernel source
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 dnl Checks for library functions.
-AC_PROG_GCC_TRADITIONAL
 AC_CHECK_FUNCS(strtol)
-
-dnl Optional sbin directory
-AC_ARG_WITH(sbin,
-	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
-	CONFIG_SBINDIR="${withval}"
-	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
-)
-
-dnl Optional man directory
-AC_ARG_WITH(man,
-	[  --with-man=DIR          Set manpage dir. [/usr/man]],
-	CONFIG_MANDIR="${withval}"
-	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
-)
 
 dnl Build hisaxctrl
 AC_ARG_WITH(hisax,
 	[  --with-hisax=y          Build hisaxctrl. [no]],
 	CONFIG_HISAXCTRL="${withval}"
-	AC_DEFINE(CONFIG_HISAXCTRL,"${withval}"),
+	AC_DEFINE(CONFIG_HISAXCTRL,"${withval}", [Build hisaxctrl]),
 )
 
-AC_SUBST(INSTALL)
+dnl Define which variables to substitute & which files to generate
 AC_SUBST(MANDATE)
-AC_SUBST(I4LCONFDIR)
 AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(CONFIG_HISAXCTRL)
+
 AC_OUTPUT(Makefile hisaxctrl.man)
