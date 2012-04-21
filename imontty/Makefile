@@ -4,11 +4,11 @@
 #
 # $Id: Makefile,v 1.9 2008/08/31 10:49:38 keil Exp $
 
-ifeq (../.config,$(wildcard ../.config))
+ifeq (../scripts/autoconf.mk,$(wildcard ../scripts/autoconf.mk))
 	#
 	# Automatic config with isdn4k-utils
 	#
-	include ../.config
+	include ../scripts/autoconf.mk
 	MAN8DIR         := $(CONFIG_MANDIR)/man8
 else
 	#
