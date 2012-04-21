@@ -50,9 +50,6 @@ endif
 ifeq ($(CONFIG_ICNCTRL),y)
 	SUBDIRS := $(SUBDIRS) icn
 endif
-ifeq ($(CONFIG_PCBITCTL),y)
-	SUBDIRS := $(SUBDIRS) pcbit
-endif
 ifeq ($(CONFIG_HISAXCTRL),y)
 	SUBDIRS := $(SUBDIRS) hisax
 endif

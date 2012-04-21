@@ -199,12 +199,6 @@ CONFIG_ACTCTRL_DEBUG
   of the IBM Active 2000 driver. This feature may be helpful when
   debugging the driver.
 
-Build pcbitctl
-CONFIG_PCBITCTL
-  This program is used to configure the pcbit driver. With this tool
-  you can download protocol firmware into cards.
-  This program is documented in pcbitctl (8).
-
 Build eiconctrl
 CONFIG_EICONCTRL
   This program is used to configure the Eicon driver. With

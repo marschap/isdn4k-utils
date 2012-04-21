@@ -8,7 +8,6 @@ This package contains the following stuff:
   iprofd,     daemon for realizing AT&W0 on ttyI's.
   icnctrl,    setup utility for the icn driver.
   hisaxctrl,  setup utility for the HiSax driver.
-  pcbitctl,   setup utility for the pcbit driver.
   avmcapictrl setup utility for the avmb1 driver.
   actctrl     setup utility for the act2000 driver.
   eiconctrl   setup utility for the eicon driver.
@@ -67,7 +66,6 @@ IMPORTANT:
   act2000: tools for IBM Active 2000
   eicon:   tools for Eicon.Diehl *active* cards
   icn:     tools for ICN 2B and 4B 
-  pcbit:   tools for PCBIT-D
   loop:    tools for the loopback isdn device
 
   These packages will appear on ftp.isdn4linux.de when they are ready.
