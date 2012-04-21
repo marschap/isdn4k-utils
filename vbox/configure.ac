@@ -5,22 +5,20 @@ dnl     to configure the system for the local environment.
 dnl #------------------------------------------------------------------------#
 dnl # Version of the vbox package. Theres no need to change this ;-)         #
 dnl #------------------------------------------------------------------------#
-AC_INIT(vbox,[2.0.0BETA5])
-AM_INIT_AUTOMAKE
-AM_CONFIG_HEADER(src/config.h)
-AC_CONFIG_SRCDIR(src/vboxgetty.h)
+AC_INIT([vbox], [2.0.0BETA5])
 
-VERDATE="17-NOV-98"
+AM_INIT_AUTOMAKE
+AC_CONFIG_SRCDIR(src/vboxgetty.h)
 
 dnl #------------------------------------------------------------------------#
 dnl # Some defaults:                                                         #
 dnl #------------------------------------------------------------------------#
 
-AC_PREFIX_DEFAULT()
+AC_PREFIX_DEFAULT([/usr])
 
 AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE_NAME}", [Name of package])
 AC_DEFINE_UNQUOTED(VERSION, "${PACKAGE_VERSION}", [Version number of package])
-AC_DEFINE_UNQUOTED(VERDATE, "${VERDATE}", [date the version was created])
+AC_DEFINE_UNQUOTED(VERDATE, [17-NOV-98], [date the version was created])
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -79,10 +77,10 @@ GND_PACKAGE_TCL
 
 AC_MSG_CHECKING(where the messages are stored)
 
-VBOX_SPOOLDIR="`eval echo ${VBOX_SPOOLDIR:-"/var/spool/vbox"}`"
+VBOX_SPOOLDIR=${VBOX_SPOOLDIR:-"/var/spool/vbox"}
 
 AC_ARG_WITH(spooldir,
-	[  --with-spooldir=DIR     vbox's stores messages in DIR [/var/spool/vbox]],
+	[  --with-spooldir=DIR     vbox stores messages in DIR [/var/spool/vbox]],
 	VBOX_SPOOLDIR=${withval}
 )
 
@@ -97,7 +95,7 @@ AC_SUBST(VBOX_SPOOLDIR)
 
 AC_MSG_CHECKING(where the logs are stored)
 
-VBOX_LOGDIR="`eval echo ${VBOX_LOGDIR:-"/var/log/vbox"}`"
+VBOX_LOGDIR=${VBOX_LOGDIR:-"/var/log/vbox"}
 
 AC_ARG_WITH(logdir,
 	[  --with-logdir=DIR       logs are stored in DIR [/var/log/vbox]],
@@ -115,7 +113,7 @@ AC_SUBST(VBOX_LOGDIR)
 
 AC_MSG_CHECKING(where the pids are stored)
 
-VBOX_PIDDIR="`eval echo ${VBOX_PIDDIR:-"/var/run"}`"
+VBOX_PIDDIR=${VBOX_PIDDIR:-"/var/run"}
 
 AC_ARG_WITH(piddir,
 	[  --with-piddir=DIR       pids are stored in DIR [/var/run]],
@@ -133,7 +131,7 @@ AC_SUBST(VBOX_PIDDIR)
 
 AC_MSG_CHECKING(where the locks are made)
 
-VBOX_LCKDIR="`eval echo ${VBOX_LOCKDIR:-"/var/lock"}`"
+VBOX_LCKDIR=${VBOX_LOCKDIR:-"/var/lock"}
 
 AC_ARG_WITH(lockdir,
 	[  --with-lockdir=DIR      locks are made in DIR [/var/lock]],
@@ -151,7 +149,7 @@ AC_SUBST(VBOX_LCKDIR)
 
 AC_MSG_CHECKING(where the isdn configuration is stored)
 
-ISDN_GLOBAL_CONFIG="`eval echo ${CONFIG_I4lCONFDIR:-"/etc/isdn"}`"
+ISDN_GLOBAL_CONFIG=${CONFIG_I4lCONFDIR:-"/etc/isdn"}
 
 AC_ARG_WITH(confdir,
 	[  --with-i4lconfdir=DIR   global isdn configuration directory [\$I4LCONFDIR] ],
@@ -166,10 +164,8 @@ dnl #------------------------------------------------------------------------#
 dnl # Check and optimize compiler flags:                                     #
 dnl #------------------------------------------------------------------------#
 
-if (test "${ac_cv_prog_CC}" = "gcc")
-then
-   if (test "${CFLAGS}" != "")
-   then
+if test "${ac_cv_prog_CC}" = "gcc" ; then
+   if test "${CFLAGS}" != "" ; then
       FLAGOPMZ="no"
       FLAGWARN="no"
 
@@ -184,13 +180,11 @@ then
          esac
       done
 
-      if (test "${FLAGOPMZ}" = "no")
-      then
+      if test "${FLAGOPMZ}" = "no" ; then
          CFLAGS="-O2 ${CFLAGS}"
       fi
 
-      if (test "${FLAGWARN}" = "no")
-      then
+      if test "${FLAGWARN}" = "no" ; then
          CFLAGS="-Wall ${CFLAGS}"
       fi
    else
@@ -210,5 +204,6 @@ AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_I4LCONFDIR)
 AC_SUBST(VBOX_LOCKDIR)
 AC_SUBST(VBOX_DOCDIR)
+AC_CONFIG_HEADERS(src/config.h)
 
 AC_OUTPUT(Makefile src/Makefile doc/Makefile doc/de/Makefile utils/Makefile)
