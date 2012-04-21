@@ -20,16 +20,17 @@ endif
 
 INSTALL=install
 INSTALL_MAN=$(INSTALL) -o 0 -g 0 -m 0644
-MANPAGE=imontty.8
+
+PROGS=imontty
+MANPAGES=imontty.8
 
 CCFLAGS=-O2
 #CCFLAGS=-I$(ISDN_INCLUDE) -g
 
 # nothing to change behind this line
 
-PROGS=imontty
 
-all: $(PROGS)
+all: $(PROGS) $(MANPAGES)
 
 imontty: imontty.c imontty.h
 	cc $(CFLAGS) $(CCFLAGS) -o imontty imontty.c
@@ -48,7 +49,7 @@ imontty.8: imontty.8.in
 	   -e "s#\@I4LVERSION\@#$${I4LVERSION}#g" \
 	   < $< > $@
 
-install-man: $(MANPAGE)
+install-man: $(MANPAGES)
 	mkdir -p $(DESTDIR)$(MAN8DIR)
 	$(INSTALL_MAN) $< $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
