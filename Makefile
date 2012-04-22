@@ -202,24 +202,19 @@ cfgerror:
 #
 subconfig: scripts/autoconf.h scripts/autoconf.mk
 	@echo Selected subdirs: $(BUILD_ONLY) $(SUBDIRS)
-	@set -e; for i in `echo $(BUILD_ONLY) $(SUBDIRS)`; do \
-		if [ $$i = eicon ] ; then \
+	@set -e; \
+	for i in `echo $(BUILD_ONLY) $(SUBDIRS)`; do \
+		if [ -x $$i/configure ] ; then \
 			/bin/echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
-			(cd $$i; ./configure \
+			(cd $$i; \
+			 test "$$i" = "eicon" && FIRMWAREDIR_OPT="--with-firmware=$(CONFIG_DATADIR)"; \
+			 ./configure $(FIRMWAREDIR_OPT) \
 				--sbindir=$(CONFIG_SBINDIR) \
 				--bindir=$(CONFIG_BINDIR) \
 				--mandir=$(CONFIG_MANDIR) \
 				--datadir=$(CONFIG_DATADIR) \
 				--libdir=$(LIBDIR) \
-				--with-firmware=$(CONFIG_DATADIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
-		elif [ -x $$i/configure ] ; then \
-			/bin/echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
-			(cd $$i; ./configure \
-				--sbindir=$(CONFIG_SBINDIR) \
-				--bindir=$(CONFIG_BINDIR) \
-				--mandir=$(CONFIG_MANDIR) \
-				--datadir=$(CONFIG_DATADIR) \
-				--libdir=$(LIBDIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
+			  || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
 		elif [ -f $$i/Makefile.in ] ; then \
 			/bin/echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
 			$(MAKE) -C $$i -f Makefile.in config; \
