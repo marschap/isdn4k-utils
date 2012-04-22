@@ -9,7 +9,7 @@ I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn/eicon"}
 CONFIG_SBINDIR=${sbindir:-"/usr/sbin"}
 CONFIG_CARD_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
-CONFIG_MANDIR=${sbindir:-"/usr/man"}
+CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_EICONCTRL_DEBUG=${CONFIG_EICONCTRL_DEBUG:-"n"}
 MANDATE=`grep CHECKIN eiconctrl.man.in | awk '{print $4}'`
 
