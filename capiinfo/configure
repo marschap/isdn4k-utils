@@ -2506,7 +2506,7 @@ am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'
 
 
 
-I4LCONFDIR=`eval echo ${CONFIG_I4LCONFDIR:-"/etc/isdn"}`
+I4LCONFDIR=${CONFIG_I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}

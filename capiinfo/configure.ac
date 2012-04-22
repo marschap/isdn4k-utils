@@ -6,7 +6,7 @@ AC_INIT([capiinfo], [1.0])
 AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT([/usr])
 
-I4LCONFDIR=`eval echo ${CONFIG_I4LCONFDIR:-"/etc/isdn"}`
+I4LCONFDIR=${CONFIG_I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
