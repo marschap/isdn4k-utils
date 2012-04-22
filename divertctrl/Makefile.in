@@ -17,16 +17,10 @@ INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
-ifeq (../scripts/autoconf.mk,$(wildcard ../scripts/autoconf.mk))
-	include ../scripts/autoconf.mk
-	SBINDIR			= $(CONFIG_SBINDIR)
-	mandir			= $(CONFIG_MANDIR)
-else
-	SBINDIR			= /sbin
-	mandir			= @mandir@
-endif
+SBINDIR			= $(CONFIG_SBINDIR)
+mandir			= $(CONFIG_MANDIR)
 MAN8DIR			= $(mandir)/man8
-CC				= @CC@
+CC			= @CC@
 
 .SUFFIXES:
 .SUFFIXES: .c .o
