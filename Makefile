@@ -18,8 +18,8 @@ LIBDIR:=/usr/lib
 # Following line is important for lib and isdnlog (sl).
 export ROOTDIR=$(shell pwd)
 
-ifeq (.config,$(wildcard .config))
-include .config
+ifeq (scripts/autoconf.mk,$(wildcard scripts/autoconf.mk))
+include scripts/autoconf.mk
 do-it-all:      subtargets
 else
 CONFIGURATION = config
