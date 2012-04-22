@@ -2,11 +2,11 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
 
-AC_INIT([capiiniti], [1.0])
+AC_INIT([capiinit], [1.0])
 AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT([/])
 
-I4LCONFDIR=${syconfdir:-"/etc/isdn"}
+I4LCONFDIR=${sysconfdir:-"/etc/isdn"}
 
 AC_DEFINE_UNQUOTED(I4LCONFDIR, "${I4LCONFDIR}", [directory for configuration files])
 
