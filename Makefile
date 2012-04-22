@@ -214,6 +214,7 @@ subconfig: scripts/autoconf.h scripts/autoconf.mk
 				--mandir=$(CONFIG_MANDIR) \
 				--datadir=$(CONFIG_DATADIR) \
 				--libdir=$(LIBDIR) \
+				--sysconfdir=$(CONFIG_I4LCONFDIR) \
 			  || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
 		elif [ -f $$i/Makefile.in ] ; then \
 			/bin/echo -e "\nRunning make -f Makefile.in config in $$i ...\n"; sleep 1; \
