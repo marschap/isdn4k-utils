@@ -603,9 +603,7 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
-CONFIG_FIRMWAREDIR
-CONFIG_MANDIR
-CONFIG_SBINDIR
+I4LCONFDIR
 EGREP
 GREP
 CPP
@@ -2505,7 +2503,13 @@ am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'
 
 
 
-CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
+I4LCONFDIR=${syconfdir:-"/etc/isdn"}
+
+
+cat >>confdefs.h <<_ACEOF
+#define I4LCONFDIR "${I4LCONFDIR}"
+_ACEOF
+
 
 
 ac_ext=c
@@ -3913,8 +3917,6 @@ _ACEOF
 fi
 
 done
-
-
 
 
 
