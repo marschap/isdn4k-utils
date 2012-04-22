@@ -205,7 +205,7 @@ subconfig: scripts/autoconf.h scripts/autoconf.mk
 	@set -e; for i in `echo $(BUILD_ONLY) $(SUBDIRS)`; do \
 		if [ $$i = eicon ] ; then \
 			/bin/echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
-			(cd $$i; ./configure --with-sbin=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --with-man=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) --libdir=$(LIBDIR) --with-firmware=$(CONFIG_DATADIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
+			(cd $$i; ./configure --sbindir=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --mandir=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) --libdir=$(LIBDIR) --with-firmware=$(CONFIG_DATADIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
 		elif [ -x $$i/configure ] ; then \
 			/bin/echo -e "\nRunning configure in $$i ...\n"; sleep 1; \
 			(cd $$i; ./configure --sbindir=$(CONFIG_SBINDIR) --bindir=$(CONFIG_BINDIR) --mandir=$(CONFIG_MANDIR) --datadir=$(CONFIG_DATADIR) --libdir=$(LIBDIR) || $(MAKE) -C ../ ERRDIR=$$i cfgerror); \
