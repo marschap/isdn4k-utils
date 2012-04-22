@@ -88,6 +88,12 @@
 #include <linux/kernelcapi.h>
 #include <getopt.h>
 
+#if defined(HAVE_CONFIG_H)
+# include "config.h"
+#else
+# define I4LCONFDIR	"/etc/isdn"
+#endif
+
 #define MODPROBE	"/sbin/modprobe"
 static char capidevnameold[] = "/dev/capi20";
 static char capidevnamenew[] = "/dev/isdn/capi20";
@@ -98,7 +104,7 @@ static char *firmwarepath[] = {
 	"/usr/share/isdn",
 	"/usr/lib/isdn",
 	"/lib/isdn",
-	0
+	NULL
 };
 
 /* ---------------- global variables --------------------------------- */
@@ -107,7 +113,7 @@ static int capifd = -1;
 
 static int patchdebug = 0;	/* -d || -debug */
 static int silent = 0;		/* -s || -silent */
-char *configfilename = "/etc/capi.conf";
+char *configfilename = I4LCONFDIR "/capi.conf";
 
 /* ---------------- utils -------------------------------------------- */
 
