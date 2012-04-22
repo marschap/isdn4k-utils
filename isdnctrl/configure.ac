@@ -5,8 +5,6 @@ AC_PREREQ([2.68])
 AC_INIT([isdnctrl], [?.?])
 AC_PREFIX_DEFAULT(/usr)
 
-I4LCONFDIR=${CONFIG_I4LCONFDIR:-"/etc/isdn"}
-I4LCONFFILE=${CONFIG_CONFFILE:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
@@ -35,8 +33,6 @@ AC_ARG_ENABLE(cfile,
 
 dnl Define which variables to substitute & which files to generate
 AC_SUBST(MANDATE)
-AC_SUBST(I4LCONFDIR)
-AC_SUBST(I4LCONFFILE)
 AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_ISDNCTRL_CONF)
 AC_SUBST(CONFIG_ISDNCTRL_DWABC_UDP_INFO)

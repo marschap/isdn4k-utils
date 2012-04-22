@@ -606,8 +606,6 @@ CONFIG_SBINDIR
 CONFIG_ISDNCTRL_DWABC_UDP_INFO
 CONFIG_ISDNCTRL_CONF
 I4LVERSION
-I4LCONFFILE
-I4LCONFDIR
 MANDATE
 EGREP
 GREP
@@ -1965,8 +1963,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-I4LCONFDIR=${CONFIG_I4LCONFDIR:-"/etc/isdn"}
-I4LCONFFILE=${CONFIG_CONFFILE:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
@@ -3341,8 +3337,6 @@ if test "${enable_cfile+set}" = set; then :
 $as_echo "#define CONFIG_ISDNCTRL_CONF y" >>confdefs.h
 
 fi
-
-
 
 
 
