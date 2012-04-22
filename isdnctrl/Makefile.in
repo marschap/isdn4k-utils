@@ -20,6 +20,8 @@ INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
 CC			= @CC@ -DVERSION=\"@I4LVERSION@\"
 prefix			= @prefix@
 exec_prefix		= @exec_prefix@
+datarootdir		= @datarootdir@
+datadir			= @datadir@
 
 ifeq (@CONFIG_ISDNCTRL_CONF@,y)
 COPTS		+= -DI4L_CTRL_CONF
