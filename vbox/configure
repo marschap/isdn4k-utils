@@ -2663,6 +2663,8 @@ am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'
 
 
 
+VERDATE="17-NOV-98"
+
 
 cat >>confdefs.h <<_ACEOF
 #define PACKAGE "${PACKAGE_NAME}"
@@ -2675,7 +2677,7 @@ _ACEOF
 
 
 cat >>confdefs.h <<_ACEOF
-#define VERDATE 17-NOV-98
+#define VERDATE "${VERDATE}"
 _ACEOF
 
 

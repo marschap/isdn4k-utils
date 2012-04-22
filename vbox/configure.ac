@@ -16,9 +16,11 @@ dnl #------------------------------------------------------------------------#
 
 AC_PREFIX_DEFAULT([/usr])
 
+VERDATE="17-NOV-98"
+
 AC_DEFINE_UNQUOTED(PACKAGE, "${PACKAGE_NAME}", [Name of package])
 AC_DEFINE_UNQUOTED(VERSION, "${PACKAGE_VERSION}", [Version number of package])
-AC_DEFINE_UNQUOTED(VERDATE, ["17-NOV-98"], [date the version was created])
+AC_DEFINE_UNQUOTED(VERDATE, "${VERDATE}", [date the version was created])
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
