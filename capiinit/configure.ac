@@ -24,4 +24,4 @@ dnl Define which variables to substitute & which files to generate
 AC_SUBST(I4LCONFDIR)
 AM_CONFIG_HEADER(config.h)
 
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile capiinit.8)

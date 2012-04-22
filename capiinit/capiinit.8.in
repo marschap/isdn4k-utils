@@ -17,7 +17,7 @@ is called with one of the following actions:
 .TP
 \fBstart\fR
 Load all modules and initialize all cards (loading the firmware), which are
-configured in \fI/etc/capi.conf\fR.
+configured in \fI@I4LCONFDIR@/capi.conf\fR.
 .TP
 \fBstop\fR
 Reset all cards and unload modules.
@@ -58,13 +58,13 @@ Firmware files are searched in this order in the following directories:
 \fI/usr/lib/isdn\fR,
 \fI/lib/isdn\fR.
 .PP
-There is a sample config in /etc/capi.conf.
+There is a sample config in @I4LCONFDIR@/capi.conf.
 
 .SH OPTIONS
 .PP
 .TP
 \fB-c\fR \fIfilename\fR, \fB--config\fR \fIfilename\fR
-Use \fIfilename\fP as config file (default is /etc/capi.conf).
+Use \fIfilename\fP as config file (default is @I4LCONFDIR@/capi.conf).
 .TP
 \fB-d\fR, \fB--debug\fR
 Save patch values for debugging purposes.
