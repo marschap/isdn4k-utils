@@ -1,8 +1,4 @@
-.\" $Id: xmonisdn.man.in,v 1.4 2002/01/31 20:18:13 paul Exp $
-.\"
-.\" CHECKIN $Date: 2002/01/31 20:18:13 $
-.\"
-.TH XMONISDN 1 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "X Tools"   
+.TH XMONISDN 1 "January 2002" isdn4k-utils-@I4LVERSION@ "X Tools"   
 .SH NAME
 xmonisdn \- monitor for ISDN network
 .SH SYNOPSIS

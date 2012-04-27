@@ -52,11 +52,9 @@ xmonisdn:
 	rm -rf X11
 
 xmonisdn.man: xmonisdn.man.in Makefile
-	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	XUP=`echo '$(CONFIG_XMONISDN_UPCMD)' | sed 's/&/\\\&/g'`; \
 	XDOWN=`echo '$(CONFIG_XMONISDN_DOWNCMD)' | sed 's/&/\\\&/g'`; \
 	sed \
-	   -e "s#\@MANDATE\@#$${MANDATE}#g" \
 	   -e "s#\@I4LVERSION\@#${I4LVERSION}#g" \
            -e "s,\@CONFIG_XMONISDN_UPCMD\@,$${XUP},g" \
            -e "s,\@CONFIG_XMONISDN_DOWNCMD\@,$${XDOWN},g" \
