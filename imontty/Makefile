@@ -43,9 +43,7 @@ rootperm:
 	fi
 
 imontty.8: imontty.8.in
-	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	sed \
-	   -e "s#\@MANDATE\@#$${MANDATE}#g" \
 	   -e "s#\@I4LVERSION\@#$${I4LVERSION}#g" \
 	   < $< > $@
 
