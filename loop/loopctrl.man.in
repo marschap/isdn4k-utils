@@ -1,12 +1,8 @@
-.\" $Id: loopctrl.man.in,v 1.2 1999/09/06 08:03:27 fritz Exp $
-.\"
-.\" CHECKIN $Date: 1999/09/06 08:03:27 $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii icnctrl.1 for ASCII output, or
 .\" groff -man -Tps loopctrl.1 for PostScript output
 .\"
-.TH LOOPCTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.TH LOOPCTRL 8 "September 1999" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .SH NAME
 loopctrl \- configure isdnloop ISDN driver
 .SH SYNOPSIS
