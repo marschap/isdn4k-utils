@@ -21,16 +21,13 @@ datadir			= @datadir@
 	cp $< $@
 
 %.4: %.man
-	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
-	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
+	cp $< $@
 
 %.7: %.man
-	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
-	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
+	cp $< $@
 
 %.8: %.man
-	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
-	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
+	cp $< $@
 
 all: $(MANPAGES)
 

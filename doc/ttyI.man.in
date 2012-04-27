@@ -1,12 +1,8 @@
-.\" $Id: ttyI.man.in,v 1.11 2002/01/31 18:52:12 paul Exp $
-.\"
-.\" CHECKIN $Date: 2002/01/31 18:52:12 $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii ttyI.4 for ASCII output, or
 .\" groff -man -Tps ttyI.4 for PostScript output
 .\"
-.TH ttyi 4 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Special files"
+.TH ttyi 4 "January 2002" "ISDN 4 Linux @I4LVERSION@" "Special files"
 .SH NAME
 ttyI \- ISDN character devices with modem emulator
 .SH DESCRIPTION

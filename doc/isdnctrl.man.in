@@ -1,12 +1,8 @@
-.\" $Id: isdnctrl.man.in,v 1.4 1999/09/06 08:03:23 fritz Exp $
-.\"
-.\" CHECKIN $Date: 1999/09/06 08:03:23 $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii isdnctrl.4 for ASCII output, or
 .\" groff -man -Tps isdnctrl.4 for PostScript output
 .\"
-.TH isdnctrl 4 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Special files"
+.TH isdnctrl 4 "September 1999" "ISDN 4 Linux @I4LVERSION@" "Special files"
 .SH NAME
 isdnctrl \- ISDN control device
 .SH SYNOPSIS
