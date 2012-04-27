@@ -608,7 +608,6 @@ I4LCONFDIR
 CONFIG_MANDIR
 CONFIG_SBINDIR
 CONFIG_DATADIR
-MANDATE
 EGREP
 GREP
 CPP
@@ -2083,7 +2082,6 @@ I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
-MANDATE=`grep CHECKIN actctrl.man.in | awk '{print $4}'`
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -3620,7 +3618,6 @@ if test "${with_firmware+set}" = set; then :
 $as_echo "#define CONFIG_DATADIR \"\${withval}\"" >>confdefs.h
 
 fi
-
 
 
 

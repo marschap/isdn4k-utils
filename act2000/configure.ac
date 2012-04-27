@@ -10,7 +10,6 @@ I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
-MANDATE=`grep CHECKIN actctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
 AC_PROG_INSTALL
@@ -32,7 +31,6 @@ AC_ARG_WITH(firmware,
 )
 
 dnl Define which variables to substitute & which files to generate
-AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
