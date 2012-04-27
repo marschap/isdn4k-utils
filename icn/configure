@@ -608,7 +608,6 @@ CONFIG_MANDIR
 CONFIG_SBINDIR
 CONFIG_DATADIR
 CONFIG_ICNCTRL_DEBUG
-MANDATE
 EGREP
 GREP
 CPP
@@ -2090,7 +2089,6 @@ CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_ICNCTRL_DEBUG=${CONFIG_ICNCTRL_DEBUG:-"n"}
-MANDATE=`grep CHECKIN icnctrl.man.in | awk '{print $4}'`
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -3633,7 +3631,6 @@ if test "${enable_dump+set}" = set; then :
   enableval=$enable_dump; CONFIG_ICNCTRL_DEBUG="y"
 
 fi
-
 
 
 

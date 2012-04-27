@@ -10,7 +10,6 @@ CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_ICNCTRL_DEBUG=${CONFIG_ICNCTRL_DEBUG:-"n"}
-MANDATE=`grep CHECKIN icnctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
 AC_PROG_INSTALL
@@ -36,7 +35,6 @@ AC_ARG_ENABLE(dump,
 )
 
 dnl Define which variables to substitute & which files to generate
-AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_ICNCTRL_DEBUG)
 AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(CONFIG_SBINDIR)
