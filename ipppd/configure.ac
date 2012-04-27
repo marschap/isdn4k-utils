@@ -6,7 +6,6 @@ AC_INIT(auth.c)
 dnl AC_PREFIX_DEFAULT([/usr])
 
 I4LVERSION=${I4LVERSION:-"?.?"}
-MANDATE=`grep CHECKIN ipppd.man.in | awk '{print $4}'`
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_RUNDIR=${CONFIG_RUNDIR:-"/var/run"}
@@ -104,7 +103,6 @@ AC_ARG_ENABLE(ippp-filter,
 
 dnl Define which variables to substitute & which files to generate
 AC_SUBST(I4LVERSION)
-AC_SUBST(MANDATE)
 AC_SUBST(HAVE_LIBDES)
 AC_SUBST(HAVE_LIBSSL)
 AC_SUBST(HAVE_LIBCRYPT)

@@ -617,7 +617,6 @@ HAVE_LIBBSD
 HAVE_LIBCRYPT
 HAVE_LIBSSL
 HAVE_LIBDES
-MANDATE
 I4LVERSION
 LIBOBJS
 EGREP
@@ -2157,7 +2156,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 I4LVERSION=${I4LVERSION:-"?.?"}
-MANDATE=`grep CHECKIN ipppd.man.in | awk '{print $4}'`
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_RUNDIR=${CONFIG_RUNDIR:-"/var/run"}
@@ -4133,7 +4131,6 @@ if test "${enable_ippp_filter+set}" = set; then :
 $as_echo "#define CONFIG_IPPP_FILTER \"y\"" >>confdefs.h
 
 fi
-
 
 
 
