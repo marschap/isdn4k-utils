@@ -606,7 +606,6 @@ LIBOBJS
 CONFIG_MANDIR
 CONFIG_SBINDIR
 I4LVERSION
-I4LCONFDIR
 DEBUGVAR
 EGREP
 GREP
@@ -2078,7 +2077,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/usr/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
@@ -3616,7 +3614,6 @@ rm -f conftest.mmap conftest.txt
 if test "${enable_dump+set}" = set; then :
   enableval=$enable_dump; DEBUGVAR=-D__DEBUGVAR__
 fi
-
 
 
 
