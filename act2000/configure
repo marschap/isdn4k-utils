@@ -604,7 +604,6 @@ ac_header_list=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 I4LVERSION
-I4LCONFDIR
 CONFIG_MANDIR
 CONFIG_SBINDIR
 CONFIG_DATADIR
@@ -2077,7 +2076,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
@@ -3618,7 +3616,6 @@ if test "${with_firmware+set}" = set; then :
 $as_echo "#define CONFIG_DATADIR \"\${withval}\"" >>confdefs.h
 
 fi
-
 
 
 

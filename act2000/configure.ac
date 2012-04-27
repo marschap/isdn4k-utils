@@ -5,7 +5,6 @@ AC_PREREQ([2.68])
 AC_INIT(actctrl.c)
 AC_PREFIX_DEFAULT(/usr)
 
-I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
@@ -34,7 +33,6 @@ dnl Define which variables to substitute & which files to generate
 AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
-AC_SUBST(I4LCONFDIR)
 AC_SUBST(I4LVERSION)
 
 AC_OUTPUT(Makefile actctrl.man)
