@@ -10,7 +10,6 @@ CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_ISDNCTRL_CONF=${CONFIG_ISDNCTRL_CONF:-"n"}
 CONFIG_ISDNCTRL_DWABC_UDP_INFO=${CONFIG_ISDNCTRL_DWABC_UDP_INFO:-"n"}
-MANDATE=`grep CHECKIN isdnctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
 AC_PROG_INSTALL
@@ -32,7 +31,6 @@ AC_ARG_ENABLE(cfile,
 )
 
 dnl Define which variables to substitute & which files to generate
-AC_SUBST(MANDATE)
 AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_ISDNCTRL_CONF)
 AC_SUBST(CONFIG_ISDNCTRL_DWABC_UDP_INFO)

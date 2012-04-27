@@ -606,7 +606,6 @@ CONFIG_SBINDIR
 CONFIG_ISDNCTRL_DWABC_UDP_INFO
 CONFIG_ISDNCTRL_CONF
 I4LVERSION
-MANDATE
 EGREP
 GREP
 CPP
@@ -1968,7 +1967,6 @@ CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_ISDNCTRL_CONF=${CONFIG_ISDNCTRL_CONF:-"n"}
 CONFIG_ISDNCTRL_DWABC_UDP_INFO=${CONFIG_ISDNCTRL_DWABC_UDP_INFO:-"n"}
-MANDATE=`grep CHECKIN isdnctrl.man.in | awk '{print $4}'`
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -3337,7 +3335,6 @@ if test "${enable_cfile+set}" = set; then :
 $as_echo "#define CONFIG_ISDNCTRL_CONF y" >>confdefs.h
 
 fi
-
 
 
 
