@@ -1,11 +1,14 @@
 dnl Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.68])
+
 AC_INIT(icnctrl.c)
-AC_PREFIX_DEFAULT("/usr")
+AC_PREFIX_DEFAULT([/usr])
 
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
-CONFIG_MANDIR=${CONFIG_MANDIR:-"/usr/man"}
+CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_ICNCTRL_DEBUG=${CONFIG_ICNCTRL_DEBUG:-"n"}
 MANDATE=`grep CHECKIN icnctrl.man.in | awk '{print $4}'`
 
@@ -13,37 +16,17 @@ dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_CC
 
-dnl Checks for libraries.
-
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 
-dnl Checks for typedefs, structures, and compiler characteristics.
-
 dnl Checks for library functions.
-AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MMAP
 
 dnl Optional firmware directory
 AC_ARG_WITH(firmware,
 	[  --with-firmware=DIR     Set dir where firmware istalled. [/usr/lib/isdn]],
-	CONFIG_DATADIR="${withval}"
-	AC_DEFINE(CONFIG_DATADIR,"${withval}"),
-)
-
-dnl Optional sbin directory
-AC_ARG_WITH(sbin,
-	[  --with-sbin=DIR         Set dir where binary is istalled. [/sbin]],
-	CONFIG_SBINDIR="${withval}"
-	AC_DEFINE(CONFIG_SBINDIR,"${withval}"),
-)
-
-dnl Optional man directory
-AC_ARG_WITH(man,
-	[  --with-man=DIR          Set manpage dir. [/usr/man]],
-	CONFIG_MANDIR="${withval}"
-	AC_DEFINE(CONFIG_MANDIR,"${withval}"),
+	AC_DEFINE(CONFIG_DATADIR, "${withval}", [icn firmware directory]),
 )
 
 dnl Check, if user wants dump option for debugging
@@ -52,11 +35,12 @@ AC_ARG_ENABLE(dump,
 	CONFIG_ICNCTRL_DEBUG="y"
 )
 
-AC_SUBST(INSTALL)
+dnl Define which variables to substitute & which files to generate
 AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_ICNCTRL_DEBUG)
 AC_SUBST(CONFIG_DATADIR)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(I4LVERSION)
+
 AC_OUTPUT(Makefile icnctrl.man)
