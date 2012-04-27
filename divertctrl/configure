@@ -607,7 +607,6 @@ CONFIG_MANDIR
 CONFIG_SBINDIR
 I4LVERSION
 I4LCONFDIR
-MANDATE
 DEBUGVAR
 EGREP
 GREP
@@ -2083,7 +2082,6 @@ I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/usr/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
-MANDATE=`grep CHECKIN divertctrl.man.in | awk '{print $4}'`
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -3618,7 +3616,6 @@ rm -f conftest.mmap conftest.txt
 if test "${enable_dump+set}" = set; then :
   enableval=$enable_dump; DEBUGVAR=-D__DEBUGVAR__
 fi
-
 
 
 
