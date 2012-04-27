@@ -7,7 +7,6 @@ AC_PREFIX_DEFAULT([/usr])
 
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
-MANDATE=`grep CHECKIN mkzonedb.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -72,7 +71,6 @@ AC_SUBST(CDBEXTRALIBS)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 AC_SUBST(WORDS_BIGENDIAN)
-AC_SUBST(MANDATE)
 AC_CONFIG_HEADERS(config.h)
 
 AC_OUTPUT(Makefile mkzonedb.man)

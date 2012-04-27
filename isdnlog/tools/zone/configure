@@ -602,7 +602,6 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
-MANDATE
 WORDS_BIGENDIAN
 CONFIG_MANDIR
 CONFIG_SBINDIR
@@ -2305,7 +2304,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
-MANDATE=`grep CHECKIN mkzonedb.man.in | awk '{print $4}'`
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -4223,7 +4221,6 @@ _ACEOF
 
 fi
 done
-
 
 
 

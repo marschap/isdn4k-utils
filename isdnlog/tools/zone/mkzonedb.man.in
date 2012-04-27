@@ -1,8 +1,4 @@
-.\" $Id: mkzonedb.man.in,v 1.1 2003/03/11 13:08:00 paul Exp $
-.\"
-.\" CHECKIN $Date: 2003/03/11 13:08:00 $
-.\"
-.TH MKZONEDB 8 "@MANDATE@" mkzonedb "Linux System Administration"
+.TH MKZONEDB 8 "March 2003" mkzonedb "Linux System Administration"
 .SH NAME
 mkzonedb \- Utility create a zone file for isdnlog
 .SH SYNOPSIS
