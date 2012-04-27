@@ -7,7 +7,6 @@ AC_INIT(ipppstats.c)
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
-MANDATE=`grep CHECKIN ipppstats.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -28,7 +27,6 @@ AC_CHECK_FUNCS(socket)
 
 dnl Define which variables to substitute & which files to generate
 AC_SUBST(I4LVERSION)
-AC_SUBST(MANDATE)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)
 

@@ -1,12 +1,8 @@
-.\"	@(#) $Id: ipppstats.man.in,v 1.1 1997/10/26 23:08:42 fritz Exp $
-.\"
-.\" CHECKIN $Date: 1997/10/26 23:08:42 $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii ipppstats.8 for ASCII output, or
 .\" groff -man -Tps ipppstats.8 for PostScript output
 .\"
-.TH IPPPSTATS 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.TH IPPPSTATS 8 "October 1997" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .SH NAME
 pppstats \- print PPP statistics
 .SH SYNOPSIS

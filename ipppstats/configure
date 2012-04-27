@@ -603,7 +603,6 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 CONFIG_MANDIR
 CONFIG_SBINDIR
-MANDATE
 I4LVERSION
 EGREP
 GREP
@@ -2067,7 +2066,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
-MANDATE=`grep CHECKIN ipppstats.man.in | awk '{print $4}'`
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -3551,7 +3549,6 @@ _ACEOF
 
 fi
 done
-
 
 
 
