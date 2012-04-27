@@ -612,16 +612,6 @@ OLDCONFFILE
 OLDCONFDIR
 NATION_MACRO
 NATION
-MANDATE_RATE_CONF
-MANDATE_ISDNREP
-MANDATE_ISDNLOG_USERS
-MANDATE_ISDNLOG8
-MANDATE_ISDNLOG5
-MANDATE_ISDNFORMAT
-MANDATE_ISDN_CONF
-MANDATE_ISDNCONF
-MANDATE_ISDNBILL
-MANDATE_CALLERID
 LOGFILE
 LIBISDNDIR
 LIBAREA
@@ -2218,16 +2208,6 @@ mandir=${CONFIG_MANDIR:-"/usr/man"}
 datadir=${CONFIG_DATADIR:-"/usr/lib/isdn"}
 DOCDIR=${CONFIG_ISDNLOG_DOCDIR:-"/usr/doc/packages/i4l/isdnlog"}
 DATADIR=$datadir
-MANDATE_CALLERID=`grep CHECKIN isdnlog/callerid.conf.5.in | awk '{print $4}'`
-MANDATE_ISDN_CONF=`grep CHECKIN isdnlog/isdn.conf.5.in | awk '{print $4}'`
-MANDATE_RATE_CONF=`grep CHECKIN tools/rate.conf.5.in | awk '{print $4}'`
-MANDATE_ISDNFORMAT=`grep CHECKIN isdnlog/isdnformat.5.in | awk '{print $4}'`
-MANDATE_ISDNLOG5=`grep CHECKIN isdnlog/isdnlog.5.in | awk '{print $4}'`
-MANDATE_ISDNLOG8=`grep CHECKIN isdnlog/isdnlog.8.in | awk '{print $4}'`
-MANDATE_ISDNLOG_USERS=`grep CHECKIN isdnlog/isdnlog.users.5.in | awk '{print $4}'`
-MANDATE_ISDNREP=`grep CHECKIN isdnrep/isdnrep.1.in | awk '{print $4}'`
-MANDATE_ISDNBILL=`grep CHECKIN isdnrep/isdnbill.1.in | awk '{print $4}'`
-MANDATE_ISDNCONF=`grep CHECKIN isdnconf/isdnconf.1.in | awk '{print $4}'`
 ISDNLOG_VERSION=`grep "^VERSION \+= \+" Makefile.in | awk '{print $3}'`
 
 if test "$CONFIG_LIB_AREACODE" = "y" ; then
@@ -4747,16 +4727,6 @@ $as_echo "#define ISDN_NL 1" >>confdefs.h
 
 		;;
 esac
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,6 +1,4 @@
-.\" $Id: rate.conf.5.in,v 1.2 2007/01/05 02:40:54 tobiasb Exp $
-.\" CHECKIN $Date: 2007/01/05 02:40:54 $
-.TH rate.conf 5 "@MANDATE_RATE_CONF@" "ISDN 4 Linux @I4LVERSION@" "isdnlog @ISDNLOG_VERSION@"
+.TH rate.conf 5 "January 2007" "ISDN 4 Linux @I4LVERSION@" "isdnlog @ISDNLOG_VERSION@"
 
 .SH NAME
 @I4LCONFDIR@/rate.conf \- rate and provider configuration

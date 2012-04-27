@@ -1,7 +1,6 @@
 '\" t
 '\" ** above should format a table **
-.\" CHECKIN $Date: 2005/02/23 14:33:40 $
-.TH rate-files 5 "@MANDATE@" -lt-
+.TH rate-files 5 "February 2005" -lt-
 .SH NAME
 rate-files \- Format of rate-files
 .SH DESCRIPTION

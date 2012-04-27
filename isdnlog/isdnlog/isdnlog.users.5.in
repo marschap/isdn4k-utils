@@ -1,6 +1,4 @@
-.\" $Id: isdnlog.users.5.in,v 1.2 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
-.TH isdnlog.users 5 "@MANDATE_ISDNLOG_USERS@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.TH isdnlog.users 5 "September 2000" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 
 .PD 0
 .SH NAME

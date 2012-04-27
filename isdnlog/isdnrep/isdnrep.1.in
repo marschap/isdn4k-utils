@@ -1,6 +1,4 @@
-.\" $Id: isdnrep.1.in,v 1.11 2007/01/05 02:40:54 tobiasb Exp $
-.\" CHECKIN $Date: 2007/01/05 02:40:54 $
-.TH isdnrep 1 "@MANDATE_ISDNREP@" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
+.TH isdnrep 1 "January 2007" "ISDN 4 Linux @I4LVERSION@" "Linux System Commands"
 
 .PD 0
 .SH NAME

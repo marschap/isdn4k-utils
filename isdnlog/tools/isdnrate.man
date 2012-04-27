@@ -1,5 +1,5 @@
 .\" CHECKIN $Date: 2004/07/13 21:44:20 $
-.TH ISDNRATE 1 "@MANDATE@" -lt-
+.TH ISDNRATE 1 "July 2004" -lt-
 .SH NAME
 isdnrate \- Print telefon rates and various info from rate\-files(5).
 .SH SYNOPSIS

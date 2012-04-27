@@ -1,6 +1,4 @@
-.\" $Id: isdn.conf.5.in,v 1.9 2004/07/24 16:16:57 tobiasb Exp $
-.\" CHECKIN $Date: 2004/07/24 16:16:57 $
-.TH isdn.conf 5 "@MANDATE_ISDN_CONF@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.TH isdn.conf 5 "July 2004" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 
 .SH NAME

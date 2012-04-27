@@ -1,12 +1,8 @@
-.\" $Id: isdnconf.1.in,v 1.1 1998/12/29 14:51:46 paul Exp $
-.\"
-.\" CHECKIN $Date: 1998/12/29 14:51:46 $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii isdnconf.1 for ASCII output, or
 .\" groff -man -Tps isdnconf.1 for PostScript output
 .\"
-.TH ISDNCONF 1 "@MANDATE_ISDNCONF@" isdn4k-utils-@I4LVERSION@ "Linux System Utilities"
+.TH ISDNCONF 1 "December 1998" isdn4k-utils-@I4LVERSION@ "Linux System Utilities"
 .SH NAME
 isdnconf \- manipulate or read ISDN phone number config files.
 

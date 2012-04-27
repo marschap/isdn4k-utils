@@ -1858,12 +1858,10 @@ PCFLAGS = mode=oracle ireclen=160 lines=yes
 	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDE) -fno-strict-aliasing -c -o $@ $<
 
 %.1: %.man
-	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
-	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
+	cp $< $@
 
 %.5: %.man
-	MANDATE=`grep CHECKIN $< | $(AWK) '{print $$4}'`; \
-	$(SED) -e s%@MANDATE@%$$MANDATE%g $< > $@
+	cp $< $@
 
 %.1: %.1.in config.status
 	./config.status $@
