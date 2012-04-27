@@ -605,7 +605,6 @@ LIBOBJS
 I4LVERSION
 CONFIG_MANDIR
 CONFIG_SBINDIR
-MANDATE
 EGREP
 GREP
 CPP
@@ -2023,7 +2022,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
-MANDATE=`grep CHECKIN imon.man.in | awk '{print $4}'`
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -3657,7 +3655,6 @@ _ACEOF
 
 fi
 done
-
 
 
 

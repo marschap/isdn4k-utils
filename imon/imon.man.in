@@ -1,12 +1,8 @@
-.\" $Id: imon.man.in,v 1.2 1999/09/06 08:03:24 fritz Exp $
-.\"
-.\" CHECKIN $Date: 1999/09/06 08:03:24 $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii imon.8 for ASCII output, or
 .\" groff -man -Tps imon.8 for PostScript output
 .\"
-.TH IMON 1 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.TH IMON 1 "September 1999" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .SH NAME
 imon \- watch ISDN activities
 .SH SYNOPSIS
