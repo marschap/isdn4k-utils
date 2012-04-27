@@ -1,12 +1,8 @@
-.\" $Id: $
-.\"
-.\" CHECKIN $Date: $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii divalog for ASCII output, or
 .\" groff -man -Tps divalog for PostScript output
 .\"
-.TH DIVALOG 8 "@MANDATE@" divalog "Linux System Administration"
+.TH DIVALOG 8 "December 2000" divalog "Linux System Administration"
 .SH NAME
 divalog \- Utility to read and translate messages from divalogd
 .SH SYNOPSIS

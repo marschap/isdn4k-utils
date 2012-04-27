@@ -1,12 +1,8 @@
-.\" $Id: $
-.\"
-.\" CHECKIN $Date: $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii divaload.man for ASCII output, or
 .\" groff -man -Tps divaload.man for PostScript output
 .\"
-.TH DIVALOAD 8 "@MANDATE@" divaload "Linux System Administration"
+.TH DIVALOAD 8 "December 2000" divaload "Linux System Administration"
 .SH NAME
 divaload \- configure Eicon Diva active ISDN card 
 .SH SYNOPSIS

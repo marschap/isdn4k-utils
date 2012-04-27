@@ -610,7 +610,6 @@ CONFIG_SBINDIR
 CONFIG_KERNELDIR
 CONFIG_DATADIR
 CONFIG_EICONCTRL_DEBUG
-MANDATE
 INSTALL
 HAVE_NATIVE
 HAVE_NPCI
@@ -2098,7 +2097,6 @@ CONFIG_SBINDIR=${sbindir:-"/usr/sbin"}
 CONFIG_CARD_SBINDIR=${CONFIG_CARD_SBINDIR:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_EICONCTRL_DEBUG=${CONFIG_EICONCTRL_DEBUG:-"n"}
-MANDATE=`grep CHECKIN eiconctrl.man.in | awk '{print $4}'`
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -3806,7 +3804,6 @@ $as_echo "#define HAVE_NPCI /**/" >>confdefs.h
 
 
 HAVE_NATIVE=n
-
 
 
 
