@@ -12,7 +12,6 @@ AC_PROG_INSTALL
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
-MANDATE=`grep CHECKIN avmcapictrl.man.in | awk '{print $4}'`
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -22,7 +21,6 @@ dnl Checks for library functions.
 AC_CHECK_FUNCS(mmap)
 
 dnl Define which variables to substitute & which files to generate
-AC_SUBST(MANDATE)
 AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_MANDIR)

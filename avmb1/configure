@@ -605,7 +605,6 @@ LIBOBJS
 CONFIG_MANDIR
 CONFIG_SBINDIR
 I4LVERSION
-MANDATE
 EGREP
 GREP
 CPP
@@ -2982,7 +2981,6 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
-MANDATE=`grep CHECKIN avmcapictrl.man.in | awk '{print $4}'`
 
 
 ac_ext=c
@@ -3406,7 +3404,6 @@ _ACEOF
 
 fi
 done
-
 
 
 
