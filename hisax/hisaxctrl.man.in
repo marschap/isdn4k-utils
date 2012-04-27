@@ -1,12 +1,8 @@
-.\" $Id: hisaxctrl.man.in,v 1.2 2001/08/09 19:23:53 paul Exp $
-.\"
-.\" CHECKIN $Date: 2001/08/09 19:23:53 $
-.\"
 .\" Process this file with
 .\" groff -man -Tascii hisaxctrl.1 for ASCII output, or
 .\" groff -man -Tps hisaxctrl.1 for PostScript output
 .\"
-.TH HISAXCTRL 8 "@MANDATE@" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
+.TH HISAXCTRL 8 "August 2001" isdn4k-utils-@I4LVERSION@ "Linux System Administration"
 .SH NAME
 hisaxctrl \- configure HiSax-Module
 .SH SYNOPSIS

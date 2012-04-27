@@ -10,7 +10,6 @@ CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_HISAXCTRL=${CONFIG_HISAXCTRL:-"n"}
-MANDATE=`grep CHECKIN hisaxctrl.man.in | awk '{print $4}'`
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -37,7 +36,6 @@ AC_ARG_WITH(hisax,
 )
 
 dnl Define which variables to substitute & which files to generate
-AC_SUBST(MANDATE)
 AC_SUBST(I4LVERSION)
 AC_SUBST(CONFIG_SBINDIR)
 AC_SUBST(CONFIG_DATADIR)

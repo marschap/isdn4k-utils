@@ -607,7 +607,6 @@ CONFIG_MANDIR
 CONFIG_DATADIR
 CONFIG_SBINDIR
 I4LVERSION
-MANDATE
 EGREP
 GREP
 CPP
@@ -2079,7 +2078,6 @@ CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_DATADIR=${CONFIG_FIRMWAREDIR:-"/usr/lib/isdn"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
 CONFIG_HISAXCTRL=${CONFIG_HISAXCTRL:-"n"}
-MANDATE=`grep CHECKIN hisaxctrl.man.in | awk '{print $4}'`
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -3429,7 +3427,6 @@ if test "${with_hisax+set}" = set; then :
 $as_echo "#define CONFIG_HISAXCTRL \"\${withval}\"" >>confdefs.h
 
 fi
-
 
 
 
