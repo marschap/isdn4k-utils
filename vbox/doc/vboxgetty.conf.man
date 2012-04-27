@@ -1,6 +1,4 @@
-.\" $Id: vboxgetty.conf.man,v 1.4 2003/03/11 13:05:18 paul Exp $
-.\" CHECKIN $Date: 2003/03/11 13:05:18 $
-.TH vboxgetty.conf 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.TH vboxgetty.conf 5 "March 2003" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
 vboxgetty.conf \- config file for vboxgetty

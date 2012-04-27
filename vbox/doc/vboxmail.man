@@ -1,6 +1,4 @@
-.\" $Id: vboxmail.man,v 1.1 1998/11/17 18:23:00 paul Exp $
-.\" CHECKIN $Date: 1998/11/17 18:23:00 $
-.TH vboxmail 8 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.TH vboxmail 8 "November 1998" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 
 .SH NAME
 vboxmail \- script to send notification of new voice message

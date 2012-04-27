@@ -1,6 +1,4 @@
-.\" $Id: vboxmode.man,v 1.2 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
-.TH vboxmode 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.TH vboxmode 1 "September 2009" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
 vboxmode \- detect format of isdn voice file
 .SH SYNOPSIS

@@ -712,9 +712,7 @@ uninstall-man: uninstall-man1 uninstall-man5 uninstall-man8
 
 
 %.1 %.5 %.8: %.man
-	MANDATE=`grep CHECKIN $< | awk '{print $$4}'`; \
 	sed \
-		-e "s#\@MANDATE\@#$${MANDATE}#g" \
 		-e "s#\@I4LVERSION\@#$${I4LVERSION}#g" \
         	-e "s#\@BINDIR\@#@CONFIG_BINDIR@#g" \
         	-e "s#\@SBINDIR\@#@CONFIG_SBINDIR@#g" \

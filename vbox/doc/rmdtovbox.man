@@ -1,6 +1,4 @@
-.\" $Id: rmdtovbox.man,v 1.3 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
-.TH rmdtovbox 1 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.TH rmdtovbox 1 "September 2000" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .SH NAME
 rmdtovbox \- isdn voice box (sound converter)
 .SH SYNOPSIS

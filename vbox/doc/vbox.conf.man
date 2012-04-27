@@ -1,6 +1,4 @@
-.\" $Id: vbox.conf.man,v 1.2 2000/09/15 09:10:10 paul Exp $
-.\" CHECKIN $Date: 2000/09/15 09:10:10 $
-.TH vbox.conf 5 "@MANDATE@" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
+.TH vbox.conf 5 "September 2000" "ISDN 4 Linux @I4LVERSION@" "Linux System Administration"
 .PD 0
 .SH NAME
 vbox.conf \- config file for vbox
