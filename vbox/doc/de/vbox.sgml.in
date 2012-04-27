@@ -37,15 +37,15 @@ Anrufbeantworters mit <em>isdn4linux</em>.
 Copyright &copy; 1996, 1997 Michael 'Ghandi' Herold
 
 Das Paket <em>vbox</em> ist freie Software und kann unter den Bedingungen der
-<em>GNU General Public License</em> veröffentlicht oder verändert werden.
+<em>GNU General Public License</em> verÃ¶ffentlicht oder verÃ¤ndert werden.
 
-Die Dokumentation sowie alle Programme von <em>vbox</em> wurden mit großer
-Sorgfalt erstellt. Dennoch sind Fehler nicht ganz auszuschließen. Aus diesem
+Die Dokumentation sowie alle Programme von <em>vbox</em> wurden mit groÃŸer
+Sorgfalt erstellt. Dennoch sind Fehler nicht ganz auszuschlieÃŸen. Aus diesem
 Grund sind die in der vorliegenden Dokumentation enthaltenen Angaben mit
 keiner Verpflichtung oder Garantie irgendeiner Art verbunden. Sowohl Michael
 Herold als auch die in Kapitel <ref id="id-thanx" name="Danksagungen">
-genannten Personen übernehmen keine Verantwortung oder sonstige Haftung für
-Schäden, die auf irgendeine Art aus der Benutzung der Dokumentation oder den
+genannten Personen Ã¼bernehmen keine Verantwortung oder sonstige Haftung fÃ¼r
+SchÃ¤den, die auf irgendeine Art aus der Benutzung der Dokumentation oder den
 darin beschriebenen Programmen entstehen oder entstanden sind.
 
 Die Funktionen zum Konvertieren von <tt>ADPCM-2</tt>, <tt>ADPCM-3</tt>,
@@ -68,19 +68,19 @@ Das Paket <em>vbox</em> ist ein Ansammlung von Programmen zum Betrieb eines
 Anrufbeantwortets unter <em>isdn4linux</em>.
 
 Ab Version 2.0.0 wird die <tt>DTMF</tt>-Erkennung von <em>isdn4linux</em> und
-eine Skriptsprache (<em>Tcl</em> mit erweitertem Kommandosatz) unterstützt.
-Zudem läuft die komplette Kommunikation der meisten Programme über Netzwerk
+eine Skriptsprache (<em>Tcl</em> mit erweitertem Kommandosatz) unterstÃ¼tzt.
+Zudem lÃ¤uft die komplette Kommunikation der meisten Programme Ã¼ber Netzwerk
 ab.
 
-Folgende Softwarepakete müssen <bf>funktionsfähig</bf> installiert sein:
+Folgende Softwarepakete mÃ¼ssen <bf>funktionsfÃ¤hig</bf> installiert sein:
 
 <itemize>
 
 <item>
 Kernel 2.0.x mit <em>HiSax</em> 2.0 (mit den Patches 1-4) oder <em>HiSax</em>
-2.1. Der Kernel muß mit Audiosupport für ISDN übersetzt werden. Der originale
+2.1. Der Kernel muÃŸ mit Audiosupport fÃ¼r ISDN Ã¼bersetzt werden. Der originale
 Telestreiber der im Kernel integriert ist funktioniert nicht mehr, da
-<em>vbox</em> einige der neuen Features von <em>HiSax</em> unterstützt, die
+<em>vbox</em> einige der neuen Features von <em>HiSax</em> unterstÃ¼tzt, die
 in diesem Treiber nicht vorhanden sind.
 <p>
 
@@ -111,8 +111,8 @@ Die <em>sgml-tools</em> zum Umwandeln der Dokumentation in andere Formate.
 
 </itemize>
 
-Für Anregungen, Diskussionen und Fehlermeldungen existiert eine eigene
-Mailingliste. Um in diese Liste aufgenommen zu werden, muß eine Mail an
+FÃ¼r Anregungen, Diskussionen und Fehlermeldungen existiert eine eigene
+Mailingliste. Um in diese Liste aufgenommen zu werden, muÃŸ eine Mail an
 
 <verb>
 majordomo@abadonna.mayn.de
@@ -125,10 +125,10 @@ subscribe vbox &lt;youraddress&gt
 </verb>
 
 im Body der Nachrichten geschrieben werden, wobei <em>&lt;youraddress&gt;</em>
-durch die eigene eMail-Adresse ersetzt werden muß.
+durch die eigene eMail-Adresse ersetzt werden muÃŸ.
 
-Die Mailingliste ist hauptsächlich in deutsch, anderssprachige Anfragen werden
-aber nach besten Kräften beantwortet.
+Die Mailingliste ist hauptsÃ¤chlich in deutsch, anderssprachige Anfragen werden
+aber nach besten KrÃ¤ften beantwortet.
 
 <!-- *********************************************************************
      **									**
@@ -140,8 +140,8 @@ aber nach besten Kräften beantwortet.
 <p>
 
 Das Kapitel <bf>Erste Schritte</bf> beschreibt die Einbindung der einzelnen
-Programme in das System. Ich möchte jeden bitten, wenigstens <bf>dieses</bf>
-Kapitel aufmerksam zu lesen, um spätere Probleme zu vermeiden!
+Programme in das System. Ich mÃ¶chte jeden bitten, wenigstens <bf>dieses</bf>
+Kapitel aufmerksam zu lesen, um spÃ¤tere Probleme zu vermeiden!
 
 <!-- *********************************************************************
      **                           VBOXGETTY                             **
@@ -151,20 +151,20 @@ Kapitel aufmerksam zu lesen, um spätere Probleme zu vermeiden!
 <p>
 
 Das Programm <em>vboxgetty</em> ist das eigentliche Herz von <em>vbox</em>.
-Es überwacht die Leitung, nimmt eingehende Anrufe entgegen, spielt Ansagetexte
+Es Ã¼berwacht die Leitung, nimmt eingehende Anrufe entgegen, spielt Ansagetexte
 ab und zeichnet die Nachrichten auf.
 
 <em>vboxgetty</em> sollte am besten aus der '<tt>/etc/inittab</tt>' gestartet
 werden. Wenn lieber ein Startskript verwenden werden soll ist darauf achten,
-daß es völlig normal ist, daß <em>vboxgetty</em> sich während der Laufzeit von
+daÃŸ es vÃ¶llig normal ist, daÃŸ <em>vboxgetty</em> sich wÃ¤hrend der Laufzeit von
 alleine beendet; z.B. dann, wenn das Modemdevice nicht initialisiert werden
 konnte.
 
-<em>vboxgetty</em> <bf>muß</bf> vom Benutzer <em>root</em> gestartet werden!
+<em>vboxgetty</em> <bf>muÃŸ</bf> vom Benutzer <em>root</em> gestartet werden!
 
 <descrip>
 
-<tag>Beispiel für einen Eintrag in '<tt>/etc/inittab</tt>':</tag>
+<tag>Beispiel fÃ¼r einen Eintrag in '<tt>/etc/inittab</tt>':</tag>
 
 <verb>
 I6:2345:respawn:@SBINDIR@/vboxgetty -d /dev/ttyI6
@@ -173,22 +173,22 @@ I7:2345:respawn:@SBINDIR@/vboxgetty -d /dev/ttyI7
 
 </descrip>
 
-Das Argument <tt>-d</tt> oder <tt>--device</tt> <bf>muß</bf> angegeben werden
+Das Argument <tt>-d</tt> oder <tt>--device</tt> <bf>muÃŸ</bf> angegeben werden
 (siehe Kapitel <ref id="id-programs" name="Programme"> unter
 <ref id="id-programs-vboxgetty" name="vboxgetty">). Es gibt an welches
 Modemdevice und welcher Teil von '<tt>@SYSCONFDIR@/vboxgetty.conf</tt>'
-für diesen <em>vboxgetty</em> verwendet werden soll.
+fÃ¼r diesen <em>vboxgetty</em> verwendet werden soll.
 
-Für jeden Benutzer oder jede Benutzergruppe muß in '<tt>@SPOOLDIR@</tt>'
+FÃ¼r jeden Benutzer oder jede Benutzergruppe muÃŸ in '<tt>@SPOOLDIR@</tt>'
 ein Verzeichnis angelegt werden, in welches die
-Konfigurationsdatei '<tt>vbox.conf</tt>' kopiert werden muß.
+Konfigurationsdatei '<tt>vbox.conf</tt>' kopiert werden muÃŸ.
 
 Das angelegte Verzeichnis und alle sich darin befindlichen Unterverzeichnisse
-oder Dateien müssen mit den richtigen Rechten versehen werden, sodaß der
+oder Dateien mÃ¼ssen mit den richtigen Rechten versehen werden, sodaÃŸ der
 Benutzer oder die Gruppe, die in '<tt>@SYSCONFDIR@/vboxgetty.conf</tt>'
-eingestellt wurden diese benutzen dürfen!
+eingestellt wurden diese benutzen dÃ¼rfen!
 
-Für die weitere Einrichtung und Konfiguration von <em>vboxgetty</em> kann im
+FÃ¼r die weitere Einrichtung und Konfiguration von <em>vboxgetty</em> kann im
 Kapitel <ref id="id-configuration" name="Konfiguration"> unter
 <ref id="id-configuration-vboxgetty" name="vboxgetty"> nachgeschlagen
 werden.
@@ -214,8 +214,8 @@ Dieses Beispiel zeigt die Einrichtung eines einzelnen Benutzers Namens
 </verb>
 
 Die Dateien '<tt>@SPOOLDIR@/michael/vbox.conf</tt>'
-und '<tt>@SPOOLDIR@/michael/standard.tcl</tt>' müssen jetzt nur noch auf die
-eigenen Bedürfnisse angepasst werden...
+und '<tt>@SPOOLDIR@/michael/standard.tcl</tt>' mÃ¼ssen jetzt nur noch auf die
+eigenen BedÃ¼rfnisse angepasst werden...
 
 </descrip>
 
@@ -227,16 +227,16 @@ eigenen Bedürfnisse angepasst werden...
 <p>
 
 <em>vboxd</em> ist der zweitwichtigste Teil von <em>vbox</em>. Mit diesem
-Daemon ist es möglich, Nachrichten über Netzwerk zu manipulieren und zu laden.
-Die Programme <em>vbox</em> und <em>vboxbeep</em> benötigen <em>vboxd</em>.
+Daemon ist es mÃ¶glich, Nachrichten Ã¼ber Netzwerk zu manipulieren und zu laden.
+Die Programme <em>vbox</em> und <em>vboxbeep</em> benÃ¶tigen <em>vboxd</em>.
 
-Bevor der Daemon gestartet werden kann, muß in der
+Bevor der Daemon gestartet werden kann, muÃŸ in der
 Datei '<tt>/etc/services</tt>' ein neuer Service eingetragen werden (nur falls
 dieser noch nicht enthalten ist).
 
 <descrip>
 
-<tag>Beispiel für '<tt>/etc/services</tt>':</tag>
+<tag>Beispiel fÃ¼r '<tt>/etc/services</tt>':</tag>
 
 <verb>
 20012    vboxd/tcp
@@ -245,13 +245,13 @@ dieser noch nicht enthalten ist).
 
 </descrip>
 
-Danach muß <em>vboxd</em> in der '<tt>/etc/inetd.conf</tt>' eingetragen werden,
+Danach muÃŸ <em>vboxd</em> in der '<tt>/etc/inetd.conf</tt>' eingetragen werden,
 damit dieser bei Bedarf gestartet wird. <em>vboxd</em> kann <bf>nur</bf> mit
-<em>inetd</em> benutzt werden, er ist alleine nicht lauffähig!
+<em>inetd</em> benutzt werden, er ist alleine nicht lauffÃ¤hig!
 
 <descrip>
 
-<tag>Beispiel für '<tt>/etc/inetd.conf</tt>':
+<tag>Beispiel fÃ¼r '<tt>/etc/inetd.conf</tt>':
 
 <verb>
 vboxd  stream  tcp  nowait  root  /usr/sbin/tcpd  @SBINDIR@/vboxd
@@ -259,7 +259,7 @@ vboxd  stream  tcp  nowait  root  /usr/sbin/tcpd  @SBINDIR@/vboxd
 
 </descrip>
 
-Wenn jetzt <em>inetd</em> mit einem <tt>SIGHUP</tt> dazu veranlaßt wurde
+Wenn jetzt <em>inetd</em> mit einem <tt>SIGHUP</tt> dazu veranlaÃŸt wurde
 seine Konfiguration neu einzulesen, kann mit
 
 <verb>
@@ -268,13 +268,13 @@ seine Konfiguration neu einzulesen, kann mit
 
 getestet werden, ob <em>vboxd</em> reagiert.
 
-Auf manchen Systemen ist es evtl. noch nötig, die
+Auf manchen Systemen ist es evtl. noch nÃ¶tig, die
 Dateien '<tt>/etc/hosts.deny</tt>' und '<tt>/etc/hosts.allow</tt>' sowie die
 Firewall-Rules anzupassen :-)
 
 <em>vboxd</em> benutzt die
 Konfigurationsdatei '<tt>@SYSCONFDIR@/vboxd.conf</tt>', die noch an die
-lokalen Gegebenheiten angepaßt werden muß (siehe Kapitel
+lokalen Gegebenheiten angepaÃŸt werden muÃŸ (siehe Kapitel
 <ref id="id-configuration" name="Konfiguration"> unter
 <ref id="id-configuration-vboxd" name="vboxd">).
 
@@ -287,9 +287,9 @@ lokalen Gegebenheiten angepaßt werden muß (siehe Kapitel
 <sect>Konfiguration<label id="id-configuration">
 <p>
 
-Dieses Kapitel beschäftigt sich mit der Konfiguration der einzelnen Komponenten
+Dieses Kapitel beschÃ¤ftigt sich mit der Konfiguration der einzelnen Komponenten
 von <em>vbox</em>. Es ist ratsam, dieses Kapitel aufmerksam zu lesen, da sehr
-viele Änderungen seit den letzten Versionen gemacht wurden.
+viele Ã„nderungen seit den letzten Versionen gemacht wurden.
 
 <!-- *********************************************************************
      **                         VBOXGETTY.CONF                          **
@@ -302,16 +302,16 @@ Die Datei '<tt>vboxgetty.conf</tt>' dient zum Einstellen von <em/vboxgetty/ und
 befindet sich nach der Installation im Verzeichnis '<tt>@SYSCONFDIR@</tt>'.
 
 Alle Angaben nach einem '<tt/#/' und alle leere Zeilen werden ignoriert. Die
-Argumente müssen von den Parametern mit Leerzeichen oder Tabulator voneinander
+Argumente mÃ¼ssen von den Parametern mit Leerzeichen oder Tabulator voneinander
 getrennt werden. In den Argumenten darf kein Leerzeichen vorkommen!
 
 <descrip>
 
 <tag/<tt>port &lt;string&gt;</tt>/
 
-Modemdevice für das alle Einstellungen bis zum nächsten <bf/port/-Kommando
+Modemdevice fÃ¼r das alle Einstellungen bis zum nÃ¤chsten <bf/port/-Kommando
 gelten sollen. Die Einstellungen werden nur benutzt, wenn das Modemdevice das
-<em/vboxgetty/ übergeben wurde mit dem des <bf/port/-Kommandos übereinstimmt.
+<em/vboxgetty/ Ã¼bergeben wurde mit dem des <bf/port/-Kommandos Ã¼bereinstimmt.
 Alle Einstellungen vor dem ersten <bf/port/-Kommando sind global und werden
 von allen Modemdevices benutzt.
 
@@ -324,7 +324,7 @@ von allen Modemdevices benutzt.
 
 Kommando zum initialisieren des Modems. In diesem Kommando sollte u.a. die
 MSN/EAZ angegeben werden, auf welcher <em/vboxgetty/ eingehende Anrufe
-überwachen soll. Die Voreinstellung ist <tt/ATZ/.
+Ã¼berwachen soll. Die Voreinstellung ist <tt/ATZ/.
 
 <descrip>
 <tag/Beispiel:/
@@ -334,8 +334,8 @@ MSN/EAZ angegeben werden, auf welcher <em/vboxgetty/ eingehende Anrufe
 <tag/<tt>user &lt;string&gt;</tt>/
 
 Name des Benutzers unter dessen Rechten <em/vboxgetty/ laufen soll. Der
-Benutzer muß auf dem System existieren und in '<tt>/etc/passwd</tt>'
-eingetragen sein. Dieser Parameter <bf/muß/ angegeben werden!
+Benutzer muÃŸ auf dem System existieren und in '<tt>/etc/passwd</tt>'
+eingetragen sein. Dieser Parameter <bf/muÃŸ/ angegeben werden!
 
 <descrip>
 <tag/Beispiel:/
@@ -345,9 +345,9 @@ eingetragen sein. Dieser Parameter <bf/muß/ angegeben werden!
 <tag/<tt>group &lt;string&gt;</tt>/
 
 Name der Gruppe unter dessen Rechten <em/vboxgetty/ laufen soll. Die Gruppe
-muß auf dem System existieren und in '<tt>/etc/group</tt>' eingetragen sein.
-Es ist nicht erforderlich, daß der eingestellte Benutzer Mitglied dieser
-Gruppe ist. Dieser Parameter <bf/muß/ angegeben werden!
+muÃŸ auf dem System existieren und in '<tt>/etc/group</tt>' eingetragen sein.
+Es ist nicht erforderlich, daÃŸ der eingestellte Benutzer Mitglied dieser
+Gruppe ist. Dieser Parameter <bf/muÃŸ/ angegeben werden!
 
 <descrip>
 <tag/Beispiel:/
@@ -357,7 +357,7 @@ Gruppe ist. Dieser Parameter <bf/muß/ angegeben werden!
 <tag/<tt>umask &lt;number&gt;</tt>/
 
 Numerische umask, die von <em/vboxgetty/ zum anlegen von Dateien verwendet
-werden soll. Die umask muß als Oktalzahl angegeben werden (siehe chmod(1)).
+werden soll. Die umask muÃŸ als Oktalzahl angegeben werden (siehe chmod(1)).
 Die Voreinstellung ist <tt/077/.
 
 <descrip>
@@ -378,7 +378,7 @@ werden soll um das Modem aufzulegen. Voreinstellung ist <tt/800/.
 <tag/<tt>initpause &lt;number&gt;</tt>/
 
 Anzahl der Millisekunden die nach dem Initialisieren des Modems gewartet
-werden sollen. Die Einstellung dient zum Ausgleich von Verzögerungen bei
+werden sollen. Die Einstellung dient zum Ausgleich von VerzÃ¶gerungen bei
 der Meldung <tt/NO CARRIER/. Voreinstellung ist <tt/1500/.
 
 <descrip>
@@ -388,7 +388,7 @@ der Meldung <tt/NO CARRIER/. Voreinstellung ist <tt/1500/.
 
 <tag/<tt>badinitsexit &lt;number&gt;</tt>/
 
-Maximale Anzahl von Fehlschlägen bei der Modeminitialisierung. Ist diese
+Maximale Anzahl von FehlschlÃ¤gen bei der Modeminitialisierung. Ist diese
 Anzahl erreicht, beendet <em/vboxgetty/ sich selbst. Voreinstellung ist
 <tt/0/. 
 
@@ -430,9 +430,9 @@ Voreinstellung ist <tt/4/.
 
 <tag/<tt>alivetimeout &lt;number&gt;</tt>/
 
-Anzahl Sekunden nach deren Ablauf geprüft wird ob das Modem noch auf Kommandos
-antwortet. Zudem wird die Existens von einigen Kontrolldateien überprüft. Bei
-Angabe von <tt>0</tt> wird die Überprüfung umgangen. Voreinstellung ist
+Anzahl Sekunden nach deren Ablauf geprÃ¼ft wird ob das Modem noch auf Kommandos
+antwortet. Zudem wird die Existens von einigen Kontrolldateien Ã¼berprÃ¼ft. Bei
+Angabe von <tt>0</tt> wird die ÃœberprÃ¼fung umgangen. Voreinstellung ist
 <tt/1800/.
 
 <descrip>
@@ -443,7 +443,7 @@ Angabe von <tt>0</tt> wird die Überprüfung umgangen. Voreinstellung ist
 <tag/<tt>compression &lt;string&gt;</tt>/
 
 Audiocompression die zum Aufzeichnen von Nachrichten benutzt werden soll.
-Folgende Angaben sind möglich:
+Folgende Angaben sind mÃ¶glich:
 
 <itemize>
 <item><tt/ADPCM-2/
@@ -452,7 +452,7 @@ Folgende Angaben sind möglich:
 <item><tt/ULAW/
 </itemize>
 
-Die Kompression <tt/ALAW/ wird nicht mehr unterstützt! Voreinstellung ist
+Die Kompression <tt/ALAW/ wird nicht mehr unterstÃ¼tzt! Voreinstellung ist
 <tt/ADPCM-4/.
 
 <descrip>
@@ -462,9 +462,9 @@ Die Kompression <tt/ALAW/ wird nicht mehr unterstützt! Voreinstellung ist
 
 <tag/<tt>spooldir &lt;string&gt;</tt>/
 
-Spoolverzeichnis das benutzt werden soll. Dieses Verzeichniß <bf/muß/ immer
+Spoolverzeichnis das benutzt werden soll. Dieses VerzeichniÃŸ <bf/muÃŸ/ immer
 existieren und vor dem ersten Start von <em/vboxgetty/ angelegt werden. Dort
-werden u.a. die Kontrolldateien für die verschiedenen Programme abgelegt.
+werden u.a. die Kontrolldateien fÃ¼r die verschiedenen Programme abgelegt.
 Voreinstellung ist <tt>@SPOOLDIR@/&lt;user&gt;</tt>.
 
 <descrip>
@@ -474,7 +474,7 @@ Voreinstellung ist <tt>@SPOOLDIR@/&lt;user&gt;</tt>.
 
 <tag/<tt>vboxconfig &lt;string&gt;</tt>/
 
-Vollständiger Pfad zur Konfigurationsdatei von <em/vbox/. Voreinstellung ist
+VollstÃ¤ndiger Pfad zur Konfigurationsdatei von <em/vbox/. Voreinstellung ist
 <tt>&lt;spooldir&gt;/vbox.conf</tt>.
 
 <descrip>
@@ -485,8 +485,8 @@ Vollständiger Pfad zur Konfigurationsdatei von <em/vbox/. Voreinstellung ist
 <tag/<tt>freespace &lt;number&gt;</tt>/
 
 Anzahl der Bytes die auf der Partition mit dem Spoolverzeichnis frei sein
-müssen, damit ein Anruf entgegengenommen wird. Bei Angabe von <tt>0</tt> wird
-die Überprüfung umgangen. Voreinstellung ist <tt/0/.
+mÃ¼ssen, damit ein Anruf entgegengenommen wird. Bei Angabe von <tt>0</tt> wird
+die ÃœberprÃ¼fung umgangen. Voreinstellung ist <tt/0/.
 
 <descrip>
 <tag/Beispiel:/
@@ -495,15 +495,15 @@ die Überprüfung umgangen. Voreinstellung ist <tt/0/.
 
 <tag/<tt>debuglevel &lt;string&gt;</tt>/
 
-Debuglevel der benutzt werden soll. Der Level muß mit einzelen Buchstaben
+Debuglevel der benutzt werden soll. Der Level muÃŸ mit einzelen Buchstaben
 angegeben werden. Voreinstellung ist <tt>FEW</tt>.
 
-Folgende Buchstaben können angegeben werden:
+Folgende Buchstaben kÃ¶nnen angegeben werden:
 
 <itemize>
 
-<item><tt><bf>F</bf> - </tt>Fehler die nicht behoben werden können
-<item><tt><bf>E</bf> - </tt>Fehler die evtl. behoben werden können
+<item><tt><bf>F</bf> - </tt>Fehler die nicht behoben werden kÃ¶nnen
+<item><tt><bf>E</bf> - </tt>Fehler die evtl. behoben werden kÃ¶nnen
 <item><tt><bf>W</bf> - </tt>Warnungen
 <item><tt><bf>I</bf> - </tt>Informationen
 <item><tt><bf>D</bf> - </tt>Debugging Ausgaben
@@ -563,14 +563,14 @@ port /dev/ttyI7
 
 In dieser Datei kann festgelegt werden, welche Anrufe wann und zu
 welchen Bedingungen angenommen werden. Ebenso kann hier definiert
-werden, welche <tt/CALLERID/ zu welcher Person gehört.
+werden, welche <tt/CALLERID/ zu welcher Person gehÃ¶rt.
 
 Leere Zeilen und solche die mit einem '<tt/#/' beginnen werden
 ignoriert.  Alle Zeichen ab einem '<tt/#/' werden entfernt.
 
 Die Datei ist in mehrere Sektionen aufgeteilt. Ein Sektionsname
 beginnt mit einem '<tt/&lsqb;/' - gefolgt vom Namen - und endet mit
-einem '<tt/&rsqb;/'. Groß- und Kleinschreibung bei den Sektionsnamen
+einem '<tt/&rsqb;/'. GroÃŸ- und Kleinschreibung bei den Sektionsnamen
 wird nicht beachtet. Eine Sektion endet am Dateiende oder am Beginn
 einer neuen Sektion.
 
@@ -581,11 +581,11 @@ Folgende Sektionen existieren:
 <tag><tt/&lsqb;CALLERIDS&rsqb;/</tag>
 
 In dieser Sektion wird definiert, welche <tt/CALLERID/ welcher Person
-gehört und welche Einstellungen für diese verwendet werden sollen.
+gehÃ¶rt und welche Einstellungen fÃ¼r diese verwendet werden sollen.
 
 Bei einem eingehenden Anruf wird die <tt/CALLERID/ des Anrufers
 ermittelt und mit denen in der Sektion <tt/&lsqb;CALLERIDS&rsqb;/
-verglichen. Die <tt/SECTION/ der ersten Übereinstimmung wird dann für
+verglichen. Die <tt/SECTION/ der ersten Ãœbereinstimmung wird dann fÃ¼r
 den weiteren Anruf verwendet&hellip;
 
 <bf/Format:/ <tt/PATTERN SECTION REALNAME/
@@ -594,12 +594,12 @@ den weiteren Anruf verwendet&hellip;
 
 <tag><tt/PATTERN/</tag>
 
-<em>UN*X-Pattern</em> einer <tt/CALLERID/. Es dürfen keine Leerzeichen
+<em>UN*X-Pattern</em> einer <tt/CALLERID/. Es dÃ¼rfen keine Leerzeichen
 oder Tabulatoren verwendet werden.
 
 <tag><tt/SECTION/</tag>
 
-Name einer <bf/Benutzersektion/, die verwendet werden soll. Es dürfen
+Name einer <bf/Benutzersektion/, die verwendet werden soll. Es dÃ¼rfen
 keine Leerzeichen oder Tabulatoren verwendet werden. Bei '<tt>-</tt>'
 wird <tt>STANDARD</tt>, bei '<tt>*</tt>' der <tt>REALNAME</tt> als
 Sektionsname benutzt.
@@ -616,17 +616,17 @@ Am Ende der Sektion <tt>&lsqb;CALLERIDS&rsqb;</tt> sollte immer der Eintrag
 <verb>*   -   *** Unknown ***</verb>
 
 stehen, damit auch Anrufe behandelt werden, die keine oder keine bekannte
-<tt>CALLERID</tt> übermitteln.
+<tt>CALLERID</tt> Ã¼bermitteln.
 
 <tag><tt>&lsqb;RINGS&rsqb;</tt></tag>
 
 In dieser Sektion wird eingestellt, wann und nach wievielen <tt>RING</tt>'s
 ein Anruf angenommen wird. 
 
-Diese Sektion wird bei einem eingehenden Anruf als erste überprüft um
-festzustellen, ob dieser zum aktuellen Zeitpunkt überhaupt angenommen
-werden soll. Die Anzahl der <tt>RING</tt>'s läßt sich in den
-<bf>Benutzersektionen</bf> überschreiben.
+Diese Sektion wird bei einem eingehenden Anruf als erste Ã¼berprÃ¼ft um
+festzustellen, ob dieser zum aktuellen Zeitpunkt Ã¼berhaupt angenommen
+werden soll. Die Anzahl der <tt>RING</tt>'s lÃ¤ÃŸt sich in den
+<bf>Benutzersektionen</bf> Ã¼berschreiben.
 
 <bf>Format:</bf> <tt>TIME DAYS RINGS</tt>
 
@@ -638,7 +638,7 @@ Zeiten, an denen der Anruf entgehengenommen werden soll. Das genaue
 Format von Zeitangaben ist im Kapitel
 <ref id="id-configuration" name="Konfiguration"> unter
 <ref id="id-configuration-times" name="Zeitangaben"> beschrieben. Die
-Zeitangaben dürfen keine Leerzeichen und keine Tabulatoren enthalten.
+Zeitangaben dÃ¼rfen keine Leerzeichen und keine Tabulatoren enthalten.
 
 <tag><tt>DAYS</tt></tag>
 
@@ -646,7 +646,7 @@ Tage, an denen der Anruf entgehengenommen werden soll. Das genaue
 Format von Tagesangaben ist im Kapitel
 <ref id="id-configuration" name="Konfiguration"> unter
 <ref id="id-configuration-days" name="Tagesangaben"> beschrieben. Die
-Tagesangaben dürfen keine Leerzeichen und keine Tabulatoren enthalten.
+Tagesangaben dÃ¼rfen keine Leerzeichen und keine Tabulatoren enthalten.
 
 <tag><tt>RINGS</tt></tag>
 
@@ -654,7 +654,7 @@ Anzahl der <tt>RING</tt>'s, nach denen der Anruf entgegengenommen
 werden soll.
 
 Ab Version 2.0 von <em>HiSax</em> ist der Intervall zwischen den
-<tt>RING</tt>'s länger. Er entspricht jetzt ungefähr dem eines
+<tt>RING</tt>'s lÃ¤nger. Er entspricht jetzt ungefÃ¤hr dem eines
 normalen Telefons, d.h. ein <tt>RING</tt> bei einmal Klingeln des
 Telefons.
 
@@ -662,7 +662,7 @@ Telefons.
 
 <tag>Benutzersektionen</tag>
 
-Mit Benutzersektionen können individuelle Einstellungen für eine
+Mit Benutzersektionen kÃ¶nnen individuelle Einstellungen fÃ¼r eine
 bestimmte Person gemacht werden. Der Sektionsname einer
 Benutzersektion wird genauso angegeben wie bei den normalen
 Sektionen. Die Namen <tt>CALLERIDS</tt> und <tt>RINGS</tt> sind
@@ -678,7 +678,7 @@ Zeiten, zu denen die Einstellungen benutzt werden sollen. Das genaue
 Format von Zeitangaben ist im Kapitel
 <ref id="id-configuration" name="Konfiguration"> unter
 <ref id="id-configuration-times" name="Zeitangaben"> beschrieben. Die
-Zeitangaben dürfen keine Leerzeichen und keine Tabulatoren enthalten.
+Zeitangaben dÃ¼rfen keine Leerzeichen und keine Tabulatoren enthalten.
 
 <tag><tt>DAYS</tt></tag>
 
@@ -686,11 +686,11 @@ Tage, an denen die Einstellungen benutzt werden sollen. Das genaue
 Format von Tagesangaben ist im Kapitel
 <ref id="id-configuration" name="Konfiguration"> unter
 <ref id="id-configuration-days" name="Tagesangaben"> beschrieben. Die
-Tagesangaben dürfen keine Leerzeichen und keine Tabulatoren enthalten.
+Tagesangaben dÃ¼rfen keine Leerzeichen und keine Tabulatoren enthalten.
 
 <tag><tt>MESSAGE</tt></tag>
 
-Nachricht die als Ansagetext gespielt werden soll. Es muß entweder der
+Nachricht die als Ansagetext gespielt werden soll. Es muÃŸ entweder der
 komplette Pfad oder der Name einer Nachricht im
 Verzeichnis '<tt>@SPOOLDIR@/&lt;user&gt;/messages</tt>'
 angegeben werden. Voreinstellung
@@ -704,7 +704,7 @@ ist <tt>60</tt> Sekunden.
 
 <tag><tt>FLAG</tt></tag>
 
-Zusätzliche Flags die angegeben werden können:
+ZusÃ¤tzliche Flags die angegeben werden kÃ¶nnen:
 
 <descrip>
 
@@ -736,17 +736,17 @@ Ansagetext gespielt.
 <tag><tt>RINGS=</tt></tag>
 
 Gibt an nach wievielen <tt>RING</tt>'s der Anruf beantwortet werden
-soll. Dieses Flag überschreibt die <tt>RING</tt>'s aus der Sektion
+soll. Dieses Flag Ã¼berschreibt die <tt>RING</tt>'s aus der Sektion
 <tt>&lsqb;RINGS&rsqb;</tt> und das Flag <tt>TOLLRINGS</tt>.
 
 <tag><tt>TOLLRINGS=</tt></tag>
 
 Gibt an nach wievielen <tt>RING</tt>'s der Anruf beantwortet werden
-soll, wenn neue Nachrichten vorhanden sind. Dieses Flag überschreibt
+soll, wenn neue Nachrichten vorhanden sind. Dieses Flag Ã¼berschreibt
 die <tt>RING</tt>'s aus der Sektion <tt>&lsqb;RINGS&rsqb;</tt> und das
 Flag <tt>RINGS</tt> bei neuen Nachrichten.
 
-Das Verzeichnis in dem nach neuen Nachrichten gesucht werden soll, muß
+Das Verzeichnis in dem nach neuen Nachrichten gesucht werden soll, muÃŸ
 mit dem Flag <tt>TOLLCHECK</tt> angegeben werden (oder die Voreinstellung
 wird benutzt).
 
@@ -759,7 +759,7 @@ oder Tabulatoren im Verzeichnisnamen sind nicht erlaubt.
 <tag><tt>SCRIPT=</tt></tag>
 
 <em>Tcl-Skript</em> das nach der Entgegennahme des Anrufes gestartet werden
-soll. Es muß entweder der komplette Pfad oder der Name eines Skripts im
+soll. Es muÃŸ entweder der komplette Pfad oder der Name eines Skripts im
 Verzeichnis '<tt>@SPOOLDIR@/&lt;user&gt;</tt>' angegeben werden. Die
 Voreinstellung ist '<tt>@SPOOLDIR@/&lt;user&gt;/standard.tcl</tt>'.
 Leerzeichen oder Tabulatoren im Skriptnamen sind nicht erlaubt.
@@ -815,7 +815,7 @@ Leerzeichen oder Tabulatoren im Skriptnamen sind nicht erlaubt.
 <sect1>vboxd.conf<label id="id-configuration-vboxd">
 <p>
 
-Die Datei '<tt>vboxd.conf</tt>' enthält Einstellungen für <em>vboxd</em> und
+Die Datei '<tt>vboxd.conf</tt>' enthÃ¤lt Einstellungen fÃ¼r <em>vboxd</em> und
 befindet sich nach der Installation im Verzeichnis '<tt>@SYSCONFDIR@</tt>'.
 
 Die Konfiguration unterteilt sich in zwei Bereiche, dem Loginbereich
@@ -823,14 +823,14 @@ Die Konfiguration unterteilt sich in zwei Bereiche, dem Loginbereich
 beginnt mit einem '<tt>A</tt>').
 
 Leere Zeilen oder solche die mit einem '<tt>#</tt>' beginnen werden
-überlesen.
+Ã¼berlesen.
 
 <descrip>
 
 <tag>Loginbereich</tag>
 
 Der Loginbereich gibt an, welche Hosts sich in <em>vboxd</em> einloggen
-dürfen. Bei Hosts denen der Login verweigert wurde wird die Verbindung
+dÃ¼rfen. Bei Hosts denen der Login verweigert wurde wird die Verbindung
 umgehend geschlossen.
 
 <bf>Format:</bf> <tt>L:HOSTPATTERN:ACCESS</tt>
@@ -871,12 +871,12 @@ Kommando <tt>LOGIN</tt> anmeldet, kann ein eigener Bereich zugewiesen werden.
 
 <tag><tt>MODE</tt></tag>
 
-Zugriffsmodus für die Nachrichten und die Kontrolldateien. Es können die
-Buchstaben '<tt>R</tt>' für Lesezugriff und '<tt>W</tt>' für Schreibzugriff
+Zugriffsmodus fÃ¼r die Nachrichten und die Kontrolldateien. Es kÃ¶nnen die
+Buchstaben '<tt>R</tt>' fÃ¼r Lesezugriff und '<tt>W</tt>' fÃ¼r Schreibzugriff
 angegeben werden.
 
-Lesezugriff wird benötigt um sich z.B. die Liste der Nachrichten oder eine
-Nachricht selbst zu holen. Schreibzugriff ermöglicht z.B. das Löschen von
+Lesezugriff wird benÃ¶tigt um sich z.B. die Liste der Nachrichten oder eine
+Nachricht selbst zu holen. Schreibzugriff ermÃ¶glicht z.B. das LÃ¶schen von
 Nachrichten oder anlegen von Kontrolldateien.
 
 <tag><tt>NAME</tt></tag>
@@ -885,12 +885,12 @@ Name unter dem sich mit <tt>LOGIN</tt> angemeldet werden kann.
 
 <tag><tt>PASSWORD</tt></tag>
 
-Passwort welches zur Anmeldung benötigt wird.
+Passwort welches zur Anmeldung benÃ¶tigt wird.
 
 <tag><tt>SPOOLDIR</tt></tag>
 
-Spoolverzeichnis das für den angemeldeten Benutzer zugänglich sein soll. Es
-muß der komplette Pfad angegeben werden. In diesem Verzeichnis werden die
+Spoolverzeichnis das fÃ¼r den angemeldeten Benutzer zugÃ¤nglich sein soll. Es
+muÃŸ der komplette Pfad angegeben werden. In diesem Verzeichnis werden die
 Kontrolldateien abgelegt oder abgefragt.
 
 <tag><tt>INCOMINGDIR</tt></tag>
@@ -942,16 +942,16 @@ A:*:!:!:!:!:!
 <sect1>&tilde;/.vboxrc<label id="id-configuration-vboxrc">
 <p>
 
-Die Datei '<tt>.vboxrc</tt>' muß sich im Homeverzeichnis des jeweiligen
-Benutzers befinden und steuert das Aussehen von <em>vbox</em>. Zudem können in
-dieser Datei der Benutzername und das Passwort für <em>vboxd</em>
+Die Datei '<tt>.vboxrc</tt>' muÃŸ sich im Homeverzeichnis des jeweiligen
+Benutzers befinden und steuert das Aussehen von <em>vbox</em>. Zudem kÃ¶nnen in
+dieser Datei der Benutzername und das Passwort fÃ¼r <em>vboxd</em>
 gespeichert werden.
 
-Leere Zeilen und solche die mit einem '<tt>#</tt>' beginnen werden überlesen.
-Text ab dem Zeichen '<tt>#</tt>' wird abgeschnitten. Die Argumente müssen
-von den Schlüsselworten mit Leerzeichen oder Tabulatoren getrennt werden.
+Leere Zeilen und solche die mit einem '<tt>#</tt>' beginnen werden Ã¼berlesen.
+Text ab dem Zeichen '<tt>#</tt>' wird abgeschnitten. Die Argumente mÃ¼ssen
+von den SchlÃ¼sselworten mit Leerzeichen oder Tabulatoren getrennt werden.
 
-Folgende Schlüsselworte existieren:
+Folgende SchlÃ¼sselworte existieren:
 
 <descrip>
 
@@ -959,85 +959,85 @@ Folgende Schlüsselworte existieren:
 
 <tag><tt>PASSWORD</tt></tag>
 
-Benutzername und Passwort für die <em>vboxd</em> Logins. Diese Angaben
+Benutzername und Passwort fÃ¼r die <em>vboxd</em> Logins. Diese Angaben
 werden von den Programmen <em>vbox</em> und <em>vboxctrl</em>
-ausgewertet. Fehlen sie, muß beim Start dieser Programme der Name und
+ausgewertet. Fehlen sie, muÃŸ beim Start dieser Programme der Name und
 das Passwort eingegeben werden.
 
 <tag><tt>VOLUME</tt></tag>
 
-Voreingestellte Lautstärke von <em>vbox</em>.
+Voreingestellte LautstÃ¤rke von <em>vbox</em>.
 
 <tag><tt>C_BACKGROUND</tt></tag>
 
-Farbe für den Bildschirmhintergrund.
+Farbe fÃ¼r den Bildschirmhintergrund.
 
 <tag><tt>C_STATUSBAR</tt></tag>
 
-Farbe für den normalen Text in der Statuszeile.
+Farbe fÃ¼r den normalen Text in der Statuszeile.
 
 <tag><tt>C_STATUSBAR_HL</tt></tag>
 
-Farbe für den vorgehobenen Text in der Statuszeile.
+Farbe fÃ¼r den vorgehobenen Text in der Statuszeile.
 
 <tag><tt>C_POWERLED_ON</tt></tag>
 
-Farbe für die Power LED an.
+Farbe fÃ¼r die Power LED an.
 
 <tag><tt>C_POWERLED_OFF</tt></tag>
 
-Farbe für die Power LED aus.
+Farbe fÃ¼r die Power LED aus.
 
 <tag><tt>C_STATUSLED_ON</tt></tag>
 
-Farbe für die Status LED's an.
+Farbe fÃ¼r die Status LED's an.
 
 <tag><tt>C_STATUSLED_OFF</tt></tag>
 
-Farbe für die Status LED's aus.
+Farbe fÃ¼r die Status LED's aus.
 
 <tag><tt>C_LIST</tt></tag>
 
-Farbe für die Nachrichtenliste.
+Farbe fÃ¼r die Nachrichtenliste.
 
 <tag><tt>C_LIST_SELECTED</tt></tag>
 
-Farbe für einen angewählten Eintrag in der Nachrichtenliste.
+Farbe fÃ¼r einen angewÃ¤hlten Eintrag in der Nachrichtenliste.
 
 <tag><tt>C_INFOTEXT</tt></tag>
 
-Farbe für den Informationstext über der Nachrichtenliste.
+Farbe fÃ¼r den Informationstext Ã¼ber der Nachrichtenliste.
 
 <tag><tt>C_HELP</tt></tag>
 
-Farbe für das Hilfsfenster.
+Farbe fÃ¼r das Hilfsfenster.
 
 <tag><tt>C_HELP_BORDER</tt></tag>
 
-Farbe für den Rahmen des Hilfsfensters.
+Farbe fÃ¼r den Rahmen des Hilfsfensters.
 
 <tag><tt>C_STATUS</tt></tag>
 
-Farbe für das Statusfenster.
+Farbe fÃ¼r das Statusfenster.
 
 <tag><tt>C_STATUS_BORDER</tt></tag>
 
-Farbe für den Rahmen des Statusfensters.
+Farbe fÃ¼r den Rahmen des Statusfensters.
 
 <tag><tt>C_INFO</tt></tag>
 
-Farbe für das Infofenster.
+Farbe fÃ¼r das Infofenster.
 
 <tag><tt>C_INFO_BORDER</tt></tag>
 
-Farbe für den Rahmen des Infofensters.
+Farbe fÃ¼r den Rahmen des Infofensters.
 
 </descrip>
 
 Alle Farbangaben werden im Format <tt>TEXTFARBE:HINTERGRUNDFARBE</tt>
-angegeben. Es dürfen keine Leerzeichen oder Tabulatoren vorkommen.
+angegeben. Es dÃ¼rfen keine Leerzeichen oder Tabulatoren vorkommen.
 
-Folgende Textfarben sind möglich:
+Folgende Textfarben sind mÃ¶glich:
 
 <itemize>
 
@@ -1060,7 +1060,7 @@ Folgende Textfarben sind möglich:
 
 </itemize>
 
-Folgende Hintergrundfarben sind möglich:
+Folgende Hintergrundfarben sind mÃ¶glich:
 
 <itemize>
 
@@ -1118,11 +1118,11 @@ C_INFO_BORDER		YELLOW:YELLOW	# Info (Border)
 <sect1>Zeitangaben<label id="id-configuration-times">
 <p>
 
-Ab v2.0.0 von <em>vbox</em> können die verschiedenen Zeitzonen (z.B. bei den
+Ab v2.0.0 von <em>vbox</em> kÃ¶nnen die verschiedenen Zeitzonen (z.B. bei den
 Rings) auch mit einer Minutenangabe versehen werden.
 
 Einzelne Zeitangaben werden durch Kommata getrennt, Angaben von Start- und
-Endzeit durch ein Minuszeichen. Die Stundenangaben müssen im 24-Stunden-Format
+Endzeit durch ein Minuszeichen. Die Stundenangaben mÃ¼ssen im 24-Stunden-Format
 - also von 0 Uhr bis 23 Uhr - gemacht werden.
 
 Die Zeitangaben werden intern immer in Start- und Endzeit umgerechnet, auch
@@ -1155,8 +1155,8 @@ behandelt.
 
 </descrip>
 
-Eine Zeitzone zählt als zutreffend (match) wenn die aktuelle Zeit
-größer/gleich der Startzeit <bf>und</bf> kleiner/gleich der Endzeit ist.
+Eine Zeitzone zÃ¤hlt als zutreffend (match) wenn die aktuelle Zeit
+grÃ¶ÃŸer/gleich der Startzeit <bf>und</bf> kleiner/gleich der Endzeit ist.
 
 Ein '<tt>*</tt>' als <bf>einzige</bf> Zeitangabe wird als <bf>immer</bf>
 behandelt, ein '<tt>-</tt>' oder '<tt>!</tt>' als <bf>einzige</bf> Zeitangabe
@@ -1171,18 +1171,18 @@ als <bf>nie</bf>.
 <p>
 
 Einzelne Tagesangaben werden durch Kommanta getrennt. Eine Angabe von
-Start- und Ende ist hier nicht möglich.
+Start- und Ende ist hier nicht mÃ¶glich.
 
-Folgende Tageskürzel können angegeben werden:
+Folgende TageskÃ¼rzel kÃ¶nnen angegeben werden:
 
 <itemize>
-<item><tt>MO, MON</tt> - für Montag
-<item><tt>DI, TUE</tt> - für Dienstag
-<item><tt>MI, WED</tt> - für Mittwoch
-<item><tt>DO, THU</tt> - für Donnerstag
-<item><tt>FR, FRI</tt> - für Freitag
-<item><tt>SA, SAT</tt> - für Samstag
-<item><tt>SO, SUN</tt> - für Sonntag
+<item><tt>MO, MON</tt> - fÃ¼r Montag
+<item><tt>DI, TUE</tt> - fÃ¼r Dienstag
+<item><tt>MI, WED</tt> - fÃ¼r Mittwoch
+<item><tt>DO, THU</tt> - fÃ¼r Donnerstag
+<item><tt>FR, FRI</tt> - fÃ¼r Freitag
+<item><tt>SA, SAT</tt> - fÃ¼r Samstag
+<item><tt>SO, SUN</tt> - fÃ¼r Sonntag
 </itemize>
 
 <descrip>
@@ -1205,109 +1205,109 @@ allgemeinen Funktionen von <em>tcl</em> kann der <em>tcl</em> beiliegenden
 Dokumentation entnommen werden.
 
 Die Anrufe werden auch weiterhin von <em>vboxgetty</em> entgegengenommen. Die
-weitere Bearbeitung nach der Entgegennahme erfolgt dann über das <em>tcl</em>
+weitere Bearbeitung nach der Entgegennahme erfolgt dann Ã¼ber das <em>tcl</em>
 Skript.
 
-Zusätzlich zu den von <em>tcl</em> bereitgestellten Variablen stehen noch
-einige neue zur Verfügung, die von <em>vboxgetty</em> initialisiert werden
+ZusÃ¤tzlich zu den von <em>tcl</em> bereitgestellten Variablen stehen noch
+einige neue zur VerfÃ¼gung, die von <em>vboxgetty</em> initialisiert werden
 (die Angaben in Klammern entsprechen der Voreinstellung):
 
 <descrip>
 
 <tag/<tt>vbox_var_bindir</tt>/
 
-Enthält das Verzeichnis, in welches die Programme installiert wurden,
-die von normalen Benutzern ausgeführt werden dürfen ('<tt>@BINDIR@</tt>').
+EnthÃ¤lt das Verzeichnis, in welches die Programme installiert wurden,
+die von normalen Benutzern ausgefÃ¼hrt werden dÃ¼rfen ('<tt>@BINDIR@</tt>').
 
 <tag/<tt>vbox_var_savename</tt>/
 
-Enthält den Dateinamen unter dem die Nachricht gespeichert werden
-sollte. Der Name errechnet sich aus dem aktuellen Datum und der Prozeß-ID.
-Der vorgegebene Name muß nicht benutzt werden!
+EnthÃ¤lt den Dateinamen unter dem die Nachricht gespeichert werden
+sollte. Der Name errechnet sich aus dem aktuellen Datum und der ProzeÃŸ-ID.
+Der vorgegebene Name muÃŸ nicht benutzt werden!
 
 <tag/<tt>vbox_var_rectime</tt>/
 
-Enthält die Anzahl der Sekunden die maximal aufgezeichnet werden
+EnthÃ¤lt die Anzahl der Sekunden die maximal aufgezeichnet werden
 soll. Dieser Wert entspricht der Konfiguration des aktuellen Anrufers.
 
 <tag/<tt>vbox_var_spooldir</tt>/
 
-Enthält den Pfad zum Spoolverzeichnis des jeweiligen Benutzers
+EnthÃ¤lt den Pfad zum Spoolverzeichnis des jeweiligen Benutzers
 ('<tt>@SPOOLDIR@/&lt;username&gt;</tt>').
 
 <tag/<tt>vbox_var_checknew</tt>/
 
-Enthält den Pfad in dem nach neuen Nachrichten gesucht werden soll
+EnthÃ¤lt den Pfad in dem nach neuen Nachrichten gesucht werden soll
 ('<tt>@SPOOLDIR@/&lt;username&gt;/incoming</tt>').
 
 <tag/<tt>vbox_msg_standard</tt>/
 
-Enthält den Namen der Datei die als Ansage gespielt werden soll
+EnthÃ¤lt den Namen der Datei die als Ansage gespielt werden soll
 ('<tt>@SPOOLDIR@/&lt;username&gt;/messages/standard.msg</tt>').
 
 <tag/<tt>vbox_msg_beep</tt>/
 
-Enthält den Namen der Datei die als Beep gespielt werden soll
+EnthÃ¤lt den Namen der Datei die als Beep gespielt werden soll
 ('<tt>@SPOOLDIR@/&lt;username&gt;/messages/beep.msg</tt>').
 
 <tag/<tt>vbox_msg_timeout</tt>/
 
-Enthält den Namen der Datei die bei einem Timeout gespielt werden soll
+EnthÃ¤lt den Namen der Datei die bei einem Timeout gespielt werden soll
 ('<tt>@SPOOLDIR@/&lt;username&gt;/messages/timeout.msg</tt>').
 
 <tag/<tt>vbox_caller_id</tt>/
 
-Enthält die <tt>CALLERID</tt> des aktuellen Anrufers. Ist diese nicht
+EnthÃ¤lt die <tt>CALLERID</tt> des aktuellen Anrufers. Ist diese nicht
 bekannt, wird <tt>0</tt> eingetragen.
 
 <tag/<tt>vbox_caller_phone</tt>/
 
-Enthält die vollständige Telefonnummer des aktuellen Anrufers. Ist diese
+EnthÃ¤lt die vollstÃ¤ndige Telefonnummer des aktuellen Anrufers. Ist diese
 nicht bekannt, wird "<tt>*** Unknown ***</tt>" eingetragen.
 
 <tag/<tt>vbox_caller_name</tt>/
 
-Enthält den Namen des aktuellen Anrufers. Ist dieser nicht bekannt, wird
+EnthÃ¤lt den Namen des aktuellen Anrufers. Ist dieser nicht bekannt, wird
 "<tt>*** Unknown ***</tt>" eingetragen.
 
 <tag/<tt>vbox_user_name</tt>/
 
-Enthält den Namen des Benutzers, unter dessen Rechte der aktuelle
-<em>vboxgetty</em> läuft.
+EnthÃ¤lt den Namen des Benutzers, unter dessen Rechte der aktuelle
+<em>vboxgetty</em> lÃ¤uft.
 
 <tag/<tt>vbox_user_home</tt>/
 
-Enthält das Heimatverzeichnis des Benutzers, unter dessen Rechte der
-aktuelle <em>vboxgetty</em> läuft.
+EnthÃ¤lt das Heimatverzeichnis des Benutzers, unter dessen Rechte der
+aktuelle <em>vboxgetty</em> lÃ¤uft.
 
 <tag/<tt>vbox_flag_standard</tt>/
 
-Enthält <tt>TRUE</tt> wenn der Ansagetext gespielt werden soll, oder
+EnthÃ¤lt <tt>TRUE</tt> wenn der Ansagetext gespielt werden soll, oder
 <tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des aktuellen
 Anrufers.
 
 <tag/<tt>vbox_flag_beep</tt>/
 
-Enthält <tt>TRUE</tt> wenn der Beep gespielt werden soll, oder
+EnthÃ¤lt <tt>TRUE</tt> wenn der Beep gespielt werden soll, oder
 <tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des aktuellen
 Anrufers.
 
 <tag/<tt>vbox_flag_timeout</tt>/
 
-Enthält <tt>TRUE</tt> wenn die Timeout-Nachricht gespielt werden soll,
+EnthÃ¤lt <tt>TRUE</tt> wenn die Timeout-Nachricht gespielt werden soll,
 oder <tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des
 aktuellen Benutzers.
 
 <tag/<tt>vbox_flag_record</tt>/
 
-Enthält <tt>TRUE</tt> wenn eine Nachricht aufgezeichnet werden soll,
+EnthÃ¤lt <tt>TRUE</tt> wenn eine Nachricht aufgezeichnet werden soll,
 oder <tt>FALSE</tt> wenn nicht. Der Wert entspricht der Konfiguration des
 aktuellen Benutzers.
 
 </descrip>
 
-Zusätzlich zu den von <em>tcl</em> bereitgestellten Funktionen stehen noch
-einige neue zur Verfügung, mit denen <em>vboxgetty</em> gesteuert werden kann:
+ZusÃ¤tzlich zu den von <em>tcl</em> bereitgestellten Funktionen stehen noch
+einige neue zur VerfÃ¼gung, mit denen <em>vboxgetty</em> gesteuert werden kann:
 
 <descrip>
 
@@ -1316,10 +1316,10 @@ einige neue zur Verfügung, mit denen <em>vboxgetty</em> gesteuert werden kann:
 Mit diesem Befehl kann gesteuert werden, bei welchen Touchtone-Sequenzen
 <em>vboxgetty</em> das Abspielen, Aufzeichnen oder Warten abbricht.
 
-Touchtone-Sequenzen müssen immer in der Form <tt>*NUMMER&num</tt>
+Touchtone-Sequenzen mÃ¼ssen immer in der Form <tt>*NUMMER&num</tt>
 angegeben werden, wobei <tt>NUMMER</tt> einer Folge von Zeichen der
 Form <tt>0-9</tt> und <tt>A-D</tt> enspricht. Auch <bf>einzelne</bf>
-Zahlen müssen in der Form <tt>*NUMMER&num</tt> angegeben werden;
+Zahlen mÃ¼ssen in der Form <tt>*NUMMER&num</tt> angegeben werden;
 <em>vboxgetty</em> erkennst selbst, ob die Eingabe vom Anrufer eine
 einzelne Zahl oder Teil einer Sequenz ist.
 
@@ -1327,14 +1327,14 @@ einzelne Zahl oder Teil einer Sequenz ist.
 
 <tag/<tt>add &lt;sequence&gt; &lsqb;&hellip;&rsqb;</tt>/
 
-Fügt die Touchtone-Sequenz(en) <tt>sequence</tt> zur Abbruchliste hinzu. Es
-können maximal 8 Sequenzen auf einmal angegeben werden.
+FÃ¼gt die Touchtone-Sequenz(en) <tt>sequence</tt> zur Abbruchliste hinzu. Es
+kÃ¶nnen maximal 8 Sequenzen auf einmal angegeben werden.
 
 <tag/<tt>rem &lt;sequence&gt; &lsqb;&hellip;&rsqb;</tt>/
 
 Entfernt die Touchtone-Sequenz(en) <tt>sequence</tt> aus der Abbruchliste. Wenn
-als <tt>sequence</tt> das Schlüsselwort <tt>all</tt> angegeben wird, wird die
-komplette Abbruchliste gelöscht. Es können maximal 8 Sequenzen auf einmal
+als <tt>sequence</tt> das SchlÃ¼sselwort <tt>all</tt> angegeben wird, wird die
+komplette Abbruchliste gelÃ¶scht. Es kÃ¶nnen maximal 8 Sequenzen auf einmal
 angegeben werden.
 
 <tag/Beispiel:/
@@ -1349,17 +1349,17 @@ vbox_breaklist add "*08154711#"
 <tag/<tt>vbox_put_message &lt;message&gt;</tt>/
 
 Mit dieser Funktion kann eine Nachricht abgespielt werden. Die Art des
-Abbruchs wird als Rückgabewert gesetzt.
+Abbruchs wird als RÃ¼ckgabewert gesetzt.
 
 <descrip>
 
 <tag/<tt>message</tt>/
 
-Vollständiger Name der Datei (inkl. Verzeichnis) die gespielt werden soll.
+VollstÃ¤ndiger Name der Datei (inkl. Verzeichnis) die gespielt werden soll.
 
 </descrip>
 
-Folgende Rückgabewerte sind möglich:
+Folgende RÃ¼ckgabewerte sind mÃ¶glich:
 
 <descrip>
 
@@ -1369,17 +1369,17 @@ Das Abspielen wurde wegen eines Fehlers abgebrochen.
 
 <tag/<tt>HANGUP</tt>/
 
-Die Verbindung wurde beendet. Das Skript sollte sich bei dieser Rückgabe
+Die Verbindung wurde beendet. Das Skript sollte sich bei dieser RÃ¼ckgabe
 beenden.
 
 <tag/<tt>OK</tt>/
 
-Die Datei wurde vollständig gespielt und durch kein Ereignis abgebrochen.
+Die Datei wurde vollstÃ¤ndig gespielt und durch kein Ereignis abgebrochen.
 
 </descrip>
 
-Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
-Touchtone-Sequenz, die während des Abspielens erkannt wurde.
+EnthÃ¤lt die RÃ¼ckgabe einen anderen Wert, handelt es sich um eine
+Touchtone-Sequenz, die wÃ¤hrend des Abspielens erkannt wurde.
 
 <descrip>
 
@@ -1393,14 +1393,14 @@ set RC &lsqb; vbox_put_message /var/spool/vbox/michael/messages/standard.msg &rs
 
 <tag/<tt>vbox_get_message &lt;savename&gt; &lt;timelimit&gt;</tt>/
 
-Zeichnet eine Nachricht auf. Die Art des Abbruchs wird als Rückgabewert
+Zeichnet eine Nachricht auf. Die Art des Abbruchs wird als RÃ¼ckgabewert
 gesetzt.
 
 <descrip>
 
 <tag/<tt>savename</tt>/
 
-Vollständiger Name der Datei (inkl. Verzeichnis) unter der die Nachricht
+VollstÃ¤ndiger Name der Datei (inkl. Verzeichnis) unter der die Nachricht
 gespeichert werden soll.
 
 <tag/<tt>timelimit</tt>/
@@ -1409,7 +1409,7 @@ Maximale Anzahl Sekunden die Aufgezeichnet werden soll.
 
 </descrip>
 
-Folgende Rückgabewerte sind möglich:
+Folgende RÃ¼ckgabewerte sind mÃ¶glich:
 
 <descrip>
 
@@ -1424,17 +1424,17 @@ Die maximale Aufzeichnungszeit wurde erreicht.
 
 <tag/<tt>HANGUP</tt>/
 
-Die Verbindung wurde beendet. Das Skript sollte sich bei dieser Rückgabe
+Die Verbindung wurde beendet. Das Skript sollte sich bei dieser RÃ¼ckgabe
 beenden.
 
 <tag/<tt>OK</tt>/
 
-Die Datei wurde vollständig aufgezeichnet und durch kein Ereignis abgebrochen.
+Die Datei wurde vollstÃ¤ndig aufgezeichnet und durch kein Ereignis abgebrochen.
 
 </descrip>
 
-Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
-Touchtone-Sequenz, die während des Aufzeichnens erkannt wurde.
+EnthÃ¤lt die RÃ¼ckgabe einen anderen Wert, handelt es sich um eine
+Touchtone-Sequenz, die wÃ¤hrend des Aufzeichnens erkannt wurde.
 
 <descrip>
 
@@ -1449,7 +1449,7 @@ set RC &lsqb; vbox_get_message /var/spool/vbox/michael/incoming/00000858611291-0
 <tag/<tt>vbox_wait &lt;seconds&gt;</tt>/
 
 Wartet eine bestimmte Anzahl von Sekunden auf Eingaben vom Anrufer. Die Art
-des Abbruchs wird als Rückgabewert gesetzt.
+des Abbruchs wird als RÃ¼ckgabewert gesetzt.
 
 <descrip>
 
@@ -1459,7 +1459,7 @@ Anzahl der Sekunden die gewartet werden sollen.
 
 </descrip>
 
-Folgende Rückgabewerte sind möglich:
+Folgende RÃ¼ckgabewerte sind mÃ¶glich:
 
 <descrip>
 
@@ -1473,7 +1473,7 @@ Die angegebene Anzahl Sekunden ist abgelaufen.
 
 <tag/<tt>HANGUP</tt>/
 
-Die Verbindung wurde beendet. Das Skript sollte sich bei dieser Rückgabe
+Die Verbindung wurde beendet. Das Skript sollte sich bei dieser RÃ¼ckgabe
 beenden.
 
 <tag/<tt>OK</tt>/
@@ -1482,8 +1482,8 @@ Die angegebene Anzahl Sekunden ist abgelaufen.
 
 </descrip>
 
-Enthält die Rückgabe einen anderen Wert, handelt es sich um eine
-Touchtone-Sequenz, die während des Aufzeichnens erkannt wurde.
+EnthÃ¤lt die RÃ¼ckgabe einen anderen Wert, handelt es sich um eine
+Touchtone-Sequenz, die wÃ¤hrend des Aufzeichnens erkannt wurde.
 
 <descrip>
 
@@ -1497,11 +1497,11 @@ set RC &lsqb; vbox_wait 120 &rsqb;
 
 <tag/<tt>vbox_init_touchtones</tt>/
 
-Dieses Kommando löscht die interne Touchtone-Sequenz.
+Dieses Kommando lÃ¶scht die interne Touchtone-Sequenz.
 
 Normalerweise werden alle erkannten Touchtones an die interne
-Touchtone-Sequenz angehängt und auch bei einem Wechsel vom Abspiel- in den
-Aufnahmemodus nicht gelöscht. Gelöscht wird diese nur bei Eingabe
+Touchtone-Sequenz angehÃ¤ngt und auch bei einem Wechsel vom Abspiel- in den
+Aufnahmemodus nicht gelÃ¶scht. GelÃ¶scht wird diese nur bei Eingabe
 von '<tt>*</tt>', da dieser Touchtone eine neue Sequenz einleitet.
 
 <descrip>
@@ -1535,7 +1535,7 @@ vbox_pause 1500
 <tag/<tt>vbox_get_nr_new_messages &lt;messagebox&gt;</tt>/
 
 Ermittelt die Anzahl der neuen Nachrichten in einem Verzeichnis. Das Ergebnis
-wird als Rückgabewert gesetzt.
+wird als RÃ¼ckgabewert gesetzt.
 
 <descrip>
 
@@ -1554,7 +1554,7 @@ set RC &lsqb; vbox_get_nr_new_messages /var/spool/vbox/michael/incoming &rsqb;
 <tag/<tt>vbox_get_nr_all_messages &lt;messagebox&gt;</tt>/
 
 Ermittelt die Anzahl aller Nachrichten in einem Verzeichnis. Das Ergebnis wird
-als Rückgabewert gesetzt.
+als RÃ¼ckgabewert gesetzt.
 
 <descrip>
 
@@ -1576,18 +1576,18 @@ set RC &lsqb; vbox_get_nr_all_messages /var/spool/vbox/michael/incoming &rsqb;
 
 <tag/<tt>vbox_message_info &lt;message&gt; &lt;fieldnr&gt;</tt>/
 
-Gibt ein Feld aus dem Header einer Nachricht zurück. Das Ergebnis wird als
-Rückgabewert gesetzt. Bei einem Fehler enthält der Rückgabewert keine Daten.
+Gibt ein Feld aus dem Header einer Nachricht zurÃ¼ck. Das Ergebnis wird als
+RÃ¼ckgabewert gesetzt. Bei einem Fehler enthÃ¤lt der RÃ¼ckgabewert keine Daten.
 
 <descrip>
 
 <tag/<tt>message</tt>/
 
-Vollständiger Pfad und Name der Nachricht, deren Header abgefragt werden soll.
+VollstÃ¤ndiger Pfad und Name der Nachricht, deren Header abgefragt werden soll.
 
 <tag/<tt>fieldnr</tt>/
 
-Nummer des Header-Feldes das abgefragt werden soll. Folgende Nummern können
+Nummer des Header-Feldes das abgefragt werden soll. Folgende Nummern kÃ¶nnen
 angegeben werden:
 
 <itemize>
@@ -1606,7 +1606,7 @@ angegeben werden:
 <tt><bf>4</bf> - </tt>Der Name des Anrufers,
 
 <item>
-<tt><bf>5</bf> - </tt>Die vollständige Telefonnummer des Anrufers,
+<tt><bf>5</bf> - </tt>Die vollstÃ¤ndige Telefonnummer des Anrufers,
 
 <item>
 <tt><bf>6</bf> - </tt>Der Wohnort des Anrufers.
@@ -1649,8 +1649,8 @@ set RC &lsqb; vbox_messages_info /var/spool/vbox/michael/incoming/00000865241883
 <sect1>vboxgetty<label id="id-programs-vboxgetty">
 <p>
 
-<em>vboxgetty</em> ist das eigentliche Herz von <em>vbox</em>. Er ist für
-das Erkennen, Entgegennehmen und Steuern von Anrufen zuständig. Die genaue
+<em>vboxgetty</em> ist das eigentliche Herz von <em>vbox</em>. Er ist fÃ¼r
+das Erkennen, Entgegennehmen und Steuern von Anrufen zustÃ¤ndig. Die genaue
 Installation von <em>vboxgetty</em> kann im Kapitel
 <ref id="id-firststeps" name="Erste Schritte"> unter
 <ref id="id-firststeps-vboxgetty" name="vboxgetty"> nachgelesen werden.
@@ -1660,7 +1660,7 @@ Installation von <em>vboxgetty</em> kann im Kapitel
 <tt>vboxgetty &lsqb;OPTION&rsqb; &lsqb;OPTION&rsqb; &lsqb;&hellip;&rsqb;</tt>
 </descrip>
 
-Folgende Optionen können angegeben werden:
+Folgende Optionen kÃ¶nnen angegeben werden:
 
 <descrip>
 
@@ -1672,7 +1672,7 @@ Datei '<tt>@SYSCONFDIR@/vboxgetty.conf</tt>'.
 
 <tag/<tt>-d, --device TTY</tt>/
 
-Modemdevice das benutzt werden soll. Diese Option <bf>muß</bf> angegeben
+Modemdevice das benutzt werden soll. Diese Option <bf>muÃŸ</bf> angegeben
 werden!
 
 <tag/<tt>-h, --help</tt>/
@@ -1692,11 +1692,11 @@ Zeigt die Versionsnummer an.
 <sect1>vboxd<label id="id-programme-vboxd">
 <p>
 
-<em>vboxd</em> ist ein Daemon, der über Netzwerk (TCP/IP oder Sockets)
+<em>vboxd</em> ist ein Daemon, der Ã¼ber Netzwerk (TCP/IP oder Sockets)
 angesprochen werden und die mit <em>vbox</em> aufgezeichneten
-Nachrichten abrufen oder ändern kann.
+Nachrichten abrufen oder Ã¤ndern kann.
 
-Für Programmautoren existieren in der <ref
+FÃ¼r Programmautoren existieren in der <ref
 id="id-verschiedenes-libvbox" name="libvbox.a"> bereits einige
 Funktionen um mit <em>vboxd</em> zu kommunizieren. Die genaue
 Installation von <em>vboxd</em> kann im Kapitel <ref
@@ -1708,7 +1708,7 @@ id="id-firststeps-vboxd" name="vboxd"> nachgelesen werden.
 <tt>vboxd &lsqb;OPTION&rsqb; &lsqb;OPTION&rsqb; &lsqb;&hellip;&rsqb;</tt>
 </descrip>
 
-Folgende Optionen können angegeben werden:
+Folgende Optionen kÃ¶nnen angegeben werden:
 
 <descrip>
 
@@ -1734,12 +1734,12 @@ Zeigt den Hilfstext an.
 </descrip>
 
 Nach dem Start steht der Timeout auf <bf>30 Sekunden</bf>. Dieser wird erst
-auf den mit <tt>--timeout</tt> eingestellten Wert geändert, nachdem das
+auf den mit <tt>--timeout</tt> eingestellten Wert geÃ¤ndert, nachdem das
 <bf>erste Kommando</bf> von einem Client empfangen wurde!
 
-Die nachfolgende Beschreibung befaßt sich mit den internen Kommandos des
-Daemons und ist eigentlich nur für Programmautoren von Interesse, die in ihren
-eigenen Programmen mit dem <em>vboxd</em> kommunizieren möchten.
+Die nachfolgende Beschreibung befaÃŸt sich mit den internen Kommandos des
+Daemons und ist eigentlich nur fÃ¼r Programmautoren von Interesse, die in ihren
+eigenen Programmen mit dem <em>vboxd</em> kommunizieren mÃ¶chten.
 
 Der Daemon kann mit einer Reihe von Kommandos gesteuert werden, die alle
 mit einem Text der Form
@@ -1749,17 +1749,17 @@ mit einem Text der Form
 beantwortet werden. Einige Kommandos liefern mehrere Antworten hintereinander,
 jede Antwort beginnt in einer neuen Zeile.
 
-Der Client sollte die aktuelle Verbindung schließen (und evtl. neu aufbauen),
-sobald vom Server der Text "<tt><bf>281 .</bf></tt>" übermittelt wurde. Dieser
-gibt an, daß der Server die Verbindung beendet hat!
+Der Client sollte die aktuelle Verbindung schlieÃŸen (und evtl. neu aufbauen),
+sobald vom Server der Text "<tt><bf>281 .</bf></tt>" Ã¼bermittelt wurde. Dieser
+gibt an, daÃŸ der Server die Verbindung beendet hat!
 
-Die nachfolgend beschriebenen Kommandos können auch andere Kennungen als
-angegeben zurückliefern. Die Beschreibung zeigt immer nur die Rückgaben des
-Kommandos selbst, nicht aber die evtl. Rückgaben des Servers an. Andere
-Rückgabekennungen als beim jeweiligen Kommando angegeben sind als Fehler
+Die nachfolgend beschriebenen Kommandos kÃ¶nnen auch andere Kennungen als
+angegeben zurÃ¼ckliefern. Die Beschreibung zeigt immer nur die RÃ¼ckgaben des
+Kommandos selbst, nicht aber die evtl. RÃ¼ckgaben des Servers an. Andere
+RÃ¼ckgabekennungen als beim jeweiligen Kommando angegeben sind als Fehler
 zu werten!
 
-Mögliche andere Rückgaben wären:
+MÃ¶gliche andere RÃ¼ckgaben wÃ¤ren:
 
 <itemize>
 
@@ -1769,18 +1769,18 @@ Mögliche andere Rückgaben wären:
 <item><tt><bf>584</bf></tt> - Falsches Passwort.
 <item><tt><bf>585</bf></tt> - Falsche Nachricht.
 <item><tt><bf>586</bf></tt> - Falsches Kommando.
-<item><tt><bf>589</bf></tt> - Temporärer Fehler.
+<item><tt><bf>589</bf></tt> - TemporÃ¤rer Fehler.
 
 </itemize>
 
-Folgende Kommandos werden vom <em>vboxd</em> unterstützt:
+Folgende Kommandos werden vom <em>vboxd</em> unterstÃ¼tzt:
 
 <descrip>
 
 <tag/<tt>LOGIN &lt;USERNAME&gt; &lt;PASSWORD&gt;</tt>/
 
-Mit diesem Kommando können sich Clients als reguläre Benutzer beim Daemon
-anmelden. Einige Kommandos sind nur nach einem erfolgreichen Login möglich!
+Mit diesem Kommando kÃ¶nnen sich Clients als regulÃ¤re Benutzer beim Daemon
+anmelden. Einige Kommandos sind nur nach einem erfolgreichen Login mÃ¶glich!
 Beim Login wird dem Benutzer ein Spool- und ein Incoming-Verzeichnis
 zugewiesen, auf die sich alle Kommandos beziehen.
 
@@ -1796,14 +1796,14 @@ Passwort des Benutzers.
 
 </descrip>
 
-Bei erfolgreicher Anmeldung enthält die Anwort des Daemons den Rückgabewert
+Bei erfolgreicher Anmeldung enthÃ¤lt die Anwort des Daemons den RÃ¼ckgabewert
 <tt><bf>283</bf></tt>, gefolgt von einem kurzen Willkommenstext.
 
 <tag/<tt>LIST</tt>/
 
 Zeigt eine Liste aller Nachrichten an, die sich im Incoming-Verzeichnis des
 Benutzers befinden. Dieses Kommando ist nur nach einem erfolgreichen Login
-möglich. Es wird Lesezugriff benötigt.
+mÃ¶glich. Es wird Lesezugriff benÃ¶tigt.
 
 Die Antwort des Daemons ist wie folgt aufgebaut:
 
@@ -1840,7 +1840,7 @@ Sekunden seit dem 1.1.1970 angegeben.
 
 <tag/<tt>184 M</tt>/
 
-gefolgt vom Datum der letzten Änderung. Das Datum wird als Anzahl der
+gefolgt vom Datum der letzten Ã„nderung. Das Datum wird als Anzahl der
 Sekunden seit dem 1.1.1970 angegeben. Ist dieses 0, wurde die Datei als
 gelesen markiert.
 
@@ -1851,7 +1851,7 @@ und 6 angegeben.
 
 <tag/<tt>184 S</tt>/
 
-gefolgt von der größe der Datei in Bytes.
+gefolgt von der grÃ¶ÃŸe der Datei in Bytes.
 
 <tag/<tt>184 N</tt>/
 
@@ -1879,22 +1879,22 @@ angegeben.
 
 <tag/<tt>184 .</tt>/
 
-Dieser Text wird am Ende <bf>aller</bf> Nachrichten gesendet. Er gibt an, daß
-die komplette Liste übermittelt wurde und kein weiterer Eintrag mehr folgt.
+Dieser Text wird am Ende <bf>aller</bf> Nachrichten gesendet. Er gibt an, daÃŸ
+die komplette Liste Ã¼bermittelt wurde und kein weiterer Eintrag mehr folgt.
 
 </descrip>
 
 <tag/<tt>MESSAGE &lt;MESSAGENAME&gt;</tt>/
 
-überträgt eine Nachricht. Dieses Kommando ist nur nach einem
-erfolgreichen Login möglich. Es wird Lesezugriff benötigt.
+Ã¼bertrÃ¤gt eine Nachricht. Dieses Kommando ist nur nach einem
+erfolgreichen Login mÃ¶glich. Es wird Lesezugriff benÃ¶tigt.
 
 <descrip>
 
 <tag/<tt>MESSAGENAME</tt>/
 
-Name der Datei die übermittelt werden soll. Pfadangaben werden abgeschnitten -
-die Datei muß sich im Incoming-Verzeichnis des eingeloggten Benutzers befinden.
+Name der Datei die Ã¼bermittelt werden soll. Pfadangaben werden abgeschnitten -
+die Datei muÃŸ sich im Incoming-Verzeichnis des eingeloggten Benutzers befinden.
 
 </descrip>
 
@@ -1906,22 +1906,22 @@ Die Antwort des Daemons schaut in etwa wie folgt aus:
 182 .
 </verb>
 
-Die erste Zeile enthält die Kennung "<tt><bf>182</bf></tt>" gefolgt
+Die erste Zeile enthÃ¤lt die Kennung "<tt><bf>182</bf></tt>" gefolgt
 von der Anzahl der Zeichen die zu lesen sind. Nach dieser Kennung
-werden die Daten übermittelt - gefolgt von der Kennung
-"<tt><bf>182 .</bf></tt>" die das Ende der Übermittlung kennzeichnet.
+werden die Daten Ã¼bermittelt - gefolgt von der Kennung
+"<tt><bf>182 .</bf></tt>" die das Ende der Ãœbermittlung kennzeichnet.
 
 <tag/<tt>HEADER &lt;MESSAGENAME&gt;</tt>/
 
-Übermittelt einen Nachrichtheader. Dieses Kommando ist nur nach
-einem erfolgreichen Login möglich. Es wird Lesezugriff benötigt.
+Ãœbermittelt einen Nachrichtheader. Dieses Kommando ist nur nach
+einem erfolgreichen Login mÃ¶glich. Es wird Lesezugriff benÃ¶tigt.
 
 <descrip>
 
 <tag/<tt>MESSAGENAME</tt>/
 
-Name der Datei deren Header übermittelt werden soll. Pfadangaben
-werden abgeschnitten - die Datei muß sich im Incoming-Verzeichnis des
+Name der Datei deren Header Ã¼bermittelt werden soll. Pfadangaben
+werden abgeschnitten - die Datei muÃŸ sich im Incoming-Verzeichnis des
 eingeloggten Benutzers befinden.
 
 </descrip>
@@ -1934,16 +1934,16 @@ Die Antwort des Daemons schaut in etwa wie folgt aus:
 183 .
 </verb>
 
-Die erste Zeile enthält die Kennung "<tt><bf>183</bf></tt>" gefolgt
+Die erste Zeile enthÃ¤lt die Kennung "<tt><bf>183</bf></tt>" gefolgt
 von der Anzahl der Zeichen die zu lesen sind. Nach dieser Kennung
-werden die Daten übermittelt - gefolgt von der Kennung
-"<tt><bf>183 .</bf></tt>" die das Ende der Übermittlung kennzeichnet.
+werden die Daten Ã¼bermittelt - gefolgt von der Kennung
+"<tt><bf>183 .</bf></tt>" die das Ende der Ãœbermittlung kennzeichnet.
 
 <tag/<tt>COUNT</tt>/
 
 Dieses Kommando gibt aus, wieviele neue Dateien sich im Incoming-Verzeichnis
 des eingeloggten Benutzers befinden. Dieses Kommando ist nur nach einem
-erfolgreichen Login möglich. Es wird Lesezugriff benötigt.
+erfolgreichen Login mÃ¶glich. Es wird Lesezugriff benÃ¶tigt.
 
 Die Ausgabe des Daemons ist in etwa wie folgt:
 
@@ -1959,14 +1959,14 @@ der Sekunden seit dem 1.1.1970 dargestellt.
 
 Wechselt den Status einer Nachricht von gelesen nach ungelesen oder von
 ungelesen nach gelesen. Dieses Kommando ist nur nach einem erfolgreichen
-Login möglich. Es wird Schreibzugriff benötigt.
+Login mÃ¶glich. Es wird Schreibzugriff benÃ¶tigt.
 
 <descrip>
 
 <tag/<tt>MESSAGENAME</tt>/
 
 Name der Nachricht deren Status gewechselt werden soll. Pfadangaben
-werden abgeschnitten - die Datei muß sich im Incoming-Verzeichnis des
+werden abgeschnitten - die Datei muÃŸ sich im Incoming-Verzeichnis des
 eingeloggten Benutzers befinden.
 
 </descrip>
@@ -1978,39 +1978,39 @@ Die Antwort des Daemons schaut in etwa so aus:
 </verb>
 
 Nach der Nummer "<tt><bf>188</bf></tt>" wird das "modification date" in der
-Form Sekunden seit 1.1.1970 ausgegeben. Der Wert 0 heißt das die Nachricht
+Form Sekunden seit 1.1.1970 ausgegeben. Der Wert 0 heiÃŸt das die Nachricht
 als gelesen markiert wurde.
 
 <tag/<tt>DELETE &lt;MESSAGENAME&gt;</tt>/
 
-Löscht eine Nachricht. Dieses Kommando ist nur nach einem
-erfolgreichen Login möglich. Es wird Schreibzugriff benötigt.
+LÃ¶scht eine Nachricht. Dieses Kommando ist nur nach einem
+erfolgreichen Login mÃ¶glich. Es wird Schreibzugriff benÃ¶tigt.
 
 <descrip>
 
 <tag/<tt>MESSAGENAME</tt>/
 
-Name der Nachricht die gelöscht werden soll. Pfadangaben werden
-abgeschnitten - die Datei muß sich im Incoming-Verzeichnis des
+Name der Nachricht die gelÃ¶scht werden soll. Pfadangaben werden
+abgeschnitten - die Datei muÃŸ sich im Incoming-Verzeichnis des
 eingeloggten Benutzers befinden.
 
 </descrip>
 
-Wenn die Datei gelöscht werden konnte, antwortet der Daemon mit der Kennung
+Wenn die Datei gelÃ¶scht werden konnte, antwortet der Daemon mit der Kennung
 "<tt><bf>287 .</bf></tt>".
 
 <tag/<tt>STATUSCTRL &lt;CONTROLNAME&gt;</tt>/
 
 Stellt fest, ob sich die angegebene Kontrolldatei im Spoolverzeichnis des
 Benutzers befindet. Dieses Kommando ist nur nach einem erfolgreichen Login
-möglich. Es wird Lesezugriff benötigt.
+mÃ¶glich. Es wird Lesezugriff benÃ¶tigt.
 
 <descrip>
 
 <tag/<tt>CONTROLNAME</tt>/
 
-Name der Kontrolldatei die überprüft werden soll. Pfadangaben werden
-abgeschnitten - die Datei muß sich im Spoolverzeichnis des
+Name der Kontrolldatei die Ã¼berprÃ¼ft werden soll. Pfadangaben werden
+abgeschnitten - die Datei muÃŸ sich im Spoolverzeichnis des
 eingeloggten Benutzers befinden.
 
 </descrip>
@@ -2022,14 +2022,14 @@ Datei existiert, oder mit "<tt><bf>284 0</bf></tt>" wenn nicht.
 
 Erzeugt die angegebene Kontrolldatei im Spoolverzeichnis des
 Benutzers. Dieses Kommando ist nur nach einem erfolgreichen Login
-möglich. Es wird Schreibzugriff benötigt.
+mÃ¶glich. Es wird Schreibzugriff benÃ¶tigt.
 
 <descrip>
 
 <tag/<tt>CONTROLNAME</tt>/
 
 Name der Kontrolldatei die erzeugt werden soll. Pfadangaben werden
-abgeschnitten - die Datei muß sich im Spoolverzeichnis des
+abgeschnitten - die Datei muÃŸ sich im Spoolverzeichnis des
 eingeloggten Benutzers befinden.
 
 </descrip>
@@ -2042,14 +2042,14 @@ wenn nicht.
 
 Entfernt die angegebene Kontrolldatei im Spoolverzeichnis des
 Benutzers. Dieses Kommando ist nur nach einem erfolgreichen Login
-möglich. Es wird Schreibzugriff benötigt.
+mÃ¶glich. Es wird Schreibzugriff benÃ¶tigt.
 
 <descrip>
 
 <tag/<tt>CONTROLNAME</tt>/
 
 Name der Kontrolldatei die entfernt werden soll. Pfadangaben werden
-abgeschnitten - die Datei muß sich im Spoolverzeichnis des
+abgeschnitten - die Datei muÃŸ sich im Spoolverzeichnis des
 eingeloggten Benutzers befinden.
 
 </descrip>
@@ -2068,15 +2068,15 @@ wenn nicht.
 <p>
 
 Das Programm <em>vbox</em> dient als Frontend zum Nachrichten lesen,
-löschen oder ändern. Zudem können die Kontrolldateien erzeugt oder
-gelöscht werden. Es wird <em>vboxd</em> benötigt.
+lÃ¶schen oder Ã¤ndern. Zudem kÃ¶nnen die Kontrolldateien erzeugt oder
+gelÃ¶scht werden. Es wird <em>vboxd</em> benÃ¶tigt.
 
 <descrip>
 <tag/Benutzung:/
 <tt>vbox &lsqb;OPTION&rsqb; &lsqb;OPTION&rsqb; &lsqb;&hellip;&rsqb;</tt>
 </descrip>
 
-Folgende Optionen können angegeben werden:
+Folgende Optionen kÃ¶nnen angegeben werden:
 
 <descrip>
 
@@ -2103,7 +2103,7 @@ ist <tt>60</tt> Sekunden.
 
 <tag/<tt>-o, --mono</tt>/
 
-Erzwingt Schwarz/Weiß Anzeige.
+Erzwingt Schwarz/WeiÃŸ Anzeige.
 
 <tag/<tt>-f, --force</tt>/
 
@@ -2134,37 +2134,37 @@ Zeigt den Hilfstext an.
 <sect1>vboxbeep<label id="id-programme-vboxbeep">
 <p>
 
-Mit <em>vboxbeep</em> können mehrere Nachrichten-Verzeichnisse überwacht
+Mit <em>vboxbeep</em> kÃ¶nnen mehrere Nachrichten-Verzeichnisse Ã¼berwacht
 werden. Wenn sich in einem der Verzeichnisse eine neue Nachricht befindet,
 macht sich <em>vboxbeep</em> mit einem Signalton bemerkbar. <em>vboxbeep</em>
-benutzt <bf>keinen</bf> <em>vboxd</em>, es können nur lokale Verzeichnisse
-überwacht werden.
+benutzt <bf>keinen</bf> <em>vboxd</em>, es kÃ¶nnen nur lokale Verzeichnisse
+Ã¼berwacht werden.
 
 <descrip>
 <tag/Benutzung:/
 <tt>vboxbeep &lsqb;OPTION&rsqb; &lsqb;OPTION&rsqb; &lsqb;&hellip;&rsqb;</tt>
 </descrip>
 
-Folgende Optionen können angegeben werden:
+Folgende Optionen kÃ¶nnen angegeben werden:
 
 <descrip>
 
 <tag/<tt>-s, --sound HOURS</tt>/
 
-Stunden an denen der Signalton gespielt werden soll. Die Angaben müssen im
+Stunden an denen der Signalton gespielt werden soll. Die Angaben mÃ¼ssen im
 24-Stunden-Format - also von 0 - 23 Uhr - gemacht werden. Mehrere Stunden
-können durch Kommata getrennt angegeben werden. Ein '<tt>*</tt>' als einzige
-Angabe steht für immer, ein '<tt>-</tt>' für nie.
+kÃ¶nnen durch Kommata getrennt angegeben werden. Ein '<tt>*</tt>' als einzige
+Angabe steht fÃ¼r immer, ein '<tt>-</tt>' fÃ¼r nie.
 
 <tag/<tt>-m, --messagebox DIR</tt>/
 
-Verzeichnis mit Nachrichten das überwacht werden soll. Diese Option kann
-mehrmals angegeben werden, sodaß mehrere Verzeichnisse überwacht werden
-können.
+Verzeichnis mit Nachrichten das Ã¼berwacht werden soll. Diese Option kann
+mehrmals angegeben werden, sodaÃŸ mehrere Verzeichnisse Ã¼berwacht werden
+kÃ¶nnen.
 
 <tag/<tt>-p, --pause SECS</tt>/
 
-Pause in Sekunden die zwischen den einzelnen Überprüfungen gemacht werden
+Pause in Sekunden die zwischen den einzelnen ÃœberprÃ¼fungen gemacht werden
 soll. Voreinstellung ist <tt>5</tt> Sekunden.
 
 <tag/<tt>-k, --kill</tt>/
@@ -2183,7 +2183,7 @@ Zeigt den Hilfstext an.
 </descrip>
 
 Wird <em>vboxbeep</em> ohne Argumente aufgerufen, so wird versucht einem
-bereits laufenden <em>vboxbeep</em> mitzuteilen, daß der Signalton beendet
+bereits laufenden <em>vboxbeep</em> mitzuteilen, daÃŸ der Signalton beendet
 werden soll.
 
 <!-- *********************************************************************
@@ -2193,7 +2193,7 @@ werden soll.
 <sect1>vboxtoau<label id="id-programme-vboxtoau">
 <p>
 
-Mit <em>vboxtoau</em> können <em>vbox</em> Dateien (vbox audio header)
+Mit <em>vboxtoau</em> kÃ¶nnen <em>vbox</em> Dateien (vbox audio header)
 in .au Dateien (sun audio format) gewandelt werden. <em>vboxtoau</em> ist
 ein Link auf <em>vboxcnvt</em>.
 
@@ -2202,7 +2202,7 @@ ein Link auf <em>vboxcnvt</em>.
 <tt>vboxtoau &lsqb;OPTION&rsqb; &lsqb;OPTION&rsqb; &lsqb;&hellip;&rsqb; &lt;INFILE &gt;OUTFILE</tt>
 </descrip>
 
-Folgende Optionen können angegeben werden:
+Folgende Optionen kÃ¶nnen angegeben werden:
 
 <descrip>
 
@@ -2243,7 +2243,7 @@ Standard Ausgabe (stdout) geschrieben.
 <sect1>autovbox<label id="id-programme-autovbox">
 <p>
 
-Mit <em>autovbox</em> können .au Dateien (sun audio format) in <em>vbox</em>
+Mit <em>autovbox</em> kÃ¶nnen .au Dateien (sun audio format) in <em>vbox</em>
 Dateien (vbox audio header) gewandelt werden. <em>autovbox</em> ist
 ein Link auf <em>vboxcnvt</em>.
 
@@ -2252,7 +2252,7 @@ ein Link auf <em>vboxcnvt</em>.
 <tt>autovbox &lsqb;OPTION&rsqb; &lsqb;OPTION&rsqb; &lsqb;&hellip;&rsqb; &lt;INFILE &gt;OUTFILE</tt>
 </descrip>
 
-Folgende Optionen können angegeben werden:
+Folgende Optionen kÃ¶nnen angegeben werden:
 
 <descrip>
 
@@ -2313,14 +2313,14 @@ und .au Dateien (sun audio format) erkannt.
 <tt>vboxmode &lsqb;OPTION&rsqb; &lsqb;OPTION&rsqb; &lsqb;&hellip;&rsqb; FILENAME</tt>
 </descrip>
 
-Folgende Optionen können angegeben werden:
+Folgende Optionen kÃ¶nnen angegeben werden:
 
 <descrip>
 
 <tag/<tt>-q, --quiet</tt>/
 
-Normalerweise werden noch Informationen über die Datei ausgegeben. Bei
-Angabe dieser Option werden diese unterdrückt.
+Normalerweise werden noch Informationen Ã¼ber die Datei ausgegeben. Bei
+Angabe dieser Option werden diese unterdrÃ¼ckt.
 
 <tag/<tt>-v, --version</tt>/
 
@@ -2332,12 +2332,12 @@ Zeigt den Hilfstext an.
 
 </descrip>
 
-Das Format der Datei wird immer als Fehlernummer zurückgegeben:
+Das Format der Datei wird immer als Fehlernummer zurÃ¼ckgegeben:
 
 <itemize>
-<item>für .au Dateien ein Wert zwischen 128 und 150,
-<item>für <em>vbox</em> Dateien ein Wert zwischen 2 und 6,
-<item>für unbekannte Formate oder bei einem Fehler der Wert 255.
+<item>fÃ¼r .au Dateien ein Wert zwischen 128 und 150,
+<item>fÃ¼r <em>vbox</em> Dateien ein Wert zwischen 2 und 6,
+<item>fÃ¼r unbekannte Formate oder bei einem Fehler der Wert 255.
 </itemize>
 
 <!-- *********************************************************************
@@ -2357,11 +2357,11 @@ Das Format der Datei wird immer als Fehlernummer zurückgegeben:
 <p>
 
 Ab Version 2.0.0 von <em>vbox</em> enthalten die aufgezeichneten
-Dateien einen neuen Header, der außer der Kompression und den
-Verbindungsdaten auch noch Informationen über denjenigen enthält, der
+Dateien einen neuen Header, der auÃŸer der Kompression und den
+Verbindungsdaten auch noch Informationen Ã¼ber denjenigen enthÃ¤lt, der
 die Nachricht erzeugt - sprich gesprochen - hat.
 
-Zur Zeit enthält der Header folgende Informationen:
+Zur Zeit enthÃ¤lt der Header folgende Informationen:
 
 <itemize>
 <item>die Aufzeichnungszeit,
@@ -2373,8 +2373,8 @@ Zur Zeit enthält der Header folgende Informationen:
 </itemize>
 
 Mit diesen Angaben ist es anderen Programmen (z.B. <em>mam</em>)
-möglich, <bf>ohne</bf> zusätzlichen Aufwand (in früheren Versionen
-mußte die Konfiguration von <em>vbox</em> nach der passenden
+mÃ¶glich, <bf>ohne</bf> zusÃ¤tzlichen Aufwand (in frÃ¼heren Versionen
+muÃŸte die Konfiguration von <em>vbox</em> nach der passenden
 Telefonnummer durchsucht werden) die Daten einer Nachricht zu
 ermitteln.
 
@@ -2388,7 +2388,7 @@ als Struktur <tt>vaheader_t</tt> definiert.
 <sect1>Die Library libvbox.a<label id="id-verschiedenes-libvbox">
 <p>
 
-Die Library '<tt>libvbox.a</tt>' und die dazugehörige
+Die Library '<tt>libvbox.a</tt>' und die dazugehÃ¶rige
 Include-Datei '<tt>libvbox.h</tt>' enthalten kleinere Funktionen, um
 es anderen Programmen leichter zu machen, mit <em>vboxd</em> zu
 kommunizieren.
@@ -2405,7 +2405,7 @@ bei Erfolg die Startup-Message vom Server.
 <tag/machine/
 
 Zeiger auf einen String der den Namen oder die IP-Adresse des Rechners
-enthält, mit dem eine Verbindung aufgebaut werden soll.
+enthÃ¤lt, mit dem eine Verbindung aufgebaut werden soll.
 
 <tag/port/
 
@@ -2413,22 +2413,22 @@ Portnummer, auf der mit der Gegenstelle kommuniziert werden soll.
 
 </descrip>
 
-Bei Erfolg wird der Wert 0, bei einem Fehler ein Wert kleiner 0 zurückgegeben.
+Bei Erfolg wird der Wert 0, bei einem Fehler ein Wert kleiner 0 zurÃ¼ckgegeben.
 Wenn die Verbindung aufgebaut wurde, stehen die externen Variablen
 <tt>vboxd_r_fd</tt> und <tt>vboxd_w_fd</tt> zum Lesen und Schreiben zur
-Verfügung.
+VerfÃ¼gung.
 
 <tag/void vboxd_disconnect(void)/
 
-Sendet dem Server die <tt>QUIT</tt> Message und schließt die Verbindung. Die
+Sendet dem Server die <tt>QUIT</tt> Message und schlieÃŸt die Verbindung. Die
 externen Variablen <tt>vboxd_r_fd</tt> und <tt>vboxd_w_fd</tt> sind dann nicht
-mehr gültig!
+mehr gÃ¼ltig!
 
 <tag/int vboxd_login(char *username, char *password)/
 
 Die Funktion meldet sich unter <bf>username</bf> mit <bf>password</bf> auf dem
 Server als Benutzer an. Erst nach einem erfolgreichen Einloggen stehen die
-erweiterten Funktionen vom Server zur Verfügung.
+erweiterten Funktionen vom Server zur VerfÃ¼gung.
 
 <descrip>
 
@@ -2442,11 +2442,11 @@ Passwort das benutzt werden soll.
 
 </descrip>
 
-Bei Erfolg wird der Wert 0, bei einem Fehler ein Wert kleiner 0 zurückgegeben.
+Bei Erfolg wird der Wert 0, bei einem Fehler ein Wert kleiner 0 zurÃ¼ckgegeben.
 
 <tag/void vboxd_put_message(char *fmt, ...)/
 
-Sendet eine Nachricht an den Server. Der Zeilenabschluß '<tt/CR/'
+Sendet eine Nachricht an den Server. Der ZeilenabschluÃŸ '<tt/CR/'
 und '<tt/NL/' wird von der Funktion gesendet und braucht nicht angegeben zu
 werden. Der Aufruf von <em>vboxd_put_message()</em> entspricht der Funktion
 <em>printf()</em>.
@@ -2457,9 +2457,9 @@ Versucht eine Antwort vom Server einzulesen. Die Funktion benutzt einen
 Timeout, der in '<tt>libvbox.h</tt>' mit <tt>VBOXD_GET_MSG_TIMEOUT</tt>
 definiert ist.
 
-Bei Erfolg wird ein Zeiger auf den erhaltenen Text zurückgegeben, bei einem
+Bei Erfolg wird ein Zeiger auf den erhaltenen Text zurÃ¼ckgegeben, bei einem
 Fehler <tt>NULL</tt>. Die Antwort wird in einen internen Buffer gelesen und bei
-einem erneuten Aufruf der Funktion überschrieben!
+einem erneuten Aufruf der Funktion Ã¼berschrieben!
 
 <tag/int vboxd_test_response(char *response)/
 
@@ -2488,7 +2488,7 @@ Die Funktion liefert <tt>TRUE</tt> (1) wenn die Kennungen gleich waren, oder
 <p>
 
 Wer auf seinem Rechner selbst die <em>sgml-tools</em> installiert hat und die
-Dokumentation in andere Formate wandeln möchte, kann das z.B. wie folgt tun:
+Dokumentation in andere Formate wandeln mÃ¶chte, kann das z.B. wie folgt tun:
 
 <verb>
 &dollar; cd doc/de
@@ -2504,15 +2504,15 @@ Dokumentation in andere Formate wandeln möchte, kann das z.B. wie folgt tun:
 <sect>Bezugsquellen<label id="id-srclocations">
 <p>
 
-Bezugsquellen von Programmen die in dieser Dokumentation erwähnt wurden oder
-die zum Betrieb von <em>vbox</em> nötig sind:
+Bezugsquellen von Programmen die in dieser Dokumentation erwÃ¤hnt wurden oder
+die zum Betrieb von <em>vbox</em> nÃ¶tig sind:
 
 <descrip>
 
 <tag><url url="ftp://sunsite.unc.edu/pub/Linux/system/serial/mgetty+sendfax-0.98.tar.gz" name="mgetty"></tag>
 
-Das Archiv enthält u.a. die <em>pfvtools</em>, mit denen die Nachrichten von
-<em>vbox</em> konvertiert und verändert werden können.
+Das Archiv enthÃ¤lt u.a. die <em>pfvtools</em>, mit denen die Nachrichten von
+<em>vbox</em> konvertiert und verÃ¤ndert werden kÃ¶nnen.
 
 <tag><url url="ftp://sunsite.unc.edu/pub/Linux/utils/text/sgml-tools-0.99.0.tar.gz" name="sgml"></tag>
 
@@ -2526,7 +2526,7 @@ Auf diesem Server befinden sich u.a. die neusten Versionen vom <em>tcl</em>.
 <tag><url url="ftp://ftp.franken.de/pub/isdn4linux/" name="isdn4linux"></tag>
 
 Auf diesem Server finden sich die neusten Versionen von <em>isdn4linux</em>,
-<em>HiSax</em> und einigen anderen sehr nützlichen Programmen.
+<em>HiSax</em> und einigen anderen sehr nÃ¼tzlichen Programmen.
 
 </descrip>
 
@@ -2539,19 +2539,19 @@ Auf diesem Server finden sich die neusten Versionen von <em>isdn4linux</em>,
 <sect>Danksagungen<label id="id-thanx">
 <p>
 
-Ein Dankeschön geht an&hellip;
+Ein DankeschÃ¶n geht an&hellip;
 
 <itemize>
 <item><bf><em>Fritz Elfert</em></bf> <tt>&lt;fritz@isdn4linux.de&gt;</tt>,
 <item><bf><em>Carsten Keil</em></bf> <tt>&lt;keil@temic-ech.spacenet.de&gt;</tt>,
 <item><bf><em>Andreas Kool</em></bf> <tt>&lt;akool@Kool.f.EUnet.de&gt;</tt>,
-<item><bf><em>Stefan Lüthje</em></bf> <tt>&lt;luethje@sl-gw.lake.de&gt;</tt>,
+<item><bf><em>Stefan LÃ¼thje</em></bf> <tt>&lt;luethje@sl-gw.lake.de&gt;</tt>,
 <item><bf><em>Marc Eberhard</em></bf> <tt>&lt;Marc.Eberhard@Uni-Duesseldorf.DE&gt;</tt>,
 <item><bf><em>Gert Doering</em></bf> <tt>&lt;gert@greenie.muc.de&gt;</tt>,
 
 </itemize>
 
 und an alle anderen die mich bei der Programmierung von <em>vbox</em>
-unterstützt habe!
+unterstÃ¼tzt habe!
 
 </article>
