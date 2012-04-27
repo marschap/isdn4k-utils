@@ -605,7 +605,6 @@ LIBOBJS
 CONFIG_MANDIR
 CONFIG_SBINDIR
 I4LVERSION
-MANDATE
 EGREP
 GREP
 CPP
@@ -1956,7 +1955,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 I4LVERSION=${I4LVERSION:-"?.?"}
 CONFIG_SBINDIR=${sbindir:-"/sbin"}
 CONFIG_MANDIR=${mandir:-"/usr/man"}
-MANDATE=`grep CHECKIN iprofd.man.in | awk '{print $4}'`
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -3314,7 +3312,6 @@ $as_echo "$ac_cv_type_signal" >&6; }
 cat >>confdefs.h <<_ACEOF
 #define RETSIGTYPE $ac_cv_type_signal
 _ACEOF
-
 
 
 
