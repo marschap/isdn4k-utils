@@ -20,8 +20,10 @@ MAN8DIR			= $(MANDIR)/man8
 INSTALL_PROGRAM	= $(INSTALL) -o 0 -g 0 -m 0750
 INSTALL_DATA	= $(INSTALL) -o 0 -g 0 -m 0644
 INSTALL_MAN		= $(INSTALL) -o 0 -g 0 -m 0644
-CC				= @CC@
+CC			= @CC@
 COPTS			=
+datarootdir		= @datarootdir@
+datadir			= @datadir@
 
 ifeq ("@CONFIG_ICNCTRL_DEBUG@","y")
 	COPTS		+= -D__DEBUGVAR__
