@@ -4,7 +4,7 @@ dnl
 
 AC_REVISION($Id: configure.in,v 1.10 2002/07/19 21:23:52 keil Exp $)dnl
 
-AC_INIT(COPYING.authlib)
+AC_INIT(COPYING.LIB)
 
 #
 # Set these according to your preferences
@@ -37,19 +37,19 @@ CONFIG_EFTP_SETUID=${CONFIG_EFTP_SETUID:-n}
 CONFIG_EFT_INSTALL_CONF=${CONFIG_EFT_INSTALL_CONF:-n}
 
 
-EFTP_CLIENT_MSN=`eval echo ${CONFIG_EFTP_CLIENT_MSN:-"XXX"}`
-EFTD_SERVER_MSN=`eval echo ${CONFIG_EFTD_SERVER_MSN:-"YYY"}`
+EFTP_CLIENT_MSN=${CONFIG_EFTP_CLIENT_MSN:-"XXX"}
+EFTD_SERVER_MSN=${CONFIG_EFTD_SERVER_MSN:-"YYY"}
 
-I4LCONFDIR=`eval echo ${CONFIG_I4LCONFDIR:-"/etc/isdn"}`
 I4LVERSION=${I4LVERSION:-"?.?"}
-BINDIR=`eval echo ${CONFIG_BINDIR:-'\\${bindir}'}`
-SBINDIR=`eval echo ${CONFIG_SBINDIR:-'\\${sbindir}'}`
+I4LCONFDIR=${sysconfdir:-"/etc/isdn"}
+BINDIR=${bindir:-"/usr/bin"}
+SBINDIR=${sbindir:-i"/sbin"}
 dnl RUNDIR=`eval echo ${CONFIG_RUNDIR:-'\\${localstatedir}/run'}`
 dnl enforce a unique dire for pidfiles, independent of install patch
-RUNDIR=`eval echo ${CONFIG_RUNDIR:-"/var/run"}`
+RUNDIR=${CONFIG_RUNDIR:-"/var/run"}
 
 AC_CHECK_FILE(/etc/rc.d/init.d, DEFAULT_SYSVINIT_RC_DIR=/etc/rc.d/init.d, DEFAULT_SYSVINIT_RC_DIR=/etc/init.d)
-SYSVINIT_RC_DIR=`eval echo ${CONFIG_SYSVINIT_RC_DIR=$DEFAULT_SYSVINIT_RC_DIR}`
+SYSVINIT_RC_DIR=${CONFIG_SYSVINIT_RC_DIR=$DEFAULT_SYSVINIT_RC_DIR}
 
 EFT_TOPDIR=${EFT_TOPDIR:-$PWD}
 
