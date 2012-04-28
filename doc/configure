@@ -566,7 +566,6 @@ ac_default_prefix=/usr
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 I4LVERSION
-I4LCONFDIR
 SED
 am__untar
 am__tar
@@ -2185,7 +2184,6 @@ am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'
 
 
 
-I4LCONFDIR=${I4LCONFDIR:-"/etc/isdn"}
 I4LVERSION=${I4LVERSION:-"?.?"}
 
 
@@ -2299,7 +2297,6 @@ fi
 $as_echo "$ac_cv_path_SED" >&6; }
  SED="$ac_cv_path_SED"
   rm -f conftest.sed
-
 
 
 

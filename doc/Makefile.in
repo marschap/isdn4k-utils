@@ -36,7 +36,7 @@ DIST_COMMON = $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/isdn_audio.4.in \
 	$(srcdir)/isdn_cause.7.in $(srcdir)/isdnctrl.4.in \
 	$(srcdir)/isdninfo.4.in $(srcdir)/ttyI.4.in \
-	$(top_srcdir)/configure COPYING INSTALL install-sh missing
+	$(top_srcdir)/configure install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -107,7 +107,6 @@ DEFS = @DEFS@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
-I4LCONFDIR = @I4LCONFDIR@
 I4LVERSION = @I4LVERSION@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
